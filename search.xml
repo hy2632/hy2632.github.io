@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Hexo+GitHubio</title>
+    <url>/2020/08/20/My-New-Post/</url>
+    <content><![CDATA[<h2 id="Weblink"><a href="#Weblink" class="headerlink" title="Weblink:"></a>Weblink:</h2><p>知乎专栏<a href="https://zhuanlan.zhihu.com/p/26625249">https://zhuanlan.zhihu.com/p/26625249</a>;<br>大卫博客<a href="https://univeryinli.github.io/about">https://univeryinli.github.io/about</a></p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo -g <span class="comment">#安装Hexo</span></span><br><span class="line">npm update hexo -g <span class="comment">#升级</span></span><br><span class="line">hexo init <span class="comment">#初始化博客</span></span><br></pre></td></tr></table></figure>
+<h3 id="命令简写"><a href="#命令简写" class="headerlink" title="命令简写"></a>命令简写</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo n &quot;我的博客&quot; &#x3D;&#x3D; hexo new &quot;我的博客&quot; #新建文章</span><br><span class="line">hexo g &#x3D;&#x3D; hexo generate #生成</span><br><span class="line">hexo s &#x3D;&#x3D; hexo server #启动服务预览</span><br><span class="line">hexo d &#x3D;&#x3D; hexo deploy #部署</span><br><span class="line"></span><br><span class="line">hexo server #Hexo会监视文件变动并自动更新，无须重启服务器</span><br><span class="line">hexo server -s #静态模式</span><br><span class="line">hexo server -p 5000 #更改端口</span><br><span class="line">hexo server -i 192.168.1.1 #自定义 IP</span><br><span class="line">hexo clean #清除缓存，若是网页正常情况下可以忽略这条命令</span><br><span class="line"></span><br><span class="line">刚刚的三个命令依次是新建一篇博客文章、生成网页、在本地预览的操作</span><br></pre></td></tr></table></figure>
+
+<h3 id="推送网站"><a href="#推送网站" class="headerlink" title="推送网站"></a><strong>推送网站</strong></h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim _config.yml;</span><br><span class="line">    deploy:</span><br><span class="line">    type: git</span><br><span class="line">    repo: 这里填入你之前在GitHub上创建仓库的完整路径，记得加上 .git</span><br><span class="line">    branch: master</span><br><span class="line"></span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line">hexo clean </span><br><span class="line">hexo g </span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<h3 id="next-主题"><a href="#next-主题" class="headerlink" title="next 主题"></a>next 主题</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置next"><a href="#配置next" class="headerlink" title="配置next"></a>配置next</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> themes/next</span><br><span class="line">vim _config.yml</span><br></pre></td></tr></table></figure>
+
+<h4 id="新建about页"><a href="#新建about页" class="headerlink" title="新建about页"></a>新建about页</h4><p>编辑<code>source/about/index.md</code>, 进入<code>themes/next/_config.yml</code>, </p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-user</span></span><br></pre></td></tr></table></figure>
+<p>再生成部署。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>CS224NA4</title>
+    <url>/2020/08/20/CS224NA4/</url>
+    <content><![CDATA[<h1 id="CS224N-A4-NMT-Assignment"><a href="#CS224N-A4-NMT-Assignment" class="headerlink" title="CS224N A4: NMT Assignment"></a>CS224N A4: NMT Assignment</h1><p>Note: Heavily inspired by the <a href="https://github.com/pcyin/pytorch_nmt">https://github.com/pcyin/pytorch_nmt</a> repository</p>
+<p>作业分为两部分， 第一部分代码实现 NMT with RNN， 第二部分文字题分析 NMT</p>
+<h2 id="1-NMT-with-RNN"><a href="#1-NMT-with-RNN" class="headerlink" title="1. NMT with RNN"></a>1. NMT with RNN</h2><ul>
+<li>Bidirectional LSTM Encoder &amp; Unidirectional LSTM Decoder</li>
+<li>勘误：<ul>
+<li>h 为(embedding size)</li>
+<li><strong>(3), (4) 式中的下标 1 应改为 m</strong></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>(a) utils.py</p>
+<ul>
+<li>要求每个 batch 里的句子有相同 length。utils.py 中实现 pad_sents(padding)</li>
+</ul>
+</li>
+<li><p>(b) model_embeddings.py</p>
+<ul>
+<li>先去 vocab.py 里了解类的定义。</li>
+<li>VocabEntry 类初始化参数 word2id(dict: words -&gt; indices), id2word 返回 idx 对应的 word 值，from_corpus 从 corpus 生成一个 VocabEntry 实例，from <strong>collections</strong> import <strong>Counter</strong>，Counter 可以直接查找出字符串中字母出现次数</li>
+<li>Vocab 类包含 src 和 tgt 语言，初始化参数式两种语言的 VocabEntry， @staticmethod 静态方法</li>
+<li>VocabEntry.from_corpus 创建一个 vocab_entry 对象。Vocab.build 分别用 src_sents, tgt_sents 创建 src, tgt 两个 vocab_entry 并返回包含两者的 Vocab(src, tgt)</li>
+<li>运用 nn.Embedding 初始化词嵌。</li>
+</ul>
+</li>
+<li><p>(c) nmt_model.py</p>
+<ul>
+<li>按照 pdf 中的维度对各层初始化</li>
+</ul>
+</li>
+<li><p>(d) nmt_model.py 中 encode 方法实现</p>
+<ul>
+<li><code>self.encoder</code> 是一个双向 lstm</li>
+<li><code>encode</code> 方法传入两个参数：<code>source_padded, source_lengths</code>。前者是已经 pad 后(src_len, b)的 tensor，每一列是一个句子。后者是一个整数列表，表示每个句子实际多少词。</li>
+<li>需要返回两个值：enc_hiddens = hencs(所有 1&lt;=i&lt;=m(句长),每一句中所有词，同时对于整个 batch 所有句子), dec_init_state = (hdec0, cdec0)</li>
+<li>lstm 要求输入满足规范形状，所以需要<code>pad_packed_sequence</code> 和<code>packed_pad_sequence</code>进行变形</li>
+<li>第一步用<code>self.model_embeddings</code>把 source_padded 转换为词嵌入</li>
+</ul>
+</li>
+<li><p>(e) <code>decode</code>方法</p>
+<ul>
+<li><code>self.decode</code>r 是<code>nn.LSTMCell</code>，返回值 h、c，但这部分包装在 step 里面，本 decode 方法里从<code>self.step</code>取得返回值<code>dec_state, combined_output, e_t</code></li>
+<li>还是先用<code>model_embeddings</code>将 target_padded 转换为 Y，一个目标词嵌入，(tgt_len, b, e)</li>
+<li>用<code>torch.split</code>方法， 将 Y 按第 0 维分成步长为 1 的步数，相当于逐词(t)操作。</li>
+<li>(5)式表明了一个迭代过程，最后关心的<code>combined_outputs</code>是 o_t 集合</li>
+<li><strong>07/23 勘误</strong> 做a5时发现dedcode忘记更新o_prev</li>
+</ul>
+</li>
+<li><p>(f) <code>step</code>方法</p>
+<ul>
+<li>step 方法具体处理(5)到(12)式。</li>
+<li>第一部分，(5)-(7)，运用 bmm、(un)squeeze。bmm 需要注意第 0 维度是留给 batch_size 的，两个三维 tensor 的第一二维相乘，满足维度要求。常见的是在 dim=1/2 做 unsqueeze，乘完再 squeeze</li>
+<li>注意到调换乘法次序+不同的变换维度方式会造成最终结果的精度损失。</li>
+</ul>
+</li>
+<li><p>(g) 文字题：<code>generate_sent_masks()</code> 生成 <code>enc_masks(b, src_len)</code>标识 batch 中每个 sentence 每个词是否是 pad，这样做对 attention 计算的影响以及其必要性。</p>
+<ul>
+<li><code>step</code>中，(8)式 α_t 进行了 softmax，后续 a_t 计算为确保 attention 不受 padding 影响要求 padding 处 α_t=0，即 e_t 设置为-∞。</li>
+</ul>
+</li>
+<li><p>(i)</p>
+<ul>
+<li><p>git 配置：git remote add origin <a href="https://github.com/hy2632/cs224n.git">https://github.com/hy2632/cs224n.git</a></p>
+</li>
+<li><p>git push origin master</p>
+</li>
+<li><p>..</p>
+</li>
+<li><p>Corpus BLEU: 31.892219171042335</p>
+</li>
+</ul>
+</li>
+<li><p>(j)</p>
+<table>
+<thead>
+<tr>
+<th>Attention Type</th>
+<th>Advantage</th>
+<th>Disadvantage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Dot Product</td>
+<td>不需要<code>self.att_projection</code>层</td>
+<td>需要满足维度一致</td>
+</tr>
+<tr>
+<td>Multiplicative</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Additive</td>
+<td>tanh 操作 normalize 了数值</td>
+<td>两个参数矩阵，参数更多，空间复杂度大</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h2 id="2-Analyzing-NMT-Systems-30-points"><a href="#2-Analyzing-NMT-Systems-30-points" class="headerlink" title="2. Analyzing NMT Systems (30 points)"></a>2. Analyzing NMT Systems (30 points)</h2><ul>
+<li>参考 lec8 slides P50-</li>
+<li><a href="https://www.skynettoday.com/editorials/state_of_nmt">https://www.skynettoday.com/editorials/state_of_nmt</a></li>
+<li>Out-of-vocabulary words, Domain mismatch between src&amp;tgt, maintaining context over longer text, Low-resource language pairs.</li>
+</ul>
+<ul>
+<li><p>(a)</p>
+<ul>
+<li><p>i.</p>
+<ul>
+<li><ol>
+<li>error: favorite of my favorites,</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>reason: tgt 库中缺乏 one of my favorites 这样的表达, “Low-resource language pairs”</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>to fix: 添加训练数据</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>ii.</p>
+<ul>
+<li><ol>
+<li>error: most read 译为了 more reading。</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>reason: 使用 google translator 发现 ms ledo 被译为 read more， 而 ms ledo en los EEUU 被译为 most read in the US。西班牙语的特点？特定的语言构造。</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>to fix: 需要让 ms ledo 和后面的定语建立更强的联系，从而把握语义理解。增大 hidden_size</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>iii.</p>
+<ul>
+<li><ol>
+<li>error: “<unk>“</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>reason: Out-of-vocabulary</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>to fix: 添加到词表</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>iv.</p>
+<ul>
+<li><ol>
+<li>error: block -&gt; apple</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>reason: “manzana” 多义性</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>to fix: 训练集添加 manzana 作为 block 含义的 phrase 数据，且大于“vuelta a la manzana”因为 google translator 仍将该句错译。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>v.</p>
+<ul>
+<li><ol>
+<li>error: “la sala de profesores”: “teacher’s lounge” -&gt; “women’s room”,</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>reason: “profesores”应该是复数，不包含性别，该句既错译又包含性别 bias。</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>to fix: 增加“profesores”/profesor/profesora 的训练数据，平衡性别 bias 的同时也要将 teacher 翻译出来。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>vi.</p>
+<ul>
+<li><ol>
+<li>error: hectare -&gt; acre</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>reason: 常识错误，涉及到单位转换</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>to fix: 没想到好的方法。文章中写：General knowledge about the world is necessary for NMT systems to translate effectively. <strong>However, this knowledge is difficult to encode in its entirety and is not easily extractable from volumes of data. We need mechanisms to incorporate common sense and world knowledge into our neural networks.</strong></li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>(b)</p>
+<ul>
+<li><p>88:</p>
+<ul>
+<li>When he ‘s born , the baby looks a little bit .</li>
+<li>When the child is born, she looks like a girl.</li>
+<li>Cuando nace, el beb tiene aspecto de nia.(Cuando nace, el bebé tiene aspecto de niña.)</li>
+<li>错误：语意，原因：src 本身存在错误无法显示符号，解决方案：样本数据和测试数据的编码格式改一哈</li>
+</ul>
+</li>
+<li><p>109：</p>
+<ul>
+<li>So , there are many of a lot of sex .</li>
+<li>So sex can come in lots of different varieties.</li>
+<li>Entonces, hay muchas variedades de sexo.</li>
+<li>错误：语法（many a lot of)，variedades 没有翻译出 variety 的意思。解决方案：增加 muchas variedades 的数据</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>(c)<br>BLEU 的定义见 &lt;BLEU: a Method for Automatic Evaluation of Machine Translation&gt;<br>Candidate c, Reference r, BLEU 包含两部分：reference 中出现 candidate 中 ngram phrase 的概率（注意有个 ceiling）和 candidate 太长导致的 brevity penalty。</p>
+</li>
+</ul>
+<ul>
+<li><p>i.</p>
+<ul>
+<li>for c1,<ul>
+<li>p1 = (0 + 1 + 1 + 1 + 0)/5 = 3/5</li>
+<li>p2 = (0 + 1 + 1 + 0) /4 = 1/2</li>
+<li>len(c) = 5</li>
+<li>len(r) = 6</li>
+<li>BP = exp(1-6/5) = 0.819</li>
+<li><code>BLEU = 0.819 * exp(0.5*log(3/5) + 0.5*log(1/2)) = 0.449</code></li>
+</ul>
+</li>
+<li>for c2,<ul>
+<li>p1 = (1 + 1 + 0 + 1 + 1)/5 = 4/5</li>
+<li>p2 = (1 + 0 + 0 + 1) /4 = 1/2</li>
+<li>len(c) = 5</li>
+<li>len(r) = 4</li>
+<li>BP = 1</li>
+<li><code>BLEU = 1 * exp(0.5*log(4/5) + 0.5*log(1/2)) = 0.632</code></li>
+</ul>
+</li>
+<li>c2 更好。</li>
+</ul>
+</li>
+<li><p>ii.</p>
+<ul>
+<li>c1: p1 = 3/5, p2 = 1/2, BLEU 不变 0.449</li>
+<li>c2: p1 = 2/5, p2 = 1/4, len(c) = 5, len(r) = 6, <code>BLEU = 0.819 * exp(0.5*log(2/5) + 0.5*log(1/4)) = 0.259</code></li>
+<li>当前 c1 更好。</li>
+</ul>
+</li>
+<li><p>iii.</p>
+<ul>
+<li>单一 ref 产生类似 ii 的问题， 比如对于 r2，c2 可以说是非常好的翻译，如果没有 r2 仅用 r1 判断，c2 就比 c1 差很多。</li>
+</ul>
+</li>
+<li><p>iv.</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>BLEU vs Human</th>
+<th>1</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Pro</td>
+<td>Fast</td>
+<td>Language independent</td>
+</tr>
+<tr>
+<td>Con</td>
+<td>Lack of Common Sense</td>
+<td>Need Multiple References</td>
+</tr>
+</tbody></table>
+]]></content>
+      <tags>
+        <tag>CS224N</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CS224NA5</title>
+    <url>/2020/08/20/CS224NA5/</url>
+    <content><![CDATA[<h1 id="CS224N-Assignment-5"><a href="#CS224N-Assignment-5" class="headerlink" title="CS224N Assignment #5"></a>CS224N Assignment #5</h1><p>(7.20)增加 Pylance 插件作为语言服务器. 打开 type checking mode(basic).</p>
+<h2 id="文字题"><a href="#文字题" class="headerlink" title="文字题"></a>文字题</h2><ul>
+<li><p>(a) We learned in class that recurrent neural architectures can operate over variable length input (i.e., the shape of the model parameters is independent of the length of the input sentence). Is the same true of convolutional architectures? Write one sentence to explain why or why not.</p>
+<p>window t ∈ {1, . . . , mword − k + 1}，<br>mword 即最长单词的长度可变，<br>xconv ∈ R^(eword×(mword−k+1))</p>
+</li>
+<li><p>(b)…if we use the kernel size k = 5, what will be the size of the padding (i.e. the additional number of zeros on each side) we need for the 1-dimensional convolution, such that there exists at least one window for all possible values of mword in our dataset?</p>
+<p>极端情况 mword=1， 前后各 1 个 token，还需 padding=1.</p>
+</li>
+<li><p>(c) In step 4, we introduce a Highway Network with <code>xhighway = xgate xproj + (1 − xgate) xconv out</code>. Since xgate is the result of the sigmoid function, it has the range (0, 1).Consider the two extreme cases. If xgate → 0, then xhighway → xconv out. When xgate → 1, then xhighway → xproj. This means the Highway layer is smoothly varying its behavior between that of normal linear layer (xproj) and that of a layer which simply passes its inputs (xconv out) through. Use one or two sentences to explain why this behavior is useful in character embeddings. Based on the definition of <code>xgate = σ(Wgatexconv out + bgate)</code>, do you think it is better to initialize bgate to be negative or positive? Explain your reason briefly.<br>原因： 所谓的 highway， x_gate=0 可以直接用 x_convout 的值。</p>
+<p>希望默认 x_gate 较小方便 highway，所以 b 取负。</p>
+</li>
+<li><p>(d) In Lecture 10, we briefly introduced Transformers, a non-recurrent sequence<br>(or sequence-to-sequence) model with a sequence of attention-based transformer blocks. Describe 2 advantages of a Transformer encoder over the LSTM-with-attention encoder in our NMT model</p>
+<p>可以看一下 &lt;<Attention is all you need>&gt;：<br>“Self-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a representation of the sequence.”<br>每一步都是句子里的所有单词之间建立联系。<br>主要用到三个矩阵 Key, Query, value, <code>Attention(Q,K,V) = softmax(QK.T/\sqrt(d_k))V</code><br>(包学包会，这些动图和代码让你一次读懂「自注意力」 - 机器之心的文章 - 知乎 <a href="https://zhuanlan.zhihu.com/p/96492170">https://zhuanlan.zhihu.com/p/96492170</a>)</p>
+</li>
+</ul>
+<pre><code>attention-based transformers的好处（P6 的 Part 4， Why self-attention）：
+
+未采用RNN就可以避免梯度消失和梯度爆炸等问题,
+从sequential computation 到实现parallelized computation,
+更易学习到&quot;long-range dependencies in the network&quot;,
+更加interpretable.</code></pre>
+<h1 id="1-Character-based-convolutional-encoder-for-NMT-36-points"><a href="#1-Character-based-convolutional-encoder-for-NMT-36-points" class="headerlink" title="1. Character-based convolutional encoder for NMT (36 points)"></a>1. Character-based convolutional encoder for NMT (36 points)</h1><h2 id="Vocab-py"><a href="#Vocab-py" class="headerlink" title="Vocab.py"></a>Vocab.py</h2><ol>
+<li>这种写法很巧妙·</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i, c <span class="keyword">in</span> enumerate(self.char_list):</span><br><span class="line">    self.char2id[c] = len(self.char2id)</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>组合用法，类似 zip+enumerate</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line">word_freq = Counter(chain(\*corpus))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用字典辅助排序</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">valid_words = [w <span class="keyword">for</span> w, v <span class="keyword">in</span> word_freq.items() <span class="keyword">if</span> v &gt;= freq_cutoff]</span><br><span class="line">top_k_words = sorted(valid_words, key=<span class="keyword">lambda</span> w: word_freq[w], reverse=<span class="literal">True</span>[:size]</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>用到了<code>json.dump</code>，Vocab 也用此形式存储。</p>
+<h2 id="e-Implement-to-input-tensor-char-in-vocab-py"><a href="#e-Implement-to-input-tensor-char-in-vocab-py" class="headerlink" title="(e) Implement to_input_tensor_char() in vocab.py"></a>(e) Implement <code>to_input_tensor_char()</code> in <code>vocab.py</code></h2><p>字母 ∏ Û python 执行有问题，改成<code>&lt;pad&gt;</code>, <code>&lt;unk&gt;</code>。</p>
+<h2 id="f-highway"><a href="#f-highway" class="headerlink" title="(f) highway"></a>(f) highway</h2><p>要求写一个 sanity_check, (f)本身实现很简单，只是一步处理，所以检查一下前后维度就可以。</p>
+<h2 id="g-cnn-py-CNN"><a href="#g-cnn-py-CNN" class="headerlink" title="(g) cnn.py, CNN"></a>(g) cnn.py, CNN</h2><p>输入(sentence_length, batch_size, e_char, m_word)，前两维不动，对每个词 conv 完，后两维应该是 f 和窗口数，再经过 maxpool 所有窗口， 输出是(sentence_length, batch_size, f)<br>torch 需要使用.contiguous().view(),因为 view 只能作用在 contiguous 的变量上<br>比较关键的一步。<br><strong>07/25 更新</strong>：<br>果然后面还是出问题了。m_word 是 forward 函数中参数 x_reshaped 的维度属性，如果使用 max_pool layer，一开始并不知道输入的参数 m_word 是多少。所以不应该用 maxpool 层（因为不能对一个多维 tensor 的某一维更新），<br>而应该在 forward 函数里直接调用 torch.max(dim=2)</p>
+<h2 id="h-Model-Embeddings"><a href="#h-Model-Embeddings" class="headerlink" title="(h) Model_Embeddings."></a>(h) Model_Embeddings.</h2><p>一个问题是 f=e_word, e_word 和 e_char 的关系到底如何？？<br>题目假设 e_char=50, e_word 是初始化 model_embeddings 的参数 word_embedding_size, 默认值 21。</p>
+<h2 id="j"><a href="#j" class="headerlink" title="(j)"></a>(j)</h2><p>wdnmd， vocab.py 里的 sents_var 总是空的，查了半天发现 utils.pad_sents 忘了粘贴。<br>nmt_model.py 中 step()函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> enc*masks <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    e_t.data.masked_fill*(enc_masks.bool(), -float(<span class="string">&#x27;inf&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>显示’Tensor’ object has no attribute ‘bool’<br>原因应该是 torch 版本较低<br>事实也确实如此，local*env.yml 显示 pytorch=1.0.0，a4 作业就没有限定版本，估计是助教忘了更新。<br>解决方案：改成</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">e_t.data.masked_fill*(enc_masks==<span class="number">1</span>, -float(<span class="string">&#x27;inf&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">epoch 100, iter 500, cum. loss 0.30, cum. ppl 1.01 cum. examples 200</span><br><span class="line">validation: iter 500, dev. ppl 1.001988</span><br><span class="line">Corpus BLEU: 99.66941696422141</span><br></pre></td></tr></table></figure>
+
+
+<p>达到题设要求。</p>
+<h1 id="2-Character-based-LSTM-decoder-for-NMT-26-points"><a href="#2-Character-based-LSTM-decoder-for-NMT-26-points" class="headerlink" title="2. Character-based LSTM decoder for NMT (26 points)"></a>2. Character-based LSTM decoder for NMT (26 points)</h1><h2 id="b"><a href="#b" class="headerlink" title="(b)"></a>(b)</h2><p>奇怪的点在于, char_decoder.py 中 train_forward 的 loss 计算，不 softmaxloss 才收敛。<br>题目要求仔细阅读 nn.CrossEntropyLoss，实际上 Pytorch 中 CrossEntropyLoss()函数将 softmax-log-NLLLoss 合并到一块。</p>
+<p><code>This criterion combines nn.LogSoftmax() and nn.NLLLoss() in one single class.</code><br>loss 0.38, Corpus BLEU: 99.66941696422141</p>
+<h2 id="c"><a href="#c" class="headerlink" title="(c)"></a>(c)</h2><p>这部分思路很清晰，用到了一些技巧，比如(tensor,tensor)的 elementwise 的提取，char 拼接成 word 等，详见代码</p>
+<h2 id="e"><a href="#e" class="headerlink" title="(e)"></a>(e)</h2><p>在 VM 上训练。<br>注意 run.sh 可以进行修改，使得 train_local 也可使用 cuda，提高效率。<br>仍然遇到了环境问题。 “RuntimeError: Given input size: (256x1x12). Calculated output size: (256x1x0). Output size is too small”<br>于是只能在 VM 上配一个和本地相同的（过时的）环境。问题解决。<br><strong>CNN.py 中存在问题，很久之前埋下的坑！！！</strong>：初始化时如果建立 maxpool 就需要提前知道 m_word 以确定 kernel_size。这个问题可以这样解决：避免 maxpool 层，在 forward 中使用 torch.max 函数，对某个维度进行 max。<br>对 cnn 和 sanity_check 都进行修改。由于默认使用了 sanitycheck 的值 m_word=21,实际上在写其他函数调用 CNN 类的时候没有定义 m_word 值，所以正好不需要改。<br>参考：Tessa Scott<a href="https://github.com/tessascott039/a5/blob/master/cnn.py">https://github.com/tessascott039/a5/blob/master/cnn.py</a></p>
+<p><a href="https://github.com/pytorch/pytorch/issues/4166">https://github.com/pytorch/pytorch/issues/4166</a><br><a href="https://stackoverflow.com/questions/56137869/is-it-possible-to-make-a-max-pooling-on-dynamic-length-sentences-without-padding">https://stackoverflow.com/questions/56137869/is-it-possible-to-make-a-max-pooling-on-dynamic-length-sentences-without-padding</a><br>探讨了 nn.MaxPool1d 能不能有一个动态的 kernel_size。</p>
+<p>train 的结果：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">epoch 29, iter 196300, avg. loss 81.60, avg. ppl 59.75 cum. examples 9600, speed 6086.86 words&#x2F;sec, time elapsed 20580.30 sec</span><br><span class="line">epoch 29, iter 196310, avg. loss 81.10, avg. ppl 50.14 cum. examples 9920, speed 6458.96 words&#x2F;sec, time elapsed 20581.33 sec</span><br><span class="line">epoch 29, iter 196320, avg. loss 78.58, avg. ppl 48.75 cum. examples 10240, speed 6548.57 words&#x2F;sec, time elapsed 20582.32 sec</span><br><span class="line">epoch 29, iter 196330, avg. loss 86.52, avg. ppl 61.24 cum. examples 10537, speed 6019.06 words&#x2F;sec, time elapsed 20583.36 sec</span><br><span class="line">test：Corpus BLEU: 36.395796664198</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-Analyzing-NMT-Systems-8-points"><a href="#3-Analyzing-NMT-Systems-8-points" class="headerlink" title="3. Analyzing NMT Systems (8 points)"></a>3. Analyzing NMT Systems (8 points)</h1><h2 id="a"><a href="#a" class="headerlink" title="(a)"></a>(a)</h2><p>用 linux 的 grep 命令查找字符串</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(base) hy2632_ubuntu20@DESKTOP-8LEIHPS:~&#x2F;cs224n&#x2F;a5_public\$ grep tradu vocab.json</span><br><span class="line">&quot;traduciendo&quot;: 17349,</span><br><span class="line">&quot;tradujera&quot;: 32719,</span><br><span class="line">&quot;traduccin&quot;: 4562,</span><br><span class="line">&quot;traduzco&quot;: 40154,</span><br><span class="line">&quot;traduzcan&quot;: 23440,</span><br><span class="line">&quot;traductores&quot;: 19447,</span><br><span class="line">&quot;traducir&quot;: 4565,</span><br><span class="line">&quot;traducciones&quot;: 12054,</span><br><span class="line">&quot;traductor&quot;: 11809,</span><br><span class="line">&quot;traducirse&quot;: 36917,</span><br><span class="line">&quot;traducen&quot;: 19640,</span><br><span class="line">&quot;tradujo&quot;: 25176,</span><br><span class="line">&quot;traducido&quot;: 8515,</span><br><span class="line">&quot;traducimos&quot;: 18251,</span><br><span class="line">&quot;traduce&quot;: 7821,</span><br><span class="line">&quot;traducidas&quot;: 20336,</span><br><span class="line">&quot;traduzca&quot;: 44710,</span><br><span class="line">&quot;traducirlo&quot;: 19205,</span><br><span class="line">&quot;traductora&quot;: 13071,</span><br><span class="line">&quot;traduje&quot;: 23103,</span><br><span class="line">&quot;traducirlas&quot;: 35543,</span><br><span class="line">&quot;traducida&quot;: 19350,</span><br></pre></td></tr></table></figure>
+
+<p>traduces, traduzcas not in.<br>如果是 word-based NMT，将 spanish 翻译为 english， 如果句子中出现 traduces 就会判断为<code>&lt;unk&gt;</code>， 无法翻译；但如果是 character-aware NMT，别的类似 traducir(to translate)的动词可能有类似的性质(加 s，从 I 变成 you)，同时又恰好出现在训练集中，那么模型在遇到 traduces 的 s 时就能翻译出 you translate。</p>
+<h2 id="b-1"><a href="#b-1" class="headerlink" title="(b)"></a>(b)</h2><ol>
+<li><p>回顾 Word2Vec。<a href="https://projector.tensorflow.org/">https://projector.tensorflow.org/</a> 可以查询 k-nearest words。</p>
+<p>Markdown 表格生成<a href="https://www.tablesgenerator.com/markdown_tables">https://www.tablesgenerator.com/markdown_tables</a></p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>word</th>
+<th>closest word</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>financial</td>
+<td>economics</td>
+</tr>
+<tr>
+<td>neuron</td>
+<td>nerve</td>
+</tr>
+<tr>
+<td>Francisco</td>
+<td>san</td>
+</tr>
+<tr>
+<td>naturally</td>
+<td>occurring</td>
+</tr>
+<tr>
+<td>expectation</td>
+<td>norms</td>
+</tr>
+</tbody></table>
+<ol start="2">
+<li>也可以上传自己的 character-aware NMT model 的 embeddings 查找 nearest neighbors.</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/hy2632/cs224n/master/a5_public/CS224n-A5-emb2-files/embedding_proj.jpg" alt="Image"></p>
+<table>
+<thead>
+<tr>
+<th>word</th>
+<th>closest word</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>financial</td>
+<td>vertical</td>
+</tr>
+<tr>
+<td>neuron</td>
+<td>Newton</td>
+</tr>
+<tr>
+<td>Francisco</td>
+<td>France</td>
+</tr>
+<tr>
+<td>naturally</td>
+<td>practically</td>
+</tr>
+<tr>
+<td>expectation</td>
+<td>exception</td>
+</tr>
+</tbody></table>
+<ol start="3">
+<li>分析 Word2Vec 和 CharCNN 的区别并解释。</li>
+</ol>
+<p>除了 naturally/practically 意思相近，CharCNN 的 embeddings 更多的还是按照字母组成（同时也包含一些 pos 和 ner）。Word2Vec 则更多地把握了词义的相似和关联性。原因就是模型本身。</p>
+<p>word2vec: skip-grams &amp; CBOW(contiguous bag of words)，给定上下文此预测缺失的中心词 c，概率分布 P(C|W)。因而相近的词都是有较大概率作为中心词被代替。</p>
+<p>CharCNN: 对某个单词的各个字母进行 charembedding，然后经过 CNN/Highway 等操作最后生成 wordembedding，较大程度上依赖于 charembedding，如果两个词有相同字母的 subset 则 wordembedding 可能相近。</p>
+<h2 id="c-1"><a href="#c-1" class="headerlink" title="(c)"></a>(c)</h2><p>(45)正确的例子：<br>| Category       |                                                                            |<br>| ————– | ————————————————————————– |<br>| ES             | A medida que se derrite un tmpano, estoy respirando su atmsfera ancestral. |<br>| Ref            | As an eardrum melts, I am breathing in its ancient atmosphere.             |<br>| A4 translation | As a <code>&lt;unk&gt;</code> <code>&lt;unk&gt;</code> I’m breathing its atmosphere <code>&lt;unk&gt;</code>                  |<br>| A5 translation | As it melts a iceberg, I’m breathing its ancestral atmosphere.             |</p>
+<p>tímpano，témpano 是同义词，但一个翻译为耳膜一个翻译为冰山。这里冰山显然更为合适。</p>
+<p>(85)错误的例子：<br>| Category       |                                                   |<br>| ————– | ————————————————- |<br>| ES             | Es el sndrome de insensibilidad a los andrgenos.  |<br>| Ref            | It is the syndrome of insensitivity to androgens. |<br>| A4 translation | It’s called <code>&lt;unk&gt;</code> <code>&lt;unk&gt;</code>                       |<br>| A5 translation | It’s the syndrome of insulin insulin.             |</p>
+<p>对于连续的<code>&lt;unk&gt;</code>，CharCNN 的表现并没有很好改善（重复出现的 insulin）。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/08/20/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+</search>
