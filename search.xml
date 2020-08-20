@@ -1,6 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>CS224NA5</title>
+    <url>/2020/08/20/CS224NA5/</url>
+    <content><![CDATA[<h1 id="CS224N-Assignment-5"><a href="#CS224N-Assignment-5" class="headerlink" title="CS224N Assignment #5"></a>CS224N Assignment #5</h1><p>(7.20)增加 Pylance 插件作为语言服务器. 打开 type checking mode(basic).</p>
+<h2 id="文字题"><a href="#文字题" class="headerlink" title="文字题"></a>文字题</h2><ul>
+<li><p>(a) We learned in class that recurrent neural architectures can operate over variable length input (i.e., the shape of the model parameters is independent of the length of the input sentence). Is the same true of convolutional architectures? Write one sentence to explain why or why not.</p>
+<p>window t ∈ {1, . . . , mword − k + 1}，<br>mword 即最长单词的长度可变，<br>xconv ∈ R^(eword×(mword−k+1))</p>
+</li>
+<li><p>(b)…if we use the kernel size k = 5, what will be the size of the padding (i.e. the additional number of zeros on each side) we need for the 1-dimensional convolution, such that there exists at least one window for all possible values of mword in our dataset?</p>
+<p>极端情况 mword=1， 前后各 1 个 token，还需 padding=1.</p>
+</li>
+<li><p>(c) In step 4, we introduce a Highway Network with <code>xhighway = xgate xproj + (1 − xgate) xconv out</code>. Since xgate is the result of the sigmoid function, it has the range (0, 1).Consider the two extreme cases. If xgate → 0, then xhighway → xconv out. When xgate → 1, then xhighway → xproj. This means the Highway layer is smoothly varying its behavior between that of normal linear layer (xproj) and that of a layer which simply passes its inputs (xconv out) through. Use one or two sentences to explain why this behavior is useful in character embeddings. Based on the definition of <code>xgate = σ(Wgatexconv out + bgate)</code>, do you think it is better to initialize bgate to be negative or positive? Explain your reason briefly.<br>原因： 所谓的 highway， x_gate=0 可以直接用 x_convout 的值。</p>
+<p>希望默认 x_gate 较小方便 highway，所以 b 取负。</p>
+</li>
+<li><p>(d) In Lecture 10, we briefly introduced Transformers, a non-recurrent sequence<br>(or sequence-to-sequence) model with a sequence of attention-based transformer blocks. Describe 2 advantages of a Transformer encoder over the LSTM-with-attention encoder in our NMT model</p>
+<p>可以看一下 &lt;<Attention is all you need>&gt;：<br>“Self-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a representation of the sequence.”<br>每一步都是句子里的所有单词之间建立联系。<br>主要用到三个矩阵 Key, Query, value, <code>Attention(Q,K,V) = softmax(QK.T/\sqrt(d_k))V</code><br>(包学包会，这些动图和代码让你一次读懂「自注意力」 - 机器之心的文章 - 知乎 <a href="https://zhuanlan.zhihu.com/p/96492170">https://zhuanlan.zhihu.com/p/96492170</a>)</p>
+</li>
+</ul>
+<pre><code>attention-based transformers的好处（P6 的 Part 4， Why self-attention）：
+
+未采用RNN就可以避免梯度消失和梯度爆炸等问题,
+从sequential computation 到实现parallelized computation,
+更易学习到&quot;long-range dependencies in the network&quot;,
+更加interpretable.</code></pre>
+<h1 id="1-Character-based-convolutional-encoder-for-NMT-36-points"><a href="#1-Character-based-convolutional-encoder-for-NMT-36-points" class="headerlink" title="1. Character-based convolutional encoder for NMT (36 points)"></a>1. Character-based convolutional encoder for NMT (36 points)</h1><h2 id="Vocab-py"><a href="#Vocab-py" class="headerlink" title="Vocab.py"></a>Vocab.py</h2><ol>
+<li>这种写法很巧妙·</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i, c <span class="keyword">in</span> enumerate(self.char_list):</span><br><span class="line">    self.char2id[c] = len(self.char2id)</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>组合用法，类似 zip+enumerate</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line">word_freq = Counter(chain(\*corpus))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用字典辅助排序</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">valid_words = [w <span class="keyword">for</span> w, v <span class="keyword">in</span> word_freq.items() <span class="keyword">if</span> v &gt;= freq_cutoff]</span><br><span class="line">top_k_words = sorted(valid_words, key=<span class="keyword">lambda</span> w: word_freq[w], reverse=<span class="literal">True</span>[:size]</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>用到了<code>json.dump</code>，Vocab 也用此形式存储。</p>
+<h2 id="e-Implement-to-input-tensor-char-in-vocab-py"><a href="#e-Implement-to-input-tensor-char-in-vocab-py" class="headerlink" title="(e) Implement to_input_tensor_char() in vocab.py"></a>(e) Implement <code>to_input_tensor_char()</code> in <code>vocab.py</code></h2><p>字母 ∏ Û python 执行有问题，改成<code>&lt;pad&gt;</code>, <code>&lt;unk&gt;</code>。</p>
+<h2 id="f-highway"><a href="#f-highway" class="headerlink" title="(f) highway"></a>(f) highway</h2><p>要求写一个 sanity_check, (f)本身实现很简单，只是一步处理，所以检查一下前后维度就可以。</p>
+<h2 id="g-cnn-py-CNN"><a href="#g-cnn-py-CNN" class="headerlink" title="(g) cnn.py, CNN"></a>(g) cnn.py, CNN</h2><p>输入(sentence_length, batch_size, e_char, m_word)，前两维不动，对每个词 conv 完，后两维应该是 f 和窗口数，再经过 maxpool 所有窗口， 输出是(sentence_length, batch_size, f)<br>torch 需要使用.contiguous().view(),因为 view 只能作用在 contiguous 的变量上<br>比较关键的一步。<br><strong>07/25 更新</strong>：<br>果然后面还是出问题了。m_word 是 forward 函数中参数 x_reshaped 的维度属性，如果使用 max_pool layer，一开始并不知道输入的参数 m_word 是多少。所以不应该用 maxpool 层（因为不能对一个多维 tensor 的某一维更新），<br>而应该在 forward 函数里直接调用 torch.max(dim=2)</p>
+<h2 id="h-Model-Embeddings"><a href="#h-Model-Embeddings" class="headerlink" title="(h) Model_Embeddings."></a>(h) Model_Embeddings.</h2><p>一个问题是 f=e_word, e_word 和 e_char 的关系到底如何？？<br>题目假设 e_char=50, e_word 是初始化 model_embeddings 的参数 word_embedding_size, 默认值 21。</p>
+<h2 id="j"><a href="#j" class="headerlink" title="(j)"></a>(j)</h2><p>wdnmd， vocab.py 里的 sents_var 总是空的，查了半天发现 utils.pad_sents 忘了粘贴。<br>nmt_model.py 中 step()函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> enc*masks <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    e_t.data.masked_fill*(enc_masks.bool(), -float(<span class="string">&#x27;inf&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>显示’Tensor’ object has no attribute ‘bool’<br>原因应该是 torch 版本较低<br>事实也确实如此，local*env.yml 显示 pytorch=1.0.0，a4 作业就没有限定版本，估计是助教忘了更新。<br>解决方案：改成</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">e_t.data.masked_fill*(enc_masks==<span class="number">1</span>, -float(<span class="string">&#x27;inf&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">epoch 100, iter 500, cum. loss 0.30, cum. ppl 1.01 cum. examples 200</span><br><span class="line">validation: iter 500, dev. ppl 1.001988</span><br><span class="line">Corpus BLEU: 99.66941696422141</span><br></pre></td></tr></table></figure>
+
+
+<p>达到题设要求。</p>
+<h1 id="2-Character-based-LSTM-decoder-for-NMT-26-points"><a href="#2-Character-based-LSTM-decoder-for-NMT-26-points" class="headerlink" title="2. Character-based LSTM decoder for NMT (26 points)"></a>2. Character-based LSTM decoder for NMT (26 points)</h1><h2 id="b"><a href="#b" class="headerlink" title="(b)"></a>(b)</h2><p>奇怪的点在于, char_decoder.py 中 train_forward 的 loss 计算，不 softmaxloss 才收敛。<br>题目要求仔细阅读 nn.CrossEntropyLoss，实际上 Pytorch 中 CrossEntropyLoss()函数将 softmax-log-NLLLoss 合并到一块。</p>
+<p><code>This criterion combines nn.LogSoftmax() and nn.NLLLoss() in one single class.</code><br>loss 0.38, Corpus BLEU: 99.66941696422141</p>
+<h2 id="c"><a href="#c" class="headerlink" title="(c)"></a>(c)</h2><p>这部分思路很清晰，用到了一些技巧，比如(tensor,tensor)的 elementwise 的提取，char 拼接成 word 等，详见代码</p>
+<h2 id="e"><a href="#e" class="headerlink" title="(e)"></a>(e)</h2><p>在 VM 上训练。<br>注意 run.sh 可以进行修改，使得 train_local 也可使用 cuda，提高效率。<br>仍然遇到了环境问题。 “RuntimeError: Given input size: (256x1x12). Calculated output size: (256x1x0). Output size is too small”<br>于是只能在 VM 上配一个和本地相同的（过时的）环境。问题解决。<br><strong>CNN.py 中存在问题，很久之前埋下的坑！！！</strong>：初始化时如果建立 maxpool 就需要提前知道 m_word 以确定 kernel_size。这个问题可以这样解决：避免 maxpool 层，在 forward 中使用 torch.max 函数，对某个维度进行 max。<br>对 cnn 和 sanity_check 都进行修改。由于默认使用了 sanitycheck 的值 m_word=21,实际上在写其他函数调用 CNN 类的时候没有定义 m_word 值，所以正好不需要改。<br>参考：Tessa Scott<a href="https://github.com/tessascott039/a5/blob/master/cnn.py">https://github.com/tessascott039/a5/blob/master/cnn.py</a></p>
+<p><a href="https://github.com/pytorch/pytorch/issues/4166">https://github.com/pytorch/pytorch/issues/4166</a><br><a href="https://stackoverflow.com/questions/56137869/is-it-possible-to-make-a-max-pooling-on-dynamic-length-sentences-without-padding">https://stackoverflow.com/questions/56137869/is-it-possible-to-make-a-max-pooling-on-dynamic-length-sentences-without-padding</a><br>探讨了 nn.MaxPool1d 能不能有一个动态的 kernel_size。</p>
+<p>train 的结果：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">epoch 29, iter 196300, avg. loss 81.60, avg. ppl 59.75 cum. examples 9600, speed 6086.86 words&#x2F;sec, time elapsed 20580.30 sec</span><br><span class="line">epoch 29, iter 196310, avg. loss 81.10, avg. ppl 50.14 cum. examples 9920, speed 6458.96 words&#x2F;sec, time elapsed 20581.33 sec</span><br><span class="line">epoch 29, iter 196320, avg. loss 78.58, avg. ppl 48.75 cum. examples 10240, speed 6548.57 words&#x2F;sec, time elapsed 20582.32 sec</span><br><span class="line">epoch 29, iter 196330, avg. loss 86.52, avg. ppl 61.24 cum. examples 10537, speed 6019.06 words&#x2F;sec, time elapsed 20583.36 sec</span><br><span class="line">test：Corpus BLEU: 36.395796664198</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-Analyzing-NMT-Systems-8-points"><a href="#3-Analyzing-NMT-Systems-8-points" class="headerlink" title="3. Analyzing NMT Systems (8 points)"></a>3. Analyzing NMT Systems (8 points)</h1><h2 id="a"><a href="#a" class="headerlink" title="(a)"></a>(a)</h2><p>用 linux 的 grep 命令查找字符串</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(base) hy2632_ubuntu20@DESKTOP-8LEIHPS:~&#x2F;cs224n&#x2F;a5_public\$ grep tradu vocab.json</span><br><span class="line">&quot;traduciendo&quot;: 17349,</span><br><span class="line">&quot;tradujera&quot;: 32719,</span><br><span class="line">&quot;traduccin&quot;: 4562,</span><br><span class="line">&quot;traduzco&quot;: 40154,</span><br><span class="line">&quot;traduzcan&quot;: 23440,</span><br><span class="line">&quot;traductores&quot;: 19447,</span><br><span class="line">&quot;traducir&quot;: 4565,</span><br><span class="line">&quot;traducciones&quot;: 12054,</span><br><span class="line">&quot;traductor&quot;: 11809,</span><br><span class="line">&quot;traducirse&quot;: 36917,</span><br><span class="line">&quot;traducen&quot;: 19640,</span><br><span class="line">&quot;tradujo&quot;: 25176,</span><br><span class="line">&quot;traducido&quot;: 8515,</span><br><span class="line">&quot;traducimos&quot;: 18251,</span><br><span class="line">&quot;traduce&quot;: 7821,</span><br><span class="line">&quot;traducidas&quot;: 20336,</span><br><span class="line">&quot;traduzca&quot;: 44710,</span><br><span class="line">&quot;traducirlo&quot;: 19205,</span><br><span class="line">&quot;traductora&quot;: 13071,</span><br><span class="line">&quot;traduje&quot;: 23103,</span><br><span class="line">&quot;traducirlas&quot;: 35543,</span><br><span class="line">&quot;traducida&quot;: 19350,</span><br></pre></td></tr></table></figure>
+
+<p>traduces, traduzcas not in.<br>如果是 word-based NMT，将 spanish 翻译为 english， 如果句子中出现 traduces 就会判断为<code>&lt;unk&gt;</code>， 无法翻译；但如果是 character-aware NMT，别的类似 traducir(to translate)的动词可能有类似的性质(加 s，从 I 变成 you)，同时又恰好出现在训练集中，那么模型在遇到 traduces 的 s 时就能翻译出 you translate。</p>
+<h2 id="b-1"><a href="#b-1" class="headerlink" title="(b)"></a>(b)</h2><ol>
+<li><p>回顾 Word2Vec。<a href="https://projector.tensorflow.org/">https://projector.tensorflow.org/</a> 可以查询 k-nearest words。</p>
+<p>Markdown 表格生成<a href="https://www.tablesgenerator.com/markdown_tables">https://www.tablesgenerator.com/markdown_tables</a></p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>word</th>
+<th>closest word</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>financial</td>
+<td>economics</td>
+</tr>
+<tr>
+<td>neuron</td>
+<td>nerve</td>
+</tr>
+<tr>
+<td>Francisco</td>
+<td>san</td>
+</tr>
+<tr>
+<td>naturally</td>
+<td>occurring</td>
+</tr>
+<tr>
+<td>expectation</td>
+<td>norms</td>
+</tr>
+</tbody></table>
+<ol start="2">
+<li>也可以上传自己的 character-aware NMT model 的 embeddings 查找 nearest neighbors.</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/hy2632/cs224n/master/a5_public/CS224n-A5-emb2-files/embedding_proj.jpg" alt="Image"></p>
+<table>
+<thead>
+<tr>
+<th>word</th>
+<th>closest word</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>financial</td>
+<td>vertical</td>
+</tr>
+<tr>
+<td>neuron</td>
+<td>Newton</td>
+</tr>
+<tr>
+<td>Francisco</td>
+<td>France</td>
+</tr>
+<tr>
+<td>naturally</td>
+<td>practically</td>
+</tr>
+<tr>
+<td>expectation</td>
+<td>exception</td>
+</tr>
+</tbody></table>
+<ol start="3">
+<li>分析 Word2Vec 和 CharCNN 的区别并解释。</li>
+</ol>
+<p>除了 naturally/practically 意思相近，CharCNN 的 embeddings 更多的还是按照字母组成（同时也包含一些 pos 和 ner）。Word2Vec 则更多地把握了词义的相似和关联性。原因就是模型本身。</p>
+<p>word2vec: skip-grams &amp; CBOW(contiguous bag of words)，给定上下文此预测缺失的中心词 c，概率分布 P(C|W)。因而相近的词都是有较大概率作为中心词被代替。</p>
+<p>CharCNN: 对某个单词的各个字母进行 charembedding，然后经过 CNN/Highway 等操作最后生成 wordembedding，较大程度上依赖于 charembedding，如果两个词有相同字母的 subset 则 wordembedding 可能相近。</p>
+<h2 id="c-1"><a href="#c-1" class="headerlink" title="(c)"></a>(c)</h2><p>(45)正确的例子：<br>| Category       |                                                                            |<br>| ————– | ————————————————————————– |<br>| ES             | A medida que se derrite un tmpano, estoy respirando su atmsfera ancestral. |<br>| Ref            | As an eardrum melts, I am breathing in its ancient atmosphere.             |<br>| A4 translation | As a <code>&lt;unk&gt;</code> <code>&lt;unk&gt;</code> I’m breathing its atmosphere <code>&lt;unk&gt;</code>                  |<br>| A5 translation | As it melts a iceberg, I’m breathing its ancestral atmosphere.             |</p>
+<p>tímpano，témpano 是同义词，但一个翻译为耳膜一个翻译为冰山。这里冰山显然更为合适。</p>
+<p>(85)错误的例子：<br>| Category       |                                                   |<br>| ————– | ————————————————- |<br>| ES             | Es el sndrome de insensibilidad a los andrgenos.  |<br>| Ref            | It is the syndrome of insensitivity to androgens. |<br>| A4 translation | It’s called <code>&lt;unk&gt;</code> <code>&lt;unk&gt;</code>                       |<br>| A5 translation | It’s the syndrome of insulin insulin.             |</p>
+<p>对于连续的<code>&lt;unk&gt;</code>，CharCNN 的表现并没有很好改善（重复出现的 insulin）。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>Hexo+GitHubio</title>
     <url>/2020/08/20/My-New-Post/</url>
     <content><![CDATA[<h2 id="Weblink"><a href="#Weblink" class="headerlink" title="Weblink:"></a>Weblink:</h2><p>知乎专栏<a href="https://zhuanlan.zhihu.com/p/26625249">https://zhuanlan.zhihu.com/p/26625249</a>;<br>大卫博客<a href="https://univeryinli.github.io/about">https://univeryinli.github.io/about</a></p>
@@ -311,148 +453,6 @@
       <tags>
         <tag>CS224N</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>CS224NA5</title>
-    <url>/2020/08/20/CS224NA5/</url>
-    <content><![CDATA[<h1 id="CS224N-Assignment-5"><a href="#CS224N-Assignment-5" class="headerlink" title="CS224N Assignment #5"></a>CS224N Assignment #5</h1><p>(7.20)增加 Pylance 插件作为语言服务器. 打开 type checking mode(basic).</p>
-<h2 id="文字题"><a href="#文字题" class="headerlink" title="文字题"></a>文字题</h2><ul>
-<li><p>(a) We learned in class that recurrent neural architectures can operate over variable length input (i.e., the shape of the model parameters is independent of the length of the input sentence). Is the same true of convolutional architectures? Write one sentence to explain why or why not.</p>
-<p>window t ∈ {1, . . . , mword − k + 1}，<br>mword 即最长单词的长度可变，<br>xconv ∈ R^(eword×(mword−k+1))</p>
-</li>
-<li><p>(b)…if we use the kernel size k = 5, what will be the size of the padding (i.e. the additional number of zeros on each side) we need for the 1-dimensional convolution, such that there exists at least one window for all possible values of mword in our dataset?</p>
-<p>极端情况 mword=1， 前后各 1 个 token，还需 padding=1.</p>
-</li>
-<li><p>(c) In step 4, we introduce a Highway Network with <code>xhighway = xgate xproj + (1 − xgate) xconv out</code>. Since xgate is the result of the sigmoid function, it has the range (0, 1).Consider the two extreme cases. If xgate → 0, then xhighway → xconv out. When xgate → 1, then xhighway → xproj. This means the Highway layer is smoothly varying its behavior between that of normal linear layer (xproj) and that of a layer which simply passes its inputs (xconv out) through. Use one or two sentences to explain why this behavior is useful in character embeddings. Based on the definition of <code>xgate = σ(Wgatexconv out + bgate)</code>, do you think it is better to initialize bgate to be negative or positive? Explain your reason briefly.<br>原因： 所谓的 highway， x_gate=0 可以直接用 x_convout 的值。</p>
-<p>希望默认 x_gate 较小方便 highway，所以 b 取负。</p>
-</li>
-<li><p>(d) In Lecture 10, we briefly introduced Transformers, a non-recurrent sequence<br>(or sequence-to-sequence) model with a sequence of attention-based transformer blocks. Describe 2 advantages of a Transformer encoder over the LSTM-with-attention encoder in our NMT model</p>
-<p>可以看一下 &lt;<Attention is all you need>&gt;：<br>“Self-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a representation of the sequence.”<br>每一步都是句子里的所有单词之间建立联系。<br>主要用到三个矩阵 Key, Query, value, <code>Attention(Q,K,V) = softmax(QK.T/\sqrt(d_k))V</code><br>(包学包会，这些动图和代码让你一次读懂「自注意力」 - 机器之心的文章 - 知乎 <a href="https://zhuanlan.zhihu.com/p/96492170">https://zhuanlan.zhihu.com/p/96492170</a>)</p>
-</li>
-</ul>
-<pre><code>attention-based transformers的好处（P6 的 Part 4， Why self-attention）：
-
-未采用RNN就可以避免梯度消失和梯度爆炸等问题,
-从sequential computation 到实现parallelized computation,
-更易学习到&quot;long-range dependencies in the network&quot;,
-更加interpretable.</code></pre>
-<h1 id="1-Character-based-convolutional-encoder-for-NMT-36-points"><a href="#1-Character-based-convolutional-encoder-for-NMT-36-points" class="headerlink" title="1. Character-based convolutional encoder for NMT (36 points)"></a>1. Character-based convolutional encoder for NMT (36 points)</h1><h2 id="Vocab-py"><a href="#Vocab-py" class="headerlink" title="Vocab.py"></a>Vocab.py</h2><ol>
-<li>这种写法很巧妙·</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i, c <span class="keyword">in</span> enumerate(self.char_list):</span><br><span class="line">    self.char2id[c] = len(self.char2id)</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li><p>组合用法，类似 zip+enumerate</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line">word_freq = Counter(chain(\*corpus))</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>用字典辅助排序</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">valid_words = [w <span class="keyword">for</span> w, v <span class="keyword">in</span> word_freq.items() <span class="keyword">if</span> v &gt;= freq_cutoff]</span><br><span class="line">top_k_words = sorted(valid_words, key=<span class="keyword">lambda</span> w: word_freq[w], reverse=<span class="literal">True</span>[:size]</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<p>用到了<code>json.dump</code>，Vocab 也用此形式存储。</p>
-<h2 id="e-Implement-to-input-tensor-char-in-vocab-py"><a href="#e-Implement-to-input-tensor-char-in-vocab-py" class="headerlink" title="(e) Implement to_input_tensor_char() in vocab.py"></a>(e) Implement <code>to_input_tensor_char()</code> in <code>vocab.py</code></h2><p>字母 ∏ Û python 执行有问题，改成<code>&lt;pad&gt;</code>, <code>&lt;unk&gt;</code>。</p>
-<h2 id="f-highway"><a href="#f-highway" class="headerlink" title="(f) highway"></a>(f) highway</h2><p>要求写一个 sanity_check, (f)本身实现很简单，只是一步处理，所以检查一下前后维度就可以。</p>
-<h2 id="g-cnn-py-CNN"><a href="#g-cnn-py-CNN" class="headerlink" title="(g) cnn.py, CNN"></a>(g) cnn.py, CNN</h2><p>输入(sentence_length, batch_size, e_char, m_word)，前两维不动，对每个词 conv 完，后两维应该是 f 和窗口数，再经过 maxpool 所有窗口， 输出是(sentence_length, batch_size, f)<br>torch 需要使用.contiguous().view(),因为 view 只能作用在 contiguous 的变量上<br>比较关键的一步。<br><strong>07/25 更新</strong>：<br>果然后面还是出问题了。m_word 是 forward 函数中参数 x_reshaped 的维度属性，如果使用 max_pool layer，一开始并不知道输入的参数 m_word 是多少。所以不应该用 maxpool 层（因为不能对一个多维 tensor 的某一维更新），<br>而应该在 forward 函数里直接调用 torch.max(dim=2)</p>
-<h2 id="h-Model-Embeddings"><a href="#h-Model-Embeddings" class="headerlink" title="(h) Model_Embeddings."></a>(h) Model_Embeddings.</h2><p>一个问题是 f=e_word, e_word 和 e_char 的关系到底如何？？<br>题目假设 e_char=50, e_word 是初始化 model_embeddings 的参数 word_embedding_size, 默认值 21。</p>
-<h2 id="j"><a href="#j" class="headerlink" title="(j)"></a>(j)</h2><p>wdnmd， vocab.py 里的 sents_var 总是空的，查了半天发现 utils.pad_sents 忘了粘贴。<br>nmt_model.py 中 step()函数</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> enc*masks <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    e_t.data.masked_fill*(enc_masks.bool(), -float(<span class="string">&#x27;inf&#x27;</span>))</span><br></pre></td></tr></table></figure>
-
-<p>显示’Tensor’ object has no attribute ‘bool’<br>原因应该是 torch 版本较低<br>事实也确实如此，local*env.yml 显示 pytorch=1.0.0，a4 作业就没有限定版本，估计是助教忘了更新。<br>解决方案：改成</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">e_t.data.masked_fill*(enc_masks==<span class="number">1</span>, -float(<span class="string">&#x27;inf&#x27;</span>))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">epoch 100, iter 500, cum. loss 0.30, cum. ppl 1.01 cum. examples 200</span><br><span class="line">validation: iter 500, dev. ppl 1.001988</span><br><span class="line">Corpus BLEU: 99.66941696422141</span><br></pre></td></tr></table></figure>
-
-
-<p>达到题设要求。</p>
-<h1 id="2-Character-based-LSTM-decoder-for-NMT-26-points"><a href="#2-Character-based-LSTM-decoder-for-NMT-26-points" class="headerlink" title="2. Character-based LSTM decoder for NMT (26 points)"></a>2. Character-based LSTM decoder for NMT (26 points)</h1><h2 id="b"><a href="#b" class="headerlink" title="(b)"></a>(b)</h2><p>奇怪的点在于, char_decoder.py 中 train_forward 的 loss 计算，不 softmaxloss 才收敛。<br>题目要求仔细阅读 nn.CrossEntropyLoss，实际上 Pytorch 中 CrossEntropyLoss()函数将 softmax-log-NLLLoss 合并到一块。</p>
-<p><code>This criterion combines nn.LogSoftmax() and nn.NLLLoss() in one single class.</code><br>loss 0.38, Corpus BLEU: 99.66941696422141</p>
-<h2 id="c"><a href="#c" class="headerlink" title="(c)"></a>(c)</h2><p>这部分思路很清晰，用到了一些技巧，比如(tensor,tensor)的 elementwise 的提取，char 拼接成 word 等，详见代码</p>
-<h2 id="e"><a href="#e" class="headerlink" title="(e)"></a>(e)</h2><p>在 VM 上训练。<br>注意 run.sh 可以进行修改，使得 train_local 也可使用 cuda，提高效率。<br>仍然遇到了环境问题。 “RuntimeError: Given input size: (256x1x12). Calculated output size: (256x1x0). Output size is too small”<br>于是只能在 VM 上配一个和本地相同的（过时的）环境。问题解决。<br><strong>CNN.py 中存在问题，很久之前埋下的坑！！！</strong>：初始化时如果建立 maxpool 就需要提前知道 m_word 以确定 kernel_size。这个问题可以这样解决：避免 maxpool 层，在 forward 中使用 torch.max 函数，对某个维度进行 max。<br>对 cnn 和 sanity_check 都进行修改。由于默认使用了 sanitycheck 的值 m_word=21,实际上在写其他函数调用 CNN 类的时候没有定义 m_word 值，所以正好不需要改。<br>参考：Tessa Scott<a href="https://github.com/tessascott039/a5/blob/master/cnn.py">https://github.com/tessascott039/a5/blob/master/cnn.py</a></p>
-<p><a href="https://github.com/pytorch/pytorch/issues/4166">https://github.com/pytorch/pytorch/issues/4166</a><br><a href="https://stackoverflow.com/questions/56137869/is-it-possible-to-make-a-max-pooling-on-dynamic-length-sentences-without-padding">https://stackoverflow.com/questions/56137869/is-it-possible-to-make-a-max-pooling-on-dynamic-length-sentences-without-padding</a><br>探讨了 nn.MaxPool1d 能不能有一个动态的 kernel_size。</p>
-<p>train 的结果：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">epoch 29, iter 196300, avg. loss 81.60, avg. ppl 59.75 cum. examples 9600, speed 6086.86 words&#x2F;sec, time elapsed 20580.30 sec</span><br><span class="line">epoch 29, iter 196310, avg. loss 81.10, avg. ppl 50.14 cum. examples 9920, speed 6458.96 words&#x2F;sec, time elapsed 20581.33 sec</span><br><span class="line">epoch 29, iter 196320, avg. loss 78.58, avg. ppl 48.75 cum. examples 10240, speed 6548.57 words&#x2F;sec, time elapsed 20582.32 sec</span><br><span class="line">epoch 29, iter 196330, avg. loss 86.52, avg. ppl 61.24 cum. examples 10537, speed 6019.06 words&#x2F;sec, time elapsed 20583.36 sec</span><br><span class="line">test：Corpus BLEU: 36.395796664198</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-Analyzing-NMT-Systems-8-points"><a href="#3-Analyzing-NMT-Systems-8-points" class="headerlink" title="3. Analyzing NMT Systems (8 points)"></a>3. Analyzing NMT Systems (8 points)</h1><h2 id="a"><a href="#a" class="headerlink" title="(a)"></a>(a)</h2><p>用 linux 的 grep 命令查找字符串</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(base) hy2632_ubuntu20@DESKTOP-8LEIHPS:~&#x2F;cs224n&#x2F;a5_public\$ grep tradu vocab.json</span><br><span class="line">&quot;traduciendo&quot;: 17349,</span><br><span class="line">&quot;tradujera&quot;: 32719,</span><br><span class="line">&quot;traduccin&quot;: 4562,</span><br><span class="line">&quot;traduzco&quot;: 40154,</span><br><span class="line">&quot;traduzcan&quot;: 23440,</span><br><span class="line">&quot;traductores&quot;: 19447,</span><br><span class="line">&quot;traducir&quot;: 4565,</span><br><span class="line">&quot;traducciones&quot;: 12054,</span><br><span class="line">&quot;traductor&quot;: 11809,</span><br><span class="line">&quot;traducirse&quot;: 36917,</span><br><span class="line">&quot;traducen&quot;: 19640,</span><br><span class="line">&quot;tradujo&quot;: 25176,</span><br><span class="line">&quot;traducido&quot;: 8515,</span><br><span class="line">&quot;traducimos&quot;: 18251,</span><br><span class="line">&quot;traduce&quot;: 7821,</span><br><span class="line">&quot;traducidas&quot;: 20336,</span><br><span class="line">&quot;traduzca&quot;: 44710,</span><br><span class="line">&quot;traducirlo&quot;: 19205,</span><br><span class="line">&quot;traductora&quot;: 13071,</span><br><span class="line">&quot;traduje&quot;: 23103,</span><br><span class="line">&quot;traducirlas&quot;: 35543,</span><br><span class="line">&quot;traducida&quot;: 19350,</span><br></pre></td></tr></table></figure>
-
-<p>traduces, traduzcas not in.<br>如果是 word-based NMT，将 spanish 翻译为 english， 如果句子中出现 traduces 就会判断为<code>&lt;unk&gt;</code>， 无法翻译；但如果是 character-aware NMT，别的类似 traducir(to translate)的动词可能有类似的性质(加 s，从 I 变成 you)，同时又恰好出现在训练集中，那么模型在遇到 traduces 的 s 时就能翻译出 you translate。</p>
-<h2 id="b-1"><a href="#b-1" class="headerlink" title="(b)"></a>(b)</h2><ol>
-<li><p>回顾 Word2Vec。<a href="https://projector.tensorflow.org/">https://projector.tensorflow.org/</a> 可以查询 k-nearest words。</p>
-<p>Markdown 表格生成<a href="https://www.tablesgenerator.com/markdown_tables">https://www.tablesgenerator.com/markdown_tables</a></p>
-</li>
-</ol>
-<table>
-<thead>
-<tr>
-<th>word</th>
-<th>closest word</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>financial</td>
-<td>economics</td>
-</tr>
-<tr>
-<td>neuron</td>
-<td>nerve</td>
-</tr>
-<tr>
-<td>Francisco</td>
-<td>san</td>
-</tr>
-<tr>
-<td>naturally</td>
-<td>occurring</td>
-</tr>
-<tr>
-<td>expectation</td>
-<td>norms</td>
-</tr>
-</tbody></table>
-<ol start="2">
-<li>也可以上传自己的 character-aware NMT model 的 embeddings 查找 nearest neighbors.</li>
-</ol>
-<p><img src="https://raw.githubusercontent.com/hy2632/cs224n/master/a5_public/CS224n-A5-emb2-files/embedding_proj.jpg" alt="Image"></p>
-<table>
-<thead>
-<tr>
-<th>word</th>
-<th>closest word</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>financial</td>
-<td>vertical</td>
-</tr>
-<tr>
-<td>neuron</td>
-<td>Newton</td>
-</tr>
-<tr>
-<td>Francisco</td>
-<td>France</td>
-</tr>
-<tr>
-<td>naturally</td>
-<td>practically</td>
-</tr>
-<tr>
-<td>expectation</td>
-<td>exception</td>
-</tr>
-</tbody></table>
-<ol start="3">
-<li>分析 Word2Vec 和 CharCNN 的区别并解释。</li>
-</ol>
-<p>除了 naturally/practically 意思相近，CharCNN 的 embeddings 更多的还是按照字母组成（同时也包含一些 pos 和 ner）。Word2Vec 则更多地把握了词义的相似和关联性。原因就是模型本身。</p>
-<p>word2vec: skip-grams &amp; CBOW(contiguous bag of words)，给定上下文此预测缺失的中心词 c，概率分布 P(C|W)。因而相近的词都是有较大概率作为中心词被代替。</p>
-<p>CharCNN: 对某个单词的各个字母进行 charembedding，然后经过 CNN/Highway 等操作最后生成 wordembedding，较大程度上依赖于 charembedding，如果两个词有相同字母的 subset 则 wordembedding 可能相近。</p>
-<h2 id="c-1"><a href="#c-1" class="headerlink" title="(c)"></a>(c)</h2><p>(45)正确的例子：<br>| Category       |                                                                            |<br>| ————– | ————————————————————————– |<br>| ES             | A medida que se derrite un tmpano, estoy respirando su atmsfera ancestral. |<br>| Ref            | As an eardrum melts, I am breathing in its ancient atmosphere.             |<br>| A4 translation | As a <code>&lt;unk&gt;</code> <code>&lt;unk&gt;</code> I’m breathing its atmosphere <code>&lt;unk&gt;</code>                  |<br>| A5 translation | As it melts a iceberg, I’m breathing its ancestral atmosphere.             |</p>
-<p>tímpano，témpano 是同义词，但一个翻译为耳膜一个翻译为冰山。这里冰山显然更为合适。</p>
-<p>(85)错误的例子：<br>| Category       |                                                   |<br>| ————– | ————————————————- |<br>| ES             | Es el sndrome de insensibilidad a los andrgenos.  |<br>| Ref            | It is the syndrome of insensitivity to androgens. |<br>| A4 translation | It’s called <code>&lt;unk&gt;</code> <code>&lt;unk&gt;</code>                       |<br>| A5 translation | It’s the syndrome of insulin insulin.             |</p>
-<p>对于连续的<code>&lt;unk&gt;</code>，CharCNN 的表现并没有很好改善（重复出现的 insulin）。</p>
-]]></content>
   </entry>
   <entry>
     <title>Hello World</title>
