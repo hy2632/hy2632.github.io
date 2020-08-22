@@ -839,7 +839,7 @@ pre .javascript .function {
 }
 .pdfobject-container iframe,
 .pdfobject-container embed {
-  height: 900px;
+  height: 1500px;
   width: 100%;
 }
 .pagination .prev,
@@ -1299,7 +1299,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #0b599a;
+  background: #349aff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;

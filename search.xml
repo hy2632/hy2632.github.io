@@ -149,44 +149,6 @@
       </tags>
   </entry>
   <entry>
-    <title>ResearchOnUber</title>
-    <url>/2020/08/22/ResearchOnUber/</url>
-    <content><![CDATA[<h3 id="提要"><a href="#提要" class="headerlink" title="提要"></a>提要</h3><p>这是 DROM8110 Business Analytics Strategy 的最终报告，运用了 Contributed Value Analysis / Sustainability Analysis 等框架，分析了 Uber 的主营业务——叫车(Ride-Hailing) 的商业模型、盈利前景和可行策略。</p>
-<h3 id="Co-Writer"><a href="#Co-Writer" class="headerlink" title="Co-Writer:"></a>Co-Writer:</h3><ul>
-<li>RUOMING GU (<a href="mailto:&#114;&#x67;&#x33;&#50;&#x36;&#x36;&#x40;&#x63;&#x6f;&#108;&#117;&#x6d;&#98;&#105;&#x61;&#46;&#101;&#100;&#117;">&#114;&#x67;&#x33;&#50;&#x36;&#x36;&#x40;&#x63;&#x6f;&#108;&#117;&#x6d;&#98;&#105;&#x61;&#46;&#101;&#100;&#117;</a>) </li>
-<li>YUXIN ZHANG (<a href="mailto:&#121;&#x7a;&#51;&#x37;&#x31;&#x38;&#64;&#x63;&#111;&#108;&#x75;&#109;&#x62;&#x69;&#x61;&#46;&#101;&#100;&#x75;">&#121;&#x7a;&#51;&#x37;&#x31;&#x38;&#64;&#x63;&#111;&#108;&#x75;&#109;&#x62;&#x69;&#x61;&#46;&#101;&#100;&#x75;</a>) </li>
-</ul>
-<h3 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h3><br>
-
-<div class="pdfobject-container" data-target="./BAS_FINAL_YAO.pdf" data-height="900px"></div> 
-
-<br>]]></content>
-      <categories>
-        <category>报告</category>
-      </categories>
-      <tags>
-        <tag>Business Analytics Strategy</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hexo+GitHubio</title>
-    <url>/2020/08/20/My-New-Post/</url>
-    <content><![CDATA[<h2 id="Weblink"><a href="#Weblink" class="headerlink" title="Weblink:"></a>Weblink:</h2><p>知乎专栏<a href="https://zhuanlan.zhihu.com/p/26625249">https://zhuanlan.zhihu.com/p/26625249</a>;<br>大卫博客<a href="https://univeryinli.github.io/about">https://univeryinli.github.io/about</a></p>
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo -g <span class="comment">#安装Hexo</span></span><br><span class="line">npm update hexo -g <span class="comment">#升级</span></span><br><span class="line">hexo init <span class="comment">#初始化博客</span></span><br></pre></td></tr></table></figure>
-<h3 id="命令简写"><a href="#命令简写" class="headerlink" title="命令简写"></a>命令简写</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo n &quot;我的博客&quot; &#x3D;&#x3D; hexo new &quot;我的博客&quot; #新建文章</span><br><span class="line">hexo g &#x3D;&#x3D; hexo generate #生成</span><br><span class="line">hexo s &#x3D;&#x3D; hexo server #启动服务预览</span><br><span class="line">hexo d &#x3D;&#x3D; hexo deploy #部署</span><br><span class="line"></span><br><span class="line">hexo server #Hexo会监视文件变动并自动更新，无须重启服务器</span><br><span class="line">hexo server -s #静态模式</span><br><span class="line">hexo server -p 5000 #更改端口</span><br><span class="line">hexo server -i 192.168.1.1 #自定义 IP</span><br><span class="line">hexo clean #清除缓存，若是网页正常情况下可以忽略这条命令</span><br><span class="line"></span><br><span class="line">刚刚的三个命令依次是新建一篇博客文章、生成网页、在本地预览的操作</span><br></pre></td></tr></table></figure>
-
-<h3 id="推送网站"><a href="#推送网站" class="headerlink" title="推送网站"></a><strong>推送网站</strong></h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim _config.yml;</span><br><span class="line">    deploy:</span><br><span class="line">    type: git</span><br><span class="line">    repo: 这里填入你之前在GitHub上创建仓库的完整路径，记得加上 .git</span><br><span class="line">    branch: master</span><br><span class="line"></span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line">hexo clean </span><br><span class="line">hexo g </span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-
-<h3 id="next-主题"><a href="#next-主题" class="headerlink" title="next 主题"></a>next 主题</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
-
-<h3 id="配置next"><a href="#配置next" class="headerlink" title="配置next"></a>配置next</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> themes/next</span><br><span class="line">vim _config.yml</span><br></pre></td></tr></table></figure>
-
-<h4 id="新建about页"><a href="#新建about页" class="headerlink" title="新建about页"></a>新建about页</h4><p>编辑<code>source/about/index.md</code>, 进入<code>themes/next/_config.yml</code>, </p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-user</span></span><br></pre></td></tr></table></figure>
-<p>再生成部署。</p>
-]]></content>
-  </entry>
-  <entry>
     <title>CS224NA4</title>
     <url>/2020/08/20/CS224NA4/</url>
     <content><![CDATA[<h1 id="CS224N-A4-NMT-Assignment"><a href="#CS224N-A4-NMT-Assignment" class="headerlink" title="CS224N A4: NMT Assignment"></a>CS224N A4: NMT Assignment</h1><p>Note: Heavily inspired by the <a href="https://github.com/pcyin/pytorch_nmt">https://github.com/pcyin/pytorch_nmt</a> repository</p>
@@ -481,6 +443,44 @@
       </categories>
       <tags>
         <tag>CS224N</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo+GitHubio</title>
+    <url>/2020/08/20/My-New-Post/</url>
+    <content><![CDATA[<h2 id="Weblink"><a href="#Weblink" class="headerlink" title="Weblink:"></a>Weblink:</h2><p>知乎专栏<a href="https://zhuanlan.zhihu.com/p/26625249">https://zhuanlan.zhihu.com/p/26625249</a>;<br>大卫博客<a href="https://univeryinli.github.io/about">https://univeryinli.github.io/about</a></p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo -g <span class="comment">#安装Hexo</span></span><br><span class="line">npm update hexo -g <span class="comment">#升级</span></span><br><span class="line">hexo init <span class="comment">#初始化博客</span></span><br></pre></td></tr></table></figure>
+<h3 id="命令简写"><a href="#命令简写" class="headerlink" title="命令简写"></a>命令简写</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo n &quot;我的博客&quot; &#x3D;&#x3D; hexo new &quot;我的博客&quot; #新建文章</span><br><span class="line">hexo g &#x3D;&#x3D; hexo generate #生成</span><br><span class="line">hexo s &#x3D;&#x3D; hexo server #启动服务预览</span><br><span class="line">hexo d &#x3D;&#x3D; hexo deploy #部署</span><br><span class="line"></span><br><span class="line">hexo server #Hexo会监视文件变动并自动更新，无须重启服务器</span><br><span class="line">hexo server -s #静态模式</span><br><span class="line">hexo server -p 5000 #更改端口</span><br><span class="line">hexo server -i 192.168.1.1 #自定义 IP</span><br><span class="line">hexo clean #清除缓存，若是网页正常情况下可以忽略这条命令</span><br><span class="line"></span><br><span class="line">刚刚的三个命令依次是新建一篇博客文章、生成网页、在本地预览的操作</span><br></pre></td></tr></table></figure>
+
+<h3 id="推送网站"><a href="#推送网站" class="headerlink" title="推送网站"></a><strong>推送网站</strong></h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim _config.yml;</span><br><span class="line">    deploy:</span><br><span class="line">    type: git</span><br><span class="line">    repo: 这里填入你之前在GitHub上创建仓库的完整路径，记得加上 .git</span><br><span class="line">    branch: master</span><br><span class="line"></span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line">hexo clean </span><br><span class="line">hexo g </span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<h3 id="next-主题"><a href="#next-主题" class="headerlink" title="next 主题"></a>next 主题</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置next"><a href="#配置next" class="headerlink" title="配置next"></a>配置next</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> themes/next</span><br><span class="line">vim _config.yml</span><br></pre></td></tr></table></figure>
+
+<h4 id="新建about页"><a href="#新建about页" class="headerlink" title="新建about页"></a>新建about页</h4><p>编辑<code>source/about/index.md</code>, 进入<code>themes/next/_config.yml</code>, </p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-user</span></span><br></pre></td></tr></table></figure>
+<p>再生成部署。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>ResearchOnUber</title>
+    <url>/2020/08/22/ResearchOnUber/</url>
+    <content><![CDATA[<h3 id="提要"><a href="#提要" class="headerlink" title="提要"></a>提要</h3><p>这是 DROM8110 Business Analytics Strategy 的最终报告，运用了 Contributed Value Analysis / Sustainability Analysis 等框架，分析了 Uber 的主营业务——叫车(Ride-Hailing) 的商业模型、盈利前景和可行策略。</p>
+<h3 id="Co-Writer"><a href="#Co-Writer" class="headerlink" title="Co-Writer:"></a>Co-Writer:</h3><ul>
+<li>RUOMING GU (<a href="mailto:&#114;&#x67;&#x33;&#x32;&#54;&#x36;&#x40;&#x63;&#111;&#x6c;&#117;&#x6d;&#98;&#x69;&#x61;&#x2e;&#x65;&#x64;&#x75;">&#114;&#x67;&#x33;&#x32;&#54;&#x36;&#x40;&#x63;&#111;&#x6c;&#117;&#x6d;&#98;&#x69;&#x61;&#x2e;&#x65;&#x64;&#x75;</a>) </li>
+<li>YUXIN ZHANG (<a href="mailto:&#121;&#122;&#51;&#x37;&#x31;&#56;&#64;&#99;&#111;&#x6c;&#117;&#109;&#x62;&#x69;&#x61;&#x2e;&#x65;&#100;&#x75;">&#121;&#122;&#51;&#x37;&#x31;&#56;&#64;&#99;&#111;&#x6c;&#117;&#109;&#x62;&#x69;&#x61;&#x2e;&#x65;&#100;&#x75;</a>) </li>
+</ul>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h3><br>
+
+<div class="pdfobject-container" data-target="./BAS_FINAL_YAO.pdf" data-height="1500px"></div> 
+
+<br>]]></content>
+      <categories>
+        <category>报告</category>
+      </categories>
+      <tags>
+        <tag>Business Analytics Strategy</tag>
       </tags>
   </entry>
   <entry>
