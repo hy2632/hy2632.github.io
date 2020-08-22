@@ -1,6 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>CS224NA5</title>
+    <url>/2020/08/20/CS224NA5/</url>
+    <content><![CDATA[<h1 id="CS224N-Assignment-5"><a href="#CS224N-Assignment-5" class="headerlink" title="CS224N Assignment #5"></a>CS224N Assignment #5</h1><p>(7.20)增加 Pylance 插件作为语言服务器. 打开 type checking mode(basic).</p>
+<h2 id="文字题"><a href="#文字题" class="headerlink" title="文字题"></a>文字题</h2><ul>
+<li><p>(a) We learned in class that recurrent neural architectures can operate over variable length input (i.e., the shape of the model parameters is independent of the length of the input sentence). Is the same true of convolutional architectures? Write one sentence to explain why or why not.</p>
+<p>window t ∈ {1, . . . , mword − k + 1}，<br>mword 即最长单词的长度可变，<br>xconv ∈ R^(eword×(mword−k+1))</p>
+</li>
+<li><p>(b)…if we use the kernel size k = 5, what will be the size of the padding (i.e. the additional number of zeros on each side) we need for the 1-dimensional convolution, such that there exists at least one window for all possible values of mword in our dataset?</p>
+<p>极端情况 mword=1， 前后各 1 个 token，还需 padding=1.</p>
+</li>
+<li><p>(c) In step 4, we introduce a Highway Network with <code>xhighway = xgate xproj + (1 − xgate) xconv out</code>. Since xgate is the result of the sigmoid function, it has the range (0, 1).Consider the two extreme cases. If xgate → 0, then xhighway → xconv out. When xgate → 1, then xhighway → xproj. This means the Highway layer is smoothly varying its behavior between that of normal linear layer (xproj) and that of a layer which simply passes its inputs (xconv out) through. Use one or two sentences to explain why this behavior is useful in character embeddings. Based on the definition of <code>xgate = σ(Wgatexconv out + bgate)</code>, do you think it is better to initialize bgate to be negative or positive? Explain your reason briefly.<br>原因： 所谓的 highway， x_gate=0 可以直接用 x_convout 的值。</p>
+<p>希望默认 x_gate 较小方便 highway，所以 b 取负。</p>
+</li>
+<li><p>(d) In Lecture 10, we briefly introduced Transformers, a non-recurrent sequence<br>(or sequence-to-sequence) model with a sequence of attention-based transformer blocks. Describe 2 advantages of a Transformer encoder over the LSTM-with-attention encoder in our NMT model</p>
+<p>可以看一下 &lt;<Attention is all you need>&gt;：<br>“Self-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a representation of the sequence.”<br>每一步都是句子里的所有单词之间建立联系。<br>主要用到三个矩阵 Key, Query, value, <code>Attention(Q,K,V) = softmax(QK.T/\sqrt(d_k))V</code><br>(包学包会，这些动图和代码让你一次读懂「自注意力」 - 机器之心的文章 - 知乎 <a href="https://zhuanlan.zhihu.com/p/96492170">https://zhuanlan.zhihu.com/p/96492170</a>)</p>
+</li>
+</ul>
+<pre><code>attention-based transformers的好处（P6 的 Part 4， Why self-attention）：
+
+未采用RNN就可以避免梯度消失和梯度爆炸等问题,
+从sequential computation 到实现parallelized computation,
+更易学习到&quot;long-range dependencies in the network&quot;,
+更加interpretable.</code></pre>
+<h1 id="1-Character-based-convolutional-encoder-for-NMT-36-points"><a href="#1-Character-based-convolutional-encoder-for-NMT-36-points" class="headerlink" title="1. Character-based convolutional encoder for NMT (36 points)"></a>1. Character-based convolutional encoder for NMT (36 points)</h1><h2 id="Vocab-py"><a href="#Vocab-py" class="headerlink" title="Vocab.py"></a>Vocab.py</h2><ol>
+<li>这种写法很巧妙·</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i, c <span class="keyword">in</span> enumerate(self.char_list):</span><br><span class="line">    self.char2id[c] = len(self.char2id)</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>组合用法，类似 zip+enumerate</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line">word_freq = Counter(chain(\*corpus))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用字典辅助排序</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">valid_words = [w <span class="keyword">for</span> w, v <span class="keyword">in</span> word_freq.items() <span class="keyword">if</span> v &gt;= freq_cutoff]</span><br><span class="line">top_k_words = sorted(valid_words, key=<span class="keyword">lambda</span> w: word_freq[w], reverse=<span class="literal">True</span>[:size]</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>用到了<code>json.dump</code>，Vocab 也用此形式存储。</p>
+<h2 id="e-Implement-to-input-tensor-char-in-vocab-py"><a href="#e-Implement-to-input-tensor-char-in-vocab-py" class="headerlink" title="(e) Implement to_input_tensor_char() in vocab.py"></a>(e) Implement <code>to_input_tensor_char()</code> in <code>vocab.py</code></h2><p>字母 ∏ Û python 执行有问题，改成<code>&lt;pad&gt;</code>, <code>&lt;unk&gt;</code>。</p>
+<h2 id="f-highway"><a href="#f-highway" class="headerlink" title="(f) highway"></a>(f) highway</h2><p>要求写一个 sanity_check, (f)本身实现很简单，只是一步处理，所以检查一下前后维度就可以。</p>
+<h2 id="g-cnn-py-CNN"><a href="#g-cnn-py-CNN" class="headerlink" title="(g) cnn.py, CNN"></a>(g) cnn.py, CNN</h2><p>输入(sentence_length, batch_size, e_char, m_word)，前两维不动，对每个词 conv 完，后两维应该是 f 和窗口数，再经过 maxpool 所有窗口， 输出是(sentence_length, batch_size, f)<br>torch 需要使用.contiguous().view(),因为 view 只能作用在 contiguous 的变量上<br>比较关键的一步。<br><strong>07/25 更新</strong>：<br>果然后面还是出问题了。m_word 是 forward 函数中参数 x_reshaped 的维度属性，如果使用 max_pool layer，一开始并不知道输入的参数 m_word 是多少。所以不应该用 maxpool 层（因为不能对一个多维 tensor 的某一维更新），<br>而应该在 forward 函数里直接调用 torch.max(dim=2)</p>
+<h2 id="h-Model-Embeddings"><a href="#h-Model-Embeddings" class="headerlink" title="(h) Model_Embeddings."></a>(h) Model_Embeddings.</h2><p>一个问题是 f=e_word, e_word 和 e_char 的关系到底如何？？<br>题目假设 e_char=50, e_word 是初始化 model_embeddings 的参数 word_embedding_size, 默认值 21。</p>
+<h2 id="j"><a href="#j" class="headerlink" title="(j)"></a>(j)</h2><p>wdnmd， vocab.py 里的 sents_var 总是空的，查了半天发现 utils.pad_sents 忘了粘贴。<br>nmt_model.py 中 step()函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> enc*masks <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    e_t.data.masked_fill*(enc_masks.bool(), -float(<span class="string">&#x27;inf&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>显示’Tensor’ object has no attribute ‘bool’<br>原因应该是 torch 版本较低<br>事实也确实如此，local*env.yml 显示 pytorch=1.0.0，a4 作业就没有限定版本，估计是助教忘了更新。<br>解决方案：改成</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">e_t.data.masked_fill*(enc_masks==<span class="number">1</span>, -float(<span class="string">&#x27;inf&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">epoch 100, iter 500, cum. loss 0.30, cum. ppl 1.01 cum. examples 200</span><br><span class="line">validation: iter 500, dev. ppl 1.001988</span><br><span class="line">Corpus BLEU: 99.66941696422141</span><br></pre></td></tr></table></figure>
+
+
+<p>达到题设要求。</p>
+<h1 id="2-Character-based-LSTM-decoder-for-NMT-26-points"><a href="#2-Character-based-LSTM-decoder-for-NMT-26-points" class="headerlink" title="2. Character-based LSTM decoder for NMT (26 points)"></a>2. Character-based LSTM decoder for NMT (26 points)</h1><h2 id="b"><a href="#b" class="headerlink" title="(b)"></a>(b)</h2><p>奇怪的点在于, char_decoder.py 中 train_forward 的 loss 计算，不 softmaxloss 才收敛。<br>题目要求仔细阅读 nn.CrossEntropyLoss，实际上 Pytorch 中 CrossEntropyLoss()函数将 softmax-log-NLLLoss 合并到一块。</p>
+<p><code>This criterion combines nn.LogSoftmax() and nn.NLLLoss() in one single class.</code><br>loss 0.38, Corpus BLEU: 99.66941696422141</p>
+<h2 id="c"><a href="#c" class="headerlink" title="(c)"></a>(c)</h2><p>这部分思路很清晰，用到了一些技巧，比如(tensor,tensor)的 elementwise 的提取，char 拼接成 word 等，详见代码</p>
+<h2 id="e"><a href="#e" class="headerlink" title="(e)"></a>(e)</h2><p>在 VM 上训练。<br>注意 run.sh 可以进行修改，使得 train_local 也可使用 cuda，提高效率。<br>仍然遇到了环境问题。 “RuntimeError: Given input size: (256x1x12). Calculated output size: (256x1x0). Output size is too small”<br>于是只能在 VM 上配一个和本地相同的（过时的）环境。问题解决。<br><strong>CNN.py 中存在问题，很久之前埋下的坑！！！</strong>：初始化时如果建立 maxpool 就需要提前知道 m_word 以确定 kernel_size。这个问题可以这样解决：避免 maxpool 层，在 forward 中使用 torch.max 函数，对某个维度进行 max。<br>对 cnn 和 sanity_check 都进行修改。由于默认使用了 sanitycheck 的值 m_word=21,实际上在写其他函数调用 CNN 类的时候没有定义 m_word 值，所以正好不需要改。<br>参考：Tessa Scott<a href="https://github.com/tessascott039/a5/blob/master/cnn.py">https://github.com/tessascott039/a5/blob/master/cnn.py</a></p>
+<p><a href="https://github.com/pytorch/pytorch/issues/4166">https://github.com/pytorch/pytorch/issues/4166</a><br><a href="https://stackoverflow.com/questions/56137869/is-it-possible-to-make-a-max-pooling-on-dynamic-length-sentences-without-padding">https://stackoverflow.com/questions/56137869/is-it-possible-to-make-a-max-pooling-on-dynamic-length-sentences-without-padding</a><br>探讨了 nn.MaxPool1d 能不能有一个动态的 kernel_size。</p>
+<p>train 的结果：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">epoch 29, iter 196300, avg. loss 81.60, avg. ppl 59.75 cum. examples 9600, speed 6086.86 words&#x2F;sec, time elapsed 20580.30 sec</span><br><span class="line">epoch 29, iter 196310, avg. loss 81.10, avg. ppl 50.14 cum. examples 9920, speed 6458.96 words&#x2F;sec, time elapsed 20581.33 sec</span><br><span class="line">epoch 29, iter 196320, avg. loss 78.58, avg. ppl 48.75 cum. examples 10240, speed 6548.57 words&#x2F;sec, time elapsed 20582.32 sec</span><br><span class="line">epoch 29, iter 196330, avg. loss 86.52, avg. ppl 61.24 cum. examples 10537, speed 6019.06 words&#x2F;sec, time elapsed 20583.36 sec</span><br><span class="line">test：Corpus BLEU: 36.395796664198</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-Analyzing-NMT-Systems-8-points"><a href="#3-Analyzing-NMT-Systems-8-points" class="headerlink" title="3. Analyzing NMT Systems (8 points)"></a>3. Analyzing NMT Systems (8 points)</h1><h2 id="a"><a href="#a" class="headerlink" title="(a)"></a>(a)</h2><p>用 linux 的 grep 命令查找字符串</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(base) hy2632_ubuntu20@DESKTOP-8LEIHPS:~&#x2F;cs224n&#x2F;a5_public\$ grep tradu vocab.json</span><br><span class="line">&quot;traduciendo&quot;: 17349,</span><br><span class="line">&quot;tradujera&quot;: 32719,</span><br><span class="line">&quot;traduccin&quot;: 4562,</span><br><span class="line">&quot;traduzco&quot;: 40154,</span><br><span class="line">&quot;traduzcan&quot;: 23440,</span><br><span class="line">&quot;traductores&quot;: 19447,</span><br><span class="line">&quot;traducir&quot;: 4565,</span><br><span class="line">&quot;traducciones&quot;: 12054,</span><br><span class="line">&quot;traductor&quot;: 11809,</span><br><span class="line">&quot;traducirse&quot;: 36917,</span><br><span class="line">&quot;traducen&quot;: 19640,</span><br><span class="line">&quot;tradujo&quot;: 25176,</span><br><span class="line">&quot;traducido&quot;: 8515,</span><br><span class="line">&quot;traducimos&quot;: 18251,</span><br><span class="line">&quot;traduce&quot;: 7821,</span><br><span class="line">&quot;traducidas&quot;: 20336,</span><br><span class="line">&quot;traduzca&quot;: 44710,</span><br><span class="line">&quot;traducirlo&quot;: 19205,</span><br><span class="line">&quot;traductora&quot;: 13071,</span><br><span class="line">&quot;traduje&quot;: 23103,</span><br><span class="line">&quot;traducirlas&quot;: 35543,</span><br><span class="line">&quot;traducida&quot;: 19350,</span><br></pre></td></tr></table></figure>
+
+<p>traduces, traduzcas not in.<br>如果是 word-based NMT，将 spanish 翻译为 english， 如果句子中出现 traduces 就会判断为<code>&lt;unk&gt;</code>， 无法翻译；但如果是 character-aware NMT，别的类似 traducir(to translate)的动词可能有类似的性质(加 s，从 I 变成 you)，同时又恰好出现在训练集中，那么模型在遇到 traduces 的 s 时就能翻译出 you translate。</p>
+<h2 id="b-1"><a href="#b-1" class="headerlink" title="(b)"></a>(b)</h2><ol>
+<li><p>回顾 Word2Vec。<a href="https://projector.tensorflow.org/">https://projector.tensorflow.org/</a> 可以查询 k-nearest words。</p>
+<p>Markdown 表格生成<a href="https://www.tablesgenerator.com/markdown_tables">https://www.tablesgenerator.com/markdown_tables</a></p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>word</th>
+<th>closest word</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>financial</td>
+<td>economics</td>
+</tr>
+<tr>
+<td>neuron</td>
+<td>nerve</td>
+</tr>
+<tr>
+<td>Francisco</td>
+<td>san</td>
+</tr>
+<tr>
+<td>naturally</td>
+<td>occurring</td>
+</tr>
+<tr>
+<td>expectation</td>
+<td>norms</td>
+</tr>
+</tbody></table>
+<ol start="2">
+<li>也可以上传自己的 character-aware NMT model 的 embeddings 查找 nearest neighbors.</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/hy2632/cs224n/master/a5_public/CS224n-A5-emb2-files/embedding_proj.jpg" alt="Image"></p>
+<table>
+<thead>
+<tr>
+<th>word</th>
+<th>closest word</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>financial</td>
+<td>vertical</td>
+</tr>
+<tr>
+<td>neuron</td>
+<td>Newton</td>
+</tr>
+<tr>
+<td>Francisco</td>
+<td>France</td>
+</tr>
+<tr>
+<td>naturally</td>
+<td>practically</td>
+</tr>
+<tr>
+<td>expectation</td>
+<td>exception</td>
+</tr>
+</tbody></table>
+<ol start="3">
+<li>分析 Word2Vec 和 CharCNN 的区别并解释。</li>
+</ol>
+<p>除了 naturally/practically 意思相近，CharCNN 的 embeddings 更多的还是按照字母组成（同时也包含一些 pos 和 ner）。Word2Vec 则更多地把握了词义的相似和关联性。原因就是模型本身。</p>
+<p>word2vec: skip-grams &amp; CBOW(contiguous bag of words)，给定上下文此预测缺失的中心词 c，概率分布 P(C|W)。因而相近的词都是有较大概率作为中心词被代替。</p>
+<p>CharCNN: 对某个单词的各个字母进行 charembedding，然后经过 CNN/Highway 等操作最后生成 wordembedding，较大程度上依赖于 charembedding，如果两个词有相同字母的 subset 则 wordembedding 可能相近。</p>
+<h2 id="c-1"><a href="#c-1" class="headerlink" title="(c)"></a>(c)</h2><p>(45)正确的例子：<br>| Category       |                                                                            |<br>| ————– | ————————————————————————– |<br>| ES             | A medida que se derrite un tmpano, estoy respirando su atmsfera ancestral. |<br>| Ref            | As an eardrum melts, I am breathing in its ancient atmosphere.             |<br>| A4 translation | As a <code>&lt;unk&gt;</code> <code>&lt;unk&gt;</code> I’m breathing its atmosphere <code>&lt;unk&gt;</code>                  |<br>| A5 translation | As it melts a iceberg, I’m breathing its ancestral atmosphere.             |</p>
+<p>tímpano，témpano 是同义词，但一个翻译为耳膜一个翻译为冰山。这里冰山显然更为合适。</p>
+<p>(85)错误的例子：<br>| Category       |                                                   |<br>| ————– | ————————————————- |<br>| ES             | Es el sndrome de insensibilidad a los andrgenos.  |<br>| Ref            | It is the syndrome of insensitivity to androgens. |<br>| A4 translation | It’s called <code>&lt;unk&gt;</code> <code>&lt;unk&gt;</code>                       |<br>| A5 translation | It’s the syndrome of insulin insulin.             |</p>
+<p>对于连续的<code>&lt;unk&gt;</code>，CharCNN 的表现并没有很好改善（重复出现的 insulin）。</p>
+]]></content>
+      <categories>
+        <category>CS224N作业笔记</category>
+      </categories>
+      <tags>
+        <tag>CS224N</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ResearchOnUber</title>
+    <url>/2020/08/22/ResearchOnUber/</url>
+    <content><![CDATA[<h3 id="提要"><a href="#提要" class="headerlink" title="提要"></a>提要</h3><p>这是 DROM8110 Business Analytics Strategy 的最终报告，运用了 Contributed Value Analysis / Sustainability Analysis 等框架，分析了 Uber 的主营业务——叫车(Ride-Hailing) 的商业模型、盈利前景和可行策略。</p>
+<h3 id="Co-Writer"><a href="#Co-Writer" class="headerlink" title="Co-Writer:"></a>Co-Writer:</h3><ul>
+<li>RUOMING GU (<a href="mailto:&#114;&#x67;&#x33;&#50;&#x36;&#x36;&#x40;&#x63;&#x6f;&#108;&#117;&#x6d;&#98;&#105;&#x61;&#46;&#101;&#100;&#117;">&#114;&#x67;&#x33;&#50;&#x36;&#x36;&#x40;&#x63;&#x6f;&#108;&#117;&#x6d;&#98;&#105;&#x61;&#46;&#101;&#100;&#117;</a>) </li>
+<li>YUXIN ZHANG (<a href="mailto:&#121;&#x7a;&#51;&#x37;&#x31;&#x38;&#64;&#x63;&#111;&#108;&#x75;&#109;&#x62;&#x69;&#x61;&#46;&#101;&#100;&#x75;">&#121;&#x7a;&#51;&#x37;&#x31;&#x38;&#64;&#x63;&#111;&#108;&#x75;&#109;&#x62;&#x69;&#x61;&#46;&#101;&#100;&#x75;</a>) </li>
+</ul>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h3><br>
+
+<div class="pdfobject-container" data-target="./BAS_FINAL_YAO.pdf" data-height="900px"></div> 
+
+<br>]]></content>
+      <categories>
+        <category>报告</category>
+      </categories>
+      <tags>
+        <tag>Business Analytics Strategy</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hexo+GitHubio</title>
     <url>/2020/08/20/My-New-Post/</url>
     <content><![CDATA[<h2 id="Weblink"><a href="#Weblink" class="headerlink" title="Weblink:"></a>Weblink:</h2><p>知乎专栏<a href="https://zhuanlan.zhihu.com/p/26625249">https://zhuanlan.zhihu.com/p/26625249</a>;<br>大卫博客<a href="https://univeryinli.github.io/about">https://univeryinli.github.io/about</a></p>
@@ -334,167 +502,154 @@
 ]]></content>
   </entry>
   <entry>
-    <title>CS224NA5</title>
-    <url>/2020/08/20/CS224NA5/</url>
-    <content><![CDATA[<h1 id="CS224N-Assignment-5"><a href="#CS224N-Assignment-5" class="headerlink" title="CS224N Assignment #5"></a>CS224N Assignment #5</h1><p>(7.20)增加 Pylance 插件作为语言服务器. 打开 type checking mode(basic).</p>
-<h2 id="文字题"><a href="#文字题" class="headerlink" title="文字题"></a>文字题</h2><ul>
-<li><p>(a) We learned in class that recurrent neural architectures can operate over variable length input (i.e., the shape of the model parameters is independent of the length of the input sentence). Is the same true of convolutional architectures? Write one sentence to explain why or why not.</p>
-<p>window t ∈ {1, . . . , mword − k + 1}，<br>mword 即最长单词的长度可变，<br>xconv ∈ R^(eword×(mword−k+1))</p>
-</li>
-<li><p>(b)…if we use the kernel size k = 5, what will be the size of the padding (i.e. the additional number of zeros on each side) we need for the 1-dimensional convolution, such that there exists at least one window for all possible values of mword in our dataset?</p>
-<p>极端情况 mword=1， 前后各 1 个 token，还需 padding=1.</p>
-</li>
-<li><p>(c) In step 4, we introduce a Highway Network with <code>xhighway = xgate xproj + (1 − xgate) xconv out</code>. Since xgate is the result of the sigmoid function, it has the range (0, 1).Consider the two extreme cases. If xgate → 0, then xhighway → xconv out. When xgate → 1, then xhighway → xproj. This means the Highway layer is smoothly varying its behavior between that of normal linear layer (xproj) and that of a layer which simply passes its inputs (xconv out) through. Use one or two sentences to explain why this behavior is useful in character embeddings. Based on the definition of <code>xgate = σ(Wgatexconv out + bgate)</code>, do you think it is better to initialize bgate to be negative or positive? Explain your reason briefly.<br>原因： 所谓的 highway， x_gate=0 可以直接用 x_convout 的值。</p>
-<p>希望默认 x_gate 较小方便 highway，所以 b 取负。</p>
-</li>
-<li><p>(d) In Lecture 10, we briefly introduced Transformers, a non-recurrent sequence<br>(or sequence-to-sequence) model with a sequence of attention-based transformer blocks. Describe 2 advantages of a Transformer encoder over the LSTM-with-attention encoder in our NMT model</p>
-<p>可以看一下 &lt;<Attention is all you need>&gt;：<br>“Self-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a representation of the sequence.”<br>每一步都是句子里的所有单词之间建立联系。<br>主要用到三个矩阵 Key, Query, value, <code>Attention(Q,K,V) = softmax(QK.T/\sqrt(d_k))V</code><br>(包学包会，这些动图和代码让你一次读懂「自注意力」 - 机器之心的文章 - 知乎 <a href="https://zhuanlan.zhihu.com/p/96492170">https://zhuanlan.zhihu.com/p/96492170</a>)</p>
-</li>
-</ul>
-<pre><code>attention-based transformers的好处（P6 的 Part 4， Why self-attention）：
-
-未采用RNN就可以避免梯度消失和梯度爆炸等问题,
-从sequential computation 到实现parallelized computation,
-更易学习到&quot;long-range dependencies in the network&quot;,
-更加interpretable.</code></pre>
-<h1 id="1-Character-based-convolutional-encoder-for-NMT-36-points"><a href="#1-Character-based-convolutional-encoder-for-NMT-36-points" class="headerlink" title="1. Character-based convolutional encoder for NMT (36 points)"></a>1. Character-based convolutional encoder for NMT (36 points)</h1><h2 id="Vocab-py"><a href="#Vocab-py" class="headerlink" title="Vocab.py"></a>Vocab.py</h2><ol>
-<li>这种写法很巧妙·</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i, c <span class="keyword">in</span> enumerate(self.char_list):</span><br><span class="line">    self.char2id[c] = len(self.char2id)</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li><p>组合用法，类似 zip+enumerate</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line">word_freq = Counter(chain(\*corpus))</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>用字典辅助排序</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">valid_words = [w <span class="keyword">for</span> w, v <span class="keyword">in</span> word_freq.items() <span class="keyword">if</span> v &gt;= freq_cutoff]</span><br><span class="line">top_k_words = sorted(valid_words, key=<span class="keyword">lambda</span> w: word_freq[w], reverse=<span class="literal">True</span>[:size]</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<p>用到了<code>json.dump</code>，Vocab 也用此形式存储。</p>
-<h2 id="e-Implement-to-input-tensor-char-in-vocab-py"><a href="#e-Implement-to-input-tensor-char-in-vocab-py" class="headerlink" title="(e) Implement to_input_tensor_char() in vocab.py"></a>(e) Implement <code>to_input_tensor_char()</code> in <code>vocab.py</code></h2><p>字母 ∏ Û python 执行有问题，改成<code>&lt;pad&gt;</code>, <code>&lt;unk&gt;</code>。</p>
-<h2 id="f-highway"><a href="#f-highway" class="headerlink" title="(f) highway"></a>(f) highway</h2><p>要求写一个 sanity_check, (f)本身实现很简单，只是一步处理，所以检查一下前后维度就可以。</p>
-<h2 id="g-cnn-py-CNN"><a href="#g-cnn-py-CNN" class="headerlink" title="(g) cnn.py, CNN"></a>(g) cnn.py, CNN</h2><p>输入(sentence_length, batch_size, e_char, m_word)，前两维不动，对每个词 conv 完，后两维应该是 f 和窗口数，再经过 maxpool 所有窗口， 输出是(sentence_length, batch_size, f)<br>torch 需要使用.contiguous().view(),因为 view 只能作用在 contiguous 的变量上<br>比较关键的一步。<br><strong>07/25 更新</strong>：<br>果然后面还是出问题了。m_word 是 forward 函数中参数 x_reshaped 的维度属性，如果使用 max_pool layer，一开始并不知道输入的参数 m_word 是多少。所以不应该用 maxpool 层（因为不能对一个多维 tensor 的某一维更新），<br>而应该在 forward 函数里直接调用 torch.max(dim=2)</p>
-<h2 id="h-Model-Embeddings"><a href="#h-Model-Embeddings" class="headerlink" title="(h) Model_Embeddings."></a>(h) Model_Embeddings.</h2><p>一个问题是 f=e_word, e_word 和 e_char 的关系到底如何？？<br>题目假设 e_char=50, e_word 是初始化 model_embeddings 的参数 word_embedding_size, 默认值 21。</p>
-<h2 id="j"><a href="#j" class="headerlink" title="(j)"></a>(j)</h2><p>wdnmd， vocab.py 里的 sents_var 总是空的，查了半天发现 utils.pad_sents 忘了粘贴。<br>nmt_model.py 中 step()函数</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> enc*masks <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    e_t.data.masked_fill*(enc_masks.bool(), -float(<span class="string">&#x27;inf&#x27;</span>))</span><br></pre></td></tr></table></figure>
-
-<p>显示’Tensor’ object has no attribute ‘bool’<br>原因应该是 torch 版本较低<br>事实也确实如此，local*env.yml 显示 pytorch=1.0.0，a4 作业就没有限定版本，估计是助教忘了更新。<br>解决方案：改成</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">e_t.data.masked_fill*(enc_masks==<span class="number">1</span>, -float(<span class="string">&#x27;inf&#x27;</span>))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">epoch 100, iter 500, cum. loss 0.30, cum. ppl 1.01 cum. examples 200</span><br><span class="line">validation: iter 500, dev. ppl 1.001988</span><br><span class="line">Corpus BLEU: 99.66941696422141</span><br></pre></td></tr></table></figure>
-
-
-<p>达到题设要求。</p>
-<h1 id="2-Character-based-LSTM-decoder-for-NMT-26-points"><a href="#2-Character-based-LSTM-decoder-for-NMT-26-points" class="headerlink" title="2. Character-based LSTM decoder for NMT (26 points)"></a>2. Character-based LSTM decoder for NMT (26 points)</h1><h2 id="b"><a href="#b" class="headerlink" title="(b)"></a>(b)</h2><p>奇怪的点在于, char_decoder.py 中 train_forward 的 loss 计算，不 softmaxloss 才收敛。<br>题目要求仔细阅读 nn.CrossEntropyLoss，实际上 Pytorch 中 CrossEntropyLoss()函数将 softmax-log-NLLLoss 合并到一块。</p>
-<p><code>This criterion combines nn.LogSoftmax() and nn.NLLLoss() in one single class.</code><br>loss 0.38, Corpus BLEU: 99.66941696422141</p>
-<h2 id="c"><a href="#c" class="headerlink" title="(c)"></a>(c)</h2><p>这部分思路很清晰，用到了一些技巧，比如(tensor,tensor)的 elementwise 的提取，char 拼接成 word 等，详见代码</p>
-<h2 id="e"><a href="#e" class="headerlink" title="(e)"></a>(e)</h2><p>在 VM 上训练。<br>注意 run.sh 可以进行修改，使得 train_local 也可使用 cuda，提高效率。<br>仍然遇到了环境问题。 “RuntimeError: Given input size: (256x1x12). Calculated output size: (256x1x0). Output size is too small”<br>于是只能在 VM 上配一个和本地相同的（过时的）环境。问题解决。<br><strong>CNN.py 中存在问题，很久之前埋下的坑！！！</strong>：初始化时如果建立 maxpool 就需要提前知道 m_word 以确定 kernel_size。这个问题可以这样解决：避免 maxpool 层，在 forward 中使用 torch.max 函数，对某个维度进行 max。<br>对 cnn 和 sanity_check 都进行修改。由于默认使用了 sanitycheck 的值 m_word=21,实际上在写其他函数调用 CNN 类的时候没有定义 m_word 值，所以正好不需要改。<br>参考：Tessa Scott<a href="https://github.com/tessascott039/a5/blob/master/cnn.py">https://github.com/tessascott039/a5/blob/master/cnn.py</a></p>
-<p><a href="https://github.com/pytorch/pytorch/issues/4166">https://github.com/pytorch/pytorch/issues/4166</a><br><a href="https://stackoverflow.com/questions/56137869/is-it-possible-to-make-a-max-pooling-on-dynamic-length-sentences-without-padding">https://stackoverflow.com/questions/56137869/is-it-possible-to-make-a-max-pooling-on-dynamic-length-sentences-without-padding</a><br>探讨了 nn.MaxPool1d 能不能有一个动态的 kernel_size。</p>
-<p>train 的结果：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">epoch 29, iter 196300, avg. loss 81.60, avg. ppl 59.75 cum. examples 9600, speed 6086.86 words&#x2F;sec, time elapsed 20580.30 sec</span><br><span class="line">epoch 29, iter 196310, avg. loss 81.10, avg. ppl 50.14 cum. examples 9920, speed 6458.96 words&#x2F;sec, time elapsed 20581.33 sec</span><br><span class="line">epoch 29, iter 196320, avg. loss 78.58, avg. ppl 48.75 cum. examples 10240, speed 6548.57 words&#x2F;sec, time elapsed 20582.32 sec</span><br><span class="line">epoch 29, iter 196330, avg. loss 86.52, avg. ppl 61.24 cum. examples 10537, speed 6019.06 words&#x2F;sec, time elapsed 20583.36 sec</span><br><span class="line">test：Corpus BLEU: 36.395796664198</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-Analyzing-NMT-Systems-8-points"><a href="#3-Analyzing-NMT-Systems-8-points" class="headerlink" title="3. Analyzing NMT Systems (8 points)"></a>3. Analyzing NMT Systems (8 points)</h1><h2 id="a"><a href="#a" class="headerlink" title="(a)"></a>(a)</h2><p>用 linux 的 grep 命令查找字符串</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(base) hy2632_ubuntu20@DESKTOP-8LEIHPS:~&#x2F;cs224n&#x2F;a5_public\$ grep tradu vocab.json</span><br><span class="line">&quot;traduciendo&quot;: 17349,</span><br><span class="line">&quot;tradujera&quot;: 32719,</span><br><span class="line">&quot;traduccin&quot;: 4562,</span><br><span class="line">&quot;traduzco&quot;: 40154,</span><br><span class="line">&quot;traduzcan&quot;: 23440,</span><br><span class="line">&quot;traductores&quot;: 19447,</span><br><span class="line">&quot;traducir&quot;: 4565,</span><br><span class="line">&quot;traducciones&quot;: 12054,</span><br><span class="line">&quot;traductor&quot;: 11809,</span><br><span class="line">&quot;traducirse&quot;: 36917,</span><br><span class="line">&quot;traducen&quot;: 19640,</span><br><span class="line">&quot;tradujo&quot;: 25176,</span><br><span class="line">&quot;traducido&quot;: 8515,</span><br><span class="line">&quot;traducimos&quot;: 18251,</span><br><span class="line">&quot;traduce&quot;: 7821,</span><br><span class="line">&quot;traducidas&quot;: 20336,</span><br><span class="line">&quot;traduzca&quot;: 44710,</span><br><span class="line">&quot;traducirlo&quot;: 19205,</span><br><span class="line">&quot;traductora&quot;: 13071,</span><br><span class="line">&quot;traduje&quot;: 23103,</span><br><span class="line">&quot;traducirlas&quot;: 35543,</span><br><span class="line">&quot;traducida&quot;: 19350,</span><br></pre></td></tr></table></figure>
-
-<p>traduces, traduzcas not in.<br>如果是 word-based NMT，将 spanish 翻译为 english， 如果句子中出现 traduces 就会判断为<code>&lt;unk&gt;</code>， 无法翻译；但如果是 character-aware NMT，别的类似 traducir(to translate)的动词可能有类似的性质(加 s，从 I 变成 you)，同时又恰好出现在训练集中，那么模型在遇到 traduces 的 s 时就能翻译出 you translate。</p>
-<h2 id="b-1"><a href="#b-1" class="headerlink" title="(b)"></a>(b)</h2><ol>
-<li><p>回顾 Word2Vec。<a href="https://projector.tensorflow.org/">https://projector.tensorflow.org/</a> 可以查询 k-nearest words。</p>
-<p>Markdown 表格生成<a href="https://www.tablesgenerator.com/markdown_tables">https://www.tablesgenerator.com/markdown_tables</a></p>
-</li>
-</ol>
-<table>
-<thead>
-<tr>
-<th>word</th>
-<th>closest word</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>financial</td>
-<td>economics</td>
-</tr>
-<tr>
-<td>neuron</td>
-<td>nerve</td>
-</tr>
-<tr>
-<td>Francisco</td>
-<td>san</td>
-</tr>
-<tr>
-<td>naturally</td>
-<td>occurring</td>
-</tr>
-<tr>
-<td>expectation</td>
-<td>norms</td>
-</tr>
-</tbody></table>
-<ol start="2">
-<li>也可以上传自己的 character-aware NMT model 的 embeddings 查找 nearest neighbors.</li>
-</ol>
-<p><img src="https://raw.githubusercontent.com/hy2632/cs224n/master/a5_public/CS224n-A5-emb2-files/embedding_proj.jpg" alt="Image"></p>
-<table>
-<thead>
-<tr>
-<th>word</th>
-<th>closest word</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>financial</td>
-<td>vertical</td>
-</tr>
-<tr>
-<td>neuron</td>
-<td>Newton</td>
-</tr>
-<tr>
-<td>Francisco</td>
-<td>France</td>
-</tr>
-<tr>
-<td>naturally</td>
-<td>practically</td>
-</tr>
-<tr>
-<td>expectation</td>
-<td>exception</td>
-</tr>
-</tbody></table>
-<ol start="3">
-<li>分析 Word2Vec 和 CharCNN 的区别并解释。</li>
-</ol>
-<p>除了 naturally/practically 意思相近，CharCNN 的 embeddings 更多的还是按照字母组成（同时也包含一些 pos 和 ner）。Word2Vec 则更多地把握了词义的相似和关联性。原因就是模型本身。</p>
-<p>word2vec: skip-grams &amp; CBOW(contiguous bag of words)，给定上下文此预测缺失的中心词 c，概率分布 P(C|W)。因而相近的词都是有较大概率作为中心词被代替。</p>
-<p>CharCNN: 对某个单词的各个字母进行 charembedding，然后经过 CNN/Highway 等操作最后生成 wordembedding，较大程度上依赖于 charembedding，如果两个词有相同字母的 subset 则 wordembedding 可能相近。</p>
-<h2 id="c-1"><a href="#c-1" class="headerlink" title="(c)"></a>(c)</h2><p>(45)正确的例子：<br>| Category       |                                                                            |<br>| ————– | ————————————————————————– |<br>| ES             | A medida que se derrite un tmpano, estoy respirando su atmsfera ancestral. |<br>| Ref            | As an eardrum melts, I am breathing in its ancient atmosphere.             |<br>| A4 translation | As a <code>&lt;unk&gt;</code> <code>&lt;unk&gt;</code> I’m breathing its atmosphere <code>&lt;unk&gt;</code>                  |<br>| A5 translation | As it melts a iceberg, I’m breathing its ancestral atmosphere.             |</p>
-<p>tímpano，témpano 是同义词，但一个翻译为耳膜一个翻译为冰山。这里冰山显然更为合适。</p>
-<p>(85)错误的例子：<br>| Category       |                                                   |<br>| ————– | ————————————————- |<br>| ES             | Es el sndrome de insensibilidad a los andrgenos.  |<br>| Ref            | It is the syndrome of insensitivity to androgens. |<br>| A4 translation | It’s called <code>&lt;unk&gt;</code> <code>&lt;unk&gt;</code>                       |<br>| A5 translation | It’s the syndrome of insulin insulin.             |</p>
-<p>对于连续的<code>&lt;unk&gt;</code>，CharCNN 的表现并没有很好改善（重复出现的 insulin）。</p>
-]]></content>
-      <categories>
-        <category>CS224N作业笔记</category>
-      </categories>
-      <tags>
-        <tag>CS224N</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>排序</title>
     <url>/2020/08/21/%E6%8E%92%E5%BA%8F/</url>
-    <content><![CDATA[<h2 id="1-冒泡排序"><a href="#1-冒泡排序" class="headerlink" title="1. 冒泡排序"></a>1. 冒泡排序</h2><p>基础版本：</p>
+    <content><![CDATA[<h2 id="链接："><a href="#链接：" class="headerlink" title="链接："></a>链接：</h2><p><a href="https://mp.weixin.qq.com/s?__biz=MzUyNjQxNjYyMg==&mid=2247484184&idx=1&sn=62965b401aa42107b3c17d1d8ea17454&chksm=fa0e6c99cd79e58f298e9026f677f912bd8c8e55edb48fc509b2b5834f05e529a9b47d59d202&scene=21#wechat_redirect">十大经典排序算法动画与解析，看我就够了！（配代码完全版）</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/52884590">视频 | 手撕九大经典排序算法，看我就够了！ - 力扣（LeetCode）的文章 - 知乎</a></p>
+<h2 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h2><table>
+<thead>
+<tr>
+<th>Sorting Algorithm</th>
+<th>Avg. Time</th>
+<th>Best Case</th>
+<th>Worst Case</th>
+<th>Space</th>
+<th>Inplace</th>
+<th>Stability</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BubbleSort</td>
+<td>O(n2)</td>
+<td>O(n)</td>
+<td>O(n2)</td>
+<td>O(1)</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>SelectionSort</td>
+<td>O(n2)</td>
+<td>O(n2)</td>
+<td>O(n2)</td>
+<td>O(1)</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr>
+<td>InsertSort</td>
+<td>O(n2)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr>
+<td>ShellSort</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>MergeSort</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+</tr>
+<tr>
+<td>QuickSort</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>HeapSort</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>CountingSort</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+</tr>
+<tr>
+<td>BucketSort</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+</tr>
+<tr>
+<td>RadixSort</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>N</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="1-冒泡排序"><a href="#1-冒泡排序" class="headerlink" title="1. 冒泡排序"></a>1. 冒泡排序</h2><p>基础版本：</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> Java.util.Arrays;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] BubbleSort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">    <span class="keyword">int</span> temp;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; arr.length - i - <span class="number">1</span>; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j + <span class="number">1</span>] &lt; arr[j]) &#123;</span><br><span class="line">                temp = arr[j];</span><br><span class="line">                arr[j] = arr[j + <span class="number">1</span>];</span><br><span class="line">                arr[j + <span class="number">1</span>] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>优化版本：<br>    如果第<code>i</code>个循环，从第<code>0</code>个到第<code>arr.length-1-i</code>都顺序，则可以提前结束</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] BubbleSort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">    <span class="keyword">int</span> temp;</span><br><span class="line">    <span class="keyword">boolean</span> flag;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">        flag = <span class="keyword">true</span>; <span class="comment">// 默认存在逆序对，会发生交换</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; arr.length - i - <span class="number">1</span>; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j + <span class="number">1</span>] &lt; arr[j]) &#123;</span><br><span class="line">                flag = <span class="keyword">false</span>;</span><br><span class="line">                temp = arr[j];</span><br><span class="line">                arr[j] = arr[j + <span class="number">1</span>];</span><br><span class="line">                arr[j + <span class="number">1</span>] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (flag) </span><br><span class="line">            <span class="keyword">break</span>; <span class="comment">//如果全部顺序就提前结束外循环</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="2-选择排序"><a href="#2-选择排序" class="headerlink" title="2. 选择排序"></a>2. 选择排序</h2><p>每一步找出未排序序列中的最小值</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] SelectionSort(<span class="keyword">int</span>[] sourceArray)&#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length)&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] SelectionSort(<span class="keyword">int</span>[] sourceArray)&#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr.length; i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> argmin = i;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &lt; arr.length; j++)&#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[argmin])&#123;</span><br><span class="line">                argmin = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> temp = arr[i];</span><br><span class="line">        arr[i] = arr[argmin];</span><br><span class="line">        arr[argmin] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-插入排序"><a href="#3-插入排序" class="headerlink" title="3. 插入排序"></a>3. 插入排序</h2><p>把下一个元素插入到有序序列的合适位置</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] InsertSort(<span class="keyword">int</span>[] sourceArray)&#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; arr.length; i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> j = i;</span><br><span class="line">        <span class="keyword">int</span> temp = arr[i];</span><br><span class="line">        <span class="keyword">while</span> (j - <span class="number">1</span> &gt;= <span class="number">0</span> &amp;&amp; arr[j - <span class="number">1</span>] &gt; temp)&#123;</span><br><span class="line">            arr[j] = arr[j-<span class="number">1</span>];</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line">        arr[j] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-希尔排序"><a href="#4-希尔排序" class="headerlink" title="4. 希尔排序"></a>4. 希尔排序</h2><p>优化版的插入排序</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] ShellSort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> gap = arr.length &gt;&gt; <span class="number">1</span>; gap &gt;= <span class="number">1</span>; gap &gt;&gt;= <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = gap; i &lt; arr.length; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> temp = arr[i];</span><br><span class="line">            <span class="keyword">int</span> j = i;</span><br><span class="line">            <span class="keyword">while</span> (j - gap &gt;= <span class="number">0</span> &amp;&amp; arr[j - gap] &gt; temp) &#123;</span><br><span class="line">                arr[j] = arr[j - gap];</span><br><span class="line">                j -= gap;</span><br><span class="line">            &#125;</span><br><span class="line">            arr[j] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-归并排序"><a href="#5-归并排序" class="headerlink" title="5. 归并排序"></a>5. 归并排序</h2><p>递归，如果用原位迭代空间复杂度为o(1)但时间复杂度到o(n2)</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] MergeSort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (arr.length &lt; <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> middle = arr.length &gt;&gt; <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span>[] left = Arrays.copyOfRange(arr, <span class="number">0</span>, middle);</span><br><span class="line">    <span class="keyword">int</span>[] right = Arrays.copyOfRange(arr, middle, arr.length);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> merge(MergeSort(left), MergeSort(right));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span>[] merge(<span class="keyword">int</span>[] left, <span class="keyword">int</span>[] right) &#123;<span class="comment">// 两个有序序列</span></span><br><span class="line">    <span class="keyword">int</span>[] result = <span class="keyword">new</span> <span class="keyword">int</span>[left.length + right.length];</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (left.length &gt; <span class="number">0</span> &amp;&amp; right.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (left[<span class="number">0</span>] &lt;= right[<span class="number">0</span>]) &#123;</span><br><span class="line">            result[i] = left[<span class="number">0</span>];</span><br><span class="line">            i++;</span><br><span class="line">            left = Arrays.copyOfRange(left, <span class="number">1</span>, left.length);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            result[i] = right[<span class="number">0</span>];</span><br><span class="line">            i++;</span><br><span class="line">            right = Arrays.copyOfRange(right, <span class="number">1</span>, right.length);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (left.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        result[i] = left[<span class="number">0</span>];</span><br><span class="line">        i++;</span><br><span class="line">        left = Arrays.copyOfRange(left, <span class="number">1</span>, left.length);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (right.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        result[i] = right[<span class="number">0</span>];</span><br><span class="line">        i++;</span><br><span class="line">        right = Arrays.copyOfRange(right, <span class="number">1</span>, right.length);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="6-快速排序"><a href="#6-快速排序" class="headerlink" title="6.快速排序"></a>6.快速排序</h2><p>快速排序是对冒泡排序的一种改进。</p>
+<blockquote>
+<p>简称快排，时间复杂度并不固定，如果在最坏情况下（元素刚好是反向的）速度比较慢，达到 O(n^2)（和选择排序一个效率），但是如果在比较理想的情况下时间复杂度 O(nlogn)。</p>
+</blockquote>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/D67peceibeISwc3aGibUlvZ0XqVnbWtBRiaAY3VU8iaziaYcxAasTdrIu69BOVPYtfvqdvicmlJDS94cG2tjwZhVkdHA/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1" alt="QuickSort"></p>
+<ul>
+<li>从数列中挑出一个元素，称为 “基准”（pivot）;</li>
+<li>重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。</li>
+<li>如果基准值<code>pivot</code>在最左，从<code>i=index=pivot+1</code>开始，每次遇到比<code>arr[index]</code>小的元素，就<code>swap(arr, i, index); index++</code>。<code>index</code>记录分隔符向右移动的情况，但此时pivot的位置还未改变，直到最后再<code>swap(arr), pivot, index-1</code>。</li>
+<li>在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区（partition）操作；</li>
+<li>递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序；</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] QuickSort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">        <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">        <span class="keyword">return</span> quicksort(arr, <span class="number">0</span>, arr.length - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] quicksort(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> left, <span class="keyword">int</span> right) &#123;</span><br><span class="line">        <span class="keyword">if</span> (left &lt; right) &#123; <span class="comment">// 约束，防止partitionIndex到0</span></span><br><span class="line">            <span class="keyword">int</span> partitionIndex = partition(arr, left, right); <span class="comment">// partition实际执行排序操作</span></span><br><span class="line">            quicksort(arr, left, partitionIndex - <span class="number">1</span>); <span class="comment">// 不含中间</span></span><br><span class="line">            quicksort(arr, partitionIndex + <span class="number">1</span>, right);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// partition方法对arr进行修改</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">partition</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> pivot = left;</span><br><span class="line">        <span class="keyword">int</span> index = pivot + <span class="number">1</span>; <span class="comment">// 从左端开始</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = index; i &lt;= right; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[i] &lt; arr[pivot]) &#123;</span><br><span class="line">                swap(arr, i, index); <span class="comment">// pivot右边一位作为index不断地和后续比arr[pivot]小的元素交换位置，</span></span><br><span class="line">                index++; <span class="comment">// index位向右挪</span></span><br><span class="line">                <span class="comment">// 最终pivot往右直到index-1都是小于基准的，再把pivot放到中间位置index-1</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        swap(arr, pivot, index - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">return</span> index - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> temp = arr[i];</span><br><span class="line">        arr[i] = arr[j];</span><br><span class="line">        arr[j] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-堆排序"><a href="#7-堆排序" class="headerlink" title="7. 堆排序"></a>7. 堆排序</h2><p>堆：相较于完全二叉树，所有父节点的值大于（小于）子节点<br>最大堆的最大元素值出现在根结点（堆顶）</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 堆函数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">heapify</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> n, <span class="keyword">int</span> i)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> largest = i; <span class="comment">// 将最大元素设置为堆顶元素</span></span><br><span class="line">    <span class="keyword">int</span> l = <span class="number">2</span>*i + <span class="number">1</span>; <span class="comment">// left</span></span><br><span class="line">    <span class="keyword">int</span> r = <span class="number">2</span>*i + <span class="number">2</span>; <span class="comment">// right</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果left比root大</span></span><br><span class="line">    <span class="keyword">if</span> (l &lt; n &amp;&amp; arr[l] &gt; arr[largest])&#123;</span><br><span class="line">        largest = l;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (r &lt; n &amp;&amp; arr[r] &gt; arr[largest])&#123;</span><br><span class="line">        largest = r;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (largest != i)&#123;</span><br><span class="line">        <span class="keyword">int</span> temp = arr[i];</span><br><span class="line">        arr[i] = arr[largest];</span><br><span class="line">        arr[largest] = temp;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 递归地定义子堆</span></span><br><span class="line">        heapify(arr, n, largest);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 ]]></content>
+      <categories>
+        <category>Java数据结构与算法</category>
+      </categories>
       <tags>
-        <tag>Java数据结构与算法</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
 </search>
