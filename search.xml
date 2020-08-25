@@ -585,4 +585,65 @@
         <tag>Business Analytics Strategy</tag>
       </tags>
   </entry>
+  <entry>
+    <title>CS224N-Lec15</title>
+    <url>/2020/08/24/CS224N-Lec15/</url>
+    <content><![CDATA[<p>Natural Language Generation</p>
+<ul>
+<li>Decoding algorithms: Greedy, beam search, …</li>
+</ul>
+<h2 id="NLG"><a href="#NLG" class="headerlink" title="NLG"></a>NLG</h2><ul>
+<li>subcomponent of<ul>
+<li>Machine Translation</li>
+<li><strong>summarization</strong></li>
+<li>dialogue</li>
+<li>Freeform question answering(not only from the context)</li>
+<li>Image Captioning</li>
+</ul>
+</li>
+</ul>
+<h2 id="Recap"><a href="#Recap" class="headerlink" title="Recap"></a>Recap</h2><ul>
+<li><p>Language modeling? the task of predicting the next word:</p>
+<ul>
+<li>$P(y_t|y_1, …, y_(t-1))$</li>
+</ul>
+</li>
+<li><p>Language model</p>
+</li>
+<li><p>RNN-LM</p>
+</li>
+<li><p>Conditional Language Modeling</p>
+<ul>
+<li>$P(y_t|y_1, …, y_(t-1), x)$</li>
+<li>what is x? condition.</li>
+<li>Examples:<ul>
+<li>Machine Translation (x = source sentence, y = target sentence)</li>
+<li>Summarization (context and summarized)</li>
+<li>Dialogue (dialogue history and next utterance)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>training a RNN-LM?</p>
+<ul>
+<li>$J = \dfrac{1}{T}\sum\limits_{t=1}^T J_t$</li>
+<li>“Teacher Forcing”: always use the gold to feed into the decoder</li>
+</ul>
+</li>
+<li><p>decoding algorithms:</p>
+<ul>
+<li>Greedy decoding</li>
+<li>Beam search</li>
+<li></li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>CS224N</category>
+      </categories>
+      <tags>
+        <tag>CS224N</tag>
+      </tags>
+  </entry>
 </search>
