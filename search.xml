@@ -1,256 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hexo+GitHubio</title>
-    <url>/2020/08/20/My-New-Post/</url>
-    <content><![CDATA[<h2 id="Weblink"><a href="#Weblink" class="headerlink" title="Weblink:"></a>Weblink:</h2><p>知乎专栏<a href="https://zhuanlan.zhihu.com/p/26625249">https://zhuanlan.zhihu.com/p/26625249</a>;<br>大卫博客<a href="https://univeryinli.github.io/about">https://univeryinli.github.io/about</a></p>
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo -g <span class="comment">#安装Hexo</span></span><br><span class="line">npm update hexo -g <span class="comment">#升级</span></span><br><span class="line">hexo init <span class="comment">#初始化博客</span></span><br></pre></td></tr></table></figure>
-<h3 id="命令简写"><a href="#命令简写" class="headerlink" title="命令简写"></a>命令简写</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo n &quot;我的博客&quot; &#x3D;&#x3D; hexo new &quot;我的博客&quot; #新建文章</span><br><span class="line">hexo g &#x3D;&#x3D; hexo generate #生成</span><br><span class="line">hexo s &#x3D;&#x3D; hexo server #启动服务预览</span><br><span class="line">hexo d &#x3D;&#x3D; hexo deploy #部署</span><br><span class="line"></span><br><span class="line">hexo server #Hexo会监视文件变动并自动更新，无须重启服务器</span><br><span class="line">hexo server -s #静态模式</span><br><span class="line">hexo server -p 5000 #更改端口</span><br><span class="line">hexo server -i 192.168.1.1 #自定义 IP</span><br><span class="line">hexo clean #清除缓存，若是网页正常情况下可以忽略这条命令</span><br><span class="line"></span><br><span class="line">刚刚的三个命令依次是新建一篇博客文章、生成网页、在本地预览的操作</span><br></pre></td></tr></table></figure>
-
-<h3 id="推送网站"><a href="#推送网站" class="headerlink" title="推送网站"></a><strong>推送网站</strong></h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim _config.yml;</span><br><span class="line">    deploy:</span><br><span class="line">    type: git</span><br><span class="line">    repo: 这里填入你之前在GitHub上创建仓库的完整路径，记得加上 .git</span><br><span class="line">    branch: master</span><br><span class="line"></span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line">hexo clean </span><br><span class="line">hexo g </span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-
-<h3 id="next-主题"><a href="#next-主题" class="headerlink" title="next 主题"></a>next 主题</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
-
-<h3 id="配置next"><a href="#配置next" class="headerlink" title="配置next"></a>配置next</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> themes/next</span><br><span class="line">vim _config.yml</span><br></pre></td></tr></table></figure>
-
-<h4 id="新建about页"><a href="#新建about页" class="headerlink" title="新建about页"></a>新建about页</h4><p>编辑<code>source/about/index.md</code>, 进入<code>themes/next/_config.yml</code>, </p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-user</span></span><br></pre></td></tr></table></figure>
-<p>再生成部署。</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>CS224NA5</title>
-    <url>/2020/08/20/CS224NA5/</url>
-    <content><![CDATA[<h1 id="CS224N-Assignment-5"><a href="#CS224N-Assignment-5" class="headerlink" title="CS224N Assignment #5"></a>CS224N Assignment #5</h1><p>(7.20)增加 Pylance 插件作为语言服务器. 打开 type checking mode(basic).</p>
-<h2 id="文字题"><a href="#文字题" class="headerlink" title="文字题"></a>文字题</h2><ul>
-<li><p>(a) We learned in class that recurrent neural architectures can operate over variable length input (i.e., the shape of the model parameters is independent of the length of the input sentence). Is the same true of convolutional architectures? Write one sentence to explain why or why not.</p>
-<p>window t ∈ {1, . . . , mword − k + 1}，<br>mword 即最长单词的长度可变，<br>xconv ∈ R^(eword×(mword−k+1))</p>
-</li>
-<li><p>(b)…if we use the kernel size k = 5, what will be the size of the padding (i.e. the additional number of zeros on each side) we need for the 1-dimensional convolution, such that there exists at least one window for all possible values of mword in our dataset?</p>
-<p>极端情况 mword=1， 前后各 1 个 token，还需 padding=1.</p>
-</li>
-<li><p>(c) In step 4, we introduce a Highway Network with <code>xhighway = xgate xproj + (1 − xgate) xconv out</code>. Since xgate is the result of the sigmoid function, it has the range (0, 1).Consider the two extreme cases. If xgate → 0, then xhighway → xconv out. When xgate → 1, then xhighway → xproj. This means the Highway layer is smoothly varying its behavior between that of normal linear layer (xproj) and that of a layer which simply passes its inputs (xconv out) through. Use one or two sentences to explain why this behavior is useful in character embeddings. Based on the definition of <code>xgate = σ(Wgatexconv out + bgate)</code>, do you think it is better to initialize bgate to be negative or positive? Explain your reason briefly.<br>原因： 所谓的 highway， x_gate=0 可以直接用 x_convout 的值。</p>
-<p>希望默认 x_gate 较小方便 highway，所以 b 取负。</p>
-</li>
-<li><p>(d) In Lecture 10, we briefly introduced Transformers, a non-recurrent sequence<br>(or sequence-to-sequence) model with a sequence of attention-based transformer blocks. Describe 2 advantages of a Transformer encoder over the LSTM-with-attention encoder in our NMT model</p>
-<p>可以看一下 &lt;<Attention is all you need>&gt;：<br>“Self-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a representation of the sequence.”<br>每一步都是句子里的所有单词之间建立联系。<br>主要用到三个矩阵 Key, Query, value, <code>Attention(Q,K,V) = softmax(QK.T/\sqrt(d_k))V</code><br>(包学包会，这些动图和代码让你一次读懂「自注意力」 - 机器之心的文章 - 知乎 <a href="https://zhuanlan.zhihu.com/p/96492170">https://zhuanlan.zhihu.com/p/96492170</a>)</p>
-</li>
+    <title>8/27OW分享会记录</title>
+    <url>/2020/08/29/0827OW/</url>
+    <content><![CDATA[<h2 id="Basic-Info"><a href="#Basic-Info" class="headerlink" title="Basic Info"></a>Basic Info</h2><p>Offices:<br>    BJ, SH, HK.</p>
+<p>技能点：</p>
+<ul>
+<li>Big data</li>
+<li>data mining</li>
+<li>machine learning</li>
+<li>analytical problem solving</li>
+<li>co-creation</li>
+<li>design thinking</li>
+<li>change enablement</li>
+<li>people effectiveness</li>
 </ul>
-<pre><code>attention-based transformers的好处（P6 的 Part 4， Why self-attention）：
-
-未采用RNN就可以避免梯度消失和梯度爆炸等问题,
-从sequential computation 到实现parallelized computation,
-更易学习到&quot;long-range dependencies in the network&quot;,
-更加interpretable.</code></pre>
-<h1 id="1-Character-based-convolutional-encoder-for-NMT-36-points"><a href="#1-Character-based-convolutional-encoder-for-NMT-36-points" class="headerlink" title="1. Character-based convolutional encoder for NMT (36 points)"></a>1. Character-based convolutional encoder for NMT (36 points)</h1><h2 id="Vocab-py"><a href="#Vocab-py" class="headerlink" title="Vocab.py"></a>Vocab.py</h2><ol>
-<li>这种写法很巧妙·</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i, c <span class="keyword">in</span> enumerate(self.char_list):</span><br><span class="line">    self.char2id[c] = len(self.char2id)</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li><p>组合用法，类似 zip+enumerate</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line">word_freq = Counter(chain(\*corpus))</span><br></pre></td></tr></table></figure>
+<p>发展路径:<br>    前三年跨行业</p>
+<h2 id="Project-span-industries-and-capabilities"><a href="#Project-span-industries-and-capabilities" class="headerlink" title="Project span industries and capabilities"></a>Project span industries and capabilities</h2><p>行业：健康， 消费者工业和服务（教育 房地产）， 金融服务<br><img src="/source/_posts%5C8-27%E5%88%86%E4%BA%AB%E4%BC%9A%E8%AE%B0%E5%BD%95%5Cspan.jpg" alt="Image"><br>横向：不同division和三大类<br>纵向：不同行业</p>
+<h2 id="Recruiting"><a href="#Recruiting" class="headerlink" title="Recruiting"></a>Recruiting</h2><p>digital interview: Oct 14, first round interview Oct 25, final round Oct 30.<br><img src="/source/_posts%5C8-27%E5%88%86%E4%BA%AB%E4%BC%9A%E8%AE%B0%E5%BD%95%5Crecruitinginfo.jpg" alt="Image"></p>
+<h2 id="Breakout-room-Life-as-a-new-consultant-Digital-Q-amp-A"><a href="#Breakout-room-Life-as-a-new-consultant-Digital-Q-amp-A" class="headerlink" title="Breakout room (Life as a new consultant + Digital), Q&amp;A"></a>Breakout room (Life as a new consultant + Digital), Q&amp;A</h2><p><img src="/source/_posts%5C8-27%E5%88%86%E4%BA%AB%E4%BC%9A%E8%AE%B0%E5%BD%95%5Cbreakoutrooms.jpg" alt="Image"></p>
+<h3 id="相对甲方战略咨询部的特点"><a href="#相对甲方战略咨询部的特点" class="headerlink" title="相对甲方战略咨询部的特点"></a>相对甲方战略咨询部的特点</h3><ol>
+<li><p>行业选择</p>
 </li>
-<li><p>用字典辅助排序</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">valid_words = [w <span class="keyword">for</span> w, v <span class="keyword">in</span> word_freq.items() <span class="keyword">if</span> v &gt;= freq_cutoff]</span><br><span class="line">top_k_words = sorted(valid_words, key=<span class="keyword">lambda</span> w: word_freq[w], reverse=<span class="literal">True</span>[:size]</span><br></pre></td></tr></table></figure>
-
+<li><p>紧迫感，下一个30天、100天做什么</p>
 </li>
-</ol>
-<p>用到了<code>json.dump</code>，Vocab 也用此形式存储。</p>
-<h2 id="e-Implement-to-input-tensor-char-in-vocab-py"><a href="#e-Implement-to-input-tensor-char-in-vocab-py" class="headerlink" title="(e) Implement to_input_tensor_char() in vocab.py"></a>(e) Implement <code>to_input_tensor_char()</code> in <code>vocab.py</code></h2><p>字母 ∏ Û python 执行有问题，改成<code>&lt;pad&gt;</code>, <code>&lt;unk&gt;</code>。</p>
-<h2 id="f-highway"><a href="#f-highway" class="headerlink" title="(f) highway"></a>(f) highway</h2><p>要求写一个 sanity_check, (f)本身实现很简单，只是一步处理，所以检查一下前后维度就可以。</p>
-<h2 id="g-cnn-py-CNN"><a href="#g-cnn-py-CNN" class="headerlink" title="(g) cnn.py, CNN"></a>(g) cnn.py, CNN</h2><p>输入(sentence_length, batch_size, e_char, m_word)，前两维不动，对每个词 conv 完，后两维应该是 f 和窗口数，再经过 maxpool 所有窗口， 输出是(sentence_length, batch_size, f)<br>torch 需要使用.contiguous().view(),因为 view 只能作用在 contiguous 的变量上<br>比较关键的一步。<br><strong>07/25 更新</strong>：<br>果然后面还是出问题了。m_word 是 forward 函数中参数 x_reshaped 的维度属性，如果使用 max_pool layer，一开始并不知道输入的参数 m_word 是多少。所以不应该用 maxpool 层（因为不能对一个多维 tensor 的某一维更新），<br>而应该在 forward 函数里直接调用 torch.max(dim=2)</p>
-<h2 id="h-Model-Embeddings"><a href="#h-Model-Embeddings" class="headerlink" title="(h) Model_Embeddings."></a>(h) Model_Embeddings.</h2><p>一个问题是 f=e_word, e_word 和 e_char 的关系到底如何？？<br>题目假设 e_char=50, e_word 是初始化 model_embeddings 的参数 word_embedding_size, 默认值 21。</p>
-<h2 id="j"><a href="#j" class="headerlink" title="(j)"></a>(j)</h2><p>wdnmd， vocab.py 里的 sents_var 总是空的，查了半天发现 utils.pad_sents 忘了粘贴。<br>nmt_model.py 中 step()函数</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> enc*masks <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    e_t.data.masked_fill*(enc_masks.bool(), -float(<span class="string">&#x27;inf&#x27;</span>))</span><br></pre></td></tr></table></figure>
-
-<p>显示’Tensor’ object has no attribute ‘bool’<br>原因应该是 torch 版本较低<br>事实也确实如此，local*env.yml 显示 pytorch=1.0.0，a4 作业就没有限定版本，估计是助教忘了更新。<br>解决方案：改成</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">e_t.data.masked_fill*(enc_masks==<span class="number">1</span>, -float(<span class="string">&#x27;inf&#x27;</span>))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">epoch 100, iter 500, cum. loss 0.30, cum. ppl 1.01 cum. examples 200</span><br><span class="line">validation: iter 500, dev. ppl 1.001988</span><br><span class="line">Corpus BLEU: 99.66941696422141</span><br></pre></td></tr></table></figure>
-
-
-<p>达到题设要求。</p>
-<h1 id="2-Character-based-LSTM-decoder-for-NMT-26-points"><a href="#2-Character-based-LSTM-decoder-for-NMT-26-points" class="headerlink" title="2. Character-based LSTM decoder for NMT (26 points)"></a>2. Character-based LSTM decoder for NMT (26 points)</h1><h2 id="b"><a href="#b" class="headerlink" title="(b)"></a>(b)</h2><p>奇怪的点在于, char_decoder.py 中 train_forward 的 loss 计算，不 softmaxloss 才收敛。<br>题目要求仔细阅读 nn.CrossEntropyLoss，实际上 Pytorch 中 CrossEntropyLoss()函数将 softmax-log-NLLLoss 合并到一块。</p>
-<p><code>This criterion combines nn.LogSoftmax() and nn.NLLLoss() in one single class.</code><br>loss 0.38, Corpus BLEU: 99.66941696422141</p>
-<h2 id="c"><a href="#c" class="headerlink" title="(c)"></a>(c)</h2><p>这部分思路很清晰，用到了一些技巧，比如(tensor,tensor)的 elementwise 的提取，char 拼接成 word 等，详见代码</p>
-<h2 id="e"><a href="#e" class="headerlink" title="(e)"></a>(e)</h2><p>在 VM 上训练。<br>注意 run.sh 可以进行修改，使得 train_local 也可使用 cuda，提高效率。<br>仍然遇到了环境问题。 “RuntimeError: Given input size: (256x1x12). Calculated output size: (256x1x0). Output size is too small”<br>于是只能在 VM 上配一个和本地相同的（过时的）环境。问题解决。<br><strong>CNN.py 中存在问题，很久之前埋下的坑！！！</strong>：初始化时如果建立 maxpool 就需要提前知道 m_word 以确定 kernel_size。这个问题可以这样解决：避免 maxpool 层，在 forward 中使用 torch.max 函数，对某个维度进行 max。<br>对 cnn 和 sanity_check 都进行修改。由于默认使用了 sanitycheck 的值 m_word=21,实际上在写其他函数调用 CNN 类的时候没有定义 m_word 值，所以正好不需要改。<br>参考：Tessa Scott<a href="https://github.com/tessascott039/a5/blob/master/cnn.py">https://github.com/tessascott039/a5/blob/master/cnn.py</a></p>
-<p><a href="https://github.com/pytorch/pytorch/issues/4166">https://github.com/pytorch/pytorch/issues/4166</a><br><a href="https://stackoverflow.com/questions/56137869/is-it-possible-to-make-a-max-pooling-on-dynamic-length-sentences-without-padding">https://stackoverflow.com/questions/56137869/is-it-possible-to-make-a-max-pooling-on-dynamic-length-sentences-without-padding</a><br>探讨了 nn.MaxPool1d 能不能有一个动态的 kernel_size。</p>
-<p>train 的结果：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">epoch 29, iter 196300, avg. loss 81.60, avg. ppl 59.75 cum. examples 9600, speed 6086.86 words&#x2F;sec, time elapsed 20580.30 sec</span><br><span class="line">epoch 29, iter 196310, avg. loss 81.10, avg. ppl 50.14 cum. examples 9920, speed 6458.96 words&#x2F;sec, time elapsed 20581.33 sec</span><br><span class="line">epoch 29, iter 196320, avg. loss 78.58, avg. ppl 48.75 cum. examples 10240, speed 6548.57 words&#x2F;sec, time elapsed 20582.32 sec</span><br><span class="line">epoch 29, iter 196330, avg. loss 86.52, avg. ppl 61.24 cum. examples 10537, speed 6019.06 words&#x2F;sec, time elapsed 20583.36 sec</span><br><span class="line">test：Corpus BLEU: 36.395796664198</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-Analyzing-NMT-Systems-8-points"><a href="#3-Analyzing-NMT-Systems-8-points" class="headerlink" title="3. Analyzing NMT Systems (8 points)"></a>3. Analyzing NMT Systems (8 points)</h1><h2 id="a"><a href="#a" class="headerlink" title="(a)"></a>(a)</h2><p>用 linux 的 grep 命令查找字符串</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(base) hy2632_ubuntu20@DESKTOP-8LEIHPS:~&#x2F;cs224n&#x2F;a5_public\$ grep tradu vocab.json</span><br><span class="line">&quot;traduciendo&quot;: 17349,</span><br><span class="line">&quot;tradujera&quot;: 32719,</span><br><span class="line">&quot;traduccin&quot;: 4562,</span><br><span class="line">&quot;traduzco&quot;: 40154,</span><br><span class="line">&quot;traduzcan&quot;: 23440,</span><br><span class="line">&quot;traductores&quot;: 19447,</span><br><span class="line">&quot;traducir&quot;: 4565,</span><br><span class="line">&quot;traducciones&quot;: 12054,</span><br><span class="line">&quot;traductor&quot;: 11809,</span><br><span class="line">&quot;traducirse&quot;: 36917,</span><br><span class="line">&quot;traducen&quot;: 19640,</span><br><span class="line">&quot;tradujo&quot;: 25176,</span><br><span class="line">&quot;traducido&quot;: 8515,</span><br><span class="line">&quot;traducimos&quot;: 18251,</span><br><span class="line">&quot;traduce&quot;: 7821,</span><br><span class="line">&quot;traducidas&quot;: 20336,</span><br><span class="line">&quot;traduzca&quot;: 44710,</span><br><span class="line">&quot;traducirlo&quot;: 19205,</span><br><span class="line">&quot;traductora&quot;: 13071,</span><br><span class="line">&quot;traduje&quot;: 23103,</span><br><span class="line">&quot;traducirlas&quot;: 35543,</span><br><span class="line">&quot;traducida&quot;: 19350,</span><br></pre></td></tr></table></figure>
-
-<p>traduces, traduzcas not in.<br>如果是 word-based NMT，将 spanish 翻译为 english， 如果句子中出现 traduces 就会判断为<code>&lt;unk&gt;</code>， 无法翻译；但如果是 character-aware NMT，别的类似 traducir(to translate)的动词可能有类似的性质(加 s，从 I 变成 you)，同时又恰好出现在训练集中，那么模型在遇到 traduces 的 s 时就能翻译出 you translate。</p>
-<h2 id="b-1"><a href="#b-1" class="headerlink" title="(b)"></a>(b)</h2><ol>
-<li><p>回顾 Word2Vec。<a href="https://projector.tensorflow.org/">https://projector.tensorflow.org/</a> 可以查询 k-nearest words。</p>
-<p>Markdown 表格生成<a href="https://www.tablesgenerator.com/markdown_tables">https://www.tablesgenerator.com/markdown_tables</a></p>
+<li><p>好的甲方的核心业务可能比咨询更优，因为有经验积淀</p>
+</li>
+<li><p>大厂有丰富的大数据</p>
+</li>
+<li><p>乙方咨询还有换赛道的机会，甲方从零开始</p>
+</li>
+<li><p>OW的Know:知识库 即插即用</p>
+</li>
+<li><p>甲方：战略部 -&gt; 策略部(市场策略)</p>
+</li>
+<li><p>咨询的生命周期可能是长期的，专注于商业本质，“无限游戏”</p>
+</li>
+<li><p>consultant和engineer合作更加紧密，有multinational的know平台，以及和客户ceo之类有很好的关系和实施的渠道</p>
 </li>
 </ol>
-<table>
-<thead>
-<tr>
-<th>word</th>
-<th>closest word</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>financial</td>
-<td>economics</td>
-</tr>
-<tr>
-<td>neuron</td>
-<td>nerve</td>
-</tr>
-<tr>
-<td>Francisco</td>
-<td>san</td>
-</tr>
-<tr>
-<td>naturally</td>
-<td>occurring</td>
-</tr>
-<tr>
-<td>expectation</td>
-<td>norms</td>
-</tr>
-</tbody></table>
-<ol start="2">
-<li>也可以上传自己的 character-aware NMT model 的 embeddings 查找 nearest neighbors.</li>
+<h3 id="简要介绍不同的digital-transformation"><a href="#简要介绍不同的digital-transformation" class="headerlink" title="简要介绍不同的digital transformation"></a>简要介绍不同的digital transformation</h3><ol>
+<li>分行业分业务</li>
+<li>例如保险 搬到线上 高净值人群需要线下服务，其实不是对象，应当优化大部分普通客户的流程。</li>
+<li>digital products: 把社交媒体如微博的data变为insights，和客户一起探讨，确定客户在意的数据：例如被提到次数、提到内容、注意点。帮助识别emerging brand小众品牌，发现潜在competitors。</li>
+<li>data product(server)/data government，组织形式，和各个公司有关</li>
+<li>big data可以帮助做datadriven decision， 如促销机制，之前没有理论指导人为因素较大，利用大数据给出的解决方案包含数据分析和专家访谈，确定更换促销机制的周期以及更细致的客户targeting</li>
+<li>总而言之可以高层次爷可接地气</li>
 </ol>
-<p><img src="https://raw.githubusercontent.com/hy2632/cs224n/master/a5_public/CS224n-A5-emb2-files/embedding_proj.jpg" alt="Image"></p>
-<table>
-<thead>
-<tr>
-<th>word</th>
-<th>closest word</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>financial</td>
-<td>vertical</td>
-</tr>
-<tr>
-<td>neuron</td>
-<td>Newton</td>
-</tr>
-<tr>
-<td>Francisco</td>
-<td>France</td>
-</tr>
-<tr>
-<td>naturally</td>
-<td>practically</td>
-</tr>
-<tr>
-<td>expectation</td>
-<td>exception</td>
-</tr>
-</tbody></table>
-<ol start="3">
-<li>分析 Word2Vec 和 CharCNN 的区别并解释。</li>
+<h3 id="需要编程技能"><a href="#需要编程技能" class="headerlink" title="需要编程技能"></a>需要编程技能</h3><ol>
+<li>DE/DS/DC，DC除了技能还需要理解<strong>Business Implementation</strong></li>
+<li>python必需，还要高效使用package；SQL可以现学</li>
+<li>需要学过BA课程， 熟悉pandas/matplotlib等，可以看一些互联网PM的书籍，了解如何分析客户和产品，获得Business Insights</li>
+<li><strong>Business implementation 不只是向客户摆事实，而应该告诉客户做什么，例如上新品类，好处的量化</strong></li>
 </ol>
-<p>除了 naturally/practically 意思相近，CharCNN 的 embeddings 更多的还是按照字母组成（同时也包含一些 pos 和 ner）。Word2Vec 则更多地把握了词义的相似和关联性。原因就是模型本身。</p>
-<p>word2vec: skip-grams &amp; CBOW(contiguous bag of words)，给定上下文此预测缺失的中心词 c，概率分布 P(C|W)。因而相近的词都是有较大概率作为中心词被代替。</p>
-<p>CharCNN: 对某个单词的各个字母进行 charembedding，然后经过 CNN/Highway 等操作最后生成 wordembedding，较大程度上依赖于 charembedding，如果两个词有相同字母的 subset 则 wordembedding 可能相近。</p>
-<h2 id="c-1"><a href="#c-1" class="headerlink" title="(c)"></a>(c)</h2><p>(45)正确的例子：<br>| Category       |                                                                            |<br>| ————– | ————————————————————————– |<br>| ES             | A medida que se derrite un tmpano, estoy respirando su atmsfera ancestral. |<br>| Ref            | As an eardrum melts, I am breathing in its ancient atmosphere.             |<br>| A4 translation | As a <code>&lt;unk&gt;</code> <code>&lt;unk&gt;</code> I’m breathing its atmosphere <code>&lt;unk&gt;</code>                  |<br>| A5 translation | As it melts a iceberg, I’m breathing its ancestral atmosphere.             |</p>
-<p>tímpano，témpano 是同义词，但一个翻译为耳膜一个翻译为冰山。这里冰山显然更为合适。</p>
-<p>(85)错误的例子：<br>| Category       |                                                   |<br>| ————– | ————————————————- |<br>| ES             | Es el sndrome de insensibilidad a los andrgenos.  |<br>| Ref            | It is the syndrome of insensitivity to androgens. |<br>| A4 translation | It’s called <code>&lt;unk&gt;</code> <code>&lt;unk&gt;</code>                       |<br>| A5 translation | It’s the syndrome of insulin insulin.             |</p>
-<p>对于连续的<code>&lt;unk&gt;</code>，CharCNN 的表现并没有很好改善（重复出现的 insulin）。</p>
+<h3 id="Digital的发展路径"><a href="#Digital的发展路径" class="headerlink" title="Digital的发展路径"></a>Digital的发展路径</h3><p>不是纵向而是横向，不局限于某个行业，和Operations/Strategy平行</p>
+<h3 id="如果Business-Implementation的阶段性成果未达到预期，OW的数字化转型团队有没有调整的机制和经验"><a href="#如果Business-Implementation的阶段性成果未达到预期，OW的数字化转型团队有没有调整的机制和经验" class="headerlink" title="如果Business Implementation的阶段性成果未达到预期，OW的数字化转型团队有没有调整的机制和经验"></a>如果Business Implementation的阶段性成果未达到预期，OW的数字化转型团队有没有调整的机制和经验</h3><ol>
+<li>举例: dashboard 的设计调整到更加 user-friendly</li>
+<li>说明: 并非一个数字化团队，而是负责数字化的人员一起加入某项目。并非强调准确率，而是“赋能”，有很多qualitative的分析。有时引入新的方法或者数据量不够quant</li>
+<li>不是做数据竞赛或做数据框架，而是服务于ceo的模糊想法，是一个工作方向而不是具体地帮助提高销量到某一个值</li>
+<li>比如零售商想了解品牌商的想法，而咨询和品牌商有一定合作，可以提供信息</li>
+</ol>
+<h3 id="new-consultant的经验"><a href="#new-consultant的经验" class="headerlink" title="new consultant的经验"></a>new consultant的经验</h3><ol>
+<li>首先理解任务和clarify</li>
+<li>时间紧</li>
+<li>汇报要抓重点，不要interesting facts，而是business insights</li>
+</ol>
+<h3 id="如何知识点成系统"><a href="#如何知识点成系统" class="headerlink" title="如何知识点成系统"></a>如何知识点成系统</h3><ol>
+<li>例如研究券商的core trade system</li>
+<li>expert call,… 有自己的view，并逐渐完善， 除非manager带过类似项目</li>
+<li>manager可以quick learning，需要学习这样的能力</li>
+<li>项目完成后需要复盘</li>
+</ol>
+<h3 id="面试经历"><a href="#面试经历" class="headerlink" title="面试经历"></a>面试经历</h3><ol>
+<li>第一轮笔试，数学题之类</li>
+<li>读casebook， 做presentation</li>
+<li>manager面 + 面， 两个digital问题</li>
+<li><strong>怎么用ml帮netflix提升revenue？？</strong> 应用哪些方面？为什么？多久能达成结果？</li>
+</ol>
+<h3 id="fast-promotion"><a href="#fast-promotion" class="headerlink" title="fast-promotion"></a>fast-promotion</h3><ol>
+<li>critical thinking, ownership</li>
+<li>communication!!! upward and downward对上和对下</li>
+<li>接受变化，疫情后医疗更多，很多公司询问疫情影响</li>
+<li>学research，学写邮件，善于观察: 别的人怎么做？<ul>
+<li>写title方便locate subproject title</li>
+<li>keyfinding 1 2 3, 然后细节定位</li>
+<li>最后提需要review回复的时间，方便对方暂时搁置</li>
+</ul>
+</li>
+<li>为上级考虑，节省上级时间</li>
+<li>例如至少code不能有bug</li>
+<li>组织events，增加曝光度 (120个同事)，建立工作之外关系</li>
+</ol>
 ]]></content>
       <categories>
-        <category>CS224N作业笔记</category>
+        <category>文章</category>
       </categories>
       <tags>
-        <tag>CS224N</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>十大排序算法</title>
-    <url>/2020/08/24/%E6%8E%92%E5%BA%8F/</url>
-    <content><![CDATA[<h1 id="链接："><a href="#链接：" class="headerlink" title="链接："></a>链接：</h1><p><a href="https://mp.weixin.qq.com/s?__biz=MzUyNjQxNjYyMg==&mid=2247484184&idx=1&sn=62965b401aa42107b3c17d1d8ea17454&chksm=fa0e6c99cd79e58f298e9026f677f912bd8c8e55edb48fc509b2b5834f05e529a9b47d59d202&scene=21#wechat_redirect">十大经典排序算法动画与解析，看我就够了！（配代码完全版）</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/52884590">视频 | 手撕九大经典排序算法，看我就够了！ - 力扣（LeetCode）的文章 - 知乎</a></p>
-<h1 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h1><p><img src="https://pic2.zhimg.com/v2-b9b0c6526d416d8e8e81916ac1dd63b8_b.jpg" alt="复杂度"></p>
-<!-- | Sorting Algorithm | Avg. Time | Best Case  | Worst Case | Space | Inplace | Stability |
-| ----------------- | --------- | ---------- | ---------- | ----- | ------- | --------- |
-| BubbleSort        | O(n2)     | O(n)       | O(n2)      | O(1)  | Y       | Y         |
-| SelectionSort     | O(n2)     | O(n2)      | O(n2)      | O(1)  | Y       | N         |
-| InsertSort        | O(n2)     | O(n)       | O(n)       | O(1)  | Y       | N         |
-| ShellSort         | O(nlogn)  | O(nlogn) |            | O(1)  | Y       | N         |
-| MergeSort         |           |            |            |       | N       |           |
-| QuickSort         |           |            |            |       |         |           |
-| HeapSort          |           |            |            |       |         |           |
-| CountingSort      |           |            |            |       | N       |           |
-| BucketSort        |           |            |            |       | N       |           |
-| RadixSort         |           |            |            |       | N       |           | -->
-
-<p><a href="https://www.zhihu.com/question/24516934/answer/28076722">很多高效排序算法的代价是 nlogn，难道这是排序算法的极限了吗？ - 曾加的回答 - 知乎</a></p>
-<h1 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h1><h2 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h2><p>基础版本：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> Java.util.Arrays;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] BubbleSort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">    <span class="keyword">int</span> temp;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; arr.length - i - <span class="number">1</span>; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j + <span class="number">1</span>] &lt; arr[j]) &#123;</span><br><span class="line">                temp = arr[j];</span><br><span class="line">                arr[j] = arr[j + <span class="number">1</span>];</span><br><span class="line">                arr[j + <span class="number">1</span>] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>优化版本：<br>    如果第<code>i</code>个循环，从第<code>0</code>个到第<code>arr.length-1-i</code>都顺序，则可以提前结束</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] BubbleSort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">    <span class="keyword">int</span> temp;</span><br><span class="line">    <span class="keyword">boolean</span> flag;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">        flag = <span class="keyword">true</span>; <span class="comment">// 默认存在逆序对，会发生交换</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; arr.length - i - <span class="number">1</span>; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j + <span class="number">1</span>] &lt; arr[j]) &#123;</span><br><span class="line">                flag = <span class="keyword">false</span>;</span><br><span class="line">                temp = arr[j];</span><br><span class="line">                arr[j] = arr[j + <span class="number">1</span>];</span><br><span class="line">                arr[j + <span class="number">1</span>] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (flag) </span><br><span class="line">            <span class="keyword">break</span>; <span class="comment">//如果全部顺序就提前结束外循环</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h2><p>每一步找出未排序序列中的最小值</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] SelectionSort(<span class="keyword">int</span>[] sourceArray)&#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr.length; i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> argmin = i;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &lt; arr.length; j++)&#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[argmin])&#123;</span><br><span class="line">                argmin = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> temp = arr[i];</span><br><span class="line">        arr[i] = arr[argmin];</span><br><span class="line">        arr[argmin] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h2><p>把下一个元素插入到有序序列的合适位置</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] InsertSort(<span class="keyword">int</span>[] sourceArray)&#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; arr.length; i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> j = i;</span><br><span class="line">        <span class="keyword">int</span> temp = arr[i];</span><br><span class="line">        <span class="keyword">while</span> (j - <span class="number">1</span> &gt;= <span class="number">0</span> &amp;&amp; arr[j - <span class="number">1</span>] &gt; temp)&#123;</span><br><span class="line">            arr[j] = arr[j-<span class="number">1</span>];</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line">        arr[j] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h2><p>优化版的插入排序</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] ShellSort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> gap = arr.length &gt;&gt; <span class="number">1</span>; gap &gt;= <span class="number">1</span>; gap &gt;&gt;= <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = gap; i &lt; arr.length; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> temp = arr[i];</span><br><span class="line">            <span class="keyword">int</span> j = i;</span><br><span class="line">            <span class="keyword">while</span> (j - gap &gt;= <span class="number">0</span> &amp;&amp; arr[j - gap] &gt; temp) &#123;</span><br><span class="line">                arr[j] = arr[j - gap];</span><br><span class="line">                j -= gap;</span><br><span class="line">            &#125;</span><br><span class="line">            arr[j] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h2><p>递归，如果用原位迭代空间复杂度为o(1)但时间复杂度到o(n2)</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] MergeSort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (arr.length &lt; <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> middle = arr.length &gt;&gt; <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span>[] left = Arrays.copyOfRange(arr, <span class="number">0</span>, middle);</span><br><span class="line">    <span class="keyword">int</span>[] right = Arrays.copyOfRange(arr, middle, arr.length);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> merge(MergeSort(left), MergeSort(right));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span>[] merge(<span class="keyword">int</span>[] left, <span class="keyword">int</span>[] right) &#123;<span class="comment">// 两个有序序列</span></span><br><span class="line">    <span class="keyword">int</span>[] result = <span class="keyword">new</span> <span class="keyword">int</span>[left.length + right.length];</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (left.length &gt; <span class="number">0</span> &amp;&amp; right.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (left[<span class="number">0</span>] &lt;= right[<span class="number">0</span>]) &#123;</span><br><span class="line">            result[i] = left[<span class="number">0</span>];</span><br><span class="line">            i++;</span><br><span class="line">            left = Arrays.copyOfRange(left, <span class="number">1</span>, left.length);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            result[i] = right[<span class="number">0</span>];</span><br><span class="line">            i++;</span><br><span class="line">            right = Arrays.copyOfRange(right, <span class="number">1</span>, right.length);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (left.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        result[i] = left[<span class="number">0</span>];</span><br><span class="line">        i++;</span><br><span class="line">        left = Arrays.copyOfRange(left, <span class="number">1</span>, left.length);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (right.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        result[i] = right[<span class="number">0</span>];</span><br><span class="line">        i++;</span><br><span class="line">        right = Arrays.copyOfRange(right, <span class="number">1</span>, right.length);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><ul>
-<li>快速排序是对冒泡排序的一种改进。</li>
-<li>时间复杂度并不固定，如果在最坏情况下（元素刚好是反向的）速度比较慢，达到 O(n^2)（和选择排序一个效率），但是如果在比较理想的情况下时间复杂度 O(nlogn)。</li>
-</ul>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/D67peceibeISwc3aGibUlvZ0XqVnbWtBRiaAY3VU8iaziaYcxAasTdrIu69BOVPYtfvqdvicmlJDS94cG2tjwZhVkdHA/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1" alt="QuickSort"></p>
-<ul>
-<li>从数列中挑出一个元素，称为 “基准”（pivot）;</li>
-<li>重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。</li>
-<li>如果基准值<code>pivot</code>在最左，从<code>i=index=pivot+1</code>开始，每次遇到比<code>arr[index]</code>小的元素，就<code>swap(arr, i, index); index++</code>。<code>index</code>记录分隔符向右移动的情况，但此时pivot的位置还未改变，直到最后再<code>swap(arr), pivot, index-1</code>。</li>
-<li>在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区（partition）操作；</li>
-<li>递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序；</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] QuickSort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">        <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">        <span class="keyword">return</span> quicksort(arr, <span class="number">0</span>, arr.length - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span>[] quicksort(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> left, <span class="keyword">int</span> right) &#123;</span><br><span class="line">    <span class="keyword">if</span> (left &lt; right) &#123; <span class="comment">// 约束，防止partitionIndex到0</span></span><br><span class="line">        <span class="keyword">int</span> partitionIndex = partition(arr, left, right); <span class="comment">// partition实际执行排序操作</span></span><br><span class="line">        quicksort(arr, left, partitionIndex - <span class="number">1</span>); <span class="comment">// 不含中间</span></span><br><span class="line">        quicksort(arr, partitionIndex + <span class="number">1</span>, right);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// partition方法对arr进行修改</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">partition</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> pivot = left;</span><br><span class="line">    <span class="keyword">int</span> index = pivot + <span class="number">1</span>; <span class="comment">// 从左端开始</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = index; i &lt;= right; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (arr[i] &lt; arr[pivot]) &#123;</span><br><span class="line">            swap(arr, i, index); <span class="comment">// pivot右边一位作为index不断地和后续比arr[pivot]小的元素交换位置，</span></span><br><span class="line">            index++; <span class="comment">// index位向右挪</span></span><br><span class="line">            <span class="comment">// 最终pivot往右直到index-1都是小于基准的，再把pivot放到中间位置index-1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    swap(arr, pivot, index - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> index - <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp = arr[i];</span><br><span class="line">    arr[i] = arr[j];</span><br><span class="line">    arr[j] = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h2><ul>
-<li>堆：相较于完全二叉树，所有父节点的值大于（小于）子节点</li>
-<li>最大堆的最大元素值出现在根结点（堆顶）</li>
-<li>稳定性：不稳定</li>
-<li>完全二叉树、二叉堆属于数据结构。</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">heapify</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> i, <span class="keyword">int</span> len)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">2</span> * i + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> right = <span class="number">2</span> * i + <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">int</span> largest = i;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (left &lt; len &amp;&amp; arr[left] &gt; arr[largest] )&#123; <span class="comment">//注意次序，先判断index</span></span><br><span class="line">        largest = left;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (right &lt; len &amp;&amp; arr[right] &gt; arr[largest])&#123;</span><br><span class="line">        largest = right;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (i &lt; largest)&#123;</span><br><span class="line">        swap(arr, i, largest);</span><br><span class="line">        heapify(arr, largest, len);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">buildMaxHeap</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> len)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = len &gt;&gt; <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)&#123; <span class="comment">//i &gt;= 0</span></span><br><span class="line">        heapify(arr, i, len);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span>[] heapSort(<span class="keyword">int</span>[] sourceArray)&#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">    <span class="keyword">int</span> len = arr.length;</span><br><span class="line"></span><br><span class="line">    buildMaxHeap(arr, len);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = len - <span class="number">1</span>; i &gt; <span class="number">0</span>; i--)&#123;</span><br><span class="line">        swap(arr, <span class="number">0</span>, i); <span class="comment">// 右下子节点和根节点交换，根节点最大值放到最后</span></span><br><span class="line">        len--;</span><br><span class="line">        heapify(arr, <span class="number">0</span>, len); <span class="comment">//调整堆</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp = arr[i];</span><br><span class="line">    arr[i] = arr[j];</span><br><span class="line">    arr[j] = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">int</span>[] CountingSort(<span class="keyword">int</span>[] sourceArray)&#123;</span><br><span class="line">        <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">        <span class="keyword">return</span> (countingsort(arr, getMaxValue(arr)));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span>[] countingsort(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> maxValue)&#123;</span><br><span class="line">    <span class="keyword">int</span> bucketlen = maxValue + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span>[] bucketarr = <span class="keyword">new</span> <span class="keyword">int</span>[bucketlen];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> value: arr)&#123;</span><br><span class="line">        bucketarr[value] ++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> sortedIndex = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; bucketlen; i++)&#123; <span class="comment">// i &lt; bucketlen</span></span><br><span class="line">        <span class="keyword">while</span> (bucketarr[i]&gt;<span class="number">0</span>)&#123;</span><br><span class="line">            arr[sortedIndex++] = i;</span><br><span class="line">            bucketarr[i]--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getMaxValue</span><span class="params">(<span class="keyword">int</span>[] arr)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> maxValue = arr[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; arr.length; i++)&#123;</span><br><span class="line">        maxValue = arr[i] &gt; maxValue ? arr[i] : maxValue;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> maxValue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="桶排序"><a href="#桶排序" class="headerlink" title="桶排序"></a>桶排序</h2><p><img src="https://mmbiz.qpic.cn/mmbiz_gif/D67peceibeISwc3aGibUlvZ0XqVnbWtBRia0umOurgFRv8ESYzcK6bXknufLgJGLaiaTrDTXUk09R6ia2DhbCPAJx0A/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1" alt="BucketSort"></p>
-<ul>
-<li>设置固定数量的空桶。</li>
-<li>把数据放到对应的桶中</li>
-<li>对每个不为空的桶中数据进行排序</li>
-<li>拼接不为空的桶中数据，得到结果</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BucketSort</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] a = &#123; <span class="number">9</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span> &#125;;</span><br><span class="line">        System.out.println(Arrays.toString(sort(a)));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">        <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">        <span class="keyword">return</span> bucketSort(arr, <span class="number">5</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//桶排序主体部分 </span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] bucketSort(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> bucketSize) &#123;</span><br><span class="line">        <span class="keyword">if</span> (arr.length == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> arr;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> maxValue = arr[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">int</span> minValue = arr[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> value : arr) &#123;</span><br><span class="line">            maxValue = value &gt; maxValue ? value : maxValue;</span><br><span class="line">            minValue = value &lt; minValue ? value : minValue;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> bucketCount = (<span class="keyword">int</span>) Math.floor((maxValue - minValue) / bucketSize) + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span>[][] buckets = <span class="keyword">new</span> <span class="keyword">int</span>[bucketCount][<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> value : arr) &#123;</span><br><span class="line">            <span class="keyword">int</span> bucketIndex = (<span class="keyword">int</span>) Math.floor((value - minValue) / bucketSize);</span><br><span class="line">            buckets[bucketIndex] = arrayAppend(buckets[bucketIndex], value);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> sortedIndex = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; bucketCount; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (buckets[i].length == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">int</span>[] bucket = buckets[i];</span><br><span class="line">            bucket = InsertSort(bucket);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; bucket.length; j++) &#123;</span><br><span class="line">                arr[sortedIndex++] = bucket[j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 每个桶内部用到插入排序</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] InsertSort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">        <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> j = i;</span><br><span class="line">            <span class="keyword">int</span> temp = arr[j];</span><br><span class="line">            <span class="keyword">while</span> (j &gt; <span class="number">0</span> &amp;&amp; arr[j - <span class="number">1</span>] &gt; temp) &#123;</span><br><span class="line">                arr[j] = arr[j - <span class="number">1</span>];</span><br><span class="line">                j--;</span><br><span class="line">            &#125;</span><br><span class="line">            arr[j] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> temp = arr[a];</span><br><span class="line">        arr[a] = arr[b];</span><br><span class="line">        arr[b] = temp;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// array扩容</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] arrayAppend(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> a) &#123;</span><br><span class="line">        arr = Arrays.copyOf(arr, arr.length + <span class="number">1</span>);</span><br><span class="line">        arr[arr.length - <span class="number">1</span>] = a;</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="基数排序"><a href="#基数排序" class="headerlink" title="基数排序"></a>基数排序</h2><ul>
-<li>首先通过<code>getMaxValue</code>方法得出最大数</li>
-<li>通过<code>getDigitCount</code>方法得出最大数的数位数，也就是全arr的最大digits数</li>
-<li><code>getDigitValue</code>方法可以给出给定数的某数位的值</li>
-<li>从低位（个位）开始，新建0-9十个空桶，按照arr中每个数的个位放入桶中，然后再依次放回到arr中</li>
-<li>再进入下一位，新建十个空桶，重复操作</li>
-<li>直到遍历MaxDigit</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RadixSort</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">        <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">        <span class="keyword">int</span> maxDigit = getMaxDigit(arr);</span><br><span class="line">        <span class="keyword">return</span> radixSort(arr, maxDigit);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] radixSort(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> maxDigit) &#123;</span><br><span class="line">        <span class="comment">// 从个位比较开始数位 (低位)</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; maxDigit; i++) &#123;</span><br><span class="line">            <span class="comment">// 每次比较数位时初始化新的10个空桶</span></span><br><span class="line">            <span class="keyword">int</span>[][] buckets = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>][<span class="number">0</span>]; <span class="comment">// 0-9, 10 buckets, each store several values;</span></span><br><span class="line">            <span class="comment">// arr的值进入10个桶</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> value : arr) &#123;</span><br><span class="line">                buckets[getDigitValue(value, i)] = arrayAppend(buckets[getDigitValue(value, i)], value);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 从桶中把值拿出来放回arr</span></span><br><span class="line">            <span class="keyword">int</span> sortedIndex = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">10</span>; j++) &#123;</span><br><span class="line">                <span class="comment">// System.out.printf(&quot;buckets[%d]: %s&quot;, j, Arrays.toString(buckets[j]));</span></span><br><span class="line">                <span class="keyword">if</span> (buckets[j].length == <span class="number">0</span>)</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> value : buckets[j]) &#123;</span><br><span class="line">                    arr[sortedIndex++] = value;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 个位为第0位</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getDigitValue</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> digit)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> digitCount = getDigitCount(a);</span><br><span class="line">        <span class="keyword">if</span> (digit &gt; digitCount - <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; digit; i++) &#123;</span><br><span class="line">            a /= <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> a % <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getMaxDigit</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> maxValue = getMaxValue(arr);</span><br><span class="line">        <span class="keyword">return</span> getDigitCount(maxValue);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getDigitCount</span><span class="params">(<span class="keyword">int</span> a)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> digitCount = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (a &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            a /= <span class="number">10</span>;</span><br><span class="line">            digitCount++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> digitCount;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getMaxValue</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> maxValue = arr[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> value : arr) &#123;</span><br><span class="line">            maxValue = value &gt; maxValue ? value : maxValue;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> maxValue;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] arrayAppend(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> a) &#123;</span><br><span class="line">        arr = Arrays.copyOf(arr, arr.length + <span class="number">1</span>);</span><br><span class="line">        arr[arr.length - <span class="number">1</span>] = a;</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] a = &#123; <span class="number">9</span>, <span class="number">28</span>, <span class="number">7</span>, <span class="number">345</span>, <span class="number">579</span>, <span class="number">42</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">101</span> &#125;;</span><br><span class="line">        System.out.println(Arrays.toString(sort(a)));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Java数据结构与算法</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
+        <tag>Oliver Wyman</tag>
       </tags>
   </entry>
   <entry>
@@ -551,41 +397,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2020/08/20/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>Uber盈利和经营策略研究</title>
-    <url>/2020/08/22/ResearchOnUber/</url>
-    <content><![CDATA[<h3 id="提要"><a href="#提要" class="headerlink" title="提要"></a>提要</h3><p>这是 DROM8110 Business Analytics Strategy 的最终报告，运用了 Contributed Value Analysis / Sustainability Analysis 等框架，分析了 Uber 的主营业务——叫车(Ride-Hailing) 的商业模型、盈利前景和可行策略。</p>
-<h3 id="其他作者"><a href="#其他作者" class="headerlink" title="其他作者:"></a>其他作者:</h3><ul>
-<li>RUOMING GU (<a href="mailto:&#114;&#103;&#51;&#x32;&#54;&#x36;&#x40;&#99;&#111;&#108;&#117;&#x6d;&#x62;&#x69;&#x61;&#x2e;&#101;&#x64;&#x75;">&#114;&#103;&#51;&#x32;&#54;&#x36;&#x40;&#99;&#111;&#108;&#117;&#x6d;&#x62;&#x69;&#x61;&#x2e;&#101;&#x64;&#x75;</a>) </li>
-<li>YUXIN ZHANG (<a href="mailto:&#121;&#122;&#x33;&#55;&#x31;&#56;&#64;&#x63;&#x6f;&#108;&#x75;&#x6d;&#x62;&#x69;&#x61;&#x2e;&#101;&#100;&#x75;">&#121;&#122;&#x33;&#55;&#x31;&#56;&#64;&#x63;&#x6f;&#108;&#x75;&#x6d;&#x62;&#x69;&#x61;&#x2e;&#101;&#100;&#x75;</a>) </li>
-</ul>
-<h3 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h3><div class="pdfobject-container" data-target="./BAS_FINAL_YAO.pdf" data-height="1000px"></div> 
-]]></content>
-      <categories>
-        <category>报告</category>
-      </categories>
-      <tags>
-        <tag>Business Analytics Strategy</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CS224N-Lec15</title>
     <url>/2020/08/24/CS224N-Lec15/</url>
     <content><![CDATA[<h1 id="Natural-Language-Generation"><a href="#Natural-Language-Generation" class="headerlink" title="Natural Language Generation"></a>Natural Language Generation</h1><h2 id="NLG"><a href="#NLG" class="headerlink" title="NLG"></a>NLG</h2><ul>
@@ -762,102 +573,291 @@
       </tags>
   </entry>
   <entry>
-    <title>8/27OW分享会记录</title>
-    <url>/2020/08/29/8-27%E5%88%86%E4%BA%AB%E4%BC%9A%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<h2 id="Basic-Info"><a href="#Basic-Info" class="headerlink" title="Basic Info"></a>Basic Info</h2><p>Offices:<br>    BJ, SH, HK.</p>
-<p>技能点：</p>
-<ul>
-<li>Big data</li>
-<li>data mining</li>
-<li>machine learning</li>
-<li>analytical problem solving</li>
-<li>co-creation</li>
-<li>design thinking</li>
-<li>change enablement</li>
-<li>people effectiveness</li>
+    <title>Uber盈利和经营策略研究</title>
+    <url>/2020/08/22/ResearchOnUber/</url>
+    <content><![CDATA[<h3 id="提要"><a href="#提要" class="headerlink" title="提要"></a>提要</h3><p>这是 DROM8110 Business Analytics Strategy 的最终报告，运用了 Contributed Value Analysis / Sustainability Analysis 等框架，分析了 Uber 的主营业务——叫车(Ride-Hailing) 的商业模型、盈利前景和可行策略。</p>
+<h3 id="其他作者"><a href="#其他作者" class="headerlink" title="其他作者:"></a>其他作者:</h3><ul>
+<li>RUOMING GU (<a href="mailto:&#114;&#103;&#51;&#x32;&#54;&#54;&#x40;&#x63;&#x6f;&#x6c;&#x75;&#109;&#98;&#x69;&#97;&#46;&#101;&#x64;&#x75;">&#114;&#103;&#51;&#x32;&#54;&#54;&#x40;&#x63;&#x6f;&#x6c;&#x75;&#109;&#98;&#x69;&#97;&#46;&#101;&#x64;&#x75;</a>) </li>
+<li>YUXIN ZHANG (<a href="mailto:&#x79;&#122;&#51;&#55;&#49;&#56;&#x40;&#99;&#111;&#x6c;&#x75;&#109;&#98;&#x69;&#97;&#x2e;&#101;&#x64;&#117;">&#x79;&#122;&#51;&#55;&#49;&#56;&#x40;&#99;&#111;&#x6c;&#x75;&#109;&#98;&#x69;&#97;&#x2e;&#101;&#x64;&#117;</a>) </li>
 </ul>
-<p>发展路径:<br>    前三年跨行业</p>
-<h2 id="Project-span-industries-and-capabilities"><a href="#Project-span-industries-and-capabilities" class="headerlink" title="Project span industries and capabilities"></a>Project span industries and capabilities</h2><p>行业：健康， 消费者工业和服务（教育 房地产）， 金融服务<br><img src="/source/_posts%5C8-27%E5%88%86%E4%BA%AB%E4%BC%9A%E8%AE%B0%E5%BD%95%5Cspan.jpg" alt="Image"><br>横向：不同division和三大类<br>纵向：不同行业</p>
-<h2 id="Recruiting"><a href="#Recruiting" class="headerlink" title="Recruiting"></a>Recruiting</h2><p>digital interview: Oct 14, first round interview Oct 25, final round Oct 30.<br><img src="/source/_posts%5C8-27%E5%88%86%E4%BA%AB%E4%BC%9A%E8%AE%B0%E5%BD%95%5Crecruitinginfo.jpg" alt="Image"></p>
-<h2 id="Breakout-room-Life-as-a-new-consultant-Digital-Q-amp-A"><a href="#Breakout-room-Life-as-a-new-consultant-Digital-Q-amp-A" class="headerlink" title="Breakout room (Life as a new consultant + Digital), Q&amp;A"></a>Breakout room (Life as a new consultant + Digital), Q&amp;A</h2><p><img src="/source/_posts%5C8-27%E5%88%86%E4%BA%AB%E4%BC%9A%E8%AE%B0%E5%BD%95%5Cbreakoutrooms.jpg" alt="Image"></p>
-<h3 id="相对甲方战略咨询部的特点"><a href="#相对甲方战略咨询部的特点" class="headerlink" title="相对甲方战略咨询部的特点"></a>相对甲方战略咨询部的特点</h3><ol>
-<li><p>行业选择</p>
-</li>
-<li><p>紧迫感，下一个30天、100天做什么</p>
-</li>
-<li><p>好的甲方的核心业务可能比咨询更优，因为有经验积淀</p>
-</li>
-<li><p>大厂有丰富的大数据</p>
-</li>
-<li><p>乙方咨询还有换赛道的机会，甲方从零开始</p>
-</li>
-<li><p>OW的Know:知识库 即插即用</p>
-</li>
-<li><p>甲方：战略部 -&gt; 策略部(市场策略)</p>
-</li>
-<li><p>咨询的生命周期可能是长期的，专注于商业本质，“无限游戏”</p>
-</li>
-<li><p>consultant和engineer合作更加紧密，有multinational的know平台，以及和客户ceo之类有很好的关系和实施的渠道</p>
-</li>
-</ol>
-<h3 id="简要介绍不同的digital-transformation"><a href="#简要介绍不同的digital-transformation" class="headerlink" title="简要介绍不同的digital transformation"></a>简要介绍不同的digital transformation</h3><ol>
-<li>分行业分业务</li>
-<li>例如保险 搬到线上 高净值人群需要线下服务，其实不是对象，应当优化大部分普通客户的流程。</li>
-<li>digital products: 把社交媒体如微博的data变为insights，和客户一起探讨，确定客户在意的数据：例如被提到次数、提到内容、注意点。帮助识别emerging brand小众品牌，发现潜在competitors。</li>
-<li>data product(server)/data government，组织形式，和各个公司有关</li>
-<li>big data可以帮助做datadriven decision， 如促销机制，之前没有理论指导人为因素较大，利用大数据给出的解决方案包含数据分析和专家访谈，确定更换促销机制的周期以及更细致的客户targeting</li>
-<li>总而言之可以高层次爷可接地气</li>
-</ol>
-<h3 id="需要编程技能"><a href="#需要编程技能" class="headerlink" title="需要编程技能"></a>需要编程技能</h3><ol>
-<li>DE/DS/DC，DC除了技能还需要理解<strong>Business Implementation</strong></li>
-<li>python必需，还要高效使用package；SQL可以现学</li>
-<li>需要学过BA课程， 熟悉pandas/matplotlib等，可以看一些互联网PM的书籍，了解如何分析客户和产品，获得Business Insights</li>
-<li><strong>Business implementation 不只是向客户摆事实，而应该告诉客户做什么，例如上新品类，好处的量化</strong></li>
-</ol>
-<h3 id="Digital的发展路径"><a href="#Digital的发展路径" class="headerlink" title="Digital的发展路径"></a>Digital的发展路径</h3><p>不是纵向而是横向，不局限于某个行业，和Operations/Strategy平行</p>
-<h3 id="如果Business-Implementation的阶段性成果未达到预期，OW的数字化转型团队有没有调整的机制和经验"><a href="#如果Business-Implementation的阶段性成果未达到预期，OW的数字化转型团队有没有调整的机制和经验" class="headerlink" title="如果Business Implementation的阶段性成果未达到预期，OW的数字化转型团队有没有调整的机制和经验"></a>如果Business Implementation的阶段性成果未达到预期，OW的数字化转型团队有没有调整的机制和经验</h3><ol>
-<li>举例: dashboard 的设计调整到更加 user-friendly</li>
-<li>说明: 并非一个数字化团队，而是负责数字化的人员一起加入某项目。并非强调准确率，而是“赋能”，有很多qualitative的分析。有时引入新的方法或者数据量不够quant</li>
-<li>不是做数据竞赛或做数据框架，而是服务于ceo的模糊想法，是一个工作方向而不是具体地帮助提高销量到某一个值</li>
-<li>比如零售商想了解品牌商的想法，而咨询和品牌商有一定合作，可以提供信息</li>
-</ol>
-<h3 id="new-consultant的经验"><a href="#new-consultant的经验" class="headerlink" title="new consultant的经验"></a>new consultant的经验</h3><ol>
-<li>首先理解任务和clarify</li>
-<li>时间紧</li>
-<li>汇报要抓重点，不要interesting facts，而是business insights</li>
-</ol>
-<h3 id="如何知识点成系统"><a href="#如何知识点成系统" class="headerlink" title="如何知识点成系统"></a>如何知识点成系统</h3><ol>
-<li>例如研究券商的core trade system</li>
-<li>expert call,… 有自己的view，并逐渐完善， 除非manager带过类似项目</li>
-<li>manager可以quick learning，需要学习这样的能力</li>
-<li>项目完成后需要复盘</li>
-</ol>
-<h3 id="面试经历"><a href="#面试经历" class="headerlink" title="面试经历"></a>面试经历</h3><ol>
-<li>第一轮笔试，数学题之类</li>
-<li>读casebook， 做presentation</li>
-<li>manager面 + 面， 两个digital问题</li>
-<li><strong>怎么用ml帮netflix提升revenue？？</strong> 应用哪些方面？为什么？多久能达成结果？</li>
-</ol>
-<h3 id="fast-promotion"><a href="#fast-promotion" class="headerlink" title="fast-promotion"></a>fast-promotion</h3><ol>
-<li>critical thinking, ownership</li>
-<li>communication!!! upward and downward对上和对下</li>
-<li>接受变化，疫情后医疗更多，很多公司询问疫情影响</li>
-<li>学research，学写邮件，善于观察: 别的人怎么做？<ul>
-<li>写title方便locate subproject title</li>
-<li>keyfinding 1 2 3, 然后细节定位</li>
-<li>最后提需要review回复的时间，方便对方暂时搁置</li>
-</ul>
-</li>
-<li>为上级考虑，节省上级时间</li>
-<li>例如至少code不能有bug</li>
-<li>组织events，增加曝光度 (120个同事)，建立工作之外关系</li>
-</ol>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文:"></a>正文:</h3><div class="pdfobject-container" data-target="./BAS_FINAL_YAO.pdf" data-height="1000px"></div> 
 ]]></content>
       <categories>
-        <category>文章</category>
+        <category>报告</category>
       </categories>
       <tags>
-        <tag>Oliver Wyman</tag>
+        <tag>Business Analytics Strategy</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo+GitHubio</title>
+    <url>/2020/08/20/My-New-Post/</url>
+    <content><![CDATA[<h2 id="Weblink"><a href="#Weblink" class="headerlink" title="Weblink:"></a>Weblink:</h2><p>知乎专栏<a href="https://zhuanlan.zhihu.com/p/26625249">https://zhuanlan.zhihu.com/p/26625249</a>;<br>大卫博客<a href="https://univeryinli.github.io/about">https://univeryinli.github.io/about</a></p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo -g <span class="comment">#安装Hexo</span></span><br><span class="line">npm update hexo -g <span class="comment">#升级</span></span><br><span class="line">hexo init <span class="comment">#初始化博客</span></span><br></pre></td></tr></table></figure>
+<h3 id="命令简写"><a href="#命令简写" class="headerlink" title="命令简写"></a>命令简写</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo n &quot;我的博客&quot; &#x3D;&#x3D; hexo new &quot;我的博客&quot; #新建文章</span><br><span class="line">hexo g &#x3D;&#x3D; hexo generate #生成</span><br><span class="line">hexo s &#x3D;&#x3D; hexo server #启动服务预览</span><br><span class="line">hexo d &#x3D;&#x3D; hexo deploy #部署</span><br><span class="line"></span><br><span class="line">hexo server #Hexo会监视文件变动并自动更新，无须重启服务器</span><br><span class="line">hexo server -s #静态模式</span><br><span class="line">hexo server -p 5000 #更改端口</span><br><span class="line">hexo server -i 192.168.1.1 #自定义 IP</span><br><span class="line">hexo clean #清除缓存，若是网页正常情况下可以忽略这条命令</span><br><span class="line"></span><br><span class="line">刚刚的三个命令依次是新建一篇博客文章、生成网页、在本地预览的操作</span><br></pre></td></tr></table></figure>
+
+<h3 id="推送网站"><a href="#推送网站" class="headerlink" title="推送网站"></a><strong>推送网站</strong></h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim _config.yml;</span><br><span class="line">    deploy:</span><br><span class="line">    type: git</span><br><span class="line">    repo: 这里填入你之前在GitHub上创建仓库的完整路径，记得加上 .git</span><br><span class="line">    branch: master</span><br><span class="line"></span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line">hexo clean </span><br><span class="line">hexo g </span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<h3 id="next-主题"><a href="#next-主题" class="headerlink" title="next 主题"></a>next 主题</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置next"><a href="#配置next" class="headerlink" title="配置next"></a>配置next</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> themes/next</span><br><span class="line">vim _config.yml</span><br></pre></td></tr></table></figure>
+
+<h4 id="新建about页"><a href="#新建about页" class="headerlink" title="新建about页"></a>新建about页</h4><p>编辑<code>source/about/index.md</code>, 进入<code>themes/next/_config.yml</code>, </p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-user</span></span><br></pre></td></tr></table></figure>
+<p>再生成部署。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>CS224NA5</title>
+    <url>/2020/08/20/CS224NA5/</url>
+    <content><![CDATA[<h1 id="CS224N-Assignment-5"><a href="#CS224N-Assignment-5" class="headerlink" title="CS224N Assignment #5"></a>CS224N Assignment #5</h1><p>(7.20)增加 Pylance 插件作为语言服务器. 打开 type checking mode(basic).</p>
+<h2 id="文字题"><a href="#文字题" class="headerlink" title="文字题"></a>文字题</h2><ul>
+<li><p>(a) We learned in class that recurrent neural architectures can operate over variable length input (i.e., the shape of the model parameters is independent of the length of the input sentence). Is the same true of convolutional architectures? Write one sentence to explain why or why not.</p>
+<p>window t ∈ {1, . . . , mword − k + 1}，<br>mword 即最长单词的长度可变，<br>xconv ∈ R^(eword×(mword−k+1))</p>
+</li>
+<li><p>(b)…if we use the kernel size k = 5, what will be the size of the padding (i.e. the additional number of zeros on each side) we need for the 1-dimensional convolution, such that there exists at least one window for all possible values of mword in our dataset?</p>
+<p>极端情况 mword=1， 前后各 1 个 token，还需 padding=1.</p>
+</li>
+<li><p>(c) In step 4, we introduce a Highway Network with <code>xhighway = xgate xproj + (1 − xgate) xconv out</code>. Since xgate is the result of the sigmoid function, it has the range (0, 1).Consider the two extreme cases. If xgate → 0, then xhighway → xconv out. When xgate → 1, then xhighway → xproj. This means the Highway layer is smoothly varying its behavior between that of normal linear layer (xproj) and that of a layer which simply passes its inputs (xconv out) through. Use one or two sentences to explain why this behavior is useful in character embeddings. Based on the definition of <code>xgate = σ(Wgatexconv out + bgate)</code>, do you think it is better to initialize bgate to be negative or positive? Explain your reason briefly.<br>原因： 所谓的 highway， x_gate=0 可以直接用 x_convout 的值。</p>
+<p>希望默认 x_gate 较小方便 highway，所以 b 取负。</p>
+</li>
+<li><p>(d) In Lecture 10, we briefly introduced Transformers, a non-recurrent sequence<br>(or sequence-to-sequence) model with a sequence of attention-based transformer blocks. Describe 2 advantages of a Transformer encoder over the LSTM-with-attention encoder in our NMT model</p>
+<p>可以看一下 &lt;<Attention is all you need>&gt;：<br>“Self-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a representation of the sequence.”<br>每一步都是句子里的所有单词之间建立联系。<br>主要用到三个矩阵 Key, Query, value, <code>Attention(Q,K,V) = softmax(QK.T/\sqrt(d_k))V</code><br>(包学包会，这些动图和代码让你一次读懂「自注意力」 - 机器之心的文章 - 知乎 <a href="https://zhuanlan.zhihu.com/p/96492170">https://zhuanlan.zhihu.com/p/96492170</a>)</p>
+</li>
+</ul>
+<pre><code>attention-based transformers的好处（P6 的 Part 4， Why self-attention）：
+
+未采用RNN就可以避免梯度消失和梯度爆炸等问题,
+从sequential computation 到实现parallelized computation,
+更易学习到&quot;long-range dependencies in the network&quot;,
+更加interpretable.</code></pre>
+<h1 id="1-Character-based-convolutional-encoder-for-NMT-36-points"><a href="#1-Character-based-convolutional-encoder-for-NMT-36-points" class="headerlink" title="1. Character-based convolutional encoder for NMT (36 points)"></a>1. Character-based convolutional encoder for NMT (36 points)</h1><h2 id="Vocab-py"><a href="#Vocab-py" class="headerlink" title="Vocab.py"></a>Vocab.py</h2><ol>
+<li>这种写法很巧妙·</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i, c <span class="keyword">in</span> enumerate(self.char_list):</span><br><span class="line">    self.char2id[c] = len(self.char2id)</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>组合用法，类似 zip+enumerate</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line">word_freq = Counter(chain(\*corpus))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用字典辅助排序</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">valid_words = [w <span class="keyword">for</span> w, v <span class="keyword">in</span> word_freq.items() <span class="keyword">if</span> v &gt;= freq_cutoff]</span><br><span class="line">top_k_words = sorted(valid_words, key=<span class="keyword">lambda</span> w: word_freq[w], reverse=<span class="literal">True</span>[:size]</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>用到了<code>json.dump</code>，Vocab 也用此形式存储。</p>
+<h2 id="e-Implement-to-input-tensor-char-in-vocab-py"><a href="#e-Implement-to-input-tensor-char-in-vocab-py" class="headerlink" title="(e) Implement to_input_tensor_char() in vocab.py"></a>(e) Implement <code>to_input_tensor_char()</code> in <code>vocab.py</code></h2><p>字母 ∏ Û python 执行有问题，改成<code>&lt;pad&gt;</code>, <code>&lt;unk&gt;</code>。</p>
+<h2 id="f-highway"><a href="#f-highway" class="headerlink" title="(f) highway"></a>(f) highway</h2><p>要求写一个 sanity_check, (f)本身实现很简单，只是一步处理，所以检查一下前后维度就可以。</p>
+<h2 id="g-cnn-py-CNN"><a href="#g-cnn-py-CNN" class="headerlink" title="(g) cnn.py, CNN"></a>(g) cnn.py, CNN</h2><p>输入(sentence_length, batch_size, e_char, m_word)，前两维不动，对每个词 conv 完，后两维应该是 f 和窗口数，再经过 maxpool 所有窗口， 输出是(sentence_length, batch_size, f)<br>torch 需要使用.contiguous().view(),因为 view 只能作用在 contiguous 的变量上<br>比较关键的一步。<br><strong>07/25 更新</strong>：<br>果然后面还是出问题了。m_word 是 forward 函数中参数 x_reshaped 的维度属性，如果使用 max_pool layer，一开始并不知道输入的参数 m_word 是多少。所以不应该用 maxpool 层（因为不能对一个多维 tensor 的某一维更新），<br>而应该在 forward 函数里直接调用 torch.max(dim=2)</p>
+<h2 id="h-Model-Embeddings"><a href="#h-Model-Embeddings" class="headerlink" title="(h) Model_Embeddings."></a>(h) Model_Embeddings.</h2><p>一个问题是 f=e_word, e_word 和 e_char 的关系到底如何？？<br>题目假设 e_char=50, e_word 是初始化 model_embeddings 的参数 word_embedding_size, 默认值 21。</p>
+<h2 id="j"><a href="#j" class="headerlink" title="(j)"></a>(j)</h2><p>wdnmd， vocab.py 里的 sents_var 总是空的，查了半天发现 utils.pad_sents 忘了粘贴。<br>nmt_model.py 中 step()函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> enc*masks <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    e_t.data.masked_fill*(enc_masks.bool(), -float(<span class="string">&#x27;inf&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>显示’Tensor’ object has no attribute ‘bool’<br>原因应该是 torch 版本较低<br>事实也确实如此，local*env.yml 显示 pytorch=1.0.0，a4 作业就没有限定版本，估计是助教忘了更新。<br>解决方案：改成</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">e_t.data.masked_fill*(enc_masks==<span class="number">1</span>, -float(<span class="string">&#x27;inf&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">epoch 100, iter 500, cum. loss 0.30, cum. ppl 1.01 cum. examples 200</span><br><span class="line">validation: iter 500, dev. ppl 1.001988</span><br><span class="line">Corpus BLEU: 99.66941696422141</span><br></pre></td></tr></table></figure>
+
+
+<p>达到题设要求。</p>
+<h1 id="2-Character-based-LSTM-decoder-for-NMT-26-points"><a href="#2-Character-based-LSTM-decoder-for-NMT-26-points" class="headerlink" title="2. Character-based LSTM decoder for NMT (26 points)"></a>2. Character-based LSTM decoder for NMT (26 points)</h1><h2 id="b"><a href="#b" class="headerlink" title="(b)"></a>(b)</h2><p>奇怪的点在于, char_decoder.py 中 train_forward 的 loss 计算，不 softmaxloss 才收敛。<br>题目要求仔细阅读 nn.CrossEntropyLoss，实际上 Pytorch 中 CrossEntropyLoss()函数将 softmax-log-NLLLoss 合并到一块。</p>
+<p><code>This criterion combines nn.LogSoftmax() and nn.NLLLoss() in one single class.</code><br>loss 0.38, Corpus BLEU: 99.66941696422141</p>
+<h2 id="c"><a href="#c" class="headerlink" title="(c)"></a>(c)</h2><p>这部分思路很清晰，用到了一些技巧，比如(tensor,tensor)的 elementwise 的提取，char 拼接成 word 等，详见代码</p>
+<h2 id="e"><a href="#e" class="headerlink" title="(e)"></a>(e)</h2><p>在 VM 上训练。<br>注意 run.sh 可以进行修改，使得 train_local 也可使用 cuda，提高效率。<br>仍然遇到了环境问题。 “RuntimeError: Given input size: (256x1x12). Calculated output size: (256x1x0). Output size is too small”<br>于是只能在 VM 上配一个和本地相同的（过时的）环境。问题解决。<br><strong>CNN.py 中存在问题，很久之前埋下的坑！！！</strong>：初始化时如果建立 maxpool 就需要提前知道 m_word 以确定 kernel_size。这个问题可以这样解决：避免 maxpool 层，在 forward 中使用 torch.max 函数，对某个维度进行 max。<br>对 cnn 和 sanity_check 都进行修改。由于默认使用了 sanitycheck 的值 m_word=21,实际上在写其他函数调用 CNN 类的时候没有定义 m_word 值，所以正好不需要改。<br>参考：Tessa Scott<a href="https://github.com/tessascott039/a5/blob/master/cnn.py">https://github.com/tessascott039/a5/blob/master/cnn.py</a></p>
+<p><a href="https://github.com/pytorch/pytorch/issues/4166">https://github.com/pytorch/pytorch/issues/4166</a><br><a href="https://stackoverflow.com/questions/56137869/is-it-possible-to-make-a-max-pooling-on-dynamic-length-sentences-without-padding">https://stackoverflow.com/questions/56137869/is-it-possible-to-make-a-max-pooling-on-dynamic-length-sentences-without-padding</a><br>探讨了 nn.MaxPool1d 能不能有一个动态的 kernel_size。</p>
+<p>train 的结果：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">epoch 29, iter 196300, avg. loss 81.60, avg. ppl 59.75 cum. examples 9600, speed 6086.86 words&#x2F;sec, time elapsed 20580.30 sec</span><br><span class="line">epoch 29, iter 196310, avg. loss 81.10, avg. ppl 50.14 cum. examples 9920, speed 6458.96 words&#x2F;sec, time elapsed 20581.33 sec</span><br><span class="line">epoch 29, iter 196320, avg. loss 78.58, avg. ppl 48.75 cum. examples 10240, speed 6548.57 words&#x2F;sec, time elapsed 20582.32 sec</span><br><span class="line">epoch 29, iter 196330, avg. loss 86.52, avg. ppl 61.24 cum. examples 10537, speed 6019.06 words&#x2F;sec, time elapsed 20583.36 sec</span><br><span class="line">test：Corpus BLEU: 36.395796664198</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-Analyzing-NMT-Systems-8-points"><a href="#3-Analyzing-NMT-Systems-8-points" class="headerlink" title="3. Analyzing NMT Systems (8 points)"></a>3. Analyzing NMT Systems (8 points)</h1><h2 id="a"><a href="#a" class="headerlink" title="(a)"></a>(a)</h2><p>用 linux 的 grep 命令查找字符串</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(base) hy2632_ubuntu20@DESKTOP-8LEIHPS:~&#x2F;cs224n&#x2F;a5_public\$ grep tradu vocab.json</span><br><span class="line">&quot;traduciendo&quot;: 17349,</span><br><span class="line">&quot;tradujera&quot;: 32719,</span><br><span class="line">&quot;traduccin&quot;: 4562,</span><br><span class="line">&quot;traduzco&quot;: 40154,</span><br><span class="line">&quot;traduzcan&quot;: 23440,</span><br><span class="line">&quot;traductores&quot;: 19447,</span><br><span class="line">&quot;traducir&quot;: 4565,</span><br><span class="line">&quot;traducciones&quot;: 12054,</span><br><span class="line">&quot;traductor&quot;: 11809,</span><br><span class="line">&quot;traducirse&quot;: 36917,</span><br><span class="line">&quot;traducen&quot;: 19640,</span><br><span class="line">&quot;tradujo&quot;: 25176,</span><br><span class="line">&quot;traducido&quot;: 8515,</span><br><span class="line">&quot;traducimos&quot;: 18251,</span><br><span class="line">&quot;traduce&quot;: 7821,</span><br><span class="line">&quot;traducidas&quot;: 20336,</span><br><span class="line">&quot;traduzca&quot;: 44710,</span><br><span class="line">&quot;traducirlo&quot;: 19205,</span><br><span class="line">&quot;traductora&quot;: 13071,</span><br><span class="line">&quot;traduje&quot;: 23103,</span><br><span class="line">&quot;traducirlas&quot;: 35543,</span><br><span class="line">&quot;traducida&quot;: 19350,</span><br></pre></td></tr></table></figure>
+
+<p>traduces, traduzcas not in.<br>如果是 word-based NMT，将 spanish 翻译为 english， 如果句子中出现 traduces 就会判断为<code>&lt;unk&gt;</code>， 无法翻译；但如果是 character-aware NMT，别的类似 traducir(to translate)的动词可能有类似的性质(加 s，从 I 变成 you)，同时又恰好出现在训练集中，那么模型在遇到 traduces 的 s 时就能翻译出 you translate。</p>
+<h2 id="b-1"><a href="#b-1" class="headerlink" title="(b)"></a>(b)</h2><ol>
+<li><p>回顾 Word2Vec。<a href="https://projector.tensorflow.org/">https://projector.tensorflow.org/</a> 可以查询 k-nearest words。</p>
+<p>Markdown 表格生成<a href="https://www.tablesgenerator.com/markdown_tables">https://www.tablesgenerator.com/markdown_tables</a></p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>word</th>
+<th>closest word</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>financial</td>
+<td>economics</td>
+</tr>
+<tr>
+<td>neuron</td>
+<td>nerve</td>
+</tr>
+<tr>
+<td>Francisco</td>
+<td>san</td>
+</tr>
+<tr>
+<td>naturally</td>
+<td>occurring</td>
+</tr>
+<tr>
+<td>expectation</td>
+<td>norms</td>
+</tr>
+</tbody></table>
+<ol start="2">
+<li>也可以上传自己的 character-aware NMT model 的 embeddings 查找 nearest neighbors.</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/hy2632/cs224n/master/a5_public/CS224n-A5-emb2-files/embedding_proj.jpg" alt="Image"></p>
+<table>
+<thead>
+<tr>
+<th>word</th>
+<th>closest word</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>financial</td>
+<td>vertical</td>
+</tr>
+<tr>
+<td>neuron</td>
+<td>Newton</td>
+</tr>
+<tr>
+<td>Francisco</td>
+<td>France</td>
+</tr>
+<tr>
+<td>naturally</td>
+<td>practically</td>
+</tr>
+<tr>
+<td>expectation</td>
+<td>exception</td>
+</tr>
+</tbody></table>
+<ol start="3">
+<li>分析 Word2Vec 和 CharCNN 的区别并解释。</li>
+</ol>
+<p>除了 naturally/practically 意思相近，CharCNN 的 embeddings 更多的还是按照字母组成（同时也包含一些 pos 和 ner）。Word2Vec 则更多地把握了词义的相似和关联性。原因就是模型本身。</p>
+<p>word2vec: skip-grams &amp; CBOW(contiguous bag of words)，给定上下文此预测缺失的中心词 c，概率分布 P(C|W)。因而相近的词都是有较大概率作为中心词被代替。</p>
+<p>CharCNN: 对某个单词的各个字母进行 charembedding，然后经过 CNN/Highway 等操作最后生成 wordembedding，较大程度上依赖于 charembedding，如果两个词有相同字母的 subset 则 wordembedding 可能相近。</p>
+<h2 id="c-1"><a href="#c-1" class="headerlink" title="(c)"></a>(c)</h2><p>(45)正确的例子：<br>| Category       |                                                                            |<br>| ————– | ————————————————————————– |<br>| ES             | A medida que se derrite un tmpano, estoy respirando su atmsfera ancestral. |<br>| Ref            | As an eardrum melts, I am breathing in its ancient atmosphere.             |<br>| A4 translation | As a <code>&lt;unk&gt;</code> <code>&lt;unk&gt;</code> I’m breathing its atmosphere <code>&lt;unk&gt;</code>                  |<br>| A5 translation | As it melts a iceberg, I’m breathing its ancestral atmosphere.             |</p>
+<p>tímpano，témpano 是同义词，但一个翻译为耳膜一个翻译为冰山。这里冰山显然更为合适。</p>
+<p>(85)错误的例子：<br>| Category       |                                                   |<br>| ————– | ————————————————- |<br>| ES             | Es el sndrome de insensibilidad a los andrgenos.  |<br>| Ref            | It is the syndrome of insensitivity to androgens. |<br>| A4 translation | It’s called <code>&lt;unk&gt;</code> <code>&lt;unk&gt;</code>                       |<br>| A5 translation | It’s the syndrome of insulin insulin.             |</p>
+<p>对于连续的<code>&lt;unk&gt;</code>，CharCNN 的表现并没有很好改善（重复出现的 insulin）。</p>
+]]></content>
+      <categories>
+        <category>CS224N作业笔记</category>
+      </categories>
+      <tags>
+        <tag>CS224N</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/08/20/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>十大排序算法</title>
+    <url>/2020/08/24/%E6%8E%92%E5%BA%8F/</url>
+    <content><![CDATA[<h1 id="链接："><a href="#链接：" class="headerlink" title="链接："></a>链接：</h1><p><a href="https://mp.weixin.qq.com/s?__biz=MzUyNjQxNjYyMg==&mid=2247484184&idx=1&sn=62965b401aa42107b3c17d1d8ea17454&chksm=fa0e6c99cd79e58f298e9026f677f912bd8c8e55edb48fc509b2b5834f05e529a9b47d59d202&scene=21#wechat_redirect">十大经典排序算法动画与解析，看我就够了！（配代码完全版）</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/52884590">视频 | 手撕九大经典排序算法，看我就够了！ - 力扣（LeetCode）的文章 - 知乎</a></p>
+<h1 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h1><p><img src="https://pic2.zhimg.com/v2-b9b0c6526d416d8e8e81916ac1dd63b8_b.jpg" alt="复杂度"></p>
+<!-- | Sorting Algorithm | Avg. Time | Best Case  | Worst Case | Space | Inplace | Stability |
+| ----------------- | --------- | ---------- | ---------- | ----- | ------- | --------- |
+| BubbleSort        | O(n2)     | O(n)       | O(n2)      | O(1)  | Y       | Y         |
+| SelectionSort     | O(n2)     | O(n2)      | O(n2)      | O(1)  | Y       | N         |
+| InsertSort        | O(n2)     | O(n)       | O(n)       | O(1)  | Y       | N         |
+| ShellSort         | O(nlogn)  | O(nlogn) |            | O(1)  | Y       | N         |
+| MergeSort         |           |            |            |       | N       |           |
+| QuickSort         |           |            |            |       |         |           |
+| HeapSort          |           |            |            |       |         |           |
+| CountingSort      |           |            |            |       | N       |           |
+| BucketSort        |           |            |            |       | N       |           |
+| RadixSort         |           |            |            |       | N       |           | -->
+
+<p><a href="https://www.zhihu.com/question/24516934/answer/28076722">很多高效排序算法的代价是 nlogn，难道这是排序算法的极限了吗？ - 曾加的回答 - 知乎</a></p>
+<h1 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h1><h2 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h2><p>基础版本：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> Java.util.Arrays;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] BubbleSort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">    <span class="keyword">int</span> temp;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; arr.length - i - <span class="number">1</span>; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j + <span class="number">1</span>] &lt; arr[j]) &#123;</span><br><span class="line">                temp = arr[j];</span><br><span class="line">                arr[j] = arr[j + <span class="number">1</span>];</span><br><span class="line">                arr[j + <span class="number">1</span>] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>优化版本：<br>    如果第<code>i</code>个循环，从第<code>0</code>个到第<code>arr.length-1-i</code>都顺序，则可以提前结束</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] BubbleSort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">    <span class="keyword">int</span> temp;</span><br><span class="line">    <span class="keyword">boolean</span> flag;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">        flag = <span class="keyword">true</span>; <span class="comment">// 默认存在逆序对，会发生交换</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; arr.length - i - <span class="number">1</span>; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j + <span class="number">1</span>] &lt; arr[j]) &#123;</span><br><span class="line">                flag = <span class="keyword">false</span>;</span><br><span class="line">                temp = arr[j];</span><br><span class="line">                arr[j] = arr[j + <span class="number">1</span>];</span><br><span class="line">                arr[j + <span class="number">1</span>] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (flag) </span><br><span class="line">            <span class="keyword">break</span>; <span class="comment">//如果全部顺序就提前结束外循环</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h2><p>每一步找出未排序序列中的最小值</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] SelectionSort(<span class="keyword">int</span>[] sourceArray)&#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr.length; i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> argmin = i;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &lt; arr.length; j++)&#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[argmin])&#123;</span><br><span class="line">                argmin = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> temp = arr[i];</span><br><span class="line">        arr[i] = arr[argmin];</span><br><span class="line">        arr[argmin] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h2><p>把下一个元素插入到有序序列的合适位置</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] InsertSort(<span class="keyword">int</span>[] sourceArray)&#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; arr.length; i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> j = i;</span><br><span class="line">        <span class="keyword">int</span> temp = arr[i];</span><br><span class="line">        <span class="keyword">while</span> (j - <span class="number">1</span> &gt;= <span class="number">0</span> &amp;&amp; arr[j - <span class="number">1</span>] &gt; temp)&#123;</span><br><span class="line">            arr[j] = arr[j-<span class="number">1</span>];</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line">        arr[j] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h2><p>优化版的插入排序</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] ShellSort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> gap = arr.length &gt;&gt; <span class="number">1</span>; gap &gt;= <span class="number">1</span>; gap &gt;&gt;= <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = gap; i &lt; arr.length; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> temp = arr[i];</span><br><span class="line">            <span class="keyword">int</span> j = i;</span><br><span class="line">            <span class="keyword">while</span> (j - gap &gt;= <span class="number">0</span> &amp;&amp; arr[j - gap] &gt; temp) &#123;</span><br><span class="line">                arr[j] = arr[j - gap];</span><br><span class="line">                j -= gap;</span><br><span class="line">            &#125;</span><br><span class="line">            arr[j] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h2><p>递归，如果用原位迭代空间复杂度为o(1)但时间复杂度到o(n2)</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] MergeSort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (arr.length &lt; <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> middle = arr.length &gt;&gt; <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span>[] left = Arrays.copyOfRange(arr, <span class="number">0</span>, middle);</span><br><span class="line">    <span class="keyword">int</span>[] right = Arrays.copyOfRange(arr, middle, arr.length);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> merge(MergeSort(left), MergeSort(right));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span>[] merge(<span class="keyword">int</span>[] left, <span class="keyword">int</span>[] right) &#123;<span class="comment">// 两个有序序列</span></span><br><span class="line">    <span class="keyword">int</span>[] result = <span class="keyword">new</span> <span class="keyword">int</span>[left.length + right.length];</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (left.length &gt; <span class="number">0</span> &amp;&amp; right.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (left[<span class="number">0</span>] &lt;= right[<span class="number">0</span>]) &#123;</span><br><span class="line">            result[i] = left[<span class="number">0</span>];</span><br><span class="line">            i++;</span><br><span class="line">            left = Arrays.copyOfRange(left, <span class="number">1</span>, left.length);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            result[i] = right[<span class="number">0</span>];</span><br><span class="line">            i++;</span><br><span class="line">            right = Arrays.copyOfRange(right, <span class="number">1</span>, right.length);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (left.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        result[i] = left[<span class="number">0</span>];</span><br><span class="line">        i++;</span><br><span class="line">        left = Arrays.copyOfRange(left, <span class="number">1</span>, left.length);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (right.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        result[i] = right[<span class="number">0</span>];</span><br><span class="line">        i++;</span><br><span class="line">        right = Arrays.copyOfRange(right, <span class="number">1</span>, right.length);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><ul>
+<li>快速排序是对冒泡排序的一种改进。</li>
+<li>时间复杂度并不固定，如果在最坏情况下（元素刚好是反向的）速度比较慢，达到 O(n^2)（和选择排序一个效率），但是如果在比较理想的情况下时间复杂度 O(nlogn)。</li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/D67peceibeISwc3aGibUlvZ0XqVnbWtBRiaAY3VU8iaziaYcxAasTdrIu69BOVPYtfvqdvicmlJDS94cG2tjwZhVkdHA/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1" alt="QuickSort"></p>
+<ul>
+<li>从数列中挑出一个元素，称为 “基准”（pivot）;</li>
+<li>重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。</li>
+<li>如果基准值<code>pivot</code>在最左，从<code>i=index=pivot+1</code>开始，每次遇到比<code>arr[index]</code>小的元素，就<code>swap(arr, i, index); index++</code>。<code>index</code>记录分隔符向右移动的情况，但此时pivot的位置还未改变，直到最后再<code>swap(arr), pivot, index-1</code>。</li>
+<li>在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区（partition）操作；</li>
+<li>递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序；</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] QuickSort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">        <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">        <span class="keyword">return</span> quicksort(arr, <span class="number">0</span>, arr.length - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span>[] quicksort(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> left, <span class="keyword">int</span> right) &#123;</span><br><span class="line">    <span class="keyword">if</span> (left &lt; right) &#123; <span class="comment">// 约束，防止partitionIndex到0</span></span><br><span class="line">        <span class="keyword">int</span> partitionIndex = partition(arr, left, right); <span class="comment">// partition实际执行排序操作</span></span><br><span class="line">        quicksort(arr, left, partitionIndex - <span class="number">1</span>); <span class="comment">// 不含中间</span></span><br><span class="line">        quicksort(arr, partitionIndex + <span class="number">1</span>, right);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// partition方法对arr进行修改</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">partition</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> pivot = left;</span><br><span class="line">    <span class="keyword">int</span> index = pivot + <span class="number">1</span>; <span class="comment">// 从左端开始</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = index; i &lt;= right; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (arr[i] &lt; arr[pivot]) &#123;</span><br><span class="line">            swap(arr, i, index); <span class="comment">// pivot右边一位作为index不断地和后续比arr[pivot]小的元素交换位置，</span></span><br><span class="line">            index++; <span class="comment">// index位向右挪</span></span><br><span class="line">            <span class="comment">// 最终pivot往右直到index-1都是小于基准的，再把pivot放到中间位置index-1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    swap(arr, pivot, index - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> index - <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp = arr[i];</span><br><span class="line">    arr[i] = arr[j];</span><br><span class="line">    arr[j] = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h2><ul>
+<li>堆：相较于完全二叉树，所有父节点的值大于（小于）子节点</li>
+<li>最大堆的最大元素值出现在根结点（堆顶）</li>
+<li>稳定性：不稳定</li>
+<li>完全二叉树、二叉堆属于数据结构。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">heapify</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> i, <span class="keyword">int</span> len)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">2</span> * i + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> right = <span class="number">2</span> * i + <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">int</span> largest = i;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (left &lt; len &amp;&amp; arr[left] &gt; arr[largest] )&#123; <span class="comment">//注意次序，先判断index</span></span><br><span class="line">        largest = left;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (right &lt; len &amp;&amp; arr[right] &gt; arr[largest])&#123;</span><br><span class="line">        largest = right;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (i &lt; largest)&#123;</span><br><span class="line">        swap(arr, i, largest);</span><br><span class="line">        heapify(arr, largest, len);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">buildMaxHeap</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> len)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = len &gt;&gt; <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)&#123; <span class="comment">//i &gt;= 0</span></span><br><span class="line">        heapify(arr, i, len);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span>[] heapSort(<span class="keyword">int</span>[] sourceArray)&#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">    <span class="keyword">int</span> len = arr.length;</span><br><span class="line"></span><br><span class="line">    buildMaxHeap(arr, len);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = len - <span class="number">1</span>; i &gt; <span class="number">0</span>; i--)&#123;</span><br><span class="line">        swap(arr, <span class="number">0</span>, i); <span class="comment">// 右下子节点和根节点交换，根节点最大值放到最后</span></span><br><span class="line">        len--;</span><br><span class="line">        heapify(arr, <span class="number">0</span>, len); <span class="comment">//调整堆</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp = arr[i];</span><br><span class="line">    arr[i] = arr[j];</span><br><span class="line">    arr[j] = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">int</span>[] CountingSort(<span class="keyword">int</span>[] sourceArray)&#123;</span><br><span class="line">        <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">        <span class="keyword">return</span> (countingsort(arr, getMaxValue(arr)));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span>[] countingsort(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> maxValue)&#123;</span><br><span class="line">    <span class="keyword">int</span> bucketlen = maxValue + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span>[] bucketarr = <span class="keyword">new</span> <span class="keyword">int</span>[bucketlen];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> value: arr)&#123;</span><br><span class="line">        bucketarr[value] ++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> sortedIndex = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; bucketlen; i++)&#123; <span class="comment">// i &lt; bucketlen</span></span><br><span class="line">        <span class="keyword">while</span> (bucketarr[i]&gt;<span class="number">0</span>)&#123;</span><br><span class="line">            arr[sortedIndex++] = i;</span><br><span class="line">            bucketarr[i]--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getMaxValue</span><span class="params">(<span class="keyword">int</span>[] arr)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> maxValue = arr[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; arr.length; i++)&#123;</span><br><span class="line">        maxValue = arr[i] &gt; maxValue ? arr[i] : maxValue;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> maxValue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="桶排序"><a href="#桶排序" class="headerlink" title="桶排序"></a>桶排序</h2><p><img src="https://mmbiz.qpic.cn/mmbiz_gif/D67peceibeISwc3aGibUlvZ0XqVnbWtBRia0umOurgFRv8ESYzcK6bXknufLgJGLaiaTrDTXUk09R6ia2DhbCPAJx0A/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1" alt="BucketSort"></p>
+<ul>
+<li>设置固定数量的空桶。</li>
+<li>把数据放到对应的桶中</li>
+<li>对每个不为空的桶中数据进行排序</li>
+<li>拼接不为空的桶中数据，得到结果</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BucketSort</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] a = &#123; <span class="number">9</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span> &#125;;</span><br><span class="line">        System.out.println(Arrays.toString(sort(a)));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">        <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">        <span class="keyword">return</span> bucketSort(arr, <span class="number">5</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//桶排序主体部分 </span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] bucketSort(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> bucketSize) &#123;</span><br><span class="line">        <span class="keyword">if</span> (arr.length == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> arr;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> maxValue = arr[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">int</span> minValue = arr[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> value : arr) &#123;</span><br><span class="line">            maxValue = value &gt; maxValue ? value : maxValue;</span><br><span class="line">            minValue = value &lt; minValue ? value : minValue;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> bucketCount = (<span class="keyword">int</span>) Math.floor((maxValue - minValue) / bucketSize) + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span>[][] buckets = <span class="keyword">new</span> <span class="keyword">int</span>[bucketCount][<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> value : arr) &#123;</span><br><span class="line">            <span class="keyword">int</span> bucketIndex = (<span class="keyword">int</span>) Math.floor((value - minValue) / bucketSize);</span><br><span class="line">            buckets[bucketIndex] = arrayAppend(buckets[bucketIndex], value);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> sortedIndex = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; bucketCount; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (buckets[i].length == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">int</span>[] bucket = buckets[i];</span><br><span class="line">            bucket = InsertSort(bucket);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; bucket.length; j++) &#123;</span><br><span class="line">                arr[sortedIndex++] = bucket[j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 每个桶内部用到插入排序</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] InsertSort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">        <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> j = i;</span><br><span class="line">            <span class="keyword">int</span> temp = arr[j];</span><br><span class="line">            <span class="keyword">while</span> (j &gt; <span class="number">0</span> &amp;&amp; arr[j - <span class="number">1</span>] &gt; temp) &#123;</span><br><span class="line">                arr[j] = arr[j - <span class="number">1</span>];</span><br><span class="line">                j--;</span><br><span class="line">            &#125;</span><br><span class="line">            arr[j] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> temp = arr[a];</span><br><span class="line">        arr[a] = arr[b];</span><br><span class="line">        arr[b] = temp;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// array扩容</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] arrayAppend(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> a) &#123;</span><br><span class="line">        arr = Arrays.copyOf(arr, arr.length + <span class="number">1</span>);</span><br><span class="line">        arr[arr.length - <span class="number">1</span>] = a;</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="基数排序"><a href="#基数排序" class="headerlink" title="基数排序"></a>基数排序</h2><ul>
+<li>首先通过<code>getMaxValue</code>方法得出最大数</li>
+<li>通过<code>getDigitCount</code>方法得出最大数的数位数，也就是全arr的最大digits数</li>
+<li><code>getDigitValue</code>方法可以给出给定数的某数位的值</li>
+<li>从低位（个位）开始，新建0-9十个空桶，按照arr中每个数的个位放入桶中，然后再依次放回到arr中</li>
+<li>再进入下一位，新建十个空桶，重复操作</li>
+<li>直到遍历MaxDigit</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RadixSort</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] sourceArray) &#123;</span><br><span class="line">        <span class="keyword">int</span>[] arr = Arrays.copyOf(sourceArray, sourceArray.length);</span><br><span class="line">        <span class="keyword">int</span> maxDigit = getMaxDigit(arr);</span><br><span class="line">        <span class="keyword">return</span> radixSort(arr, maxDigit);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] radixSort(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> maxDigit) &#123;</span><br><span class="line">        <span class="comment">// 从个位比较开始数位 (低位)</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; maxDigit; i++) &#123;</span><br><span class="line">            <span class="comment">// 每次比较数位时初始化新的10个空桶</span></span><br><span class="line">            <span class="keyword">int</span>[][] buckets = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>][<span class="number">0</span>]; <span class="comment">// 0-9, 10 buckets, each store several values;</span></span><br><span class="line">            <span class="comment">// arr的值进入10个桶</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> value : arr) &#123;</span><br><span class="line">                buckets[getDigitValue(value, i)] = arrayAppend(buckets[getDigitValue(value, i)], value);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 从桶中把值拿出来放回arr</span></span><br><span class="line">            <span class="keyword">int</span> sortedIndex = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">10</span>; j++) &#123;</span><br><span class="line">                <span class="comment">// System.out.printf(&quot;buckets[%d]: %s&quot;, j, Arrays.toString(buckets[j]));</span></span><br><span class="line">                <span class="keyword">if</span> (buckets[j].length == <span class="number">0</span>)</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> value : buckets[j]) &#123;</span><br><span class="line">                    arr[sortedIndex++] = value;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 个位为第0位</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getDigitValue</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> digit)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> digitCount = getDigitCount(a);</span><br><span class="line">        <span class="keyword">if</span> (digit &gt; digitCount - <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; digit; i++) &#123;</span><br><span class="line">            a /= <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> a % <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getMaxDigit</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> maxValue = getMaxValue(arr);</span><br><span class="line">        <span class="keyword">return</span> getDigitCount(maxValue);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getDigitCount</span><span class="params">(<span class="keyword">int</span> a)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> digitCount = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (a &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            a /= <span class="number">10</span>;</span><br><span class="line">            digitCount++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> digitCount;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getMaxValue</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> maxValue = arr[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> value : arr) &#123;</span><br><span class="line">            maxValue = value &gt; maxValue ? value : maxValue;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> maxValue;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] arrayAppend(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> a) &#123;</span><br><span class="line">        arr = Arrays.copyOf(arr, arr.length + <span class="number">1</span>);</span><br><span class="line">        arr[arr.length - <span class="number">1</span>] = a;</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] a = &#123; <span class="number">9</span>, <span class="number">28</span>, <span class="number">7</span>, <span class="number">345</span>, <span class="number">579</span>, <span class="number">42</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">101</span> &#125;;</span><br><span class="line">        System.out.println(Arrays.toString(sort(a)));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Java数据结构与算法</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
       </tags>
   </entry>
 </search>
