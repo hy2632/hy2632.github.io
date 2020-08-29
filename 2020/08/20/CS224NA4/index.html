@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"hy2632.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="CS224N A4: NMT AssignmentNote: Heavily inspired by the https:&#x2F;&#x2F;github.com&#x2F;pcyin&#x2F;pytorch_nmt repository 作业分为两部分， 第一部分代码实现 NMT with RNN， 第二部分文字题分析 NMT 1. NMT with RNN Bidirectional LSTM Encoder &amp; Un">
+  <meta name="description" content="CS224N A4: NMT Assignment Note: Heavily inspired by the https:&#x2F;&#x2F;github.com&#x2F;pcyin&#x2F;pytorch_nmt repository 作业分为两部分， 第一部分代码实现 NMT with RNN， 第二部分文字题分析 NMT 1. NMT with RNN  Bidirectional LSTM Encoder &amp;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CS224NA4">
 <meta property="og:url" content="https://hy2632.github.io/2020/08/20/CS224NA4/index.html">
 <meta property="og:site_name" content="1 Queensboro Plaza South">
-<meta property="og:description" content="CS224N A4: NMT AssignmentNote: Heavily inspired by the https:&#x2F;&#x2F;github.com&#x2F;pcyin&#x2F;pytorch_nmt repository 作业分为两部分， 第一部分代码实现 NMT with RNN， 第二部分文字题分析 NMT 1. NMT with RNN Bidirectional LSTM Encoder &amp; Un">
+<meta property="og:description" content="CS224N A4: NMT Assignment Note: Heavily inspired by the https:&#x2F;&#x2F;github.com&#x2F;pcyin&#x2F;pytorch_nmt repository 作业分为两部分， 第一部分代码实现 NMT with RNN， 第二部分文字题分析 NMT 1. NMT with RNN  Bidirectional LSTM Encoder &amp;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-08-20T08:59:29.000Z">
 <meta property="article:modified_time" content="2020-08-20T22:39:20.378Z">
@@ -245,292 +245,290 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="CS224N-A4-NMT-Assignment"><a href="#CS224N-A4-NMT-Assignment" class="headerlink" title="CS224N A4: NMT Assignment"></a>CS224N A4: NMT Assignment</h1><p>Note: Heavily inspired by the <a target="_blank" rel="noopener" href="https://github.com/pcyin/pytorch_nmt">https://github.com/pcyin/pytorch_nmt</a> repository</p>
+        <h1 id="cs224n-a4-nmt-assignment">CS224N A4: NMT Assignment</h1>
+<p>Note: Heavily inspired by the https://github.com/pcyin/pytorch_nmt repository</p>
 <p>作业分为两部分， 第一部分代码实现 NMT with RNN， 第二部分文字题分析 NMT</p>
-<h2 id="1-NMT-with-RNN"><a href="#1-NMT-with-RNN" class="headerlink" title="1. NMT with RNN"></a>1. NMT with RNN</h2><ul>
+<h2 id="nmt-with-rnn">1. NMT with RNN</h2>
+<ul>
 <li>Bidirectional LSTM Encoder &amp; Unidirectional LSTM Decoder</li>
-<li>勘误：<ul>
+<li>勘误：
+<ul>
 <li>h 为(embedding size)</li>
 <li><strong>(3), (4) 式中的下标 1 应改为 m</strong></li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><p>(a) utils.py</p>
+</ul></li>
+<li><ol type="a">
+<li>utils.py</li>
+</ol>
 <ul>
 <li>要求每个 batch 里的句子有相同 length。utils.py 中实现 pad_sents(padding)</li>
-</ul>
-</li>
-<li><p>(b) model_embeddings.py</p>
+</ul></li>
+<li><ol start="2" type="a">
+<li>model_embeddings.py</li>
+</ol>
 <ul>
 <li>先去 vocab.py 里了解类的定义。</li>
 <li>VocabEntry 类初始化参数 word2id(dict: words -&gt; indices), id2word 返回 idx 对应的 word 值，from_corpus 从 corpus 生成一个 VocabEntry 实例，from <strong>collections</strong> import <strong>Counter</strong>，Counter 可以直接查找出字符串中字母出现次数</li>
-<li>Vocab 类包含 src 和 tgt 语言，初始化参数式两种语言的 VocabEntry， @staticmethod 静态方法</li>
+<li>Vocab 类包含 src 和 tgt 语言，初始化参数式两种语言的 VocabEntry， <span class="citation" data-cites="staticmethod">@staticmethod</span> 静态方法</li>
 <li>VocabEntry.from_corpus 创建一个 vocab_entry 对象。Vocab.build 分别用 src_sents, tgt_sents 创建 src, tgt 两个 vocab_entry 并返回包含两者的 Vocab(src, tgt)</li>
 <li>运用 nn.Embedding 初始化词嵌。</li>
-</ul>
-</li>
-<li><p>(c) nmt_model.py</p>
+</ul></li>
+<li><ol start="3" type="a">
+<li>nmt_model.py</li>
+</ol>
 <ul>
 <li>按照 pdf 中的维度对各层初始化</li>
-</ul>
-</li>
-<li><p>(d) nmt_model.py 中 encode 方法实现</p>
+</ul></li>
+<li><ol start="4" type="a">
+<li>nmt_model.py 中 encode 方法实现</li>
+</ol>
 <ul>
 <li><code>self.encoder</code> 是一个双向 lstm</li>
 <li><code>encode</code> 方法传入两个参数：<code>source_padded, source_lengths</code>。前者是已经 pad 后(src_len, b)的 tensor，每一列是一个句子。后者是一个整数列表，表示每个句子实际多少词。</li>
 <li>需要返回两个值：enc_hiddens = hencs(所有 1&lt;=i&lt;=m(句长),每一句中所有词，同时对于整个 batch 所有句子), dec_init_state = (hdec0, cdec0)</li>
 <li>lstm 要求输入满足规范形状，所以需要<code>pad_packed_sequence</code> 和<code>packed_pad_sequence</code>进行变形</li>
 <li>第一步用<code>self.model_embeddings</code>把 source_padded 转换为词嵌入</li>
-</ul>
-</li>
-<li><p>(e) <code>decode</code>方法</p>
+</ul></li>
+<li><ol start="5" type="a">
+<li><code>decode</code>方法</li>
+</ol>
 <ul>
 <li><code>self.decode</code>r 是<code>nn.LSTMCell</code>，返回值 h、c，但这部分包装在 step 里面，本 decode 方法里从<code>self.step</code>取得返回值<code>dec_state, combined_output, e_t</code></li>
 <li>还是先用<code>model_embeddings</code>将 target_padded 转换为 Y，一个目标词嵌入，(tgt_len, b, e)</li>
 <li>用<code>torch.split</code>方法， 将 Y 按第 0 维分成步长为 1 的步数，相当于逐词(t)操作。</li>
 <li>(5)式表明了一个迭代过程，最后关心的<code>combined_outputs</code>是 o_t 集合</li>
 <li><strong>07/23 勘误</strong> 做a5时发现dedcode忘记更新o_prev</li>
-</ul>
-</li>
-<li><p>(f) <code>step</code>方法</p>
+</ul></li>
+<li><ol start="6" type="a">
+<li><code>step</code>方法</li>
+</ol>
 <ul>
 <li>step 方法具体处理(5)到(12)式。</li>
 <li>第一部分，(5)-(7)，运用 bmm、(un)squeeze。bmm 需要注意第 0 维度是留给 batch_size 的，两个三维 tensor 的第一二维相乘，满足维度要求。常见的是在 dim=1/2 做 unsqueeze，乘完再 squeeze</li>
 <li>注意到调换乘法次序+不同的变换维度方式会造成最终结果的精度损失。</li>
-</ul>
-</li>
-<li><p>(g) 文字题：<code>generate_sent_masks()</code> 生成 <code>enc_masks(b, src_len)</code>标识 batch 中每个 sentence 每个词是否是 pad，这样做对 attention 计算的影响以及其必要性。</p>
+</ul></li>
+<li><ol start="7" type="a">
+<li>文字题：<code>generate_sent_masks()</code> 生成 <code>enc_masks(b, src_len)</code>标识 batch 中每个 sentence 每个词是否是 pad，这样做对 attention 计算的影响以及其必要性。</li>
+</ol>
 <ul>
 <li><code>step</code>中，(8)式 α_t 进行了 softmax，后续 a_t 计算为确保 attention 不受 padding 影响要求 padding 处 α_t=0，即 e_t 设置为-∞。</li>
-</ul>
-</li>
-<li><p>(i)</p>
+</ul></li>
+<li><ol type="i">
+<li></li>
+</ol>
 <ul>
-<li><p>git 配置：git remote add origin <a target="_blank" rel="noopener" href="https://github.com/hy2632/cs224n.git">https://github.com/hy2632/cs224n.git</a></p>
-</li>
-<li><p>git push origin master</p>
-</li>
-<li><p>..</p>
-</li>
-<li><p>Corpus BLEU: 31.892219171042335</p>
-</li>
-</ul>
-</li>
-<li><p>(j)</p>
-<table>
+<li><p>git 配置：git remote add origin https://github.com/hy2632/cs224n.git</p></li>
+<li><p>git push origin master</p></li>
+<li><p>..</p></li>
+<li><p>Corpus BLEU: 31.892219171042335</p></li>
+</ul></li>
+<li><ol start="10" type="a">
+<li><table>
 <thead>
-<tr>
+<tr class="header">
 <th>Attention Type</th>
 <th>Advantage</th>
 <th>Disadvantage</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr class="odd">
 <td>Dot Product</td>
 <td>不需要<code>self.att_projection</code>层</td>
 <td>需要满足维度一致</td>
 </tr>
-<tr>
+<tr class="even">
 <td>Multiplicative</td>
 <td>-</td>
 <td>-</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Additive</td>
 <td>tanh 操作 normalize 了数值</td>
 <td>两个参数矩阵，参数更多，空间复杂度大</td>
 </tr>
-</tbody></table>
-</li>
+</tbody>
+</table></li>
+</ol></li>
 </ul>
-<h2 id="2-Analyzing-NMT-Systems-30-points"><a href="#2-Analyzing-NMT-Systems-30-points" class="headerlink" title="2. Analyzing NMT Systems (30 points)"></a>2. Analyzing NMT Systems (30 points)</h2><ul>
-<li>参考 lec8 slides P50-</li>
-<li><a target="_blank" rel="noopener" href="https://www.skynettoday.com/editorials/state_of_nmt">https://www.skynettoday.com/editorials/state_of_nmt</a></li>
-<li>Out-of-vocabulary words, Domain mismatch between src&amp;tgt, maintaining context over longer text, Low-resource language pairs.</li>
-</ul>
+<h2 id="analyzing-nmt-systems-30-points">2. Analyzing NMT Systems (30 points)</h2>
 <ul>
-<li><p>(a)</p>
+<li><p>参考 lec8 slides P50-</p></li>
+<li><p>https://www.skynettoday.com/editorials/state_of_nmt</p></li>
+<li><p>Out-of-vocabulary words, Domain mismatch between src&amp;tgt, maintaining context over longer text, Low-resource language pairs.</p></li>
+<li><ol type="a">
+<li></li>
+</ol>
 <ul>
-<li><p>i.</p>
+<li><ol type="i">
+<li></li>
+</ol>
 <ul>
-<li><ol>
+<li><ol type="1">
 <li>error: favorite of my favorites,</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>reason: tgt 库中缺乏 one of my favorites 这样的表达, “Low-resource language pairs”</li>
-</ol>
-</li>
-<li><ol start="3">
+</ol></li>
+<li><ol start="2" type="1">
+<li>reason: tgt 库中缺乏 one of my favorites 这样的表达, "Low-resource language pairs"</li>
+</ol></li>
+<li><ol start="3" type="1">
 <li>to fix: 添加训练数据</li>
+</ol></li>
+</ul></li>
+<li><ol start="2" type="i">
+<li></li>
 </ol>
-</li>
-</ul>
-</li>
-<li><p>ii.</p>
 <ul>
-<li><ol>
+<li><ol type="1">
 <li>error: most read 译为了 more reading。</li>
-</ol>
-</li>
-<li><ol start="2">
+</ol></li>
+<li><ol start="2" type="1">
 <li>reason: 使用 google translator 发现 ms ledo 被译为 read more， 而 ms ledo en los EEUU 被译为 most read in the US。西班牙语的特点？特定的语言构造。</li>
-</ol>
-</li>
-<li><ol start="3">
+</ol></li>
+<li><ol start="3" type="1">
 <li>to fix: 需要让 ms ledo 和后面的定语建立更强的联系，从而把握语义理解。增大 hidden_size</li>
+</ol></li>
+</ul></li>
+<li><ol start="3" type="i">
+<li></li>
 </ol>
-</li>
-</ul>
-</li>
-<li><p>iii.</p>
 <ul>
-<li><ol>
-<li>error: “<unk>“</li>
-</ol>
-</li>
-<li><ol start="2">
+<li><ol type="1">
+<li>error: "<unk>"</li>
+</ol></li>
+<li><ol start="2" type="1">
 <li>reason: Out-of-vocabulary</li>
-</ol>
-</li>
-<li><ol start="3">
+</ol></li>
+<li><ol start="3" type="1">
 <li>to fix: 添加到词表</li>
+</ol></li>
+</ul></li>
+<li><ol start="4" type="i">
+<li></li>
 </ol>
-</li>
-</ul>
-</li>
-<li><p>iv.</p>
 <ul>
-<li><ol>
+<li><ol type="1">
 <li>error: block -&gt; apple</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>reason: “manzana” 多义性</li>
-</ol>
-</li>
-<li><ol start="3">
+</ol></li>
+<li><ol start="2" type="1">
+<li>reason: "manzana" 多义性</li>
+</ol></li>
+<li><ol start="3" type="1">
 <li>to fix: 训练集添加 manzana 作为 block 含义的 phrase 数据，且大于“vuelta a la manzana”因为 google translator 仍将该句错译。</li>
+</ol></li>
+</ul></li>
+<li><ol start="22" type="a">
+<li></li>
 </ol>
-</li>
-</ul>
-</li>
-<li><p>v.</p>
 <ul>
-<li><ol>
-<li>error: “la sala de profesores”: “teacher’s lounge” -&gt; “women’s room”,</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>reason: “profesores”应该是复数，不包含性别，该句既错译又包含性别 bias。</li>
-</ol>
-</li>
-<li><ol start="3">
+<li><ol type="1">
+<li>error: "la sala de profesores": "teacher's lounge" -&gt; "women's room",</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li>reason: "profesores"应该是复数，不包含性别，该句既错译又包含性别 bias。</li>
+</ol></li>
+<li><ol start="3" type="1">
 <li>to fix: 增加“profesores”/profesor/profesora 的训练数据，平衡性别 bias 的同时也要将 teacher 翻译出来。</li>
+</ol></li>
+</ul></li>
+<li><ol start="6" type="i">
+<li></li>
 </ol>
-</li>
-</ul>
-</li>
-<li><p>vi.</p>
 <ul>
-<li><ol>
+<li><ol type="1">
 <li>error: hectare -&gt; acre</li>
-</ol>
-</li>
-<li><ol start="2">
+</ol></li>
+<li><ol start="2" type="1">
 <li>reason: 常识错误，涉及到单位转换</li>
-</ol>
-</li>
-<li><ol start="3">
+</ol></li>
+<li><ol start="3" type="1">
 <li>to fix: 没想到好的方法。文章中写：General knowledge about the world is necessary for NMT systems to translate effectively. <strong>However, this knowledge is difficult to encode in its entirety and is not easily extractable from volumes of data. We need mechanisms to incorporate common sense and world knowledge into our neural networks.</strong></li>
+</ol></li>
+</ul></li>
+</ul></li>
+<li><ol start="2" type="a">
+<li></li>
 </ol>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>(b)</p>
 <ul>
 <li><p>88:</p>
 <ul>
-<li>When he ‘s born , the baby looks a little bit .</li>
+<li>When he 's born , the baby looks a little bit .</li>
 <li>When the child is born, she looks like a girl.</li>
 <li>Cuando nace, el beb tiene aspecto de nia.(Cuando nace, el bebé tiene aspecto de niña.)</li>
 <li>错误：语意，原因：src 本身存在错误无法显示符号，解决方案：样本数据和测试数据的编码格式改一哈</li>
-</ul>
-</li>
+</ul></li>
 <li><p>109：</p>
 <ul>
 <li>So , there are many of a lot of sex .</li>
 <li>So sex can come in lots of different varieties.</li>
 <li>Entonces, hay muchas variedades de sexo.</li>
 <li>错误：语法（many a lot of)，variedades 没有翻译出 variety 的意思。解决方案：增加 muchas variedades 的数据</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>(c)<br>BLEU 的定义见 &lt;BLEU: a Method for Automatic Evaluation of Machine Translation&gt;<br>Candidate c, Reference r, BLEU 包含两部分：reference 中出现 candidate 中 ngram phrase 的概率（注意有个 ceiling）和 candidate 太长导致的 brevity penalty。</p>
-</li>
-</ul>
+</ul></li>
+</ul></li>
+<li><ol start="3" type="a">
+<li>BLEU 的定义见 &lt;BLEU: a Method for Automatic Evaluation of Machine Translation&gt; Candidate c, Reference r, BLEU 包含两部分：reference 中出现 candidate 中 ngram phrase 的概率（注意有个 ceiling）和 candidate 太长导致的 brevity penalty。</li>
+</ol></li>
+<li><ol type="i">
+<li></li>
+</ol>
 <ul>
-<li><p>i.</p>
+<li>for c1,
 <ul>
-<li>for c1,<ul>
 <li>p1 = (0 + 1 + 1 + 1 + 0)/5 = 3/5</li>
 <li>p2 = (0 + 1 + 1 + 0) /4 = 1/2</li>
 <li>len(c) = 5</li>
 <li>len(r) = 6</li>
 <li>BP = exp(1-6/5) = 0.819</li>
 <li><code>BLEU = 0.819 * exp(0.5*log(3/5) + 0.5*log(1/2)) = 0.449</code></li>
-</ul>
-</li>
-<li>for c2,<ul>
+</ul></li>
+<li>for c2,
+<ul>
 <li>p1 = (1 + 1 + 0 + 1 + 1)/5 = 4/5</li>
 <li>p2 = (1 + 0 + 0 + 1) /4 = 1/2</li>
 <li>len(c) = 5</li>
 <li>len(r) = 4</li>
 <li>BP = 1</li>
 <li><code>BLEU = 1 * exp(0.5*log(4/5) + 0.5*log(1/2)) = 0.632</code></li>
-</ul>
-</li>
+</ul></li>
 <li>c2 更好。</li>
-</ul>
-</li>
-<li><p>ii.</p>
+</ul></li>
+<li><ol start="2" type="i">
+<li></li>
+</ol>
 <ul>
 <li>c1: p1 = 3/5, p2 = 1/2, BLEU 不变 0.449</li>
 <li>c2: p1 = 2/5, p2 = 1/4, len(c) = 5, len(r) = 6, <code>BLEU = 0.819 * exp(0.5*log(2/5) + 0.5*log(1/4)) = 0.259</code></li>
 <li>当前 c1 更好。</li>
-</ul>
-</li>
-<li><p>iii.</p>
+</ul></li>
+<li><ol start="3" type="i">
+<li></li>
+</ol>
 <ul>
 <li>单一 ref 产生类似 ii 的问题， 比如对于 r2，c2 可以说是非常好的翻译，如果没有 r2 仅用 r1 判断，c2 就比 c1 差很多。</li>
-</ul>
-</li>
-<li><p>iv.</p>
-</li>
+</ul></li>
+<li><ol start="4" type="i">
+<li></li>
+</ol></li>
 </ul>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th>BLEU vs Human</th>
 <th>1</th>
 <th>2</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr class="odd">
 <td>Pro</td>
 <td>Fast</td>
 <td>Language independent</td>
 </tr>
-<tr>
+<tr class="even">
 <td>Con</td>
 <td>Lack of Common Sense</td>
 <td>Need Multiple References</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 
     </div>
 
@@ -614,7 +612,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CS224N-A4-NMT-Assignment"><span class="nav-number">1.</span> <span class="nav-text">CS224N A4: NMT Assignment</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-NMT-with-RNN"><span class="nav-number">1.1.</span> <span class="nav-text">1. NMT with RNN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Analyzing-NMT-Systems-30-points"><span class="nav-number">1.2.</span> <span class="nav-text">2. Analyzing NMT Systems (30 points)</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#cs224n-a4-nmt-assignment"><span class="nav-number">1.</span> <span class="nav-text">CS224N A4: NMT Assignment</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#nmt-with-rnn"><span class="nav-number">1.1.</span> <span class="nav-text">1. NMT with RNN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#analyzing-nmt-systems-30-points"><span class="nav-number">1.2.</span> <span class="nav-text">2. Analyzing NMT Systems (30 points)</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -707,6 +705,7 @@
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 
@@ -721,6 +720,65 @@
 <script src="/js/next-boot.js"></script>
 
 <script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
 
 
 
@@ -741,7 +799,7 @@
 
 
 
-<script>
+<script data-pjax>
 document.querySelectorAll('.pdfobject-container').forEach(element => {
   let url = element.dataset.target;
   let pdfOpenParams = {
@@ -765,11 +823,66 @@ document.querySelectorAll('.pdfobject-container').forEach(element => {
 
 
 
+    <div id="pjax">
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
+    </div>
 </body>
 </html>
