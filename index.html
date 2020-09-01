@@ -194,6 +194,85 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/09/01/python%E8%82%A1%E7%A5%A8%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars3.githubusercontent.com/u/54726816?s=460&u=41db8521dc8ec040f879aaf47dc29082993c6fa1&v=4">
+      <meta itemprop="name" content="姚华(Hua Yao)">
+      <meta itemprop="description" content="hy2632@columbia.edu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="豁蒙楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/01/python%E8%82%A1%E7%A5%A8%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">python股票分析</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-09-01 13:54:14 / 修改时间：12:55:30" itemprop="dateCreated datePublished" datetime="2020-09-01T13:54:14-05:00">2020-09-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">数据分析</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1NW411W7FK">【Python学习】股票分析系列（中文自制） by 大力牛肉粉</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> datetime <span class="keyword">as</span> dt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas_datareader <span class="keyword">as</span> pdr <span class="comment"># 获取在线数据</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> style <span class="comment"># style</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="获取数据">获取数据</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">start = dt.datetime(<span class="number">2019</span>, <span class="number">8</span>, <span class="number">30</span>)</span><br><span class="line">end = dt.datetime(<span class="number">2020</span>, <span class="number">8</span>, <span class="number">30</span>)</span><br><span class="line"></span><br><span class="line">df = pdr.get_data_yahoo(<span class="string">&quot;TSLA&quot;</span>, start, end)</span><br><span class="line">df.to_csv(<span class="string">&quot;tsla.csv&quot;</span>)</span><br><span class="line"></span><br><span class="line">df = pd.read_csv(<span class="string">&quot;tsla.csv&quot;</span>, parse_dates=<span class="literal">True</span>, index_col=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">style.use(<span class="string">&quot;ggplot&quot;</span>)</span><br><span class="line"></span><br><span class="line">df.plot(figsize=(<span class="number">16</span>,<span class="number">10</span>),fontsize=<span class="number">16</span>)</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/01/python%E8%82%A1%E7%A5%A8%E5%88%86%E6%9E%90/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/08/29/0827OW/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -313,7 +392,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-29 14:13:02" itemprop="dateModified" datetime="2020-08-29T14:13:02-05:00">2020-08-29</time>
+                <time title="修改时间：2020-08-29 14:14:17" itemprop="dateModified" datetime="2020-08-29T14:14:17-05:00">2020-08-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -336,85 +415,77 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Natural-Language-Generation"><a href="#Natural-Language-Generation" class="headerlink" title="Natural Language Generation"></a>Natural Language Generation</h1><h2 id="NLG"><a href="#NLG" class="headerlink" title="NLG"></a>NLG</h2><ul>
-<li>subcomponent of<ul>
+          <h1 id="natural-language-generation">Natural Language Generation</h1>
+<h2 id="nlg">NLG</h2>
+<ul>
+<li>subcomponent of
+<ul>
 <li>Machine Translation</li>
 <li><strong>summarization</strong></li>
 <li>dialogue</li>
 <li>Freeform question answering(not only from the context)</li>
 <li>Image Captioning</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h2 id="Recap"><a href="#Recap" class="headerlink" title="Recap"></a>Recap</h2><ul>
-<li><p>Language modeling? the task of predicting the next word:<br>$$P(y_t|y_1, …, y_(t-1))$$</p>
-</li>
-<li><p>Language model</p>
-</li>
-<li><p>RNN-LM</p>
-</li>
-<li><p>Conditional Language Modeling<br>$$P(y_t|y_1, …, y_(t-1), x)$$</p>
+<h2 id="recap">Recap</h2>
+<ul>
+<li><p>Language modeling? the task of predicting the next word: <span class="math display">\[P(y_t|y_1, ..., y_(t-1))\]</span></p></li>
+<li><p>Language model</p></li>
+<li><p>RNN-LM</p></li>
+<li><p>Conditional Language Modeling <span class="math display">\[P(y_t|y_1, ..., y_(t-1), x)\]</span></p>
 <ul>
 <li>what is x? condition.</li>
-<li>Examples:<ul>
+<li>Examples:
+<ul>
 <li>Machine Translation (x = source sentence, y = target sentence)</li>
 <li>Summarization (context and summarized)</li>
 <li>Dialogue (dialogue history and next utterance)</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>training a RNN-LM?<br>$$J = \dfrac{1}{T}\sum\limits_{t=1}^T J_t$$</p>
+</ul></li>
+</ul></li>
+<li><p>training a RNN-LM? <span class="math display">\[J = \dfrac{1}{T}\sum\limits_{t=1}^T J_t\]</span></p>
 <ul>
-<li>“Teacher Forcing”: always use the gold to feed into the decoder</li>
-</ul>
-</li>
+<li>"Teacher Forcing": always use the gold to feed into the decoder</li>
+</ul></li>
 <li><p><strong>decoding algorithms</strong></p>
 <ul>
-<li><p>Greedy decoding: argmax each step</p>
-</li>
-<li><p>Beam search: aims to find a high prob seq.</p>
+<li>Greedy decoding: argmax each step</li>
+<li>Beam search: aims to find a high prob seq.
 <ul>
 <li>k most probable partial seqs (hypotheses)</li>
 <li>k is the beam size (e.g. 2)</li>
 <li>when reaching some stopping criterion, output</li>
-<li>what’s the effect of changing k?<ul>
+<li>what's the effect of changing k?
+<ul>
 <li>k=1: greedy decoding</li>
-<li>larger k: more hypotheses, computationaly expensive<ul>
+<li>larger k: more hypotheses, computationaly expensive
+<ul>
 <li>for NMT, increasing k too much <strong>decreases</strong> BLEU, reason: producing shorter translations</li>
 <li>for chit-chat dialogue, producing too generic responses</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>sampling-based decoding</strong></p>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><strong>sampling-based decoding</strong>
 <ul>
 <li>pure sampling: randomly sample, instead of argmax in greedy</li>
-<li>top-n sampling, randomly sample from top-n. truncate. n is another hyperparameter<ul>
+<li>top-n sampling, randomly sample from top-n. truncate. n is another hyperparameter
+<ul>
 <li>increasing n, diverse and risky</li>
 <li>decreasing n, generic and safe</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>Softmax teperature</strong> – not actually a decoding algorithm, but a technique applied at test time in conjunction with decoding algorithm</p>
+</ul></li>
+</ul></li>
+<li><strong>Softmax teperature</strong> -- not actually a decoding algorithm, but a technique applied at test time in conjunction with decoding algorithm
 <ul>
-<li>temperature hypparam $\tau$ to the softmax:</li>
-<li>larger $\tau$: $P_t$ becomes more uniform, more diverse output(probability is spread around vocab)</li>
-</ul>
-</li>
-</ul>
-</li>
+<li>temperature hypparam <span class="math inline">\(\tau\)</span> to the softmax:</li>
+<li>larger <span class="math inline">\(\tau\)</span>: <span class="math inline">\(P_t\)</span> becomes more uniform, more diverse output(probability is spread around vocab)</li>
+</ul></li>
+</ul></li>
 <li><p>Decoding algorithms: summary</p>
 <ul>
 <li><u> Greedy </u></li>
 <li><u> Beam search </u></li>
 <li><u> Sampling methods </u></li>
 <li><strong><em>Softmax temperature</em></strong></li>
-</ul>
-</li>
+</ul></li>
 </ul>
           <!--noindex-->
             <div class="post-button">
@@ -1083,14 +1154,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -1160,7 +1231,6 @@
 
   
   <script src="/lib/anime.min.js"></script>
-  <script src="/lib/pjax/pjax.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 
@@ -1175,65 +1245,6 @@
 <script src="/js/next-boot.js"></script>
 
 <script src="/js/bookmark.js"></script>
-
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '.languages',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (element.id) {
-      script.id = element.id;
-    }
-    if (element.className) {
-      script.className = element.className;
-    }
-    if (element.type) {
-      script.type = element.type;
-    }
-    if (element.src) {
-      script.src = element.src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (element.dataset.pjax !== undefined) {
-      script.dataset.pjax = '';
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.subMenu)
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
 
 
 
@@ -1254,7 +1265,7 @@ window.addEventListener('pjax:success', () => {
 
 
 
-<script data-pjax>
+<script>
 document.querySelectorAll('.pdfobject-container').forEach(element => {
   let url = element.dataset.target;
   let pdfOpenParams = {
@@ -1278,7 +1289,6 @@ document.querySelectorAll('.pdfobject-container').forEach(element => {
 
 
 
-    <div id="pjax">
   
 
   
@@ -1338,6 +1348,5 @@ document.querySelectorAll('.pdfobject-container').forEach(element => {
 
   
 
-    </div>
 </body>
 </html>

@@ -1,6 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>CS224NA5</title>
+    <url>/2020/08/20/CS224NA5/</url>
+    <content><![CDATA[<h1 id="cs224n-assignment-5">CS224N Assignment #5</h1>
+<p>(7.20)增加 Pylance 插件作为语言服务器. 打开 type checking mode(basic).</p>
+<h2 id="文字题">文字题</h2>
+<ul>
+<li><ol type="a">
+<li>We learned in class that recurrent neural architectures can operate over variable length input (i.e., the shape of the model parameters is independent of the length of the input sentence). Is the same true of convolutional architectures? Write one sentence to explain why or why not.</li>
+</ol>
+<p>window t ∈ {1, . . . , mword − k + 1}， mword 即最长单词的长度可变， xconv ∈ R^(eword×(mword−k+1))</p></li>
+<li><p>(b)...if we use the kernel size k = 5, what will be the size of the padding (i.e. the additional number of zeros on each side) we need for the 1-dimensional convolution, such that there exists at least one window for all possible values of mword in our dataset?</p>
+<p>极端情况 mword=1， 前后各 1 个 token，还需 padding=1.</p></li>
+<li><ol start="3" type="a">
+<li>In step 4, we introduce a Highway Network with <code>xhighway = xgate xproj + (1 − xgate) xconv out</code>. Since xgate is the result of the sigmoid function, it has the range (0, 1).Consider the two extreme cases. If xgate → 0, then xhighway → xconv out. When xgate → 1, then xhighway → xproj. This means the Highway layer is smoothly varying its behavior between that of normal linear layer (xproj) and that of a layer which simply passes its inputs (xconv out) through. Use one or two sentences to explain why this behavior is useful in character embeddings. Based on the definition of <code>xgate = σ(Wgatexconv out + bgate)</code>, do you think it is better to initialize bgate to be negative or positive? Explain your reason briefly. 原因： 所谓的 highway， x_gate=0 可以直接用 x_convout 的值。</li>
+</ol>
+<p>希望默认 x_gate 较小方便 highway，所以 b 取负。</p></li>
+<li><ol start="4" type="a">
+<li>In Lecture 10, we briefly introduced Transformers, a non-recurrent sequence (or sequence-to-sequence) model with a sequence of attention-based transformer blocks. Describe 2 advantages of a Transformer encoder over the LSTM-with-attention encoder in our NMT model</li>
+</ol>
+<p>可以看一下 &lt;<Attention is all you need>&gt;： "Self-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a representation of the sequence." 每一步都是句子里的所有单词之间建立联系。 主要用到三个矩阵 Key, Query, value, <code>Attention(Q,K,V) = softmax(QK.T/\sqrt(d_k))V</code> (包学包会，这些动图和代码让你一次读懂「自注意力」 - 机器之心的文章 - 知乎 https://zhuanlan.zhihu.com/p/96492170)</p>
+<p>attention-based transformers的好处（P6 的 Part 4， Why self-attention）：</p>
+<p>未采用RNN就可以避免梯度消失和梯度爆炸等问题, 从sequential computation 到实现parallelized computation, 更易学习到"long-range dependencies in the network", 更加interpretable.</p></li>
+</ul>
+<h1 id="character-based-convolutional-encoder-for-nmt-36-points">1. Character-based convolutional encoder for NMT (36 points)</h1>
+<h2 id="vocab.py">Vocab.py</h2>
+<ol type="1">
+<li>这种写法很巧妙·</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i, c <span class="keyword">in</span> enumerate(self.char_list):</span><br><span class="line">    self.char2id[c] = len(self.char2id)</span><br></pre></td></tr></table></figure>
+<ol start="2" type="1">
+<li><p>组合用法，类似 zip+enumerate <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line">word_freq = Counter(chain(\*corpus))</span><br></pre></td></tr></table></figure></p></li>
+<li><p>用字典辅助排序 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">valid_words = [w <span class="keyword">for</span> w, v <span class="keyword">in</span> word_freq.items() <span class="keyword">if</span> v &gt;= freq_cutoff]</span><br><span class="line">top_k_words = sorted(valid_words, key=<span class="keyword">lambda</span> w: word_freq[w], reverse=<span class="literal">True</span>[:size]</span><br></pre></td></tr></table></figure></p></li>
+</ol>
+<p>用到了<code>json.dump</code>，Vocab 也用此形式存储。</p>
+<h2 id="e-implement-to_input_tensor_char-in-vocab.py">(e) Implement <code>to_input_tensor_char()</code> in <code>vocab.py</code></h2>
+<p>字母 ∏ Û python 执行有问题，改成<code>&lt;pad&gt;</code>, <code>&lt;unk&gt;</code>。</p>
+<h2 id="f-highway">(f) highway</h2>
+<p>要求写一个 sanity_check, (f)本身实现很简单，只是一步处理，所以检查一下前后维度就可以。</p>
+<h2 id="g-cnn.py-cnn">(g) cnn.py, CNN</h2>
+<p>输入(sentence_length, batch_size, e_char, m_word)，前两维不动，对每个词 conv 完，后两维应该是 f 和窗口数，再经过 maxpool 所有窗口， 输出是(sentence_length, batch_size, f) torch 需要使用.contiguous().view(),因为 view 只能作用在 contiguous 的变量上 比较关键的一步。 <strong>07/25 更新</strong>： 果然后面还是出问题了。m_word 是 forward 函数中参数 x_reshaped 的维度属性，如果使用 max_pool layer，一开始并不知道输入的参数 m_word 是多少。所以不应该用 maxpool 层（因为不能对一个多维 tensor 的某一维更新）， 而应该在 forward 函数里直接调用 torch.max(dim=2)</p>
+<h2 id="h-model_embeddings.">(h) Model_Embeddings.</h2>
+<p>一个问题是 f=e_word, e_word 和 e_char 的关系到底如何？？ 题目假设 e_char=50, e_word 是初始化 model_embeddings 的参数 word_embedding_size, 默认值 21。</p>
+<h2 id="j">(j)</h2>
+<p>wdnmd， vocab.py 里的 sents_var 总是空的，查了半天发现 utils.pad_sents 忘了粘贴。 nmt_model.py 中 step()函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> enc*masks <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    e_t.data.masked_fill*(enc_masks.bool(), -float(<span class="string">&#x27;inf&#x27;</span>))</span><br></pre></td></tr></table></figure>
+<p>显示'Tensor' object has no attribute 'bool' 原因应该是 torch 版本较低 事实也确实如此，local*env.yml 显示 pytorch=1.0.0，a4 作业就没有限定版本，估计是助教忘了更新。 解决方案：改成 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">e_t.data.masked_fill*(enc_masks==<span class="number">1</span>, -float(<span class="string">&#x27;inf&#x27;</span>))</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">epoch 100, iter 500, cum. loss 0.30, cum. ppl 1.01 cum. examples 200</span><br><span class="line">validation: iter 500, dev. ppl 1.001988</span><br><span class="line">Corpus BLEU: 99.66941696422141</span><br></pre></td></tr></table></figure>
+<p>达到题设要求。</p>
+<h1 id="character-based-lstm-decoder-for-nmt-26-points">2. Character-based LSTM decoder for NMT (26 points)</h1>
+<h2 id="b">(b)</h2>
+<p>奇怪的点在于, char_decoder.py 中 train_forward 的 loss 计算，不 softmaxloss 才收敛。 题目要求仔细阅读 nn.CrossEntropyLoss，实际上 Pytorch 中 CrossEntropyLoss()函数将 softmax-log-NLLLoss 合并到一块。</p>
+<p><code>This criterion combines nn.LogSoftmax() and nn.NLLLoss() in one single class.</code> loss 0.38, Corpus BLEU: 99.66941696422141</p>
+<h2 id="c">(c)</h2>
+<p>这部分思路很清晰，用到了一些技巧，比如(tensor,tensor)的 elementwise 的提取，char 拼接成 word 等，详见代码</p>
+<h2 id="e">(e)</h2>
+<p>在 VM 上训练。 注意 run.sh 可以进行修改，使得 train_local 也可使用 cuda，提高效率。 仍然遇到了环境问题。 “RuntimeError: Given input size: (256x1x12). Calculated output size: (256x1x0). Output size is too small” 于是只能在 VM 上配一个和本地相同的（过时的）环境。问题解决。 <strong>CNN.py 中存在问题，很久之前埋下的坑！！！</strong>：初始化时如果建立 maxpool 就需要提前知道 m_word 以确定 kernel_size。这个问题可以这样解决：避免 maxpool 层，在 forward 中使用 torch.max 函数，对某个维度进行 max。 对 cnn 和 sanity_check 都进行修改。由于默认使用了 sanitycheck 的值 m_word=21,实际上在写其他函数调用 CNN 类的时候没有定义 m_word 值，所以正好不需要改。 参考：Tessa Scott<a href="https://github.com/tessascott039/a5/blob/master/cnn.py" class="uri">https://github.com/tessascott039/a5/blob/master/cnn.py</a></p>
+<p><a href="https://github.com/pytorch/pytorch/issues/4166" class="uri">https://github.com/pytorch/pytorch/issues/4166</a> <a href="https://stackoverflow.com/questions/56137869/is-it-possible-to-make-a-max-pooling-on-dynamic-length-sentences-without-padding" class="uri">https://stackoverflow.com/questions/56137869/is-it-possible-to-make-a-max-pooling-on-dynamic-length-sentences-without-padding</a> 探讨了 nn.MaxPool1d 能不能有一个动态的 kernel_size。</p>
+<p>train 的结果： <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">epoch 29, iter 196300, avg. loss 81.60, avg. ppl 59.75 cum. examples 9600, speed 6086.86 words&#x2F;sec, time elapsed 20580.30 sec</span><br><span class="line">epoch 29, iter 196310, avg. loss 81.10, avg. ppl 50.14 cum. examples 9920, speed 6458.96 words&#x2F;sec, time elapsed 20581.33 sec</span><br><span class="line">epoch 29, iter 196320, avg. loss 78.58, avg. ppl 48.75 cum. examples 10240, speed 6548.57 words&#x2F;sec, time elapsed 20582.32 sec</span><br><span class="line">epoch 29, iter 196330, avg. loss 86.52, avg. ppl 61.24 cum. examples 10537, speed 6019.06 words&#x2F;sec, time elapsed 20583.36 sec</span><br><span class="line">test：Corpus BLEU: 36.395796664198</span><br></pre></td></tr></table></figure></p>
+<h1 id="analyzing-nmt-systems-8-points">3. Analyzing NMT Systems (8 points)</h1>
+<h2 id="a">(a)</h2>
+<p>用 linux 的 grep 命令查找字符串 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(base) hy2632_ubuntu20@DESKTOP-8LEIHPS:~&#x2F;cs224n&#x2F;a5_public\$ grep tradu vocab.json</span><br><span class="line">&quot;traduciendo&quot;: 17349,</span><br><span class="line">&quot;tradujera&quot;: 32719,</span><br><span class="line">&quot;traduccin&quot;: 4562,</span><br><span class="line">&quot;traduzco&quot;: 40154,</span><br><span class="line">&quot;traduzcan&quot;: 23440,</span><br><span class="line">&quot;traductores&quot;: 19447,</span><br><span class="line">&quot;traducir&quot;: 4565,</span><br><span class="line">&quot;traducciones&quot;: 12054,</span><br><span class="line">&quot;traductor&quot;: 11809,</span><br><span class="line">&quot;traducirse&quot;: 36917,</span><br><span class="line">&quot;traducen&quot;: 19640,</span><br><span class="line">&quot;tradujo&quot;: 25176,</span><br><span class="line">&quot;traducido&quot;: 8515,</span><br><span class="line">&quot;traducimos&quot;: 18251,</span><br><span class="line">&quot;traduce&quot;: 7821,</span><br><span class="line">&quot;traducidas&quot;: 20336,</span><br><span class="line">&quot;traduzca&quot;: 44710,</span><br><span class="line">&quot;traducirlo&quot;: 19205,</span><br><span class="line">&quot;traductora&quot;: 13071,</span><br><span class="line">&quot;traduje&quot;: 23103,</span><br><span class="line">&quot;traducirlas&quot;: 35543,</span><br><span class="line">&quot;traducida&quot;: 19350,</span><br></pre></td></tr></table></figure></p>
+<p>traduces, traduzcas not in. 如果是 word-based NMT，将 spanish 翻译为 english， 如果句子中出现 traduces 就会判断为<code>&lt;unk&gt;</code>， 无法翻译；但如果是 character-aware NMT，别的类似 traducir(to translate)的动词可能有类似的性质(加 s，从 I 变成 you)，同时又恰好出现在训练集中，那么模型在遇到 traduces 的 s 时就能翻译出 you translate。</p>
+<h2 id="b-1">(b)</h2>
+<ol type="1">
+<li><p>回顾 Word2Vec。<a href="https://projector.tensorflow.org/" class="uri">https://projector.tensorflow.org/</a> 可以查询 k-nearest words。</p>
+<p>Markdown 表格生成<a href="https://www.tablesgenerator.com/markdown_tables" class="uri">https://www.tablesgenerator.com/markdown_tables</a></p></li>
+</ol>
+<table>
+<thead>
+<tr class="header">
+<th>word</th>
+<th>closest word</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>financial</td>
+<td>economics</td>
+</tr>
+<tr class="even">
+<td>neuron</td>
+<td>nerve</td>
+</tr>
+<tr class="odd">
+<td>Francisco</td>
+<td>san</td>
+</tr>
+<tr class="even">
+<td>naturally</td>
+<td>occurring</td>
+</tr>
+<tr class="odd">
+<td>expectation</td>
+<td>norms</td>
+</tr>
+</tbody>
+</table>
+<ol start="2" type="1">
+<li>也可以上传自己的 character-aware NMT model 的 embeddings 查找 nearest neighbors.</li>
+</ol>
+<figure>
+<img src="https://raw.githubusercontent.com/hy2632/cs224n/master/a5_public/CS224n-A5-emb2-files/embedding_proj.jpg" alt="" /><figcaption>Image</figcaption>
+</figure>
+<table>
+<thead>
+<tr class="header">
+<th>word</th>
+<th>closest word</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>financial</td>
+<td>vertical</td>
+</tr>
+<tr class="even">
+<td>neuron</td>
+<td>Newton</td>
+</tr>
+<tr class="odd">
+<td>Francisco</td>
+<td>France</td>
+</tr>
+<tr class="even">
+<td>naturally</td>
+<td>practically</td>
+</tr>
+<tr class="odd">
+<td>expectation</td>
+<td>exception</td>
+</tr>
+</tbody>
+</table>
+<ol start="3" type="1">
+<li>分析 Word2Vec 和 CharCNN 的区别并解释。</li>
+</ol>
+<p>除了 naturally/practically 意思相近，CharCNN 的 embeddings 更多的还是按照字母组成（同时也包含一些 pos 和 ner）。Word2Vec 则更多地把握了词义的相似和关联性。原因就是模型本身。</p>
+<p>word2vec: skip-grams &amp; CBOW(contiguous bag of words)，给定上下文此预测缺失的中心词 c，概率分布 P(C|W)。因而相近的词都是有较大概率作为中心词被代替。</p>
+<p>CharCNN: 对某个单词的各个字母进行 charembedding，然后经过 CNN/Highway 等操作最后生成 wordembedding，较大程度上依赖于 charembedding，如果两个词有相同字母的 subset 则 wordembedding 可能相近。</p>
+<h2 id="c-1">(c)</h2>
+<p>(45)正确的例子： | Category | | | -------------- | -------------------------------------------------------------------------- | | ES | A medida que se derrite un tmpano, estoy respirando su atmsfera ancestral. | | Ref | As an eardrum melts, I am breathing in its ancient atmosphere. | | A4 translation | As a <code>&lt;unk&gt;</code> <code>&lt;unk&gt;</code> I'm breathing its atmosphere <code>&lt;unk&gt;</code> | | A5 translation | As it melts a iceberg, I'm breathing its ancestral atmosphere. |</p>
+<p>tímpano，témpano 是同义词，但一个翻译为耳膜一个翻译为冰山。这里冰山显然更为合适。</p>
+<p>(85)错误的例子： | Category | | | -------------- | ------------------------------------------------- | | ES | Es el sndrome de insensibilidad a los andrgenos. | | Ref | It is the syndrome of insensitivity to androgens. | | A4 translation | It's called <code>&lt;unk&gt;</code> <code>&lt;unk&gt;</code> | | A5 translation | It's the syndrome of insulin insulin. |</p>
+<p>对于连续的<code>&lt;unk&gt;</code>，CharCNN 的表现并没有很好改善（重复出现的 insulin）。</p>
+]]></content>
+      <categories>
+        <category>CS224N作业笔记</category>
+      </categories>
+      <tags>
+        <tag>CS224N</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>8/27OW分享会记录</title>
     <url>/2020/08/29/0827OW/</url>
     <content><![CDATA[<h2 id="basic-info">Basic Info</h2>
@@ -103,177 +256,6 @@
       </categories>
       <tags>
         <tag>Oliver Wyman</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CS224N-Lec15</title>
-    <url>/2020/08/24/CS224N-Lec15/</url>
-    <content><![CDATA[<h1 id="Natural-Language-Generation"><a href="#Natural-Language-Generation" class="headerlink" title="Natural Language Generation"></a>Natural Language Generation</h1><h2 id="NLG"><a href="#NLG" class="headerlink" title="NLG"></a>NLG</h2><ul>
-<li>subcomponent of<ul>
-<li>Machine Translation</li>
-<li><strong>summarization</strong></li>
-<li>dialogue</li>
-<li>Freeform question answering(not only from the context)</li>
-<li>Image Captioning</li>
-</ul>
-</li>
-</ul>
-<h2 id="Recap"><a href="#Recap" class="headerlink" title="Recap"></a>Recap</h2><ul>
-<li><p>Language modeling? the task of predicting the next word:<br>$$P(y_t|y_1, …, y_(t-1))$$</p>
-</li>
-<li><p>Language model</p>
-</li>
-<li><p>RNN-LM</p>
-</li>
-<li><p>Conditional Language Modeling<br>$$P(y_t|y_1, …, y_(t-1), x)$$</p>
-<ul>
-<li>what is x? condition.</li>
-<li>Examples:<ul>
-<li>Machine Translation (x = source sentence, y = target sentence)</li>
-<li>Summarization (context and summarized)</li>
-<li>Dialogue (dialogue history and next utterance)</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>training a RNN-LM?<br>$$J = \dfrac{1}{T}\sum\limits_{t=1}^T J_t$$</p>
-<ul>
-<li>“Teacher Forcing”: always use the gold to feed into the decoder</li>
-</ul>
-</li>
-<li><p><strong>decoding algorithms</strong></p>
-<ul>
-<li><p>Greedy decoding: argmax each step</p>
-</li>
-<li><p>Beam search: aims to find a high prob seq.</p>
-<ul>
-<li>k most probable partial seqs (hypotheses)</li>
-<li>k is the beam size (e.g. 2)</li>
-<li>when reaching some stopping criterion, output</li>
-<li>what’s the effect of changing k?<ul>
-<li>k=1: greedy decoding</li>
-<li>larger k: more hypotheses, computationaly expensive<ul>
-<li>for NMT, increasing k too much <strong>decreases</strong> BLEU, reason: producing shorter translations</li>
-<li>for chit-chat dialogue, producing too generic responses</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>sampling-based decoding</strong></p>
-<ul>
-<li>pure sampling: randomly sample, instead of argmax in greedy</li>
-<li>top-n sampling, randomly sample from top-n. truncate. n is another hyperparameter<ul>
-<li>increasing n, diverse and risky</li>
-<li>decreasing n, generic and safe</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>Softmax teperature</strong> – not actually a decoding algorithm, but a technique applied at test time in conjunction with decoding algorithm</p>
-<ul>
-<li>temperature hypparam $\tau$ to the softmax:</li>
-<li>larger $\tau$: $P_t$ becomes more uniform, more diverse output(probability is spread around vocab)</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Decoding algorithms: summary</p>
-<ul>
-<li><u> Greedy </u></li>
-<li><u> Beam search </u></li>
-<li><u> Sampling methods </u></li>
-<li><strong><em>Softmax temperature</em></strong></li>
-</ul>
-</li>
-</ul>
-<h2 id="Section-2-NLG-tasks-and-neural-approaches"><a href="#Section-2-NLG-tasks-and-neural-approaches" class="headerlink" title="Section 2: NLG tasks and neural approaches"></a>Section 2: NLG tasks and neural approaches</h2><h3 id="Summarization"><a href="#Summarization" class="headerlink" title="Summarization"></a>Summarization</h3><ul>
-<li><p>definition: x -&gt; y, y is shorter and contains main info of x</p>
-</li>
-<li><p>examples:</p>
-<ul>
-<li>Gigaword: headline -&gt; headline. sentence compression</li>
-<li><strong>LCSTS</strong> (Chinese microblogging), paragraph -&gt; sentence summary</li>
-<li>…</li>
-</ul>
-</li>
-<li><p>Sentence simplification:</p>
-<ul>
-<li>different but related</li>
-<li>rewrite, simpler &amp; shorter</li>
-<li>examples:<ul>
-<li>simple wikipedia</li>
-<li>Newsela: news rewriting for children</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>summarization: 2 mains strategies</p>
-<ul>
-<li>extractive: highlighter</li>
-<li>abastractive: writing</li>
-</ul>
-</li>
-<li><p>summarization evaluation: <strong>ROUGE</strong></p>
-<ul>
-<li><p>like <strong>BLEU</strong>, based on n-gram overlap</p>
-</li>
-<li><p>but no brevity penalty</p>
-</li>
-<li><p>ROUGE based on recall while BLEU based on precision</p>
-</li>
-<li><p>BLEU is a single number combining the precisions for n=1,2,3,4 n-grams</p>
-</li>
-<li><p>ROUGE: ROUGE-1/ROUGE-2/ROUGE-L(Largest common subseq overlap)</p>
-</li>
-</ul>
-</li>
-<li><p>Neural summarization:</p>
-<ul>
-<li>seq2seq + attention NMT</li>
-<li>Reinforcement learning</li>
-</ul>
-</li>
-<li><p>neural: copy mechanism</p>
-<ul>
-<li>probability of generation and probability of copying </li>
-<li>Pgen: hard(0/1) or soft?</li>
-<li>Problem:<ul>
-<li>copy too much: extractive to abstractive</li>
-<li>bad at overall content selection, if input is long</li>
-<li>no overall strategy for selecting content</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>better content selection</p>
-<ul>
-<li>2 stages: content selection &amp; surface realization</li>
-<li>seq2seq+att, mixed, word-level content selection(attention)</li>
-<li>but no global content selection strategy</li>
-<li>One solution: bottom-up summarization</li>
-</ul>
-</li>
-<li><p>Bottom-up summarization</p>
-<ul>
-<li>content selection stage: neural sequence tagging</li>
-<li>masked, attention</li>
-</ul>
-</li>
-<li><p>Neural summarization via RL</p>
-<ul>
-<li>main idea: directly optimize Rouge-L</li>
-<li>Better practice(both ROUGE &amp; human judgement): ML&amp;RL</li>
-</ul>
-</li>
-</ul>
-<h3 id="Dialogue"><a href="#Dialogue" class="headerlink" title="Dialogue"></a>Dialogue</h3>]]></content>
-      <categories>
-        <category>CS224N</category>
-      </categories>
-      <tags>
-        <tag>CS224N</tag>
       </tags>
   </entry>
   <entry>
@@ -572,153 +554,151 @@
       </tags>
   </entry>
   <entry>
-    <title>CS224NA5</title>
-    <url>/2020/08/20/CS224NA5/</url>
-    <content><![CDATA[<h1 id="cs224n-assignment-5">CS224N Assignment #5</h1>
-<p>(7.20)增加 Pylance 插件作为语言服务器. 打开 type checking mode(basic).</p>
-<h2 id="文字题">文字题</h2>
+    <title>CS224N-Lec15</title>
+    <url>/2020/08/24/CS224N-Lec15/</url>
+    <content><![CDATA[<h1 id="natural-language-generation">Natural Language Generation</h1>
+<h2 id="nlg">NLG</h2>
 <ul>
-<li><ol type="a">
-<li>We learned in class that recurrent neural architectures can operate over variable length input (i.e., the shape of the model parameters is independent of the length of the input sentence). Is the same true of convolutional architectures? Write one sentence to explain why or why not.</li>
-</ol>
-<p>window t ∈ {1, . . . , mword − k + 1}， mword 即最长单词的长度可变， xconv ∈ R^(eword×(mword−k+1))</p></li>
-<li><p>(b)...if we use the kernel size k = 5, what will be the size of the padding (i.e. the additional number of zeros on each side) we need for the 1-dimensional convolution, such that there exists at least one window for all possible values of mword in our dataset?</p>
-<p>极端情况 mword=1， 前后各 1 个 token，还需 padding=1.</p></li>
-<li><ol start="3" type="a">
-<li>In step 4, we introduce a Highway Network with <code>xhighway = xgate xproj + (1 − xgate) xconv out</code>. Since xgate is the result of the sigmoid function, it has the range (0, 1).Consider the two extreme cases. If xgate → 0, then xhighway → xconv out. When xgate → 1, then xhighway → xproj. This means the Highway layer is smoothly varying its behavior between that of normal linear layer (xproj) and that of a layer which simply passes its inputs (xconv out) through. Use one or two sentences to explain why this behavior is useful in character embeddings. Based on the definition of <code>xgate = σ(Wgatexconv out + bgate)</code>, do you think it is better to initialize bgate to be negative or positive? Explain your reason briefly. 原因： 所谓的 highway， x_gate=0 可以直接用 x_convout 的值。</li>
-</ol>
-<p>希望默认 x_gate 较小方便 highway，所以 b 取负。</p></li>
-<li><ol start="4" type="a">
-<li>In Lecture 10, we briefly introduced Transformers, a non-recurrent sequence (or sequence-to-sequence) model with a sequence of attention-based transformer blocks. Describe 2 advantages of a Transformer encoder over the LSTM-with-attention encoder in our NMT model</li>
-</ol>
-<p>可以看一下 &lt;<Attention is all you need>&gt;： "Self-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a representation of the sequence." 每一步都是句子里的所有单词之间建立联系。 主要用到三个矩阵 Key, Query, value, <code>Attention(Q,K,V) = softmax(QK.T/\sqrt(d_k))V</code> (包学包会，这些动图和代码让你一次读懂「自注意力」 - 机器之心的文章 - 知乎 https://zhuanlan.zhihu.com/p/96492170)</p>
-<p>attention-based transformers的好处（P6 的 Part 4， Why self-attention）：</p>
-<p>未采用RNN就可以避免梯度消失和梯度爆炸等问题, 从sequential computation 到实现parallelized computation, 更易学习到"long-range dependencies in the network", 更加interpretable.</p></li>
+<li>subcomponent of
+<ul>
+<li>Machine Translation</li>
+<li><strong>summarization</strong></li>
+<li>dialogue</li>
+<li>Freeform question answering(not only from the context)</li>
+<li>Image Captioning</li>
+</ul></li>
 </ul>
-<h1 id="character-based-convolutional-encoder-for-nmt-36-points">1. Character-based convolutional encoder for NMT (36 points)</h1>
-<h2 id="vocab.py">Vocab.py</h2>
-<ol type="1">
-<li>这种写法很巧妙·</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i, c <span class="keyword">in</span> enumerate(self.char_list):</span><br><span class="line">    self.char2id[c] = len(self.char2id)</span><br></pre></td></tr></table></figure>
-<ol start="2" type="1">
-<li><p>组合用法，类似 zip+enumerate <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line">word_freq = Counter(chain(\*corpus))</span><br></pre></td></tr></table></figure></p></li>
-<li><p>用字典辅助排序 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">valid_words = [w <span class="keyword">for</span> w, v <span class="keyword">in</span> word_freq.items() <span class="keyword">if</span> v &gt;= freq_cutoff]</span><br><span class="line">top_k_words = sorted(valid_words, key=<span class="keyword">lambda</span> w: word_freq[w], reverse=<span class="literal">True</span>[:size]</span><br></pre></td></tr></table></figure></p></li>
-</ol>
-<p>用到了<code>json.dump</code>，Vocab 也用此形式存储。</p>
-<h2 id="e-implement-to_input_tensor_char-in-vocab.py">(e) Implement <code>to_input_tensor_char()</code> in <code>vocab.py</code></h2>
-<p>字母 ∏ Û python 执行有问题，改成<code>&lt;pad&gt;</code>, <code>&lt;unk&gt;</code>。</p>
-<h2 id="f-highway">(f) highway</h2>
-<p>要求写一个 sanity_check, (f)本身实现很简单，只是一步处理，所以检查一下前后维度就可以。</p>
-<h2 id="g-cnn.py-cnn">(g) cnn.py, CNN</h2>
-<p>输入(sentence_length, batch_size, e_char, m_word)，前两维不动，对每个词 conv 完，后两维应该是 f 和窗口数，再经过 maxpool 所有窗口， 输出是(sentence_length, batch_size, f) torch 需要使用.contiguous().view(),因为 view 只能作用在 contiguous 的变量上 比较关键的一步。 <strong>07/25 更新</strong>： 果然后面还是出问题了。m_word 是 forward 函数中参数 x_reshaped 的维度属性，如果使用 max_pool layer，一开始并不知道输入的参数 m_word 是多少。所以不应该用 maxpool 层（因为不能对一个多维 tensor 的某一维更新）， 而应该在 forward 函数里直接调用 torch.max(dim=2)</p>
-<h2 id="h-model_embeddings.">(h) Model_Embeddings.</h2>
-<p>一个问题是 f=e_word, e_word 和 e_char 的关系到底如何？？ 题目假设 e_char=50, e_word 是初始化 model_embeddings 的参数 word_embedding_size, 默认值 21。</p>
-<h2 id="j">(j)</h2>
-<p>wdnmd， vocab.py 里的 sents_var 总是空的，查了半天发现 utils.pad_sents 忘了粘贴。 nmt_model.py 中 step()函数</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> enc*masks <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    e_t.data.masked_fill*(enc_masks.bool(), -float(<span class="string">&#x27;inf&#x27;</span>))</span><br></pre></td></tr></table></figure>
-<p>显示'Tensor' object has no attribute 'bool' 原因应该是 torch 版本较低 事实也确实如此，local*env.yml 显示 pytorch=1.0.0，a4 作业就没有限定版本，估计是助教忘了更新。 解决方案：改成 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">e_t.data.masked_fill*(enc_masks==<span class="number">1</span>, -float(<span class="string">&#x27;inf&#x27;</span>))</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">epoch 100, iter 500, cum. loss 0.30, cum. ppl 1.01 cum. examples 200</span><br><span class="line">validation: iter 500, dev. ppl 1.001988</span><br><span class="line">Corpus BLEU: 99.66941696422141</span><br></pre></td></tr></table></figure>
-<p>达到题设要求。</p>
-<h1 id="character-based-lstm-decoder-for-nmt-26-points">2. Character-based LSTM decoder for NMT (26 points)</h1>
-<h2 id="b">(b)</h2>
-<p>奇怪的点在于, char_decoder.py 中 train_forward 的 loss 计算，不 softmaxloss 才收敛。 题目要求仔细阅读 nn.CrossEntropyLoss，实际上 Pytorch 中 CrossEntropyLoss()函数将 softmax-log-NLLLoss 合并到一块。</p>
-<p><code>This criterion combines nn.LogSoftmax() and nn.NLLLoss() in one single class.</code> loss 0.38, Corpus BLEU: 99.66941696422141</p>
-<h2 id="c">(c)</h2>
-<p>这部分思路很清晰，用到了一些技巧，比如(tensor,tensor)的 elementwise 的提取，char 拼接成 word 等，详见代码</p>
-<h2 id="e">(e)</h2>
-<p>在 VM 上训练。 注意 run.sh 可以进行修改，使得 train_local 也可使用 cuda，提高效率。 仍然遇到了环境问题。 “RuntimeError: Given input size: (256x1x12). Calculated output size: (256x1x0). Output size is too small” 于是只能在 VM 上配一个和本地相同的（过时的）环境。问题解决。 <strong>CNN.py 中存在问题，很久之前埋下的坑！！！</strong>：初始化时如果建立 maxpool 就需要提前知道 m_word 以确定 kernel_size。这个问题可以这样解决：避免 maxpool 层，在 forward 中使用 torch.max 函数，对某个维度进行 max。 对 cnn 和 sanity_check 都进行修改。由于默认使用了 sanitycheck 的值 m_word=21,实际上在写其他函数调用 CNN 类的时候没有定义 m_word 值，所以正好不需要改。 参考：Tessa Scott<a href="https://github.com/tessascott039/a5/blob/master/cnn.py" class="uri">https://github.com/tessascott039/a5/blob/master/cnn.py</a></p>
-<p><a href="https://github.com/pytorch/pytorch/issues/4166" class="uri">https://github.com/pytorch/pytorch/issues/4166</a> <a href="https://stackoverflow.com/questions/56137869/is-it-possible-to-make-a-max-pooling-on-dynamic-length-sentences-without-padding" class="uri">https://stackoverflow.com/questions/56137869/is-it-possible-to-make-a-max-pooling-on-dynamic-length-sentences-without-padding</a> 探讨了 nn.MaxPool1d 能不能有一个动态的 kernel_size。</p>
-<p>train 的结果： <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">epoch 29, iter 196300, avg. loss 81.60, avg. ppl 59.75 cum. examples 9600, speed 6086.86 words&#x2F;sec, time elapsed 20580.30 sec</span><br><span class="line">epoch 29, iter 196310, avg. loss 81.10, avg. ppl 50.14 cum. examples 9920, speed 6458.96 words&#x2F;sec, time elapsed 20581.33 sec</span><br><span class="line">epoch 29, iter 196320, avg. loss 78.58, avg. ppl 48.75 cum. examples 10240, speed 6548.57 words&#x2F;sec, time elapsed 20582.32 sec</span><br><span class="line">epoch 29, iter 196330, avg. loss 86.52, avg. ppl 61.24 cum. examples 10537, speed 6019.06 words&#x2F;sec, time elapsed 20583.36 sec</span><br><span class="line">test：Corpus BLEU: 36.395796664198</span><br></pre></td></tr></table></figure></p>
-<h1 id="analyzing-nmt-systems-8-points">3. Analyzing NMT Systems (8 points)</h1>
-<h2 id="a">(a)</h2>
-<p>用 linux 的 grep 命令查找字符串 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(base) hy2632_ubuntu20@DESKTOP-8LEIHPS:~&#x2F;cs224n&#x2F;a5_public\$ grep tradu vocab.json</span><br><span class="line">&quot;traduciendo&quot;: 17349,</span><br><span class="line">&quot;tradujera&quot;: 32719,</span><br><span class="line">&quot;traduccin&quot;: 4562,</span><br><span class="line">&quot;traduzco&quot;: 40154,</span><br><span class="line">&quot;traduzcan&quot;: 23440,</span><br><span class="line">&quot;traductores&quot;: 19447,</span><br><span class="line">&quot;traducir&quot;: 4565,</span><br><span class="line">&quot;traducciones&quot;: 12054,</span><br><span class="line">&quot;traductor&quot;: 11809,</span><br><span class="line">&quot;traducirse&quot;: 36917,</span><br><span class="line">&quot;traducen&quot;: 19640,</span><br><span class="line">&quot;tradujo&quot;: 25176,</span><br><span class="line">&quot;traducido&quot;: 8515,</span><br><span class="line">&quot;traducimos&quot;: 18251,</span><br><span class="line">&quot;traduce&quot;: 7821,</span><br><span class="line">&quot;traducidas&quot;: 20336,</span><br><span class="line">&quot;traduzca&quot;: 44710,</span><br><span class="line">&quot;traducirlo&quot;: 19205,</span><br><span class="line">&quot;traductora&quot;: 13071,</span><br><span class="line">&quot;traduje&quot;: 23103,</span><br><span class="line">&quot;traducirlas&quot;: 35543,</span><br><span class="line">&quot;traducida&quot;: 19350,</span><br></pre></td></tr></table></figure></p>
-<p>traduces, traduzcas not in. 如果是 word-based NMT，将 spanish 翻译为 english， 如果句子中出现 traduces 就会判断为<code>&lt;unk&gt;</code>， 无法翻译；但如果是 character-aware NMT，别的类似 traducir(to translate)的动词可能有类似的性质(加 s，从 I 变成 you)，同时又恰好出现在训练集中，那么模型在遇到 traduces 的 s 时就能翻译出 you translate。</p>
-<h2 id="b-1">(b)</h2>
-<ol type="1">
-<li><p>回顾 Word2Vec。<a href="https://projector.tensorflow.org/" class="uri">https://projector.tensorflow.org/</a> 可以查询 k-nearest words。</p>
-<p>Markdown 表格生成<a href="https://www.tablesgenerator.com/markdown_tables" class="uri">https://www.tablesgenerator.com/markdown_tables</a></p></li>
-</ol>
-<table>
-<thead>
-<tr class="header">
-<th>word</th>
-<th>closest word</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>financial</td>
-<td>economics</td>
-</tr>
-<tr class="even">
-<td>neuron</td>
-<td>nerve</td>
-</tr>
-<tr class="odd">
-<td>Francisco</td>
-<td>san</td>
-</tr>
-<tr class="even">
-<td>naturally</td>
-<td>occurring</td>
-</tr>
-<tr class="odd">
-<td>expectation</td>
-<td>norms</td>
-</tr>
-</tbody>
-</table>
-<ol start="2" type="1">
-<li>也可以上传自己的 character-aware NMT model 的 embeddings 查找 nearest neighbors.</li>
-</ol>
-<figure>
-<img src="https://raw.githubusercontent.com/hy2632/cs224n/master/a5_public/CS224n-A5-emb2-files/embedding_proj.jpg" alt="" /><figcaption>Image</figcaption>
-</figure>
-<table>
-<thead>
-<tr class="header">
-<th>word</th>
-<th>closest word</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>financial</td>
-<td>vertical</td>
-</tr>
-<tr class="even">
-<td>neuron</td>
-<td>Newton</td>
-</tr>
-<tr class="odd">
-<td>Francisco</td>
-<td>France</td>
-</tr>
-<tr class="even">
-<td>naturally</td>
-<td>practically</td>
-</tr>
-<tr class="odd">
-<td>expectation</td>
-<td>exception</td>
-</tr>
-</tbody>
-</table>
-<ol start="3" type="1">
-<li>分析 Word2Vec 和 CharCNN 的区别并解释。</li>
-</ol>
-<p>除了 naturally/practically 意思相近，CharCNN 的 embeddings 更多的还是按照字母组成（同时也包含一些 pos 和 ner）。Word2Vec 则更多地把握了词义的相似和关联性。原因就是模型本身。</p>
-<p>word2vec: skip-grams &amp; CBOW(contiguous bag of words)，给定上下文此预测缺失的中心词 c，概率分布 P(C|W)。因而相近的词都是有较大概率作为中心词被代替。</p>
-<p>CharCNN: 对某个单词的各个字母进行 charembedding，然后经过 CNN/Highway 等操作最后生成 wordembedding，较大程度上依赖于 charembedding，如果两个词有相同字母的 subset 则 wordembedding 可能相近。</p>
-<h2 id="c-1">(c)</h2>
-<p>(45)正确的例子： | Category | | | -------------- | -------------------------------------------------------------------------- | | ES | A medida que se derrite un tmpano, estoy respirando su atmsfera ancestral. | | Ref | As an eardrum melts, I am breathing in its ancient atmosphere. | | A4 translation | As a <code>&lt;unk&gt;</code> <code>&lt;unk&gt;</code> I'm breathing its atmosphere <code>&lt;unk&gt;</code> | | A5 translation | As it melts a iceberg, I'm breathing its ancestral atmosphere. |</p>
-<p>tímpano，témpano 是同义词，但一个翻译为耳膜一个翻译为冰山。这里冰山显然更为合适。</p>
-<p>(85)错误的例子： | Category | | | -------------- | ------------------------------------------------- | | ES | Es el sndrome de insensibilidad a los andrgenos. | | Ref | It is the syndrome of insensitivity to androgens. | | A4 translation | It's called <code>&lt;unk&gt;</code> <code>&lt;unk&gt;</code> | | A5 translation | It's the syndrome of insulin insulin. |</p>
-<p>对于连续的<code>&lt;unk&gt;</code>，CharCNN 的表现并没有很好改善（重复出现的 insulin）。</p>
+<h2 id="recap">Recap</h2>
+<ul>
+<li><p>Language modeling? the task of predicting the next word: <span class="math display">\[P(y_t|y_1, ..., y_(t-1))\]</span></p></li>
+<li><p>Language model</p></li>
+<li><p>RNN-LM</p></li>
+<li><p>Conditional Language Modeling <span class="math display">\[P(y_t|y_1, ..., y_(t-1), x)\]</span></p>
+<ul>
+<li>what is x? condition.</li>
+<li>Examples:
+<ul>
+<li>Machine Translation (x = source sentence, y = target sentence)</li>
+<li>Summarization (context and summarized)</li>
+<li>Dialogue (dialogue history and next utterance)</li>
+</ul></li>
+</ul></li>
+<li><p>training a RNN-LM? <span class="math display">\[J = \dfrac{1}{T}\sum\limits_{t=1}^T J_t\]</span></p>
+<ul>
+<li>"Teacher Forcing": always use the gold to feed into the decoder</li>
+</ul></li>
+<li><p><strong>decoding algorithms</strong></p>
+<ul>
+<li>Greedy decoding: argmax each step</li>
+<li>Beam search: aims to find a high prob seq.
+<ul>
+<li>k most probable partial seqs (hypotheses)</li>
+<li>k is the beam size (e.g. 2)</li>
+<li>when reaching some stopping criterion, output</li>
+<li>what's the effect of changing k?
+<ul>
+<li>k=1: greedy decoding</li>
+<li>larger k: more hypotheses, computationaly expensive
+<ul>
+<li>for NMT, increasing k too much <strong>decreases</strong> BLEU, reason: producing shorter translations</li>
+<li>for chit-chat dialogue, producing too generic responses</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><strong>sampling-based decoding</strong>
+<ul>
+<li>pure sampling: randomly sample, instead of argmax in greedy</li>
+<li>top-n sampling, randomly sample from top-n. truncate. n is another hyperparameter
+<ul>
+<li>increasing n, diverse and risky</li>
+<li>decreasing n, generic and safe</li>
+</ul></li>
+</ul></li>
+<li><strong>Softmax teperature</strong> -- not actually a decoding algorithm, but a technique applied at test time in conjunction with decoding algorithm
+<ul>
+<li>temperature hypparam <span class="math inline">\(\tau\)</span> to the softmax:</li>
+<li>larger <span class="math inline">\(\tau\)</span>: <span class="math inline">\(P_t\)</span> becomes more uniform, more diverse output(probability is spread around vocab)</li>
+</ul></li>
+</ul></li>
+<li><p>Decoding algorithms: summary</p>
+<ul>
+<li><u> Greedy </u></li>
+<li><u> Beam search </u></li>
+<li><u> Sampling methods </u></li>
+<li><strong><em>Softmax temperature</em></strong></li>
+</ul></li>
+</ul>
+<h2 id="section-2-nlg-tasks-and-neural-approaches">Section 2: NLG tasks and neural approaches</h2>
+<h3 id="summarization">Summarization</h3>
+<ul>
+<li>definition: x -&gt; y, y is shorter and contains main info of x</li>
+<li>examples:
+<ul>
+<li>Gigaword: headline -&gt; headline. sentence compression</li>
+<li><strong>LCSTS</strong> (Chinese microblogging), paragraph -&gt; sentence summary</li>
+<li>...</li>
+</ul></li>
+<li>Sentence simplification:
+<ul>
+<li>different but related</li>
+<li>rewrite, simpler &amp; shorter</li>
+<li>examples:
+<ul>
+<li>simple wikipedia</li>
+<li>Newsela: news rewriting for children</li>
+</ul></li>
+</ul></li>
+<li>summarization: 2 mains strategies
+<ul>
+<li>extractive: highlighter</li>
+<li>abastractive: writing</li>
+</ul></li>
+<li>summarization evaluation: <strong>ROUGE</strong>
+<ul>
+<li><p>like <strong>BLEU</strong>, based on n-gram overlap</p></li>
+<li><p>but no brevity penalty</p></li>
+<li><p>ROUGE based on recall while BLEU based on precision</p></li>
+<li><p>BLEU is a single number combining the precisions for n=1,2,3,4 n-grams</p></li>
+<li><p>ROUGE: ROUGE-1/ROUGE-2/ROUGE-L(Largest common subseq overlap)</p></li>
+</ul></li>
+<li>Neural summarization:
+<ul>
+<li>seq2seq + attention NMT</li>
+<li>Reinforcement learning</li>
+</ul></li>
+<li>neural: copy mechanism
+<ul>
+<li>probability of generation and probability of copying</li>
+<li>Pgen: hard(0/1) or soft?</li>
+<li>Problem:
+<ul>
+<li>copy too much: extractive to abstractive</li>
+<li>bad at overall content selection, if input is long</li>
+<li>no overall strategy for selecting content</li>
+</ul></li>
+</ul></li>
+<li>better content selection
+<ul>
+<li>2 stages: content selection &amp; surface realization</li>
+<li>seq2seq+att, mixed, word-level content selection(attention)</li>
+<li>but no global content selection strategy</li>
+<li>One solution: bottom-up summarization</li>
+</ul></li>
+<li>Bottom-up summarization
+<ul>
+<li>content selection stage: neural sequence tagging</li>
+<li>masked, attention</li>
+</ul></li>
+<li>Neural summarization via RL
+<ul>
+<li>main idea: directly optimize Rouge-L</li>
+<li>Better practice(both ROUGE &amp; human judgement): ML&amp;RL</li>
+</ul></li>
+</ul>
+<h3 id="dialogue">Dialogue</h3>
 ]]></content>
       <categories>
-        <category>CS224N作业笔记</category>
+        <category>CS224N</category>
       </categories>
       <tags>
         <tag>CS224N</tag>
@@ -742,6 +722,26 @@
 <h4 id="新建about页">新建about页</h4>
 <p>编辑<code>source/about/index.md</code>, 进入<code>themes/next/_config.yml</code>, <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-user</span></span><br></pre></td></tr></table></figure> 再生成部署。</p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>Uber盈利和经营策略研究</title>
+    <url>/2020/08/22/ResearchOnUber/</url>
+    <content><![CDATA[<h3 id="提要">提要</h3>
+<p>这是 DROM8110 Business Analytics Strategy 的最终报告，运用了 Contributed Value Analysis / Sustainability Analysis 等框架，分析了 Uber 的主营业务——叫车(Ride-Hailing) 的商业模型、盈利前景和可行策略。</p>
+<h3 id="其他作者">其他作者:</h3>
+<ul>
+<li>RUOMING GU (rg3266@columbia.edu)</li>
+<li>YUXIN ZHANG (yz3718@columbia.edu)</li>
+</ul>
+<h3 id="正文">正文:</h3>
+<div class="pdfobject-container" data-target="./BAS_FINAL_YAO.pdf" data-height="1000px"></div>
+]]></content>
+      <categories>
+        <category>报告</category>
+      </categories>
+      <tags>
+        <tag>Business Analytics Strategy</tag>
+      </tags>
   </entry>
   <entry>
     <title>Hello World</title>
@@ -845,23 +845,744 @@
       </tags>
   </entry>
   <entry>
-    <title>Uber盈利和经营策略研究</title>
-    <url>/2020/08/22/ResearchOnUber/</url>
-    <content><![CDATA[<h3 id="提要">提要</h3>
-<p>这是 DROM8110 Business Analytics Strategy 的最终报告，运用了 Contributed Value Analysis / Sustainability Analysis 等框架，分析了 Uber 的主营业务——叫车(Ride-Hailing) 的商业模型、盈利前景和可行策略。</p>
-<h3 id="其他作者">其他作者:</h3>
+    <title>python股票分析</title>
+    <url>/2020/09/01/python%E8%82%A1%E7%A5%A8%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<p><a href="https://www.bilibili.com/video/BV1NW411W7FK">【Python学习】股票分析系列（中文自制） by 大力牛肉粉</a></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> datetime <span class="keyword">as</span> dt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas_datareader <span class="keyword">as</span> pdr <span class="comment"># 获取在线数据</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> style <span class="comment"># style</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="获取数据">获取数据</h1>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">start = dt.datetime(<span class="number">2019</span>, <span class="number">8</span>, <span class="number">30</span>)</span><br><span class="line">end = dt.datetime(<span class="number">2020</span>, <span class="number">8</span>, <span class="number">30</span>)</span><br><span class="line"></span><br><span class="line">df = pdr.get_data_yahoo(<span class="string">&quot;TSLA&quot;</span>, start, end)</span><br><span class="line">df.to_csv(<span class="string">&quot;tsla.csv&quot;</span>)</span><br><span class="line"></span><br><span class="line">df = pd.read_csv(<span class="string">&quot;tsla.csv&quot;</span>, parse_dates=<span class="literal">True</span>, index_col=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">style.use(<span class="string">&quot;ggplot&quot;</span>)</span><br><span class="line"></span><br><span class="line">df.plot(figsize=(<span class="number">16</span>,<span class="number">10</span>),fontsize=<span class="number">16</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;AxesSubplot:xlabel=&#39;Date&#39;&gt;</code></pre>
+<figure>
+<img src="pyFinance_files/pyFinance_4_1.svg" alt="" /><figcaption>svg</figcaption>
+</figure>
+<h1 id="十日均线">十日均线</h1>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df = pd.read_csv(<span class="string">&quot;tsla.csv&quot;</span>, parse_dates=<span class="literal">True</span>, index_col=<span class="number">0</span>)</span><br><span class="line">df[<span class="string">&quot;10ma&quot;</span>] = df[<span class="string">&quot;Adj Close&quot;</span>].rolling(window=<span class="number">10</span>, min_periods=<span class="number">0</span>).mean()</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+High
+</th>
+<th>
+Low
+</th>
+<th>
+Open
+</th>
+<th>
+Close
+</th>
+<th>
+Volume
+</th>
+<th>
+Adj Close
+</th>
+<th>
+10ma
+</th>
+</tr>
+<tr>
+<th>
+Date
+</th>
+<th>
+</th>
+<th>
+</th>
+<th>
+</th>
+<th>
+</th>
+<th>
+</th>
+<th>
+</th>
+<th>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+2019-08-30
+</th>
+<td>
+46.487999
+</td>
+<td>
+44.841999
+</td>
+<td>
+45.830002
+</td>
+<td>
+45.122002
+</td>
+<td>
+46603000.0
+</td>
+<td>
+45.122002
+</td>
+<td>
+45.122002
+</td>
+</tr>
+<tr>
+<th>
+2019-09-03
+</th>
+<td>
+45.790001
+</td>
+<td>
+44.632000
+</td>
+<td>
+44.816002
+</td>
+<td>
+45.001999
+</td>
+<td>
+26770500.0
+</td>
+<td>
+45.001999
+</td>
+<td>
+45.062000
+</td>
+</tr>
+<tr>
+<th>
+2019-09-04
+</th>
+<td>
+45.692001
+</td>
+<td>
+43.841999
+</td>
+<td>
+45.377998
+</td>
+<td>
+44.136002
+</td>
+<td>
+28805000.0
+</td>
+<td>
+44.136002
+</td>
+<td>
+44.753334
+</td>
+</tr>
+<tr>
+<th>
+2019-09-05
+</th>
+<td>
+45.959999
+</td>
+<td>
+44.169998
+</td>
+<td>
+44.500000
+</td>
+<td>
+45.916000
+</td>
+<td>
+36976500.0
+</td>
+<td>
+45.916000
+</td>
+<td>
+45.044001
+</td>
+</tr>
+<tr>
+<th>
+2019-09-06
+</th>
+<td>
+45.928001
+</td>
+<td>
+45.034000
+</td>
+<td>
+45.439999
+</td>
+<td>
+45.490002
+</td>
+<td>
+20947000.0
+</td>
+<td>
+45.490002
+</td>
+<td>
+45.133201
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="ax和subplot">ax和subplot</h1>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">plt.rcParams[<span class="string">&#x27;font.sans-serif&#x27;</span>] = [<span class="string">&#x27;SimHei&#x27;</span>]</span><br><span class="line"><span class="comment"># SimHei：微软雅黑</span></span><br><span class="line"><span class="comment"># FangSong：仿宋</span></span><br><span class="line">fig, ax = plt.subplots(figsize=(<span class="number">10</span>,<span class="number">6</span>))</span><br><span class="line">ax.plot(df.index, df[<span class="string">&quot;Adj Close&quot;</span>])</span><br><span class="line">ax.plot(df.index, df[<span class="string">&quot;10ma&quot;</span>])</span><br><span class="line">ax.legend([<span class="string">&quot;Adj Close&quot;</span>, <span class="string">&quot;10ma&quot;</span>])</span><br><span class="line">ax.set_title(<span class="string">&quot;Adj_Close &amp; 10ma&quot;</span>, fontsize=<span class="number">18</span>)</span><br><span class="line">ax.set_xlabel(<span class="string">&quot;Date&quot;</span>, fontsize=<span class="number">18</span>, fontfamily = <span class="string">&#x27;DejaVu Sans&#x27;</span>, fontstyle=<span class="string">&quot;italic&quot;</span>)</span><br><span class="line">ax.set_ylabel(<span class="string">&quot;$&quot;</span>, fontsize = <span class="string">&quot;x-large&quot;</span>, fontstyle=<span class="string">&quot;oblique&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ax.minorticks_on()</span></span><br><span class="line">ax.grid(which=<span class="string">&quot;minor&quot;</span>, axis=<span class="string">&quot;both&quot;</span>)</span><br><span class="line"><span class="comment"># ax.margins(0)</span></span><br><span class="line">plt.show()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure>
+<img src="pyFinance_files/pyFinance_8_0.svg" alt="" /><figcaption>svg</figcaption>
+</figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">fig, axs = plt.subplots(<span class="number">2</span>, figsize=(<span class="number">10</span>,<span class="number">6</span>))</span><br><span class="line">ax = axs[<span class="number">0</span>]</span><br><span class="line">ax2 = axs[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">ax.plot(df.index, df[<span class="string">&quot;Adj Close&quot;</span>])</span><br><span class="line">ax.plot(df.index, df[<span class="string">&quot;10ma&quot;</span>])</span><br><span class="line">ax.legend([<span class="string">&quot;Adj Close&quot;</span>, <span class="string">&quot;10ma&quot;</span>])</span><br><span class="line">ax.set_title(<span class="string">&quot;Adj_Close &amp; 10ma&quot;</span>)</span><br><span class="line"><span class="comment"># ax.set_xlabel(&quot;Date&quot;,  fontfamily = &#x27;DejaVu Sans&#x27;, fontstyle=&quot;italic&quot;)</span></span><br><span class="line">ax.set_ylabel(<span class="string">&quot;$&quot;</span>, fontstyle=<span class="string">&quot;oblique&quot;</span>)</span><br><span class="line"></span><br><span class="line">ax2.bar(df.index, df[<span class="string">&quot;Volume&quot;</span>])</span><br><span class="line">ax2.set_ylabel(<span class="string">&quot;Volume&quot;</span>, fontstyle=<span class="string">&quot;oblique&quot;</span>)</span><br><span class="line">style.use(<span class="string">&quot;ggplot&quot;</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure>
+<img src="pyFinance_files/pyFinance_9_0.svg" alt="" /><figcaption>svg</figcaption>
+</figure>
+<h1 id="蜡烛图">蜡烛图</h1>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.dates <span class="keyword">as</span> mdates</span><br><span class="line"><span class="keyword">from</span> mpl_finance <span class="keyword">import</span> candlestick_ohlc <span class="comment">#蜡烛图</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df = pd.read_csv(<span class="string">&quot;tsla.csv&quot;</span>, parse_dates=<span class="literal">True</span>, index_col=<span class="number">0</span>)</span><br><span class="line">df_ohlc = df[<span class="string">&quot;Adj Close&quot;</span>].resample(<span class="string">&quot;10D&quot;</span>).ohlc() <span class="comment">#open high low close</span></span><br><span class="line">df_volume = df[<span class="string">&quot;Volume&quot;</span>].resample(<span class="string">&quot;10D&quot;</span>).sum()</span><br><span class="line">df_ohlc.reset_index(inplace=<span class="literal">True</span>)</span><br><span class="line">df_ohlc.Date = df_ohlc.Date.map(mdates.date2num)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">fig = plt.figure(figsize=(<span class="number">16</span>,<span class="number">10</span>))</span><br><span class="line">ax1 = plt.subplot2grid((<span class="number">6</span>,<span class="number">1</span>), (<span class="number">0</span>,<span class="number">0</span>), rowspan=<span class="number">5</span>, colspan=<span class="number">1</span>)</span><br><span class="line">ax2 = plt.subplot2grid((<span class="number">6</span>,<span class="number">1</span>), (<span class="number">5</span>,<span class="number">0</span>), rowspan=<span class="number">1</span>, colspan=<span class="number">1</span>, sharex = ax1)</span><br><span class="line"></span><br><span class="line">ax1.xaxis_date()</span><br><span class="line">candlestick_ohlc(ax1, df_ohlc.values, width=<span class="number">5</span>, colorup=<span class="string">&#x27;g&#x27;</span>)</span><br><span class="line">ax2.fill_between(df_volume.index.map(mdates.date2num), df_volume.values, <span class="number">0</span>)</span><br><span class="line">ax2.plot(df_volume)</span><br><span class="line"></span><br><span class="line">style.use(<span class="string">&quot;ggplot&quot;</span>)</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="pyFinance_files/pyFinance_13_0.svg" alt="" /><figcaption>svg</figcaption>
+</figure>
+<h1 id="标普500公司简称获取爬虫">标普500公司简称获取(爬虫)</h1>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup <span class="keyword">as</span> bs <span class="comment"># 字典</span></span><br><span class="line"><span class="keyword">import</span> pickle <span class="comment"># 列表，序列化</span></span><br><span class="line"><span class="keyword">import</span> requests <span class="comment"># 网络请求</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_sp500_tickers</span>():</span></span><br><span class="line">    resp = requests.get(<span class="string">&quot;https://en.wikipedia.org/wiki/List_of_S%26P_500_companies&quot;</span>)</span><br><span class="line">    soup = bs(resp.text, <span class="string">&quot;lxml&quot;</span>)</span><br><span class="line">    table = soup.find(<span class="string">&quot;table&quot;</span>, &#123;<span class="string">&quot;class&quot;</span>:<span class="string">&quot;wikitable sortable&quot;</span>&#125;)</span><br><span class="line">    tickers = []</span><br><span class="line">    <span class="keyword">for</span> row <span class="keyword">in</span> table.findAll(<span class="string">&#x27;tr&#x27;</span>)[<span class="number">1</span>:]:</span><br><span class="line">        ticker = row.findAll(<span class="string">&#x27;td&#x27;</span>)[<span class="number">0</span>].text.replace(<span class="string">&quot;\n&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">        tickers.append(ticker)</span><br><span class="line">    <span class="comment"># print(tickers)</span></span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">&quot;sp500tickers.pickle&quot;</span>,<span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f: <span class="comment"># 二进制只读</span></span><br><span class="line">        pickle.dump(tickers, f)</span><br><span class="line">    <span class="keyword">return</span> tickers</span><br><span class="line">        </span><br><span class="line"><span class="comment"># save_sp500_tickers()</span></span><br></pre></td></tr></table></figure>
+<h1 id="下载sp500股票数据">下载SP500股票数据</h1>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os <span class="comment"># 系统接口</span></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd </span><br><span class="line"><span class="keyword">import</span> pandas_datareader <span class="keyword">as</span> pdr</span><br><span class="line"><span class="keyword">import</span> datetime <span class="keyword">as</span> dt</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_data_from_yahoo</span>(<span class="params">isReload=False</span>):</span></span><br><span class="line">    <span class="keyword">if</span> isReload:</span><br><span class="line">        tickers = save_sp500_tickers()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">with</span> open(<span class="string">&quot;sp500tickers.pickle&quot;</span>,<span class="string">&quot;rb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            tickers = pickle.load(f)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">&quot;stock_dfs&quot;</span>): <span class="comment">#当前目录无该子目录</span></span><br><span class="line">        os.makedirs(<span class="string">&quot;stock_dfs&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    start = dt.datetime(<span class="number">2016</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">    end = dt.datetime(<span class="number">2019</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> ticker <span class="keyword">in</span> tickers:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">&quot;stock_dfs/&#123;&#125;.csv&quot;</span>.format(ticker)):</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                df = pdr.get_data_yahoo(ticker, start, end)</span><br><span class="line">                df.to_csv(<span class="string">&quot;stock_dfs/&#123;&#125;.csv&quot;</span>.format(ticker))</span><br><span class="line">                print(<span class="string">&quot;Download complete: &#123;&#125;&quot;</span>.format(ticker))</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            print(<span class="string">&quot;Already exist: &#123;&#125;&quot;</span>.format(ticker))</span><br><span class="line">    </span><br><span class="line">get_data_from_yahoo(<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="整合数据">整合数据</h1>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">compile_data</span>():</span></span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">&quot;sp500tickers.pickle&quot;</span>,<span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        tickers = pickle.load(f)[:<span class="number">10</span>]</span><br><span class="line"></span><br><span class="line">    main_df = pd.DataFrame()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># compile</span></span><br><span class="line">    <span class="keyword">for</span> count, ticker <span class="keyword">in</span> enumerate(tickers):</span><br><span class="line">        df = pd.read_csv(<span class="string">&quot;stock_dfs/&#123;&#125;.csv&quot;</span>.format(ticker))</span><br><span class="line">        df.set_index(<span class="string">&quot;Date&quot;</span>, inplace=<span class="literal">True</span>)</span><br><span class="line">        df.rename(columns = &#123;<span class="string">&quot;Adj Close&quot;</span>: ticker&#125;, inplace=<span class="literal">True</span>)</span><br><span class="line">        df.drop([<span class="string">&quot;Open&quot;</span>, <span class="string">&quot;High&quot;</span>, <span class="string">&quot;Low&quot;</span>, <span class="string">&quot;Close&quot;</span>, <span class="string">&quot;Volume&quot;</span>], axis=<span class="number">1</span>, inplace=<span class="literal">True</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> main_df.empty:</span><br><span class="line">            main_df = df</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            main_df = main_df.join(df, how=<span class="string">&quot;left&quot;</span>)</span><br><span class="line">        print(count)</span><br><span class="line">        <span class="keyword">if</span> count == <span class="number">10</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    main_df.to_csv(<span class="string">&quot;sp500_joined.csv&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> main_df</span><br><span class="line"></span><br><span class="line">main_df = compile_data()</span><br></pre></td></tr></table></figure>
+<pre><code>0
+1
+2
+3
+4
+5
+6
+7
+8
+9</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">main_df</span><br></pre></td></tr></table></figure>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+MMM
+</th>
+<th>
+ABT
+</th>
+<th>
+ABBV
+</th>
+<th>
+ABMD
+</th>
+<th>
+ACN
+</th>
+<th>
+ATVI
+</th>
+<th>
+ADBE
+</th>
+<th>
+AMD
+</th>
+<th>
+AAP
+</th>
+<th>
+AES
+</th>
+</tr>
+<tr>
+<th>
+Date
+</th>
+<th>
+</th>
+<th>
+</th>
+<th>
+</th>
+<th>
+</th>
+<th>
+</th>
+<th>
+</th>
+<th>
+</th>
+<th>
+</th>
+<th>
+</th>
+<th>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+2016-01-04
+</th>
+<td>
+128.033249
+</td>
+<td>
+39.050327
+</td>
+<td>
+46.141216
+</td>
+<td>
+85.239998
+</td>
+<td>
+93.774796
+</td>
+<td>
+36.365803
+</td>
+<td>
+91.970001
+</td>
+<td>
+2.770000
+</td>
+<td>
+150.250793
+</td>
+<td>
+7.769172
+</td>
+</tr>
+<tr>
+<th>
+2016-01-05
+</th>
+<td>
+128.591339
+</td>
+<td>
+39.041222
+</td>
+<td>
+45.948997
+</td>
+<td>
+85.000000
+</td>
+<td>
+94.262863
+</td>
+<td>
+35.901806
+</td>
+<td>
+92.339996
+</td>
+<td>
+2.750000
+</td>
+<td>
+149.224380
+</td>
+<td>
+7.876278
+</td>
+</tr>
+<tr>
+<th>
+2016-01-06
+</th>
+<td>
+126.001358
+</td>
+<td>
+38.713760
+</td>
+<td>
+45.956993
+</td>
+<td>
+85.300003
+</td>
+<td>
+94.078682
+</td>
+<td>
+35.563477
+</td>
+<td>
+91.019997
+</td>
+<td>
+2.510000
+</td>
+<td>
+145.276642
+</td>
+<td>
+7.604397
+</td>
+</tr>
+<tr>
+<th>
+2016-01-07
+</th>
+<td>
+122.931786
+</td>
+<td>
+37.785950
+</td>
+<td>
+45.820843
+</td>
+<td>
+81.919998
+</td>
+<td>
+91.316017
+</td>
+<td>
+35.060810
+</td>
+<td>
+89.110001
+</td>
+<td>
+2.280000
+</td>
+<td>
+146.885345
+</td>
+<td>
+7.414905
+</td>
+</tr>
+<tr>
+<th>
+2016-01-08
+</th>
+<td>
+122.513206
+</td>
+<td>
+36.994564
+</td>
+<td>
+44.571400
+</td>
+<td>
+84.580002
+</td>
+<td>
+90.431938
+</td>
+<td>
+34.519478
+</td>
+<td>
+87.849998
+</td>
+<td>
+2.140000
+</td>
+<td>
+143.658066
+</td>
+<td>
+7.522010
+</td>
+</tr>
+<tr>
+<th>
+...
+</th>
+<td>
+...
+</td>
+<td>
+...
+</td>
+<td>
+...
+</td>
+<td>
+...
+</td>
+<td>
+...
+</td>
+<td>
+...
+</td>
+<td>
+...
+</td>
+<td>
+...
+</td>
+<td>
+...
+</td>
+<td>
+...
+</td>
+</tr>
+<tr>
+<th>
+2018-12-24
+</th>
+<td>
+168.035690
+</td>
+<td>
+63.701054
+</td>
+<td>
+75.395958
+</td>
+<td>
+281.079987
+</td>
+<td>
+130.427887
+</td>
+<td>
+43.354313
+</td>
+<td>
+205.160004
+</td>
+<td>
+16.650000
+</td>
+<td>
+147.761047
+</td>
+<td>
+13.031178
+</td>
+</tr>
+<tr>
+<th>
+2018-12-26
+</th>
+<td>
+175.222961
+</td>
+<td>
+67.645943
+</td>
+<td>
+79.767776
+</td>
+<td>
+307.440002
+</td>
+<td>
+135.638382
+</td>
+<td>
+45.749195
+</td>
+<td>
+222.949997
+</td>
+<td>
+17.900000
+</td>
+<td>
+153.823486
+</td>
+<td>
+13.464924
+</td>
+</tr>
+<tr>
+<th>
+2018-12-27
+</th>
+<td>
+179.399902
+</td>
+<td>
+68.627304
+</td>
+<td>
+80.547180
+</td>
+<td>
+315.670013
+</td>
+<td>
+137.004425
+</td>
+<td>
+46.360237
+</td>
+<td>
+225.139999
+</td>
+<td>
+17.490000
+</td>
+<td>
+153.486160
+</td>
+<td>
+13.474353
+</td>
+</tr>
+<tr>
+<th>
+2018-12-28
+</th>
+<td>
+178.148697
+</td>
+<td>
+69.074249
+</td>
+<td>
+81.631172
+</td>
+<td>
+318.170013
+</td>
+<td>
+136.428741
+</td>
+<td>
+46.123703
+</td>
+<td>
+223.130005
+</td>
+<td>
+17.820000
+</td>
+<td>
+154.250168
+</td>
+<td>
+13.455495
+</td>
+</tr>
+<tr>
+<th>
+2018-12-31
+</th>
+<td>
+179.249359
+</td>
+<td>
+70.279106
+</td>
+<td>
+82.589752
+</td>
+<td>
+325.040009
+</td>
+<td>
+137.589874
+</td>
+<td>
+45.897026
+</td>
+<td>
+226.240005
+</td>
+<td>
+18.459999
+</td>
+<td>
+156.234573
+</td>
+<td>
+13.634648
+</td>
+</tr>
+</tbody>
+</table>
+<p>
+754 rows × 10 columns
+</p>
+</div>
+<h1 id="数据可视化">数据可视化</h1>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 股票相关度？</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visualize_data</span>():</span></span><br><span class="line">    df = pd.read_csv(<span class="string">&quot;sp500_joined.csv&quot;</span>)</span><br><span class="line">    df_corr = df.corr()</span><br><span class="line">    df_corr.to_csv(<span class="string">&quot;sp500corr.csv&quot;</span>)</span><br><span class="line">    data1 = df_corr.values</span><br><span class="line">    fig1 = plt.figure()</span><br><span class="line">    ax1 = fig1.add_subplot(<span class="number">111</span>)</span><br><span class="line"></span><br><span class="line">    heatmap1 = ax1.pcolor(data1, cmap=plt.cm.RdYlGn)</span><br><span class="line">    fig1.colorbar(heatmap1)</span><br><span class="line"></span><br><span class="line">    ax1.set_xticks(np.arange(data1.shape[<span class="number">1</span>]))</span><br><span class="line">    ax1.set_yticks(np.arange(data1.shape[<span class="number">0</span>]))</span><br><span class="line">    ax1.invert_yaxis()</span><br><span class="line">    ax1.xaxis.tick_top()</span><br><span class="line">    column_labels = df_corr.columns</span><br><span class="line">    row_labels = df_corr.index</span><br><span class="line">    ax1.set_xticklabels(column_labels)</span><br><span class="line">    ax1.set_yticklabels(row_labels)</span><br><span class="line">    plt.xticks(rotation=<span class="number">90</span>)</span><br><span class="line">    heatmap1.set_clim(<span class="number">-1</span>,<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">visualize_data()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure>
+<img src="pyFinance_files/pyFinance_24_0.svg" alt="" /><figcaption>svg</figcaption>
+</figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 股票相关度？</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visualize_data</span>():</span></span><br><span class="line">    df = pd.read_csv(<span class="string">&quot;sp500_joined.csv&quot;</span>)</span><br><span class="line">    df_corr = df.corr()</span><br><span class="line">    df_corr.to_csv(<span class="string">&quot;sp500corr.csv&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    f, axes = plt.subplots(<span class="number">1</span>, figsize=(<span class="number">10</span>,<span class="number">8</span>))</span><br><span class="line">    <span class="comment"># sns.set(style=&quot;whitegrid&quot;)</span></span><br><span class="line">    sns.despine(left=<span class="literal">True</span>)</span><br><span class="line">    sns.heatmap(df_corr, cmap= <span class="string">&quot;RdYlGn&quot;</span>, cbar=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">visualize_data()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure>
+<img src="pyFinance_files/pyFinance_26_0.svg" alt="" /><figcaption>svg</figcaption>
+</figure>
+<h1 id="获取7日内股价波动">获取7日内股价波动</h1>
 <ul>
-<li>RUOMING GU (rg3266@columbia.edu)</li>
-<li>YUXIN ZHANG (yz3718@columbia.edu)</li>
+<li>买/卖/持有？</li>
+<li>7日内表现</li>
 </ul>
-<h3 id="正文">正文:</h3>
-<div class="pdfobject-container" data-target="./BAS_FINAL_YAO.pdf" data-height="1000px"></div>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">process_data_for_labels</span>(<span class="params">ticker</span>):</span></span><br><span class="line">    hm_days = <span class="number">7</span></span><br><span class="line">    df = pd.read_csv(<span class="string">&quot;sp500_joined.csv&quot;</span>, index_col=<span class="number">0</span>)</span><br><span class="line">    tickers = df.columns.values.tolist()</span><br><span class="line">    df.fillna(<span class="number">0</span>, inplace=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, hm_days+<span class="number">1</span>):</span><br><span class="line">        df[<span class="string">&quot;&#123;&#125;_&#123;&#125;d&quot;</span>.format(ticker, i)] = (df[ticker].shift(-i)-df[ticker])/df[ticker]</span><br><span class="line">    df.fillna(<span class="number">0</span>, inplace=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">return</span> tickers, df</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">buy_sell_hold</span>(<span class="params">*args</span>):</span></span><br><span class="line">    cols = [c <span class="keyword">for</span> c <span class="keyword">in</span> args]</span><br><span class="line">    requirement = <span class="number">0.02</span></span><br><span class="line">    <span class="keyword">for</span> col <span class="keyword">in</span> cols:</span><br><span class="line">        <span class="keyword">if</span> col &gt; requirement:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">        <span class="keyword">elif</span> col &lt; -requirement:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+<h1 id="获取特征集合">获取特征集合</h1>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">extract_featuresets</span>(<span class="params">ticker</span>):</span></span><br><span class="line">    tickers, df = process_data_for_labels(ticker)</span><br><span class="line">    df[<span class="string">&quot;&#123;&#125;_target&quot;</span>.format(ticker)] = list(map(buy_sell_hold, </span><br><span class="line">                                    df[<span class="string">&quot;&#123;&#125;_1d&quot;</span>.format(ticker)],</span><br><span class="line">                                    df[<span class="string">&quot;&#123;&#125;_2d&quot;</span>.format(ticker)],</span><br><span class="line">                                    df[<span class="string">&quot;&#123;&#125;_3d&quot;</span>.format(ticker)],</span><br><span class="line">                                    df[<span class="string">&quot;&#123;&#125;_4d&quot;</span>.format(ticker)],</span><br><span class="line">                                    df[<span class="string">&quot;&#123;&#125;_5d&quot;</span>.format(ticker)],</span><br><span class="line">                                    df[<span class="string">&quot;&#123;&#125;_6d&quot;</span>.format(ticker)],</span><br><span class="line">                                    df[<span class="string">&quot;&#123;&#125;_7d&quot;</span>.format(ticker)],</span><br><span class="line">                                    ))</span><br><span class="line"></span><br><span class="line">    vals = df[<span class="string">&quot;&#123;&#125;_target&quot;</span>.format(ticker)].values.tolist()</span><br><span class="line">    str_vals = [str(i) <span class="keyword">for</span> i <span class="keyword">in</span> vals]</span><br><span class="line">    <span class="comment"># print(&quot;Data spread&quot;, Counter(str_vals))</span></span><br><span class="line"></span><br><span class="line">    df.fillna(<span class="number">0</span>, inplace=<span class="literal">True</span>)</span><br><span class="line">    df.replace([np.inf, -np.inf], np.nan, inplace=<span class="literal">True</span>)</span><br><span class="line">    df.dropna(inplace=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    df_vals = df[[t <span class="keyword">for</span> t <span class="keyword">in</span> tickers]].pct_change() <span class="comment"># 环比</span></span><br><span class="line">    df_vals.replace([np.inf, -np.inf], np.nan)</span><br><span class="line">    df_vals.fillna(<span class="number">0</span>, inplace=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    X = df_vals.values</span><br><span class="line">    y = df[<span class="string">f&quot;<span class="subst">&#123;ticker&#125;</span>_target&quot;</span>].values</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> X, y, df</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="机器学习">机器学习</h1>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X, y, _ = extract_featuresets(<span class="string">&quot;MMM&quot;</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> svm, neighbors <span class="comment">#cross_validation deprecated </span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> VotingClassifier, RandomForestClassifier<span class="comment"># 综合不同算法</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">do_ml</span>(<span class="params">ticker</span>):</span></span><br><span class="line">    X,y,df</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>报告</category>
+        <category>数据分析</category>
       </categories>
-      <tags>
-        <tag>Business Analytics Strategy</tag>
-      </tags>
   </entry>
 </search>
