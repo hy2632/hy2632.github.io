@@ -458,10 +458,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-09-01 13:54:14 / 修改时间：12:55:30" itemprop="dateCreated datePublished" datetime="2020-09-01T13:54:14-05:00">2020-09-01</time>
+              <time title="创建时间：2020-09-01 13:54:14" itemprop="dateCreated datePublished" datetime="2020-09-01T13:54:14-05:00">2020-09-01</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-03 16:11:23" itemprop="dateModified" datetime="2020-09-03T16:11:23-05:00">2020-09-03</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -484,10 +490,10 @@
 
       
           <p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1NW411W7FK">【Python学习】股票分析系列（中文自制） by 大力牛肉粉</a></p>
+<p><a target="_blank" rel="noopener" href="http://data.eastmoney.com/zjlx/detail.html">东方财富网资金流向</a></p>
+<p><a target="_blank" rel="noopener" href="https://curl.trillworks.com/">Convert curl syntax to Python, Ansible URI, MATLAB, Node.js, R, PHP, Strest, Go, Dart, JSON, Elixir, Rust</a></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> datetime <span class="keyword">as</span> dt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas_datareader <span class="keyword">as</span> pdr <span class="comment"># 获取在线数据</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> style <span class="comment"># style</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h1 id="获取数据">获取数据</h1>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">start = dt.datetime(<span class="number">2019</span>, <span class="number">8</span>, <span class="number">30</span>)</span><br><span class="line">end = dt.datetime(<span class="number">2020</span>, <span class="number">8</span>, <span class="number">30</span>)</span><br><span class="line"></span><br><span class="line">df = pdr.get_data_yahoo(<span class="string">&quot;TSLA&quot;</span>, start, end)</span><br><span class="line">df.to_csv(<span class="string">&quot;tsla.csv&quot;</span>)</span><br><span class="line"></span><br><span class="line">df = pd.read_csv(<span class="string">&quot;tsla.csv&quot;</span>, parse_dates=<span class="literal">True</span>, index_col=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">style.use(<span class="string">&quot;ggplot&quot;</span>)</span><br><span class="line"></span><br><span class="line">df.plot(figsize=(<span class="number">16</span>,<span class="number">10</span>),fontsize=<span class="number">16</span>)</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/09/01/python%E8%82%A1%E7%A5%A8%E5%88%86%E6%9E%90/#more" rel="contents">
