@@ -1825,4 +1825,25 @@ Date
         <tag>Dynamic Programming (DP)</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Data Mining Lec1</title>
+    <url>/2020/09/12/Data-Mining-Lec1/</url>
+    <content><![CDATA[<h3 id="course-info">Course Info</h3>
+<p>Lecturer: <a href="https://research.google/people/KrzysztofChoromanski/">Krzysztof Choromanski</a></p>
+<ul>
+<li>Krzysztof Choromanski works on several aspects of machine learning and robotics. His current research interests include reinforcement learning and randomized methods such as nonlinear embeddings based on structured random feature maps and quasi-Monte-Carlo methods. He was also working on online nonparametric clustering for massive high-dimensional streams. Krzysztof is an author of several nonlinear embedding mechanisms based on structured matrices that can be used to speed up: neural network computations, kernel methods applying random feature maps, convex optimization solvers, quantization and soft clustering methods as well as several LSH-based algorithms. With his background in structural graph theory, he is also interested in applying graph theory and other combinatorial methods in machine learning.</li>
+</ul>
+<p>Contact: (KMC2178@columbia.edu)|(CHOROMANSKI1@gmail.com)|(KCHORO@google.com)</p>
+<h3 id="提要">提要</h3>
+<p>第一节课主要涉及几类核方法(Kernel)，random feature map，和MSE</p>
+<h3 id="正文">正文</h3>
+<div class="pdfobject-container" data-target="./Lec1.pdf" data-height="1000px"></div>
+]]></content>
+      <categories>
+        <category>Data Mining</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
 </search>
