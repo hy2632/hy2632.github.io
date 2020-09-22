@@ -2087,4 +2087,15 @@ Date
         <tag>笔记</tag>
       </tags>
   </entry>
+  <entry>
+    <title>0922</title>
+    <url>/2020/09/22/0922/</url>
+    <content><![CDATA[<p>看到一篇讲SVM不错的文章 <a href="https://zhuanlan.zhihu.com/p/49331510">看了这篇文章你还不懂SVM你就来打我</a></p>
+<p>google SVM 的 scaling，又看到了该作者的个人站点 <a href="https://tangshusen.me/">TangShusen</a>，同样是基于Hexo的next主题，感觉很值得借鉴。</p>
+<p>看了下<a href="https://github.com/ShusenTang">GitHub</a>还有不少宝藏内容。关注了。</p>
+]]></content>
+      <categories>
+        <category>misc</category>
+      </categories>
+  </entry>
 </search>

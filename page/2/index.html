@@ -194,6 +194,158 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/08/24/CS224N-Lec15/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
+      <meta itemprop="name" content="姚华(Hua Yao)">
+      <meta itemprop="description" content="hy2632@columbia.edu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="豁蒙楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/24/CS224N-Lec15/" class="post-title-link" itemprop="url">CS224N-Lec15</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-24 19:08:48" itemprop="dateCreated datePublished" datetime="2020-08-24T19:08:48-05:00">2020-08-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-29 14:14:17" itemprop="dateModified" datetime="2020-08-29T14:14:17-05:00">2020-08-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS224N/" itemprop="url" rel="index"><span itemprop="name">CS224N</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="natural-language-generation">Natural Language Generation</h1>
+<h2 id="nlg">NLG</h2>
+<ul>
+<li>subcomponent of
+<ul>
+<li>Machine Translation</li>
+<li><strong>summarization</strong></li>
+<li>dialogue</li>
+<li>Freeform question answering(not only from the context)</li>
+<li>Image Captioning</li>
+</ul></li>
+</ul>
+<h2 id="recap">Recap</h2>
+<ul>
+<li><p>Language modeling? the task of predicting the next word: <span class="math display">\[P(y_t|y_1, ..., y_(t-1))\]</span></p></li>
+<li><p>Language model</p></li>
+<li><p>RNN-LM</p></li>
+<li><p>Conditional Language Modeling <span class="math display">\[P(y_t|y_1, ..., y_(t-1), x)\]</span></p>
+<ul>
+<li>what is x? condition.</li>
+<li>Examples:
+<ul>
+<li>Machine Translation (x = source sentence, y = target sentence)</li>
+<li>Summarization (context and summarized)</li>
+<li>Dialogue (dialogue history and next utterance)</li>
+</ul></li>
+</ul></li>
+<li><p>training a RNN-LM? <span class="math display">\[J = \dfrac{1}{T}\sum\limits_{t=1}^T J_t\]</span></p>
+<ul>
+<li>"Teacher Forcing": always use the gold to feed into the decoder</li>
+</ul></li>
+<li><p><strong>decoding algorithms</strong></p>
+<ul>
+<li>Greedy decoding: argmax each step</li>
+<li>Beam search: aims to find a high prob seq.
+<ul>
+<li>k most probable partial seqs (hypotheses)</li>
+<li>k is the beam size (e.g. 2)</li>
+<li>when reaching some stopping criterion, output</li>
+<li>what's the effect of changing k?
+<ul>
+<li>k=1: greedy decoding</li>
+<li>larger k: more hypotheses, computationaly expensive
+<ul>
+<li>for NMT, increasing k too much <strong>decreases</strong> BLEU, reason: producing shorter translations</li>
+<li>for chit-chat dialogue, producing too generic responses</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><strong>sampling-based decoding</strong>
+<ul>
+<li>pure sampling: randomly sample, instead of argmax in greedy</li>
+<li>top-n sampling, randomly sample from top-n. truncate. n is another hyperparameter
+<ul>
+<li>increasing n, diverse and risky</li>
+<li>decreasing n, generic and safe</li>
+</ul></li>
+</ul></li>
+<li><strong>Softmax teperature</strong> -- not actually a decoding algorithm, but a technique applied at test time in conjunction with decoding algorithm
+<ul>
+<li>temperature hypparam <span class="math inline">\(\tau\)</span> to the softmax:</li>
+<li>larger <span class="math inline">\(\tau\)</span>: <span class="math inline">\(P_t\)</span> becomes more uniform, more diverse output(probability is spread around vocab)</li>
+</ul></li>
+</ul></li>
+<li><p>Decoding algorithms: summary</p>
+<ul>
+<li><u> Greedy </u></li>
+<li><u> Beam search </u></li>
+<li><u> Sampling methods </u></li>
+<li><strong><em>Softmax temperature</em></strong></li>
+</ul></li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/24/CS224N-Lec15/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/08/24/%E6%8E%92%E5%BA%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -844,14 +996,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
