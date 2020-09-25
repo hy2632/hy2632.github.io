@@ -20,17 +20,20 @@
     var CONFIG = {"hostname":"hy2632.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="hy2632@columbia.edu">
-<meta property="og:type" content="website">
-<meta property="og:title" content="豁蒙楼">
-<meta property="og:url" content="https://hy2632.github.io/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/index.html">
+  <meta name="description" content="General scheme Approximating the kernel \(K(x,y) : \R^d \times \R^d \to \R\) \(\phi: \R^d \to \R^m\) randomized \(K(x,y) &#x3D; E[\phi(x)^T\phi(y)]\) \[\phi(x) &#x3D; \frac{h(x)}{\sqrt{m}}\begin{bmatrix}f_1(w_1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Data-Mining-Lec3">
+<meta property="og:url" content="https://hy2632.github.io/2020/09/23/Data-Mining-Lec3/index.html">
 <meta property="og:site_name" content="豁蒙楼">
-<meta property="og:description" content="hy2632@columbia.edu">
+<meta property="og:description" content="General scheme Approximating the kernel \(K(x,y) : \R^d \times \R^d \to \R\) \(\phi: \R^d \to \R^m\) randomized \(K(x,y) &#x3D; E[\phi(x)^T\phi(y)]\) \[\phi(x) &#x3D; \frac{h(x)}{\sqrt{m}}\begin{bmatrix}f_1(w_1">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-24T00:11:56.000Z">
+<meta property="article:modified_time" content="2020-09-24T01:40:42.228Z">
 <meta property="article:author" content="姚华(Hua Yao)">
+<meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://hy2632.github.io/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">
+<link rel="canonical" href="https://hy2632.github.io/2020/09/23/Data-Mining-Lec3/">
 
 
 <script id="page-configurations">
@@ -38,12 +41,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>分类: 数据分析 | 豁蒙楼</title>
+  <title>Data-Mining-Lec3 | 豁蒙楼</title>
   
 
 
@@ -188,51 +191,180 @@
         <div class="content-wrap">
           
 
-          <div class="content category">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">数据分析
-          <small>分类</small>
-        </h2>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/09/23/Data-Mining-Lec3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
+      <meta itemprop="name" content="姚华(Hua Yao)">
+      <meta itemprop="description" content="hy2632@columbia.edu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="豁蒙楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Data-Mining-Lec3
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-09-23 19:11:56 / 修改时间：20:40:42" itemprop="dateCreated datePublished" datetime="2020-09-23T19:11:56-05:00">2020-09-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Data-Mining/" itemprop="url" rel="index"><span itemprop="name">Data Mining</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
+        <h2 id="general-scheme">General scheme</h2>
+<p>Approximating the kernel <span class="math inline">\(K(x,y) : \R^d \times \R^d \to \R\)</span></p>
+<p><span class="math inline">\(\phi: \R^d \to \R^m\)</span> randomized</p>
+<p><span class="math inline">\(K(x,y) = E[\phi(x)^T\phi(y)]\)</span> <span class="math display">\[\phi(x) = \frac{h(x)}{\sqrt{m}}\begin{bmatrix}f_1(w_1^Tx), ..., f_1(w_m^Tx)\\f_2(w_1^Tx), ..., f_2(w_m^Tx)\\...\\f_l(w_1^Tx), ..., f_l(w_m^Tx)\end{bmatrix}\]</span> for some <span class="math inline">\(h: \R^d \to \R\)</span></p>
+<p>Example:</p>
+<ol type="1">
+<li>Dot-product kernel, <span class="math inline">\(l = 1\)</span>, <span class="math inline">\(f_1(x)=x\)</span>, <span class="math inline">\(h(x)=1\)</span>, <span class="math inline">\(\Omega = N(0, I_d)\)</span></li>
+<li>Gaussian kernel, <span class="math inline">\(l=2\)</span>, <span class="math inline">\(f_1(x)=\cos(x), f_2(x)=\sin(x)\)</span>, <span class="math inline">\(\Omega = N(0, I_d)\)</span></li>
+<li>Softmax kernel, <span class="math inline">\(l=2\)</span>, <span class="math inline">\(f_1(x)=\cos(x), f_2(x)=\sin(x)\)</span>, <span class="math inline">\(\Omega = N(0, I_d)\)</span>, renormalizer <span class="math inline">\(h(x) = e^{\frac{||x||^2}{2}}\)</span></li>
+<li>Angular kernel, <span class="math inline">\(l=1, f_1(x)=sgn(x), h(x)=1, \Omega = N(0,I_d)\)</span></li>
+</ol>
+<h2 id="orthogonal-random-features">Orthogonal Random Features</h2>
+<p><span class="math inline">\(w_1, ..., w_m \sim \Omega\)</span>, construct pdf function on a fixed isotopic sphere</p>
+<p>ORFs:</p>
+<p><span class="math inline">\(\to w_i \sim \Omega\)</span></p>
+<p><span class="math inline">\(\to w_i^Tw_j = 0\)</span> with prob 1 for <span class="math inline">\(i \neq j\)</span></p>
+<ol type="1">
+<li>Why do we need ORFs?</li>
+<li>How to construct them?</li>
+</ol>
+<p>We use ORFs reduce the variance of estimator. Then each new <span class="math inline">\(w_i\)</span> provides new information. We can have fewer features.</p>
+<h2 id="recipe-for-constucting-orfsonly-for-omega-isotopic">Recipe for constucting ORFs(Only for <span class="math inline">\(\Omega\)</span>-isotopic)</h2>
+<p>Only when <span class="math inline">\(m\leq d\)</span></p>
+<ol type="1">
+<li>Constuct <span class="math inline">\(w_1, ..., w_m \sim iid \Omega\)</span></li>
+<li>Construct matrix G:</li>
+</ol>
+<p><span class="math display">\[ G = \begin{pmatrix}w_1^T\\...\\w_m^T\end{pmatrix} \in \R^{m\times d}\]</span></p>
+<ol start="3" type="1">
+<li><p>Conduct Gram-Schmidt orthogon of <span class="math inline">\(G_{ort}\)</span> to get with L2-normalized rows</p></li>
+<li><p>Renormalize each row of <span class="math inline">\(G_{ort}\)</span> simply by multiplying it with a scalar random variable <span class="math inline">\(X\sim \Omega\)</span>, distribution of lengths of vectors taken from <span class="math inline">\(\Omega\)</span></p></li>
+</ol>
+<h2 id="proxies">Proxies</h2>
+<p><span class="math inline">\(G_{ort} \to ?\)</span></p>
+<ol type="1">
+<li>Random-Hadamand Matrices <span class="math display">\[ G_{ort} = (\frac{1}{\sqrt{d}}HD_1)...(\frac{1}{\sqrt{d}}HD_k) \]</span> for some <span class="math inline">\(k\in N_{+}\)</span></li>
+</ol>
+<p><span class="math display">\[ D_i = diag(\tau_i^1, ... \tau_i^d) \]</span> <span class="math display">\[\tau_i \sim iid \{-1, +1\} \]</span></p>
+<p>H is a Hadamand matrix (to be more precise, H is called a Kronecker-Hadamand matrix) <span class="math display">\[ H_0 = [1] \in \R^{1\times 1} \]</span> <span class="math display">\[ H_{t+1} = \begin{bmatrix} H_t, H_t\\ H_t, -H_t \end{bmatrix} \]</span></p>
+<ul>
+<li><span class="math inline">\(H_t \in \R^{2^t \times 2^t}\)</span> has orthogonal rows/columns.</li>
+<li><span class="math inline">\(H_t\)</span> is symmetric</li>
+</ul>
+<p><span class="math display">\[ G_{ort} \in \R^{d \times d} = (\frac{1}{\sqrt{d}}HD_1)...(\frac{1}{\sqrt{d}}HD_k) \]</span> H have to be <span class="math inline">\(\R^{d \times d}\)</span>, what if not power of 2? <strong>Zero padding</strong> to our input data.</p>
+<ul>
+<li>Larger k implies better approximation of the original mechanism, <span class="math inline">\(\frac{1}{\sqrt{d}}\)</span> is normalized orthogonal, doing this for k times</li>
+</ul>
+<ol start="2" type="1">
+<li>Givens rotations</li>
+</ol>
+<p><span class="math display">\[ G_{ort} = Giv_1 Giv_2...Giv_k, k = O(dlog) \]</span></p>
+<p>Givens rotations: ... diagonal 1, where i, j exhibits <span class="math display">\[ \begin{bmatrix} \cos{\theta}, \sin{\theta}\\ -\sin{\theta}, \cos{\theta}\end{bmatrix} \]</span></p>
+<p>The ith and jth rotated <span class="math inline">\(\theta\)</span></p>
+<h2 id="neural-networks-attention-mechanism">Neural Networks &amp; Attention Mechanism</h2>
+<p>Our object of interest: sequential data <span class="math inline">\((x_1, ..., x_L)\)</span> -&gt; L-tuple, each <span class="math inline">\(\in \R^d\)</span></p>
+<h3 id="examples">Examples</h3>
+<ol type="a">
+<li><p>text data, where <span class="math inline">\(x_i\)</span>s correspond to embeddings of words.</p></li>
+<li><p>music data, where <span class="math inline">\(x_i\)</span>s correspond to embeddings of notes.</p></li>
+<li><p>bio-informatics, protein-chains, embeddings of amino-acids.</p></li>
+</ol>
+<h3 id="self-attention">Self-Attention</h3>
+<p><span class="math inline">\((x_1, ..., x_L)\)</span>, understanding how the tokens attend to each other</p>
+<p>similarity functions: <span class="math inline">\(K(x_i, x_j) \to \R\)</span></p>
+<h2 id="attention-matrix-a">Attention matrix A</h2>
+<p><span class="math inline">\(A \in R^{L \times L}\)</span></p>
+<p><span class="math inline">\(A_{i,j} = K(x_i, x_j)\)</span></p>
+<p>a.k.a kernel matrix corresponding to Kernel sequence <span class="math inline">\((x_1, ..., x_L)\)</span></p>
+<p>usually fixed kernel, <span class="math inline">\(K(x_i, x_j) = SM(x_i, x_j) = e^{x_i^Tx_j}\)</span></p>
+<p>we don't want the value to be exponentially large.</p>
+<p>By renormalizing, <span class="math inline">\(e^{x_i^Tx_j} \to e^{\frac{x_i^Tx_j}{\sqrt{d}}}\)</span></p>
+<p><span class="math inline">\(K(x_i, x_j) = e^{(w_1x_i)^T(w_2x_j)}\)</span></p>
+<p>Thinking about xis as row vectors,</p>
+<p>e<sup>{(w_1x_i)</sup>T(w_2x_j)}$</p>
+<p><span class="math inline">\(K(x_i, x_j) = SM(x_i, x_j) = e^{x_ix_j^T}\)</span></p>
+<p><span class="math display">\[W_Q, W_k: K_{W_Q, W_k}(x_i, x_j) = SM(x_iW_Q, x_jW_k) \]</span> <span class="math display">\[ = e^{x_iW_QW_K^Tx_j^T} \]</span></p>
+<p><span class="math inline">\(q_i = x_iW_Q\)</span>, query-vector corresponding to <span class="math inline">\(x_i\)</span> <span class="math inline">\(k_j = x_jW_k\)</span>, key-vector corresponding to <span class="math inline">\(x_i\)</span></p>
+<p>use <span class="math inline">\(x_i\)</span> to calculate <span class="math inline">\(q_i\)</span>, <span class="math inline">\(k_i\)</span>, see how <span class="math inline">\(q_i\)</span> attends to <span class="math inline">\(k_j\)</span>,<span class="math inline">\(q_j\)</span> attends to <span class="math inline">\(k_i\)</span></p>
+<p><span class="math inline">\(A_{i,j} = e^{\frac{q_ik_j^T}{\sqrt{d}}}\)</span></p>
+<p>L(L-tuple) -&gt; [attention block] -&gt; another L-tuple -&gt; [attention block2] ...</p>
+<p>...</p>
+<p>Output of the attention: L AV = [A(L*L) * [V(L*d) <span class="math inline">\(V_i = X_i \cdot W_V\)</span></p>
+<h3 id="attention-block-version-i">Attention Block version I</h3>
+<p>Input: <span class="math inline">\(X\)</span></p>
+<p>Hyperparams: <span class="math inline">\(W_Q, W_K, W_V\)</span></p>
+<p>Compute <span class="math inline">\(Q = XW_Q \in \R^{L\times d}\)</span>, and so are <span class="math inline">\(K, V\)</span></p>
+<p>Output: <span class="math inline">\(AV\)</span> where <span class="math inline">\(A = e^{\frac{QK^T}{\sqrt{d}}}\)</span></p>
+<p>Attention block is parametrized by 3 matrices.</p>
+<p><span class="math inline">\(x_i\)</span> to <span class="math inline">\(q_i, k_i, v_i\)</span></p>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-09-01T13:54:14-05:00"
-              content="2020-09-01">
-          09-01
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/01/python%E8%82%A1%E7%A5%A8%E5%88%86%E6%9E%90/" itemprop="url">
-            <span itemprop="name">python股票分析</span>
-          </a>
-      </div>
+        
 
-    </header>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/22/0922/" rel="prev" title="0922">
+      <i class="fa fa-chevron-left"></i> 0922
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/09/25/%E5%93%88%E5%B8%8C/" rel="next" title="哈希">
+      哈希 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
-
-    </div>
-  </div>
   
   
-  
-
   
 
 
@@ -285,6 +417,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#general-scheme"><span class="nav-number">1.</span> <span class="nav-text">General scheme</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#orthogonal-random-features"><span class="nav-number">2.</span> <span class="nav-text">Orthogonal Random Features</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#recipe-for-constucting-orfsonly-for-omega-isotopic"><span class="nav-number">3.</span> <span class="nav-text">Recipe for constucting ORFs(Only for \(\Omega\)-isotopic)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#proxies"><span class="nav-number">4.</span> <span class="nav-text">Proxies</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#neural-networks-attention-mechanism"><span class="nav-number">5.</span> <span class="nav-text">Neural Networks &amp; Attention Mechanism</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#examples"><span class="nav-number">5.1.</span> <span class="nav-text">Examples</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#self-attention"><span class="nav-number">5.2.</span> <span class="nav-text">Self-Attention</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#attention-matrix-a"><span class="nav-number">6.</span> <span class="nav-text">Attention matrix A</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#attention-block-version-i"><span class="nav-number">6.1.</span> <span class="nav-text">Attention Block version I</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

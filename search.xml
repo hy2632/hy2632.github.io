@@ -2098,4 +2098,122 @@ Date
         <category>misc</category>
       </categories>
   </entry>
+  <entry>
+    <title>Data-Mining-Lec3</title>
+    <url>/2020/09/23/Data-Mining-Lec3/</url>
+    <content><![CDATA[<h2 id="general-scheme">General scheme</h2>
+<p>Approximating the kernel <span class="math inline">\(K(x,y) : \R^d \times \R^d \to \R\)</span></p>
+<p><span class="math inline">\(\phi: \R^d \to \R^m\)</span> randomized</p>
+<p><span class="math inline">\(K(x,y) = E[\phi(x)^T\phi(y)]\)</span> <span class="math display">\[\phi(x) = \frac{h(x)}{\sqrt{m}}\begin{bmatrix}f_1(w_1^Tx), ..., f_1(w_m^Tx)\\f_2(w_1^Tx), ..., f_2(w_m^Tx)\\...\\f_l(w_1^Tx), ..., f_l(w_m^Tx)\end{bmatrix}\]</span> for some <span class="math inline">\(h: \R^d \to \R\)</span></p>
+<p>Example:</p>
+<ol type="1">
+<li>Dot-product kernel, <span class="math inline">\(l = 1\)</span>, <span class="math inline">\(f_1(x)=x\)</span>, <span class="math inline">\(h(x)=1\)</span>, <span class="math inline">\(\Omega = N(0, I_d)\)</span></li>
+<li>Gaussian kernel, <span class="math inline">\(l=2\)</span>, <span class="math inline">\(f_1(x)=\cos(x), f_2(x)=\sin(x)\)</span>, <span class="math inline">\(\Omega = N(0, I_d)\)</span></li>
+<li>Softmax kernel, <span class="math inline">\(l=2\)</span>, <span class="math inline">\(f_1(x)=\cos(x), f_2(x)=\sin(x)\)</span>, <span class="math inline">\(\Omega = N(0, I_d)\)</span>, renormalizer <span class="math inline">\(h(x) = e^{\frac{||x||^2}{2}}\)</span></li>
+<li>Angular kernel, <span class="math inline">\(l=1, f_1(x)=sgn(x), h(x)=1, \Omega = N(0,I_d)\)</span></li>
+</ol>
+<h2 id="orthogonal-random-features">Orthogonal Random Features</h2>
+<p><span class="math inline">\(w_1, ..., w_m \sim \Omega\)</span>, construct pdf function on a fixed isotopic sphere</p>
+<p>ORFs:</p>
+<p><span class="math inline">\(\to w_i \sim \Omega\)</span></p>
+<p><span class="math inline">\(\to w_i^Tw_j = 0\)</span> with prob 1 for <span class="math inline">\(i \neq j\)</span></p>
+<ol type="1">
+<li>Why do we need ORFs?</li>
+<li>How to construct them?</li>
+</ol>
+<p>We use ORFs reduce the variance of estimator. Then each new <span class="math inline">\(w_i\)</span> provides new information. We can have fewer features.</p>
+<h2 id="recipe-for-constucting-orfsonly-for-omega-isotopic">Recipe for constucting ORFs(Only for <span class="math inline">\(\Omega\)</span>-isotopic)</h2>
+<p>Only when <span class="math inline">\(m\leq d\)</span></p>
+<ol type="1">
+<li>Constuct <span class="math inline">\(w_1, ..., w_m \sim iid \Omega\)</span></li>
+<li>Construct matrix G:</li>
+</ol>
+<p><span class="math display">\[ G = \begin{pmatrix}w_1^T\\...\\w_m^T\end{pmatrix} \in \R^{m\times d}\]</span></p>
+<ol start="3" type="1">
+<li><p>Conduct Gram-Schmidt orthogon of <span class="math inline">\(G_{ort}\)</span> to get with L2-normalized rows</p></li>
+<li><p>Renormalize each row of <span class="math inline">\(G_{ort}\)</span> simply by multiplying it with a scalar random variable <span class="math inline">\(X\sim \Omega\)</span>, distribution of lengths of vectors taken from <span class="math inline">\(\Omega\)</span></p></li>
+</ol>
+<h2 id="proxies">Proxies</h2>
+<p><span class="math inline">\(G_{ort} \to ?\)</span></p>
+<ol type="1">
+<li>Random-Hadamand Matrices <span class="math display">\[ G_{ort} = (\frac{1}{\sqrt{d}}HD_1)...(\frac{1}{\sqrt{d}}HD_k) \]</span> for some <span class="math inline">\(k\in N_{+}\)</span></li>
+</ol>
+<p><span class="math display">\[ D_i = diag(\tau_i^1, ... \tau_i^d) \]</span> <span class="math display">\[\tau_i \sim iid \{-1, +1\} \]</span></p>
+<p>H is a Hadamand matrix (to be more precise, H is called a Kronecker-Hadamand matrix) <span class="math display">\[ H_0 = [1] \in \R^{1\times 1} \]</span> <span class="math display">\[ H_{t+1} = \begin{bmatrix} H_t, H_t\\ H_t, -H_t \end{bmatrix} \]</span></p>
+<ul>
+<li><span class="math inline">\(H_t \in \R^{2^t \times 2^t}\)</span> has orthogonal rows/columns.</li>
+<li><span class="math inline">\(H_t\)</span> is symmetric</li>
+</ul>
+<p><span class="math display">\[ G_{ort} \in \R^{d \times d} = (\frac{1}{\sqrt{d}}HD_1)...(\frac{1}{\sqrt{d}}HD_k) \]</span> H have to be <span class="math inline">\(\R^{d \times d}\)</span>, what if not power of 2? <strong>Zero padding</strong> to our input data.</p>
+<ul>
+<li>Larger k implies better approximation of the original mechanism, <span class="math inline">\(\frac{1}{\sqrt{d}}\)</span> is normalized orthogonal, doing this for k times</li>
+</ul>
+<ol start="2" type="1">
+<li>Givens rotations</li>
+</ol>
+<p><span class="math display">\[ G_{ort} = Giv_1 Giv_2...Giv_k, k = O(dlog) \]</span></p>
+<p>Givens rotations: ... diagonal 1, where i, j exhibits <span class="math display">\[ \begin{bmatrix} \cos{\theta}, \sin{\theta}\\ -\sin{\theta}, \cos{\theta}\end{bmatrix} \]</span></p>
+<p>The ith and jth rotated <span class="math inline">\(\theta\)</span></p>
+<h2 id="neural-networks-attention-mechanism">Neural Networks &amp; Attention Mechanism</h2>
+<p>Our object of interest: sequential data <span class="math inline">\((x_1, ..., x_L)\)</span> -&gt; L-tuple, each <span class="math inline">\(\in \R^d\)</span></p>
+<h3 id="examples">Examples</h3>
+<ol type="a">
+<li><p>text data, where <span class="math inline">\(x_i\)</span>s correspond to embeddings of words.</p></li>
+<li><p>music data, where <span class="math inline">\(x_i\)</span>s correspond to embeddings of notes.</p></li>
+<li><p>bio-informatics, protein-chains, embeddings of amino-acids.</p></li>
+</ol>
+<h3 id="self-attention">Self-Attention</h3>
+<p><span class="math inline">\((x_1, ..., x_L)\)</span>, understanding how the tokens attend to each other</p>
+<p>similarity functions: <span class="math inline">\(K(x_i, x_j) \to \R\)</span></p>
+<h2 id="attention-matrix-a">Attention matrix A</h2>
+<p><span class="math inline">\(A \in R^{L \times L}\)</span></p>
+<p><span class="math inline">\(A_{i,j} = K(x_i, x_j)\)</span></p>
+<p>a.k.a kernel matrix corresponding to Kernel sequence <span class="math inline">\((x_1, ..., x_L)\)</span></p>
+<p>usually fixed kernel, <span class="math inline">\(K(x_i, x_j) = SM(x_i, x_j) = e^{x_i^Tx_j}\)</span></p>
+<p>we don't want the value to be exponentially large.</p>
+<p>By renormalizing, <span class="math inline">\(e^{x_i^Tx_j} \to e^{\frac{x_i^Tx_j}{\sqrt{d}}}\)</span></p>
+<p><span class="math inline">\(K(x_i, x_j) = e^{(w_1x_i)^T(w_2x_j)}\)</span></p>
+<p>Thinking about xis as row vectors,</p>
+<p>e<sup>{(w_1x_i)</sup>T(w_2x_j)}$</p>
+<p><span class="math inline">\(K(x_i, x_j) = SM(x_i, x_j) = e^{x_ix_j^T}\)</span></p>
+<p><span class="math display">\[W_Q, W_k: K_{W_Q, W_k}(x_i, x_j) = SM(x_iW_Q, x_jW_k) \]</span> <span class="math display">\[ = e^{x_iW_QW_K^Tx_j^T} \]</span></p>
+<p><span class="math inline">\(q_i = x_iW_Q\)</span>, query-vector corresponding to <span class="math inline">\(x_i\)</span> <span class="math inline">\(k_j = x_jW_k\)</span>, key-vector corresponding to <span class="math inline">\(x_i\)</span></p>
+<p>use <span class="math inline">\(x_i\)</span> to calculate <span class="math inline">\(q_i\)</span>, <span class="math inline">\(k_i\)</span>, see how <span class="math inline">\(q_i\)</span> attends to <span class="math inline">\(k_j\)</span>,<span class="math inline">\(q_j\)</span> attends to <span class="math inline">\(k_i\)</span></p>
+<p><span class="math inline">\(A_{i,j} = e^{\frac{q_ik_j^T}{\sqrt{d}}}\)</span></p>
+<p>L(L-tuple) -&gt; [attention block] -&gt; another L-tuple -&gt; [attention block2] ...</p>
+<p>...</p>
+<p>Output of the attention: L AV = [A(L*L) * [V(L*d) <span class="math inline">\(V_i = X_i \cdot W_V\)</span></p>
+<h3 id="attention-block-version-i">Attention Block version I</h3>
+<p>Input: <span class="math inline">\(X\)</span></p>
+<p>Hyperparams: <span class="math inline">\(W_Q, W_K, W_V\)</span></p>
+<p>Compute <span class="math inline">\(Q = XW_Q \in \R^{L\times d}\)</span>, and so are <span class="math inline">\(K, V\)</span></p>
+<p>Output: <span class="math inline">\(AV\)</span> where <span class="math inline">\(A = e^{\frac{QK^T}{\sqrt{d}}}\)</span></p>
+<p>Attention block is parametrized by 3 matrices.</p>
+<p><span class="math inline">\(x_i\)</span> to <span class="math inline">\(q_i, k_i, v_i\)</span></p>
+]]></content>
+      <categories>
+        <category>Data Mining</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>哈希</title>
+    <url>/2020/09/25/%E5%93%88%E5%B8%8C/</url>
+    <content><![CDATA[<h3 id="找到最长无重复字串长度">找到最长无重复字串长度</h3>
+<ul>
+<li>题目描述
+<ul>
+<li>给定一个数组arr，返回arr的最长无的重复子串的长度(无重复指的是所有数字都不相同</li>
+<li>示例1 输入 <code>[2,3,4,5]</code>, 输出 <code>4</code></li>
+</ul></li>
+<li>考点： 哈希，双指针，字符串</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> arr int整型一维数组 the array</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> int整型</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NowCoder_MaxLength</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 滑动窗口是一个set，如果没有就添加，否则比较长度，start增加1</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">maxLength</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</span><br><span class="line">        HashMap&lt;Integer, Integer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        <span class="keyword">int</span> max = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> start = <span class="number">0</span>, end = <span class="number">0</span>; end &lt; arr.length; end++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (map.containsKey(arr[end])) &#123;</span><br><span class="line">                start = Math.max(start, map.get(arr[end]) + <span class="number">1</span>); <span class="comment">// 注意点</span></span><br><span class="line">            &#125;</span><br><span class="line">            max = Math.max(max, end - start + <span class="number">1</span>);</span><br><span class="line">            map.put(arr[end], end);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> max;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] a = &#123; <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">4</span> &#125;;</span><br><span class="line">        System.out.println(maxLength(a));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Java数据结构与算法</category>
+      </categories>
+  </entry>
 </search>
