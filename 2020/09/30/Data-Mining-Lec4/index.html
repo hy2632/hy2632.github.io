@@ -20,19 +20,20 @@
     var CONFIG = {"hostname":"hy2632.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="看到一篇讲SVM不错的文章 看了这篇文章你还不懂SVM你就来打我 google SVM 的 scaling，又看到了该作者的个人站点 TangShusen，同样是基于Hexo的next主题，感觉很值得借鉴。 看了下GitHub还有不少宝藏内容。关注了。">
+  <meta name="description" content="Attention Mechanism Attention block: takes a sequence of vectors, \(x_1, ... x_L (\R^d)\), and output another series \(x_1, ... x_L (\R^d)\) Within the block, \(W_Q, W_K, W_V\), \(X &#x3D; \begin{bmatrix}x">
 <meta property="og:type" content="article">
-<meta property="og:title" content="0922">
-<meta property="og:url" content="https://hy2632.github.io/2020/09/22/0922/index.html">
+<meta property="og:title" content="Data-Mining-Lec4">
+<meta property="og:url" content="https://hy2632.github.io/2020/09/30/Data-Mining-Lec4/index.html">
 <meta property="og:site_name" content="豁蒙楼">
-<meta property="og:description" content="看到一篇讲SVM不错的文章 看了这篇文章你还不懂SVM你就来打我 google SVM 的 scaling，又看到了该作者的个人站点 TangShusen，同样是基于Hexo的next主题，感觉很值得借鉴。 看了下GitHub还有不少宝藏内容。关注了。">
+<meta property="og:description" content="Attention Mechanism Attention block: takes a sequence of vectors, \(x_1, ... x_L (\R^d)\), and output another series \(x_1, ... x_L (\R^d)\) Within the block, \(W_Q, W_K, W_V\), \(X &#x3D; \begin{bmatrix}x">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-09-22T21:07:35.000Z">
-<meta property="article:modified_time" content="2020-09-22T20:12:24.752Z">
+<meta property="article:published_time" content="2020-10-01T00:08:17.000Z">
+<meta property="article:modified_time" content="2020-10-01T01:44:17.978Z">
 <meta property="article:author" content="姚华(Hua Yao)">
+<meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://hy2632.github.io/2020/09/22/0922/">
+<link rel="canonical" href="https://hy2632.github.io/2020/09/30/Data-Mining-Lec4/">
 
 
 <script id="page-configurations">
@@ -45,7 +46,7 @@
   };
 </script>
 
-  <title>0922 | 豁蒙楼</title>
+  <title>Data-Mining-Lec4 | 豁蒙楼</title>
   
 
 
@@ -197,7 +198,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/09/22/0922/">
+    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/09/30/Data-Mining-Lec4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
@@ -210,7 +211,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          0922
+          Data-Mining-Lec4
         </h1>
 
         <div class="post-meta">
@@ -221,7 +222,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-09-22 16:07:35 / 修改时间：15:12:24" itemprop="dateCreated datePublished" datetime="2020-09-22T16:07:35-05:00">2020-09-22</time>
+              <time title="创建时间：2020-09-30 19:08:17 / 修改时间：20:44:17" itemprop="dateCreated datePublished" datetime="2020-09-30T19:08:17-05:00">2020-09-30</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -229,7 +230,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/misc/" itemprop="url" rel="index"><span itemprop="name">misc</span></a>
+                  <a href="/categories/Data-Mining/" itemprop="url" rel="index"><span itemprop="name">Data Mining</span></a>
                 </span>
             </span>
 
@@ -244,9 +245,87 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>看到一篇讲SVM不错的文章 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/49331510">看了这篇文章你还不懂SVM你就来打我</a></p>
-<p>google SVM 的 scaling，又看到了该作者的个人站点 <a target="_blank" rel="noopener" href="https://tangshusen.me/">TangShusen</a>，同样是基于Hexo的next主题，感觉很值得借鉴。</p>
-<p>看了下<a target="_blank" rel="noopener" href="https://github.com/ShusenTang">GitHub</a>还有不少宝藏内容。关注了。</p>
+        <h1 id="attention-mechanism">Attention Mechanism</h1>
+<p>Attention block: takes a sequence of vectors, <span class="math inline">\(x_1, ... x_L (\R^d)\)</span>, and output another series <span class="math inline">\(x_1, ... x_L (\R^d)\)</span></p>
+<p>Within the block, <span class="math inline">\(W_Q, W_K, W_V\)</span>, <span class="math inline">\(X = \begin{bmatrix}x_1\\x_2\\...\\x_L\end{bmatrix} \in \R^{L\times d}\)</span> <span class="math display">\[ \R^{L\times d}\begin{cases} Q = W_QX\\ K = W_KX\\V=W_VX\end{cases} \]</span> <span class="math display">\[ Q = \begin{bmatrix}q_1\\q_2\\...\\q_L\end{bmatrix} \]</span> all these weight matrices will be learned.</p>
+<p>rows:<span class="math inline">\(q_1, ..., q_L\)</span>, columns: <span class="math inline">\(k_1, ..., k_L\)</span> compose a orthogonal matrix A. <span class="math display">\[ A_{ij} = K(q_i, k_j) \]</span></p>
+<p>...</p>
+<h3 id="not-normalized-attention-av">Not normalized attention: <span class="math inline">\(AV\)</span></h3>
+<p>The rows would be embeddings</p>
+<p><span class="math display">\[\begin{bmatrix} x_1&#39;\\...\\x_L&#39;\end{bmatrix} = AV \in \R^{L\times L}\]</span> <span class="math display">\[ A:L\times L; V: L\times d\]</span> <span class="math display">\[ x_i&#39; = \sum_{j=1}^{L}{K(q_ik_j)v_j} \]</span></p>
+<h3 id="normalized-attention">Normalized attention:</h3>
+<p><span class="math display">\[ x_i&#39; = \sum_{j=1}^{L}{\frac{K(q_ik_j)v_j}{\sum_{s=1}^{L}{K(q_i, k_s)}}} \]</span> The weight sum up to 1 and &gt;=0; <span class="math inline">\(K: R^d\times R^d: R^+\)</span></p>
+<p><span class="math display">\[D^{-1}AV\]</span> D: diagonal L*L,</p>
+<p>partition function: <span class="math display">\[ d_i = \sum_{s=1}^{L}{K(q_i, k_s)} \]</span></p>
+<h2 id="unidirectional-attention">Unidirectional Attention</h2>
+<h3 id="not-normalized-setting">Not-normalized setting:</h3>
+<p><span class="math display">\[ A_{masked}V \]</span></p>
+<p>masked attention matrix, zero out uptriangular part.</p>
+<p><span class="math display">\[ A_{masked} =...\]</span></p>
+<h3 id="normalized">Normalized:</h3>
+<p><span class="math display">\[D_{masked}^{-1}A_{masked}V\]</span></p>
+<p><span class="math display">\[D: diagonal: L*L\]</span></p>
+<p><span class="math display">\[ d_i = \sum_{s=1}^{i}{K(q_i, k_s)} \]</span></p>
+<h2 id="problems-with-standard-attention-algorithm">Problems with standard attention algorithm</h2>
+<ul>
+<li>Time and space complecity for computing attention is quadratic in L (cannot be used for very long sequences)</li>
+</ul>
+<h3 id="sparsification">Sparsification:</h3>
+<ul>
+<li>attend just to a few tokens(either learned or fixed)
+<ul>
+<li>in a unidirectional case (lower triangular part is non-zero) last <span class="math inline">\(l\)</span> tokens (like a column till the diagonal);</li>
+<li>in a bidirectional case, closest <span class="math inline">\(l\)</span> tokens. (Like a diagonal strip)</li>
+</ul></li>
+</ul>
+<p>for <code>Graph data</code>, people often attend only to neighbors (graph attention methods).</p>
+<ul>
+<li>attend to a few tokens, but learn those that you would like to attend to.</li>
+</ul>
+<p>How to choose what <span class="math inline">\(k\)</span>s to attend to? Close ones. Choose 10 closests.</p>
+<p>if <span class="math inline">\(Q=K(W_Q = W_K)\)</span>, can <strong>cluster</strong> queries into groups</p>
+<ul>
+<li>clustering</li>
+<li>hashing, nearest neighbour approach, 10 closest neighbours, code the query to reduce complexity</li>
+</ul>
+<h2 id="efficient-dense-attention">Efficient Dense Attention</h2>
+<p>Approximate the attention? While the matrix is still dense? Decomposition.</p>
+<h3 id="bidirectional-not-normalized-attention">Bidirectional not-normalized attention</h3>
+<p><span class="math inline">\(AV\)</span></p>
+<p>Let's try to rewrite <span class="math inline">\(A\)</span> as <span class="math inline">\(A\approx F_1\cdot F_2 \cdot... \cdot F_L\)</span> for some simpler matrices <span class="math inline">\(F_i\)</span></p>
+<p><span class="math display">\[ (F_1\cdot F_2\cdot...\cdot F_L)\cdot V = F_1\cdot (F_2\cdot(...\cdot(F_L\cdot V)...) \]</span> <span class="math display">\[ AV \in \R^{L \times d} \]</span></p>
+<p>Q: Can we rewrite <span class="math inline">\(A = F_1 \cdot F_2, L\times L = L \times m * m\times L\)</span>, where <span class="math inline">\(m &lt; L\)</span> <span class="math inline">\(A\)</span> can be full rank (<span class="math inline">\(\det A \neq 0\)</span>)</p>
+<p>large matrices on the diagonal, small every where else</p>
+<p>Look at the rank, <span class="math inline">\(F_1, F_2\)</span> has rank <span class="math inline">\(\leq m\)</span>, so no solution.</p>
+<p>What aboyut random <span class="math inline">\(F_i\)</span>?</p>
+<ul>
+<li>Can we find random matrices <span class="math inline">\(F_1\)</span> and <span class="math inline">\(F_2\)</span> such that:
+<ul>
+<li><span class="math inline">\(A = E[F_1F_2]\)</span></li>
+<li>the error of the approximation small</li>
+</ul></li>
+</ul>
+<p><span class="math display">\[ A_{ij} = e^{\frac{q_ik_j^T}{\sqrt{d}}} = e^{\frac{q_i}{d^{\frac{1}{4}}}}... \]</span></p>
+<p>We conclude that</p>
+<p><span class="math display">\[ A_{ij} = E[\phi(\bar{q_i})\phi(\bar{k_j}^T)] \]</span></p>
+<p><span class="math display">\[ Q&#39; = \begin{bmatrix} \phi(\bar{q_1})\\...\\\phi(\bar{q_L}) \end{bmatrix} \]</span> <span class="math display">\[ K&#39; = \begin{bmatrix} \phi(\bar{k_1})\\...\\\phi(\bar{k_L}) \end{bmatrix} \]</span></p>
+<p><span class="math display">\[ Q&#39;(K&#39;)^T_{ij} =  \phi(\bar{q_i})\phi(\bar{k_j})^T\]</span> <span class="math display">\[ E[Q&#39;(K&#39;)^T_{ij}] =  E[\phi(\bar{q_i})\phi(\bar{k_j})^T]\]</span> <span class="math display">\[ A = E[Q&#39;(K&#39;)^T]\]</span></p>
+<p><span class="math display">\[ \phi_{SM}(x) = e^{\frac{||x||^2}{2}}\phi_{Gauss}(x) = e^{\frac{||x||^2}{2}} \frac{1}{\sqrt{m}} \begin{bmatrix}\cos(w_1^Ty)\\...\\\cos(w_m^Ty)\\\sin(w_1^Ty)\\...\\\sin(w_m^Ty) \end{bmatrix} \]</span></p>
+<p><span class="math display">\[ AV = E[Q&#39;(K&#39;)^T]V = E[Q&#39;(K&#39;)^TV] \]</span></p>
+<p><span class="math display">\[ AV \approx Q&#39;K&#39;^TV = Q&#39;(K&#39;^TV)\]</span></p>
+<p><span class="math display">\[ Q\in R^{L\times m}, K&#39; \in R^{m\times L}, V \in R^{L\times d} \]</span> <span class="math display">\[ m = 2v \]</span> space complexity: <span class="math inline">\(O(L\times d + m\times d + L\times m)\)</span></p>
+<p>time complexity: <span class="math inline">\(O(mLd)\)</span> versus <span class="math inline">\(O(L^2d)\)</span> for standard attention complexity.</p>
+<p>if <span class="math inline">\(m &lt;&lt; L\)</span></p>
+<h2 id="problems-with-tripnometric-features">Problems with tripnometric features</h2>
+<p>for a row, <span class="math display">\[ \sum_{s=1}^{L}{K(q_i, ks)}\]</span> if lots of entries in a row are close to 0 then lots of estimators' values could be potentially <strong>negative</strong></p>
+<p>In general, as long as kernel used for attention can be written as</p>
+<p><span class="math display">\[ K(x,y) = E[\phi(x)\phi(y)^T] \]</span></p>
+<p>for some <span class="math inline">\(\phi: R^{d} \to R^{m} (m &lt; \infty)\)</span> deterministic or random, we can get attention computation mechanism with $O(mLd) time complexity and O(mL+Ld+md) space complexity</p>
+<p>Remark:</p>
+<p>if random features are used, random features for attention computation should be periodically redrawn in downstream algorithms using attention-based models.</p>
+<p>Remark:</p>
+<p>in practice, it suffices to take <span class="math inline">\(m: O(d\log d)\)</span> to ahve accurate estimation of the attention matrix.</p>
+<p>as long as <span class="math inline">\(d &lt;&lt; L\)</span>, presented mechanism provides space and time complexity gains.</p>
 
     </div>
 
@@ -255,6 +334,9 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
 
         
 
@@ -262,13 +344,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/09/18/%E9%80%92%E5%BD%92/" rel="prev" title="递归">
-      <i class="fa fa-chevron-left"></i> 递归
+    <a href="/2020/09/25/%E5%93%88%E5%B8%8C/" rel="prev" title="哈希">
+      <i class="fa fa-chevron-left"></i> 哈希
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/09/23/Data-Mining-Lec3/" rel="next" title="Data-Mining-Lec3">
-      Data-Mining-Lec3 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -327,6 +406,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#attention-mechanism"><span class="nav-number">1.</span> <span class="nav-text">Attention Mechanism</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#not-normalized-attention-av"><span class="nav-number">1.0.1.</span> <span class="nav-text">Not normalized attention: \(AV\)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#normalized-attention"><span class="nav-number">1.0.2.</span> <span class="nav-text">Normalized attention:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unidirectional-attention"><span class="nav-number">1.1.</span> <span class="nav-text">Unidirectional Attention</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#not-normalized-setting"><span class="nav-number">1.1.1.</span> <span class="nav-text">Not-normalized setting:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#normalized"><span class="nav-number">1.1.2.</span> <span class="nav-text">Normalized:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#problems-with-standard-attention-algorithm"><span class="nav-number">1.2.</span> <span class="nav-text">Problems with standard attention algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sparsification"><span class="nav-number">1.2.1.</span> <span class="nav-text">Sparsification:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#efficient-dense-attention"><span class="nav-number">1.3.</span> <span class="nav-text">Efficient Dense Attention</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bidirectional-not-normalized-attention"><span class="nav-number">1.3.1.</span> <span class="nav-text">Bidirectional not-normalized attention</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#problems-with-tripnometric-features"><span class="nav-number">1.4.</span> <span class="nav-text">Problems with tripnometric features</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
