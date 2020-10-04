@@ -2308,4 +2308,83 @@ Date
         <tag>笔记</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Data-Mining-施密特正交化</title>
+    <url>/2020/10/01/Data-Mining-%E6%96%BD%E5%AF%86%E7%89%B9%E6%AD%A3%E4%BA%A4%E5%8C%96/</url>
+    <content><![CDATA[<h1 id="最小二乘法与投影">最小二乘法与投影</h1>
+<p>"最小二乘法的本质是希尔伯特空间的投影。"</p>
+<p>Suppose we want to project some higher-dimensional vector to a lower-dimensional space(say plane).</p>
+<p>The projection is <span class="math inline">\(\vec{p}\)</span>, original one is <span class="math inline">\(\vec{b}\)</span>, the vector that is vertical(or say orthogonal) to the space should be <span class="math display">\[\vec{e} = \vec{b} - \vec{p}\]</span></p>
+<p>for the vector <span class="math inline">\(\vec{p}\)</span> that is within the plane(say <strong>n-dimensional</strong> space) <span class="math display">\[\vec{p} = Ax \]</span> where A is the matrix where each column <span class="math inline">\(a_i\)</span> is a basis.</p>
+<p>since <span class="math inline">\(e\perp a_i\)</span> <span class="math display">\[a_i^T(b-Ax) = 0\]</span> <span class="math display">\[A^T(b-Ax) = 0\]</span> <span class="math display">\[A^TAx = A^Tb\]</span></p>
+<p>If <span class="math inline">\(A^TA\)</span> is invertible <span class="math display">\[x = (A^TA)^{-1}A^Tb\]</span> <span class="math display">\[p = Ax = A(A^TA)^{-1}A^Tb\]</span></p>
+<p>The best scenario is A is composed of orthogonal basis. A is standard orthogonal matrix.</p>
+<hr />
+<p><strong>Question</strong>: when is <span class="math inline">\(A^TA\)</span> invertible?</p>
+<p><strong>Answer</strong>: when the column vectors of <span class="math inline">\(A(m\times n)\)</span> are linearly independent</p>
+<p><strong>Proof(Contradiction):</strong></p>
+<p>If column vectors are linearly independent and <span class="math inline">\(A^TA\)</span> is invertible,</p>
+<p><span class="math inline">\(A^TAx=0\)</span> has non-zero solution (because <span class="math inline">\(\det{A^TA} = 0\)</span>)</p>
+<p><span class="math display">\[x^TA^TAx = 0\]</span></p>
+<p><span class="math display">\[(Ax)^TAx = 0\]</span></p>
+<p><span class="math display">\[\therefore Ax = 0\]</span></p>
+<p><span class="math inline">\(\because\)</span> A's columns are linearlly independent <span class="math display">\[\therefore x=0\]</span> Contradicted, so when column vectors are linearly independent, <span class="math inline">\(A^TA\)</span> is invertible</p>
+<hr />
+<h1 id="格拉姆-施密特正交化-gram-schmidt-orthogonalization">格拉姆-施密特正交化 Gram-Schmidt Orthogonalization</h1>
+<p><a href="https://zhuanlan.zhihu.com/p/76703543">知乎回答：格拉姆-施密特正交化--QR分解法的来源</a></p>
+<p>标准正交阵 <span class="math inline">\(Q\)</span> 满足:</p>
+<p><span class="math display">\[ Q^TQ = I\]</span> <span class="math display">\[ Q^T = Q^{-1}\]</span></p>
+<p>投影矩阵 <span class="math inline">\(P\)</span> 满足: <span class="math display">\[ P = A(A^TA)^{-1}A^T \]</span></p>
+<p>当<span class="math inline">\(A\)</span>为正交阵<span class="math inline">\(Q\)</span>时， <span class="math display">\[P = Q(Q^TQ)^{-1}Q^T = QQ^T\]</span></p>
+<p>如果有一个矩阵 <span class="math display">\[q = [a, b, c]\]</span> 经过正交化 <span class="math display">\[Q = [A, B, C]\]</span> 其中<span class="math inline">\(A, B, C\)</span>正交。令<span class="math inline">\(A=a\)</span>(第一个列向量不变，调整其他向量使正交)</p>
+<p>研究<span class="math inline">\(b\)</span>在<span class="math inline">\(a(A)\)</span>上的投影<span class="math inline">\(p\)</span>，利用向量投影公式 <span class="math display">\[p = \frac{A^Tb}{A^TA}A\]</span></p>
+<p><span class="math inline">\(B\)</span>就是<span class="math inline">\(b\)</span>到<span class="math inline">\(A\)</span>垂线的向量 <span class="math display">\[B = b - p = b - \frac{A^Tb}{A^TA}A\]</span></p>
+<p>已经有了前两个维度，<span class="math inline">\(C\)</span>就是<span class="math inline">\(c\)</span>减去在<span class="math inline">\(A,B\)</span>平面上的投影，也可以认为是减去在前两个方向上的投影(因为平面上的投影也是两个方向上投影的叠加) <span class="math display">\[C = c - \frac{A^Tc}{A^TA}A - \frac{B^Tc}{B^TB}B\]</span></p>
+<p>对<span class="math inline">\(u_i = A,B,C\)</span>模数归一化得到<span class="math inline">\(e_i\)</span>，就得到正交矩阵<span class="math inline">\(Q\)</span></p>
+<h1 id="qr分解">QR分解</h1>
+<p><a href="https://zhuanlan.zhihu.com/p/84415000">知乎回答：[数值计算] QR分解</a></p>
+<p><span class="math inline">\(Ax = b, A\in \mathbb{R}^{m\times n}\)</span> 的可能情况有： 1. <span class="math inline">\(m=n\)</span> 2. <span class="math inline">\(m&gt;n\)</span>, over-determined 3. <span class="math inline">\(m&lt;n\)</span>, under-determined</p>
+<h2 id="定义">定义</h2>
+<p><span class="math inline">\(A\in \mathbb{R}^{m\times n}, m\geq n\)</span>可以被分解成 <span class="math inline">\(A=QR\)</span>, 其中: * <span class="math inline">\(Q\in \mathbb{R}^{m\times m}\)</span> 是正交矩阵 * <span class="math inline">\(R = \begin{bmatrix}\hat{R}\\0\end{bmatrix}\in \mathbb{R}^{m\times n}\)</span> * <span class="math inline">\(\hat{R}\in \mathbb{R}^{n\times n}\)</span>是上三角阵</p>
+<h2 id="正交矩阵性质">正交矩阵性质</h2>
+<ul>
+<li><span class="math inline">\(Q^TQ = QQ^T = I\)</span></li>
+<li>左乘正交矩阵不影响欧式范数</li>
+</ul>
+<h2 id="计算qr分解的方法">计算QR分解的方法</h2>
+<ul>
+<li>Gram-Schmidt orthogonalization</li>
+<li>Householder Triangularization</li>
+<li>Givens Rotations</li>
+</ul>
+<h2 id="gram-schmidt-orthogonalization">Gram-Schmidt Orthogonalization</h2>
+<h3 id="reduced-qr分解">Reduced QR分解</h3>
+<p>GSO从矩阵<span class="math inline">\(A\in \mathbb{R}^{m\times n}\)</span>的第一个列向量<span class="math inline">\(A_{:,0}\)</span>开始构建互相正交的基。 对于原矩阵<span class="math inline">\(A\)</span> <span class="math display">\[A_{:,0} = r_{0,0}q_0\]</span> <span class="math display">\[A_{:,1} = r_{0,1}q_0 + r_{1,1}q_1\]</span> <span class="math display">\[...\]</span> <span class="math display">\[A_{:,n-1} = r_{0,n-1}q_0 + r_{1,n-1}q_1 ... + r_{n-1,n-1}q_{n-1}\]</span></p>
+<p><span class="math display">\[ A = \hat{Q} \hat{R} \]</span> <span class="math display">\[ [A_{:,0}, ... A_{:,n-1}] = [q_0, ..., q_{n-1}] \begin{bmatrix} r_{0,0} \ r_{0,1} \ ... r_{0,n-1}\\ ~~~~~~~ r_{1,1} \ ... r_{1,n-1} \\ ~~~~... \\ ~~~~~~~~~~~~~r_{n-1, n-1}\end{bmatrix} \]</span></p>
+<p><span class="math inline">\(\hat{Q} \in \mathbb{R}^{m\times n}, \hat{R} \in \mathbb{R}^{n\times n}\)</span> 称为 Reduced-QR，<span class="math inline">\(\hat{Q}\)</span>不为方阵。 <span class="math inline">\(\hat{Q}^T\hat{Q} = I\)</span>，因为<span class="math inline">\(m&gt;n\)</span>，不满足<span class="math inline">\(\hat{Q}\hat{Q}^T = I\)</span> （满秩方阵才能两侧逆）</p>
+<h3 id="full-qr分解">Full-QR分解</h3>
+<p><span class="math inline">\(Q \in \mathbb{R}^{m\times m}, R \in \mathbb{R}^{m\times n}\)</span></p>
+<p>若<span class="math inline">\(m&gt;n\)</span>，需要把<span class="math inline">\(\hat{Q}\)</span>的n个基拓展到m个基。多出的<span class="math inline">\(m-n\)</span>个基对应到<span class="math inline">\(R = \begin{bmatrix} \hat{R} \\ 0 \end{bmatrix}\)</span> 的空白部分。</p>
+<h3 id="python-numpy代码">Python numpy代码</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">q, r = np.linalg.qr(A) <span class="comment"># Reduced-QR</span></span><br><span class="line">q, r = np.linalg.qr(A, mode = <span class="string">&quot;complete&quot;</span>) <span class="comment"># Full-QR</span></span><br></pre></td></tr></table></figure>
+<h3 id="classic-gso-cgso">Classic GSO (CGSO)</h3>
+<p><span class="math display">\[ [A_{:,0}, ... A_{:,n-1}] = [q_0, ..., q_{n-1}] \begin{bmatrix} r_{0,0} \ r_{0,1} \ ... r_{0,n-1}\\ ~~~~~~~ r_{1,1} \ ... r_{1,n-1} \\ ~~~~... \\ ~~~~~~~~~~~~~r_{n-1, n-1}\end{bmatrix} \]</span></p>
+<p>每一次迭代<span class="math inline">\(q_0, ..., q_{j-1}\)</span>已知，<span class="math inline">\(r_{j,j}\)</span>未知，<span class="math inline">\(r_{0,j}, ..., r_{j-1,j}\)</span>满足 <span class="math display">\[r_{i,j} = q_i^TA_{:,~j}\]</span></p>
+<p><span class="math display">\[r_{j,j}q_j = v_j =  A_{:,j} - \sum_{i=0}^{j-1}{r_{i,j}q_i} = A_{:,j} - \sum_{i=0}^{j-1}{q_i^TA_{:,~j}q_i}\]</span></p>
+<p>对<span class="math inline">\(v_i\)</span>按模数归一化， <span class="math display">\[q_j = \frac{v_j}{||v_j||_2}\]</span> <span class="math display">\[r_{j,j} = ||v_j||_2\]</span></p>
+<h3 id="modified-gso-mgso">Modified GSO (MGSO)</h3>
+<p>...</p>
+<h2 id="givens-rotations">Givens Rotations</h2>
+<h3 id="矩阵形式">矩阵形式</h3>
+<p><img src="https://www.zhihu.com/equation?tex=G%28i%2Cj%2C%5Ctheta%29+%3D++%5Cbegin%7Bbmatrix%7D+1+%26+%5Cdots+%26+0+%26+%5Cdots+%26+0+%26+%5Cdots+%26+0%5C%5C+%5Cvdots+%26+%5Cddots+%26+%5Cvdots+%26+%5Cddots+%26+%5Cvdots+%26+%5Cddots+%26+%5Cvdots%5C%5C+0+%26+%5Cdots+%26+cos%5Ctheta+%26+%5Cdots+%26+sin%5Ctheta+%26+%5Cdots+%26+0%5C%5C+%5Cvdots+%26+%5Cddots+%26+%5Cvdots+%26+%5Cddots+%26+%5Cvdots+%26+%5Cddots+%26+%5Cvdots%5C%5C+0+%26+%5Cdots+%26+-sin%5Ctheta+%26+%5Cdots+%26+cos%5Ctheta+%26+%5Cdots+%26+0%5C%5C+%5Cvdots+%26+%5Cddots+%26+%5Cvdots+%26+%5Cddots+%26+%5Cvdots+%26+%5Cddots+%26+%5Cvdots%5C%5C+0+%26+%5Cdots+%26+0+%26+%5Cdots+%26+0+%26+%5Cdots+%26+1%5C%5C+%5Cend%7Bbmatrix%7D+%5Ctag%7B8%7D" alt="G(i,j,θ)" /> <img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+i+%26%3C+j+%5C%5C+G_%7Bi%2Ci%7D+%26%3D+c%5C%5C+G_%7Bj%2Cj%7D+%26%3D+c%5C%5C+G_%7Bi%2Cj%7D+%26%3D+s%5C%5C+G_%7Bj%2Ci%7D+%26%3D+-s%5C%5C+G_%7Bk%2Ck%7D+%26%3D+1%2C%5C+for%5C+k%5Cne+i%5C+or%5C+j%5C%5C+G_%7Bt%2Cs%7D+%26%3D+0%2C%5C+otherwise+%5Cend%7Baligned%7D+%5Ctag%7B9%7D" alt="Equations" /></p>
+<h3 id="矩阵作用">矩阵作用</h3>
+<p><span class="math inline">\(A\in \mathbb{R}^{m\times n}, m \geq n, A_{i,j}, A_{i,k}, j &lt; k\)</span>, <span class="math display">\[\begin{bmatrix}c &amp; s\\-s &amp; c \end{bmatrix} \begin{bmatrix}A_{i,j}\\A_{i,k}\end{bmatrix} = \begin{bmatrix} \alpha \\ 0 \end{bmatrix}\]</span> <span class="math display">\[\alpha = \sqrt{A_{i,j}^2 + A_{i,k}^2}\]</span> <span class="math display">\[c=\frac{A_{i,j}}{\alpha}\]</span> <span class="math display">\[s=\frac{A_{i,k}}{\alpha}\]</span></p>
+]]></content>
+      <categories>
+        <category>Data Mining</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
 </search>
