@@ -2390,31 +2390,34 @@ Date
   <entry>
     <title>Data-Mining-Recitation1</title>
     <url>/2020/10/05/Data-Mining-Recitation1/</url>
-    <content><![CDATA[<h1 id="recitation1">Recitation1:</h1>
+    <content><![CDATA[<h1 id="recitation1"><a class="markdownIt-Anchor" href="#recitation1"></a> Recitation1:</h1>
 <p>主要讨论Random Feature map 对高斯核的模拟，以及G正交化的影响</p>
-<p>P.S. <a href="https://chrismroberts.com/2020/01/06/using-markdown-in-hexo-to-add-images/">hexo部署时添加图片 Adding Images to Hexo Posts with Markdown</a></p>
-<p><a href="https://nbconvert.readthedocs.io/en/latest/install.html#installing-tex">jupyter导出pdf</a></p>
-<h4 id="import-packages">Import packages</h4>
+<p>P.S.<br />
+<a href="https://chrismroberts.com/2020/01/06/using-markdown-in-hexo-to-add-images/">hexo部署时添加图片 Adding Images to Hexo Posts with Markdown</a> <code>npm i -s hexo-asset-link</code></p>
+<p><a href="https://nbconvert.readthedocs.io/en/latest/install.html#installing-tex">jupyter导出pdf</a> 安装TeX</p>
+<h4 id="import-packages"><a class="markdownIt-Anchor" href="#import-packages"></a> Import packages</h4>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">import math</span><br><span class="line">from sklearn.metrics import mean_squared_error </span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">import os</span><br><span class="line">import random</span><br><span class="line">import pandas as pd</span><br><span class="line">import seaborn as sns</span><br><span class="line">from tqdm import tqdm</span><br><span class="line">import datetime</span><br><span class="line">from scipy.stats import norm</span><br></pre></td></tr></table></figure>
-<h4 id="calculate-gram-schmidt-orthogonalization">Calculate Gram-Schmidt Orthogonalization</h4>
+<h4 id="calculate-gram-schmidt-orthogonalization"><a class="markdownIt-Anchor" href="#calculate-gram-schmidt-orthogonalization"></a> Calculate Gram-Schmidt Orthogonalization</h4>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def gram_schmidt_columns(X):</span><br><span class="line">    Q, R &#x3D; np.linalg.qr(X)</span><br><span class="line">    return Q</span><br><span class="line"></span><br><span class="line">def orthgonalize(V):</span><br><span class="line">    N &#x3D; V.shape[0]</span><br><span class="line">    d &#x3D; V.shape[1]</span><br><span class="line">    turns &#x3D; int(N&#x2F;d)</span><br><span class="line">    remainder &#x3D; N%d</span><br><span class="line">    </span><br><span class="line">    #V &#x3D;  np.random.normal(size&#x3D;[(turns+1)*d, d])</span><br><span class="line">    #V &#x3D;  np.random.normal(size &#x3D;[N, d])</span><br><span class="line">    #print(V.shape)</span><br><span class="line">    V_ &#x3D; np.zeros_like(V)</span><br><span class="line">    </span><br><span class="line">    for i in range(turns):</span><br><span class="line">        v &#x3D; gram_schmidt_columns(V[i*d:(i+1)*d, :].T).T</span><br><span class="line">        V_[i*d:(i+1)*d, :] &#x3D; v</span><br><span class="line">    if remainder !&#x3D; 0:</span><br><span class="line">        V_[turns*d:,:] &#x3D; gram_schmidt_columns(V[turns*d:,:].T).T</span><br><span class="line">        </span><br><span class="line">    return V_</span><br></pre></td></tr></table></figure>
-<h6 id="step-1-i.i.d.-sampling">Step 1: i.i.d. sampling</h6>
+<h6 id="step-1-iid-sampling"><a class="markdownIt-Anchor" href="#step-1-iid-sampling"></a> Step 1: i.i.d. sampling</h6>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">random_matrix &#x3D; np.random.normal(0, 1, size &#x3D; (6,3))</span><br><span class="line">random_matrix</span><br></pre></td></tr></table></figure>
 <pre><code>array([[ 1.59895494,  0.29885485,  0.43694542],
        [-0.43523095, -0.10324217, -1.28703438],
        [-0.7452128 , -0.12095329,  0.31481384],
        [ 0.0779075 ,  0.43587534, -0.04371553],
        [ 0.35963102,  0.90466958, -1.25109187],
-       [ 1.58862906, -0.08350228, -0.51967566]])</code></pre>
-<h6 id="step-2-calculate-the-norm-of-each-sampling-for-later-renormalization">Step 2: Calculate the norm of each sampling for later renormalization</h6>
+       [ 1.58862906, -0.08350228, -0.51967566]])
+</code></pre>
+<h6 id="step-2-calculate-the-norm-of-each-sampling-for-later-renormalization"><a class="markdownIt-Anchor" href="#step-2-calculate-the-norm-of-each-sampling-for-later-renormalization"></a> Step 2: Calculate the norm of each sampling for later renormalization</h6>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">norms &#x3D; np.linalg.norm(random_matrix, axis &#x3D; 1).reshape(6,1)</span><br><span class="line">norms</span><br></pre></td></tr></table></figure>
 <pre><code>array([[1.6843077 ],
        [1.36254996],
        [0.81797284],
        [0.44493588],
        [1.58524206],
-       [1.67355242]])</code></pre>
-<h6 id="step-3-orthogonalize-the-random-features">Step 3: Orthogonalize the random features</h6>
+       [1.67355242]])
+</code></pre>
+<h6 id="step-3-orthogonalize-the-random-features"><a class="markdownIt-Anchor" href="#step-3-orthogonalize-the-random-features"></a> Step 3: Orthogonalize the random features</h6>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">a &#x3D; orthgonalize(random_matrix)</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">a, a.shape</span><br></pre></td></tr></table></figure>
 <pre><code>(array([[-0.94932472, -0.17743483, -0.25942137],
@@ -2422,26 +2425,32 @@ Date
         [-0.17882269,  0.98370853, -0.01843854],
         [-0.17509826, -0.9796363 ,  0.09825129],
         [ 0.14721431, -0.12472189, -0.98120966],
-        [ 0.97348269, -0.15734411,  0.16605506]]), (6, 3))</code></pre>
-<h6 id="step-4-renormalize-the-orthogonalized-random-features">Step 4: Renormalize the orthogonalized random features</h6>
+        [ 0.97348269, -0.15734411,  0.16605506]]), (6, 3))
+</code></pre>
+<h6 id="step-4-renormalize-the-orthogonalized-random-features"><a class="markdownIt-Anchor" href="#step-4-renormalize-the-orthogonalized-random-features"></a> Step 4: Renormalize the orthogonalized random features</h6>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">a*norms</span><br></pre></td></tr></table></figure>
 <pre><code>array([[-1.59895494, -0.29885485, -0.43694542],
        [-0.35217373, -0.03935899,  1.31566217],
        [-0.14627211,  0.80464686, -0.01508222],
        [-0.0779075 , -0.43587534,  0.04371553],
        [ 0.23337031, -0.19771438, -1.55545483],
-       [ 1.62917431, -0.26332362,  0.27790185]])</code></pre>
+       [ 1.62917431, -0.26332362,  0.27790185]])
+</code></pre>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">np.dot(a[0, :], a[1, :])</span><br></pre></td></tr></table></figure>
-<pre><code>5.551115123125783e-17</code></pre>
+<pre><code>5.551115123125783e-17
+</code></pre>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># G就是(w1, ..., wm)</span><br><span class="line"># 高斯核的phi(x)</span><br><span class="line">def baseline_eval_gaussian(x, G, m):</span><br><span class="line">    &quot;&quot;&quot;Calculate the result of baseline random feature mapping</span><br><span class="line"></span><br><span class="line">        Parameters</span><br><span class="line">        ----------</span><br><span class="line">        x: array, dimension &#x3D; d</span><br><span class="line">            The data point to input to the baseline mapping</span><br><span class="line">        </span><br><span class="line">        G: matrix, dimension &#x3D; m*d</span><br><span class="line">            The matrix in the baseline random feature mapping</span><br><span class="line">            </span><br><span class="line">        m: integer</span><br><span class="line">            The number of dimension that we want to reduce to</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    left &#x3D; np.cos(np.dot(G, x).astype(np.float32))</span><br><span class="line">    right &#x3D; np.sin(np.dot(G, x).astype(np.float32))</span><br><span class="line">    return ((1&#x2F;m)**0.5) * np.append(left, right)</span><br><span class="line"></span><br><span class="line">def find_sigma(random_sample):</span><br><span class="line">    all_distances &#x3D; []</span><br><span class="line">    for i in range(len(random_sample)): # dimensionality: d</span><br><span class="line">        #print(f&#39;Calculating the distance of &#123;i&#125;th samples&#39;)</span><br><span class="line">        distances &#x3D; []</span><br><span class="line">        for j in range(len(random_sample)):</span><br><span class="line">            if j!&#x3D;i:</span><br><span class="line">                distances.append(np.linalg.norm(random_sample[i] - random_sample[j]))</span><br><span class="line">        distances.sort()</span><br><span class="line">        all_distances.append(distances[50]) # 只取第50个</span><br><span class="line">        # all_distances.append(np.mean(distances))</span><br><span class="line">    return np.mean(all_distances)</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">find_sigma(np.random.normal(0, 1, (100,50)))</span><br></pre></td></tr></table></figure>
-<pre><code>10.11949067744566</code></pre>
-<h4 id="main">Main</h4>
-<h5 id="load-dataset">Load dataset</h5>
+<pre><code>10.11949067744566
+</code></pre>
+<h4 id="main"><a class="markdownIt-Anchor" href="#main"></a> Main</h4>
+<h5 id="load-dataset"><a class="markdownIt-Anchor" href="#load-dataset"></a> Load dataset</h5>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">from google.colab import drive</span><br><span class="line">drive.mount(&#39;&#x2F;content&#x2F;drive&#39;)</span><br></pre></td></tr></table></figure>
-<pre><code>Drive already mounted at /content/drive; to attempt to forcibly remount, call drive.mount(&quot;/content/drive&quot;, force_remount=True).</code></pre>
+<pre><code>Drive already mounted at /content/drive; to attempt to forcibly remount, call drive.mount(&quot;/content/drive&quot;, force_remount=True).
+</code></pre>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">%cd &quot;&#x2F;content&#x2F;drive&#x2F;My Drive&#x2F;20FA&#x2F;Recitation&quot;</span><br></pre></td></tr></table></figure>
-<pre><code>/content/drive/My Drive/20FA/Recitation</code></pre>
+<pre><code>/content/drive/My Drive/20FA/Recitation
+</code></pre>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">d &#x3D; 10  # Dimension of data</span><br><span class="line">d_ &#x3D; 10  # Number of multipliers</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">letters &#x3D; pd.read_csv(&#39;letter-recognition.csv&#39;)</span><br><span class="line">letters.head()</span><br></pre></td></tr></table></figure>
 <div>
@@ -2449,373 +2458,162 @@ Date
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
     }
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
+.dataframe thead th &#123;
+    text-align: right;
+&#125;
+</code></pre>
 </style>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th>
-</th>
-<th>
-letter
-</th>
-<th>
-xbox
-</th>
-<th>
-ybox
-</th>
-<th>
-width
-</th>
-<th>
-height
-</th>
-<th>
-onpix
-</th>
-<th>
-xbar
-</th>
-<th>
-ybar
-</th>
-<th>
-x2bar
-</th>
-<th>
-y2bar
-</th>
-<th>
-xybar
-</th>
-<th>
-x2ybar
-</th>
-<th>
-xy2bar
-</th>
-<th>
-xedge
-</th>
-<th>
-xedgey
-</th>
-<th>
-yedge
-</th>
-<th>
-yedgex
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>
-0
-</th>
-<td>
-T
-</td>
-<td>
-2
-</td>
-<td>
-8
-</td>
-<td>
-3
-</td>
-<td>
-5
-</td>
-<td>
-1
-</td>
-<td>
-8
-</td>
-<td>
-13
-</td>
-<td>
-0
-</td>
-<td>
-6
-</td>
-<td>
-6
-</td>
-<td>
-10
-</td>
-<td>
-8
-</td>
-<td>
-0
-</td>
-<td>
-8
-</td>
-<td>
-0
-</td>
-<td>
-8
-</td>
-</tr>
-<tr>
-<th>
-1
-</th>
-<td>
-I
-</td>
-<td>
-5
-</td>
-<td>
-12
-</td>
-<td>
-3
-</td>
-<td>
-7
-</td>
-<td>
-2
-</td>
-<td>
-10
-</td>
-<td>
-5
-</td>
-<td>
-5
-</td>
-<td>
-4
-</td>
-<td>
-13
-</td>
-<td>
-3
-</td>
-<td>
-9
-</td>
-<td>
-2
-</td>
-<td>
-8
-</td>
-<td>
-4
-</td>
-<td>
-10
-</td>
-</tr>
-<tr>
-<th>
-2
-</th>
-<td>
-D
-</td>
-<td>
-4
-</td>
-<td>
-11
-</td>
-<td>
-6
-</td>
-<td>
-8
-</td>
-<td>
-6
-</td>
-<td>
-10
-</td>
-<td>
-6
-</td>
-<td>
-2
-</td>
-<td>
-6
-</td>
-<td>
-10
-</td>
-<td>
-3
-</td>
-<td>
-7
-</td>
-<td>
-3
-</td>
-<td>
-7
-</td>
-<td>
-3
-</td>
-<td>
-9
-</td>
-</tr>
-<tr>
-<th>
-3
-</th>
-<td>
-N
-</td>
-<td>
-7
-</td>
-<td>
-11
-</td>
-<td>
-6
-</td>
-<td>
-6
-</td>
-<td>
-3
-</td>
-<td>
-5
-</td>
-<td>
-9
-</td>
-<td>
-4
-</td>
-<td>
-6
-</td>
-<td>
-4
-</td>
-<td>
-4
-</td>
-<td>
-10
-</td>
-<td>
-6
-</td>
-<td>
-10
-</td>
-<td>
-2
-</td>
-<td>
-8
-</td>
-</tr>
-<tr>
-<th>
-4
-</th>
-<td>
-G
-</td>
-<td>
-2
-</td>
-<td>
-1
-</td>
-<td>
-3
-</td>
-<td>
-1
-</td>
-<td>
-1
-</td>
-<td>
-8
-</td>
-<td>
-6
-</td>
-<td>
-6
-</td>
-<td>
-6
-</td>
-<td>
-6
-</td>
-<td>
-5
-</td>
-<td>
-9
-</td>
-<td>
-1
-</td>
-<td>
-7
-</td>
-<td>
-5
-</td>
-<td>
-10
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>letter</th>
+      <th>xbox</th>
+      <th>ybox</th>
+      <th>width</th>
+      <th>height</th>
+      <th>onpix</th>
+      <th>xbar</th>
+      <th>ybar</th>
+      <th>x2bar</th>
+      <th>y2bar</th>
+      <th>xybar</th>
+      <th>x2ybar</th>
+      <th>xy2bar</th>
+      <th>xedge</th>
+      <th>xedgey</th>
+      <th>yedge</th>
+      <th>yedgex</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>T</td>
+      <td>2</td>
+      <td>8</td>
+      <td>3</td>
+      <td>5</td>
+      <td>1</td>
+      <td>8</td>
+      <td>13</td>
+      <td>0</td>
+      <td>6</td>
+      <td>6</td>
+      <td>10</td>
+      <td>8</td>
+      <td>0</td>
+      <td>8</td>
+      <td>0</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>I</td>
+      <td>5</td>
+      <td>12</td>
+      <td>3</td>
+      <td>7</td>
+      <td>2</td>
+      <td>10</td>
+      <td>5</td>
+      <td>5</td>
+      <td>4</td>
+      <td>13</td>
+      <td>3</td>
+      <td>9</td>
+      <td>2</td>
+      <td>8</td>
+      <td>4</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>D</td>
+      <td>4</td>
+      <td>11</td>
+      <td>6</td>
+      <td>8</td>
+      <td>6</td>
+      <td>10</td>
+      <td>6</td>
+      <td>2</td>
+      <td>6</td>
+      <td>10</td>
+      <td>3</td>
+      <td>7</td>
+      <td>3</td>
+      <td>7</td>
+      <td>3</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>N</td>
+      <td>7</td>
+      <td>11</td>
+      <td>6</td>
+      <td>6</td>
+      <td>3</td>
+      <td>5</td>
+      <td>9</td>
+      <td>4</td>
+      <td>6</td>
+      <td>4</td>
+      <td>4</td>
+      <td>10</td>
+      <td>6</td>
+      <td>10</td>
+      <td>2</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>G</td>
+      <td>2</td>
+      <td>1</td>
+      <td>3</td>
+      <td>1</td>
+      <td>1</td>
+      <td>8</td>
+      <td>6</td>
+      <td>6</td>
+      <td>6</td>
+      <td>6</td>
+      <td>5</td>
+      <td>9</td>
+      <td>1</td>
+      <td>7</td>
+      <td>5</td>
+      <td>10</td>
+    </tr>
+  </tbody>
 </table>
 </div>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">letters &#x3D; np.asarray(letters)</span><br><span class="line">data &#x3D; letters[:, 1:d+1]</span><br><span class="line">data &#x3D; list(data)</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">data[0]</span><br></pre></td></tr></table></figure>
-<pre><code>array([2, 8, 3, 5, 1, 8, 13, 0, 6, 6], dtype=object)</code></pre>
-<h5 id="parameters-setup">Parameters setup</h5>
+<pre><code>array([2, 8, 3, 5, 1, 8, 13, 0, 6, 6], dtype=object)
+</code></pre>
+<h5 id="parameters-setup"><a class="markdownIt-Anchor" href="#parameters-setup"></a> Parameters setup</h5>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#d &#x3D; 10  # dimension of the data point </span><br><span class="line">N &#x3D; [d*i for i in range(1,d_+1)]  # number of samplings</span><br><span class="line">episode &#x3D; 100</span><br><span class="line">epoch &#x3D;  450  # number of experiments to perform for each episode</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">N</span><br></pre></td></tr></table></figure>
-<pre><code>[10, 20, 30, 40, 50, 60, 70, 80, 90, 100]</code></pre>
-<h5 id="start-running">Start running</h5>
+<pre><code>[10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+</code></pre>
+<h5 id="start-running"><a class="markdownIt-Anchor" href="#start-running"></a> Start running</h5>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 正交化可以降低variance</span><br><span class="line"># 对不同样本大小测试</span><br><span class="line"></span><br><span class="line">iid_estimates &#x3D; np.zeros((d_, episode, epoch))</span><br><span class="line">orthog_estimates &#x3D; np.zeros((d_, episode, epoch))</span><br><span class="line"></span><br><span class="line">MSE_iid &#x3D; []</span><br><span class="line">MSE_orthog &#x3D; []</span><br><span class="line"></span><br><span class="line">MSE_iid_ &#x3D; []</span><br><span class="line">MSE_orthog_ &#x3D; []</span><br><span class="line"></span><br><span class="line">list_of_samples &#x3D; []</span><br><span class="line">true_values &#x3D; []</span><br><span class="line"></span><br><span class="line">random_sample &#x3D; random.sample(data, 1000)</span><br><span class="line">sigma &#x3D; find_sigma(random_sample)</span><br><span class="line"></span><br><span class="line">random_sample &#x3D; [i&#x2F;sigma for i in random_sample]</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sigma</span><br></pre></td></tr></table></figure>
-<pre><code>5.760360599001658</code></pre>
+<pre><code>5.760360599001658
+</code></pre>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 取出20000个数据点中的1000个作为random_sample</span><br><span class="line"># find_sigma从每行中取第50个，整体做平均，可以省去一个mean的运算</span><br><span class="line"># random_sample的每行数据点除以标准差，归一化</span><br><span class="line">random_sample[0], len(random_sample)</span><br></pre></td></tr></table></figure>
 <pre><code>(array([0.34720048608530246, 0.17360024304265123, 0.34720048608530246,
         0.34720048608530246, 0.17360024304265123, 0.8680012152132562,
         1.7360024304265125, 0.6944009721706049, 0.8680012152132562,
-        1.7360024304265125], dtype=object), 1000)</code></pre>
+        1.7360024304265125], dtype=object), 1000)
+</code></pre>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># [tqdm](https:&#x2F;&#x2F;tqdm.github.io&#x2F;)</span><br><span class="line">for i in tqdm(range(10000000)):</span><br><span class="line">    pass</span><br></pre></td></tr></table></figure>
 <pre><code>  0%|          | 0/10000000 [00:00&lt;?, ?it/s] [A
   3%|▎         | 318248/10000000 [00:00&lt;00:03, 3182475.45it/s] [A
@@ -2841,7 +2639,8 @@ G
  85%|████████▍ | 8484505/10000000 [00:02&lt;00:00, 4413000.38it/s] [A
  89%|████████▉ | 8925941/10000000 [00:02&lt;00:00, 4386127.92it/s] [A
  94%|█████████▍| 9377578/10000000 [00:02&lt;00:00, 4424403.07it/s] [A
-100%|██████████| 10000000/10000000 [00:02&lt;00:00, 4092170.78it/s]</code></pre>
+100%|██████████| 10000000/10000000 [00:02&lt;00:00, 4092170.78it/s]
+</code></pre>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for e in tqdm(range(episode), position&#x3D;0, leave&#x3D;True): # episode &#x3D; 100</span><br><span class="line"></span><br><span class="line">    x, y &#x3D; random.sample(random_sample, k&#x3D;2)</span><br><span class="line"></span><br><span class="line">    true_value &#x3D; math.exp((-1)*(np.linalg.norm(x - y)**2)&#x2F;(2)) #K_Gauss(x, y) &#x3D; e^&#123;(x-y)^2&#x2F;2&#125;</span><br><span class="line">    list_of_samples.append((x, y)) # 1000个值，与true_value对应</span><br><span class="line">    true_values.append(true_value)</span><br><span class="line"></span><br><span class="line">for n in range(len(N)): # 10组样本，sample_size10到100</span><br><span class="line"></span><br><span class="line">    mse_iid_n &#x3D; []</span><br><span class="line">    mse_orthog_n &#x3D; []</span><br><span class="line"></span><br><span class="line">    for e in tqdm(range(episode), position&#x3D;0, leave&#x3D;True):</span><br><span class="line">        #print(f&#39;&#123;N[n]&#125; samplings, &#123;e&#125;th episode&#39;)</span><br><span class="line">        true &#x3D; np.repeat(true_values[e], epoch) # epoch&#x3D;450</span><br><span class="line">        </span><br><span class="line">        x &#x3D; list_of_samples[e][0]</span><br><span class="line">        y &#x3D; list_of_samples[e][1]</span><br><span class="line">        </span><br><span class="line">        for i in range(epoch):</span><br><span class="line"></span><br><span class="line">            np.random.seed()</span><br><span class="line">            # N[n]即m的值变化，aka V&#x3D;[w1, ..., wm]变化</span><br><span class="line">            V &#x3D; np.random.normal(0, 1, (N[n],d))   #create N*d iid matrix</span><br><span class="line">            V_orthog &#x3D; orthgonalize(V)   #create N*d matrix with orthogonal blocks</span><br><span class="line">            norms &#x3D; np.linalg.norm(V, axis&#x3D;1).reshape([N[n],1])</span><br><span class="line">            </span><br><span class="line">            # K(x, y) &#x3D; Φ(x)^T Φ(y)</span><br><span class="line">            # Φ(x) &#x3D; 1&#x2F;sqrt(m) * [cos(w1x), ... cos(wmx), sin(w1x), ..., sin(wmx)]</span><br><span class="line">            iid_estimates[n, e, i] &#x3D; np.dot(baseline_eval_gaussian(x, V, N[n]), # Original &quot;G&quot;</span><br><span class="line">                        baseline_eval_gaussian(y, V, N[n]))</span><br><span class="line"></span><br><span class="line">            orthog_estimates[n, e, i] &#x3D; np.dot(baseline_eval_gaussian(x, V_orthog*norms, N[n]), # Orthogonalized &quot;G&quot;</span><br><span class="line">                        baseline_eval_gaussian(y, V_orthog*norms, N[n]))</span><br><span class="line">            </span><br><span class="line">        mse_iid_n.append(mean_squared_error(true, iid_estimates[n, e])) # compare m values</span><br><span class="line">        mse_orthog_n.append(mean_squared_error(true, orthog_estimates[n, e]))</span><br><span class="line">    </span><br><span class="line">    MSE_iid_.append(mse_iid_n)</span><br><span class="line">    MSE_iid.append(np.mean(mse_iid_n))</span><br><span class="line">    </span><br><span class="line">    MSE_orthog_.append(mse_orthog_n)</span><br><span class="line">    MSE_orthog.append(np.mean(mse_orthog_n))</span><br></pre></td></tr></table></figure>
 <pre><code>100%|██████████| 100/100 [00:00&lt;00:00, 41614.29it/s]
 100%|██████████| 100/100 [00:21&lt;00:00,  4.61it/s]
@@ -2853,12 +2652,11 @@ G
 100%|██████████| 100/100 [00:49&lt;00:00,  2.00it/s]
 100%|██████████| 100/100 [00:54&lt;00:00,  1.84it/s]
 100%|██████████| 100/100 [00:58&lt;00:00,  1.72it/s]
-100%|██████████| 100/100 [01:02&lt;00:00,  1.60it/s]</code></pre>
-<h5 id="visualization">Visualization</h5>
+100%|██████████| 100/100 [01:02&lt;00:00,  1.60it/s]
+</code></pre>
+<h5 id="visualization"><a class="markdownIt-Anchor" href="#visualization"></a> Visualization</h5>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sns.set_style(&quot;darkgrid&quot;)    </span><br><span class="line"></span><br><span class="line">x1 &#x3D; range(1, d_+1)</span><br><span class="line">x1 &#x3D; x1 + np.zeros((episode, d_))</span><br><span class="line">x1 &#x3D; np.sort(x1.reshape(episode*d_,)) </span><br><span class="line"></span><br><span class="line">mse_iid_ &#x3D; np.asarray(MSE_iid_).reshape(-1)</span><br><span class="line">category &#x3D; [&#39;MC&#39; for i in range(episode*d_)]</span><br><span class="line">df1 &#x3D; pd.DataFrame(&#123;&#39;D&#x2F;d&#39;: x1, &#39;MSE&#39;:mse_iid_, &#39;Category&#39;:category&#125;)</span><br><span class="line"></span><br><span class="line">mse_ortho_ &#x3D; np.asarray(MSE_orthog_).reshape(-1)</span><br><span class="line">category &#x3D; [&#39;OMC&#39; for i in range(episode*d_)]</span><br><span class="line">df3 &#x3D; pd.DataFrame(&#123;&#39;D&#x2F;d&#39;: x1, &#39;MSE&#39;:mse_ortho_, &#39;Category&#39;:category&#125;)</span><br><span class="line"></span><br><span class="line">df &#x3D; pd.concat([df1, df3], ignore_index&#x3D;True)</span><br><span class="line"></span><br><span class="line">sns.lineplot(x&#x3D;&quot;D&#x2F;d&quot;, y&#x3D;&quot;MSE&quot;, hue&#x3D;&quot;Category&quot;,</span><br><span class="line">                   err_style&#x3D;&quot;bars&quot;, ci&#x3D;95, data&#x3D;df)</span><br><span class="line">plt.title(&#39;Gaussian_kernel_Comparison&#39;)</span><br><span class="line">plt.savefig(f&#39;Gaussian_kernel_Comparison_&#123;datetime.datetime.now()&#125;.png&#39;, dpi &#x3D; 300)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<figure>
-<img src="/2020/10/05/Data-Mining-Recitation1/DM_recitation_files/DM_recitation_34_0.png" alt="" /><figcaption>png</figcaption>
-</figure>
+<p><img src="/2020/10/05/Data-Mining-Recitation1/DM_recitation_files/DM_recitation_34_0.png" alt="" /></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># !sudo apt-get install texlive-xetex texlive-fonts-recommended texlive-generic-recommended</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">!jupyter nbconvert --to PDF DM_recitation.ipynb</span><br></pre></td></tr></table></figure>
 <pre><code>[NbConvertApp] Converting notebook DM_recitation.ipynb to PDF
@@ -2866,13 +2664,13 @@ G
 [NbConvertApp] Making directory ./DM_recitation_files
 [NbConvertApp] Writing 76544 bytes to ./notebook.tex
 [NbConvertApp] Building PDF
-[NbConvertApp] Running xelatex 3 times: [u&#39;xelatex&#39;, u&#39;./notebook.tex&#39;, &#39;-quiet&#39;]
-[NbConvertApp] Running bibtex 1 time: [u&#39;bibtex&#39;, u&#39;./notebook&#39;]
+[NbConvertApp] Running xelatex 3 times: [u'xelatex', u'./notebook.tex', '-quiet']
+[NbConvertApp] Running bibtex 1 time: [u'bibtex', u'./notebook']
 [NbConvertApp] WARNING | bibtex had problems, most likely because there were no citations
 [NbConvertApp] PDF successfully created
-[NbConvertApp] Writing 75123 bytes to DM_recitation.pdf</code></pre>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-]]></content>
+[NbConvertApp] Writing 75123 bytes to DM_recitation.pdf
+</code></pre>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>Data Mining</category>
       </categories>
