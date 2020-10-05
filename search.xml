@@ -2102,9 +2102,9 @@ Date
     <title>Data-Mining-Lec3</title>
     <url>/2020/09/23/Data-Mining-Lec3/</url>
     <content><![CDATA[<h2 id="general-scheme">General scheme</h2>
-<p>Approximating the kernel <span class="math inline">\(K(x,y) : \mathbb{R}^d \times \mathbb{R}^d \to \R\)</span></p>
+<p>Approximating the kernel <span class="math inline">\(K(x,y) : \mathbb{R}^d \times \mathbb{R}^d \to \mathbb{R}\)</span></p>
 <p><span class="math inline">\(\phi: \mathbb{R}^d \to \mathbb{R}^m\)</span> randomized</p>
-<p><span class="math inline">\(K(x,y) = E[\phi(x)^T\phi(y)]\)</span> <span class="math display">\[\phi(x) = \frac{h(x)}{\sqrt{m}}\begin{bmatrix}f_1(w_1^Tx), ..., f_1(w_m^Tx)\\f_2(w_1^Tx), ..., f_2(w_m^Tx)\\...\\f_l(w_1^Tx), ..., f_l(w_m^Tx)\end{bmatrix}\]</span> for some <span class="math inline">\(h: \mathbb{R}^d \to \R\)</span></p>
+<p><span class="math inline">\(K(x,y) = E[\phi(x)^T\phi(y)]\)</span> <span class="math display">\[\phi(x) = \frac{h(x)}{\sqrt{m}}\begin{bmatrix}f_1(w_1^Tx), ..., f_1(w_m^Tx)\\f_2(w_1^Tx), ..., f_2(w_m^Tx)\\...\\f_l(w_1^Tx), ..., f_l(w_m^Tx)\end{bmatrix}\]</span> for some <span class="math inline">\(h: \mathbb{R}^d \to \mathbb{R}\)</span></p>
 <p>Example:</p>
 <ol type="1">
 <li>Dot-product kernel, <span class="math inline">\(l = 1\)</span>, <span class="math inline">\(f_1(x)=x\)</span>, <span class="math inline">\(h(x)=1\)</span>, <span class="math inline">\(\Omega = N(0, I_d)\)</span></li>
@@ -2164,7 +2164,7 @@ Date
 </ol>
 <h3 id="self-attention">Self-Attention</h3>
 <p><span class="math inline">\((x_1, ..., x_L)\)</span>, understanding how the tokens attend to each other</p>
-<p>similarity functions: <span class="math inline">\(K(x_i, x_j) \to \R\)</span></p>
+<p>similarity functions: <span class="math inline">\(K(x_i, x_j) \to \mathbb{R}\)</span></p>
 <h2 id="attention-matrix-a">Attention matrix A</h2>
 <p><span class="math inline">\(A \in \mathbb{R}^{L \times L}\)</span></p>
 <p><span class="math inline">\(A_{i,j} = K(x_i, x_j)\)</span></p>
