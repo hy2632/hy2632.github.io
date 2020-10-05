@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"hy2632.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="General scheme Approximating the kernel \(K(x,y) : \R^d \times \R^d \to \R\) \(\phi: \R^d \to \R^m\) randomized \(K(x,y) &#x3D; E[\phi(x)^T\phi(y)]\) \[\phi(x) &#x3D; \frac{h(x)}{\sqrt{m}}\begin{bmatrix}f_1(w_1">
+  <meta name="description" content="General scheme Approximating the kernel \(K(x,y) : \mathbb{R}^d \times \mathbb{R}^d \to \R\) \(\phi: \mathbb{R}^d \to \mathbb{R}^m\) randomized \(K(x,y) &#x3D; E[\phi(x)^T\phi(y)]\) \[\phi(x) &#x3D; \frac{h(x)}">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Data-Mining-Lec3">
 <meta property="og:url" content="https://hy2632.github.io/2020/09/23/Data-Mining-Lec3/index.html">
 <meta property="og:site_name" content="豁蒙楼">
-<meta property="og:description" content="General scheme Approximating the kernel \(K(x,y) : \R^d \times \R^d \to \R\) \(\phi: \R^d \to \R^m\) randomized \(K(x,y) &#x3D; E[\phi(x)^T\phi(y)]\) \[\phi(x) &#x3D; \frac{h(x)}{\sqrt{m}}\begin{bmatrix}f_1(w_1">
+<meta property="og:description" content="General scheme Approximating the kernel \(K(x,y) : \mathbb{R}^d \times \mathbb{R}^d \to \R\) \(\phi: \mathbb{R}^d \to \mathbb{R}^m\) randomized \(K(x,y) &#x3D; E[\phi(x)^T\phi(y)]\) \[\phi(x) &#x3D; \frac{h(x)}">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-09-24T00:11:56.000Z">
-<meta property="article:modified_time" content="2020-09-24T01:40:42.228Z">
+<meta property="article:modified_time" content="2020-10-05T05:24:33.627Z">
 <meta property="article:author" content="姚华(Hua Yao)">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
@@ -220,10 +220,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-09-23 19:11:56 / 修改时间：20:40:42" itemprop="dateCreated datePublished" datetime="2020-09-23T19:11:56-05:00">2020-09-23</time>
+              <time title="创建时间：2020-09-23 19:11:56" itemprop="dateCreated datePublished" datetime="2020-09-23T19:11:56-05:00">2020-09-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-05 00:24:33" itemprop="dateModified" datetime="2020-10-05T00:24:33-05:00">2020-10-05</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -246,9 +252,9 @@
 
       
         <h2 id="general-scheme">General scheme</h2>
-<p>Approximating the kernel <span class="math inline">\(K(x,y) : \R^d \times \R^d \to \R\)</span></p>
-<p><span class="math inline">\(\phi: \R^d \to \R^m\)</span> randomized</p>
-<p><span class="math inline">\(K(x,y) = E[\phi(x)^T\phi(y)]\)</span> <span class="math display">\[\phi(x) = \frac{h(x)}{\sqrt{m}}\begin{bmatrix}f_1(w_1^Tx), ..., f_1(w_m^Tx)\\f_2(w_1^Tx), ..., f_2(w_m^Tx)\\...\\f_l(w_1^Tx), ..., f_l(w_m^Tx)\end{bmatrix}\]</span> for some <span class="math inline">\(h: \R^d \to \R\)</span></p>
+<p>Approximating the kernel <span class="math inline">\(K(x,y) : \mathbb{R}^d \times \mathbb{R}^d \to \R\)</span></p>
+<p><span class="math inline">\(\phi: \mathbb{R}^d \to \mathbb{R}^m\)</span> randomized</p>
+<p><span class="math inline">\(K(x,y) = E[\phi(x)^T\phi(y)]\)</span> <span class="math display">\[\phi(x) = \frac{h(x)}{\sqrt{m}}\begin{bmatrix}f_1(w_1^Tx), ..., f_1(w_m^Tx)\\f_2(w_1^Tx), ..., f_2(w_m^Tx)\\...\\f_l(w_1^Tx), ..., f_l(w_m^Tx)\end{bmatrix}\]</span> for some <span class="math inline">\(h: \mathbb{R}^d \to \R\)</span></p>
 <p>Example:</p>
 <ol type="1">
 <li>Dot-product kernel, <span class="math inline">\(l = 1\)</span>, <span class="math inline">\(f_1(x)=x\)</span>, <span class="math inline">\(h(x)=1\)</span>, <span class="math inline">\(\Omega = N(0, I_d)\)</span></li>
@@ -272,7 +278,7 @@
 <li>Constuct <span class="math inline">\(w_1, ..., w_m \sim iid \Omega\)</span></li>
 <li>Construct matrix G:</li>
 </ol>
-<p><span class="math display">\[ G = \begin{pmatrix}w_1^T\\...\\w_m^T\end{pmatrix} \in \R^{m\times d}\]</span></p>
+<p><span class="math display">\[ G = \begin{pmatrix}w_1^T\\...\\w_m^T\end{pmatrix} \in \mathbb{R}^{m\times d}\]</span></p>
 <ol start="3" type="1">
 <li><p>Conduct Gram-Schmidt orthogon of <span class="math inline">\(G_{ort}\)</span> to get with L2-normalized rows</p></li>
 <li><p>Renormalize each row of <span class="math inline">\(G_{ort}\)</span> simply by multiplying it with a scalar random variable <span class="math inline">\(X\sim \Omega\)</span>, distribution of lengths of vectors taken from <span class="math inline">\(\Omega\)</span></p></li>
@@ -283,12 +289,12 @@
 <li>Random-Hadamand Matrices <span class="math display">\[ G_{ort} = (\frac{1}{\sqrt{d}}HD_1)...(\frac{1}{\sqrt{d}}HD_k) \]</span> for some <span class="math inline">\(k\in N_{+}\)</span></li>
 </ol>
 <p><span class="math display">\[ D_i = diag(\tau_i^1, ... \tau_i^d) \]</span> <span class="math display">\[\tau_i \sim iid \{-1, +1\} \]</span></p>
-<p>H is a Hadamand matrix (to be more precise, H is called a Kronecker-Hadamand matrix) <span class="math display">\[ H_0 = [1] \in \R^{1\times 1} \]</span> <span class="math display">\[ H_{t+1} = \begin{bmatrix} H_t, H_t\\ H_t, -H_t \end{bmatrix} \]</span></p>
+<p>H is a Hadamand matrix (to be more precise, H is called a Kronecker-Hadamand matrix) <span class="math display">\[ H_0 = [1] \in \mathbb{R}^{1\times 1} \]</span> <span class="math display">\[ H_{t+1} = \begin{bmatrix} H_t, H_t\\ H_t, -H_t \end{bmatrix} \]</span></p>
 <ul>
-<li><span class="math inline">\(H_t \in \R^{2^t \times 2^t}\)</span> has orthogonal rows/columns.</li>
+<li><span class="math inline">\(H_t \in \mathbb{R}^{2^t \times 2^t}\)</span> has orthogonal rows/columns.</li>
 <li><span class="math inline">\(H_t\)</span> is symmetric</li>
 </ul>
-<p><span class="math display">\[ G_{ort} \in \R^{d \times d} = (\frac{1}{\sqrt{d}}HD_1)...(\frac{1}{\sqrt{d}}HD_k) \]</span> H have to be <span class="math inline">\(\R^{d \times d}\)</span>, what if not power of 2? <strong>Zero padding</strong> to our input data.</p>
+<p><span class="math display">\[ G_{ort} \in \mathbb{R}^{d \times d} = (\frac{1}{\sqrt{d}}HD_1)...(\frac{1}{\sqrt{d}}HD_k) \]</span> H have to be <span class="math inline">\(\mathbb{R}^{d \times d}\)</span>, what if not power of 2? <strong>Zero padding</strong> to our input data.</p>
 <ul>
 <li>Larger k implies better approximation of the original mechanism, <span class="math inline">\(\frac{1}{\sqrt{d}}\)</span> is normalized orthogonal, doing this for k times</li>
 </ul>
@@ -299,7 +305,7 @@
 <p>Givens rotations: ... diagonal 1, where i, j exhibits <span class="math display">\[ \begin{bmatrix} \cos{\theta}, \sin{\theta}\\ -\sin{\theta}, \cos{\theta}\end{bmatrix} \]</span></p>
 <p>The ith and jth rotated <span class="math inline">\(\theta\)</span></p>
 <h2 id="neural-networks-attention-mechanism">Neural Networks &amp; Attention Mechanism</h2>
-<p>Our object of interest: sequential data <span class="math inline">\((x_1, ..., x_L)\)</span> -&gt; L-tuple, each <span class="math inline">\(\in \R^d\)</span></p>
+<p>Our object of interest: sequential data <span class="math inline">\((x_1, ..., x_L)\)</span> -&gt; L-tuple, each <span class="math inline">\(\in \mathbb{R}^d\)</span></p>
 <h3 id="examples">Examples</h3>
 <ol type="a">
 <li><p>text data, where <span class="math inline">\(x_i\)</span>s correspond to embeddings of words.</p></li>
@@ -310,7 +316,7 @@
 <p><span class="math inline">\((x_1, ..., x_L)\)</span>, understanding how the tokens attend to each other</p>
 <p>similarity functions: <span class="math inline">\(K(x_i, x_j) \to \R\)</span></p>
 <h2 id="attention-matrix-a">Attention matrix A</h2>
-<p><span class="math inline">\(A \in R^{L \times L}\)</span></p>
+<p><span class="math inline">\(A \in \mathbb{R}^{L \times L}\)</span></p>
 <p><span class="math inline">\(A_{i,j} = K(x_i, x_j)\)</span></p>
 <p>a.k.a kernel matrix corresponding to Kernel sequence <span class="math inline">\((x_1, ..., x_L)\)</span></p>
 <p>usually fixed kernel, <span class="math inline">\(K(x_i, x_j) = SM(x_i, x_j) = e^{x_i^Tx_j}\)</span></p>
@@ -330,7 +336,7 @@
 <h3 id="attention-block-version-i">Attention Block version I</h3>
 <p>Input: <span class="math inline">\(X\)</span></p>
 <p>Hyperparams: <span class="math inline">\(W_Q, W_K, W_V\)</span></p>
-<p>Compute <span class="math inline">\(Q = XW_Q \in \R^{L\times d}\)</span>, and so are <span class="math inline">\(K, V\)</span></p>
+<p>Compute <span class="math inline">\(Q = XW_Q \in \mathbb{R}^{L\times d}\)</span>, and so are <span class="math inline">\(K, V\)</span></p>
 <p>Output: <span class="math inline">\(AV\)</span> where <span class="math inline">\(A = e^{\frac{QK^T}{\sqrt{d}}}\)</span></p>
 <p>Attention block is parametrized by 3 matrices.</p>
 <p><span class="math inline">\(x_i\)</span> to <span class="math inline">\(q_i, k_i, v_i\)</span></p>

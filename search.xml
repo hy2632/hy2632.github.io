@@ -2012,8 +2012,8 @@ Date
 <p>The only thing that matters is the length of <span class="math inline">\(\Delta\)</span></p>
 <p>Random Feature Map function of Gaussian: <span class="math display">\[ \Phi(x) = \frac{1}{\sqrt{m}} (\sin(w_1^Tx),...\sin(w_m^Tx), \cos(w_1^Tx),...\cos(w_m^Tx)) \]</span></p>
 <h3 id="bochners-theorem"><strong>Bochner's Theorem</strong></h3>
-<p>A continuous kernel <span class="math inline">\(k(x, y) = f(x − y)\)</span> on <span class="math inline">\(R^d\)</span> is positive definite if and only if <span class="math inline">\(k(δ)\)</span> is the Fourier transform of a non-negative measure. Here ignore the imaginery part <span class="math inline">\(\sin\)</span>.</p>
-<p><span class="math display">\[ K: R^d \times R^d \to R \]</span> <span class="math display">\[ K(x,y) = f(x-y) = f(z) = \int_{R^d}{p(w)cos(w^Tz)dw}=E_{w \sim \Omega}[cos(w^Tz)]\]</span> where <span class="math inline">\(p\)</span> is the probability distribution corresponding to <span class="math inline">\(k\)</span></p>
+<p>A continuous kernel <span class="math inline">\(k(x, y) = f(x − y)\)</span> on <span class="math inline">\(\mathbb{R}^d\)</span> is positive definite if and only if <span class="math inline">\(k(δ)\)</span> is the Fourier transform of a non-negative measure. Here ignore the imaginery part <span class="math inline">\(\sin\)</span>.</p>
+<p><span class="math display">\[ K: \mathbb{R}^d \times \mathbb{R}^d \to R \]</span> <span class="math display">\[ K(x,y) = f(x-y) = f(z) = \int_{\mathbb{R}^d}{p(w)cos(w^Tz)dw}=E_{w \sim \Omega}[cos(w^Tz)]\]</span> where <span class="math inline">\(p\)</span> is the probability distribution corresponding to <span class="math inline">\(k\)</span></p>
 <p>Example, if <span class="math inline">\(K\)</span> is Gaussian then <span class="math inline">\(\Omega = N(0, I_d)\)</span></p>
 <p>Since we have the form of expectation, we run <strong>simulations</strong> or say <strong>[Monte Carlo]</strong> to estimate shift-invariant kernels.</p>
 <ul>
@@ -2060,7 +2060,7 @@ Date
 <p>They are not independent(if i.i.d, although <span class="math inline">\(E=0\)</span>, <span class="math inline">\(Var\neq 0\)</span>). Rows have to be <strong>deterministic</strong> in the Linear Space.</p>
 <h3 id="how-we-obtain-this-orthogonality">How we obtain this orthogonality?</h3>
 <ol type="1">
-<li>Create Gaussian matrix <span class="math inline">\(G\in \R^{m\times d}\)</span> with entries (a.k.a <span class="math inline">\(w_i\)</span>) taken independently at random from scalar Gaussian distribution N(0,1).</li>
+<li>Create Gaussian matrix <span class="math inline">\(G\in \mathbb{R}^{m\times d}\)</span> with entries (a.k.a <span class="math inline">\(w_i\)</span>) taken independently at random from scalar Gaussian distribution N(0,1).</li>
 <li><strong>Gram-Schmidt</strong> orthogonalize <span class="math inline">\(G\)</span>. After this rows of G are exactly orthogonal and of unit L2-norm.</li>
 <li>Renormalize each row of the resulting matrix by multiplying via random variable token from <span class="math inline">\(\chi(d)\)</span> distribution. The renormalization for each row can be same or different.</li>
 <li><strong>Note</strong>: the procedures are feasible only when <span class="math inline">\(m \leq d\)</span></li>
@@ -2102,9 +2102,9 @@ Date
     <title>Data-Mining-Lec3</title>
     <url>/2020/09/23/Data-Mining-Lec3/</url>
     <content><![CDATA[<h2 id="general-scheme">General scheme</h2>
-<p>Approximating the kernel <span class="math inline">\(K(x,y) : \R^d \times \R^d \to \R\)</span></p>
-<p><span class="math inline">\(\phi: \R^d \to \R^m\)</span> randomized</p>
-<p><span class="math inline">\(K(x,y) = E[\phi(x)^T\phi(y)]\)</span> <span class="math display">\[\phi(x) = \frac{h(x)}{\sqrt{m}}\begin{bmatrix}f_1(w_1^Tx), ..., f_1(w_m^Tx)\\f_2(w_1^Tx), ..., f_2(w_m^Tx)\\...\\f_l(w_1^Tx), ..., f_l(w_m^Tx)\end{bmatrix}\]</span> for some <span class="math inline">\(h: \R^d \to \R\)</span></p>
+<p>Approximating the kernel <span class="math inline">\(K(x,y) : \mathbb{R}^d \times \mathbb{R}^d \to \R\)</span></p>
+<p><span class="math inline">\(\phi: \mathbb{R}^d \to \mathbb{R}^m\)</span> randomized</p>
+<p><span class="math inline">\(K(x,y) = E[\phi(x)^T\phi(y)]\)</span> <span class="math display">\[\phi(x) = \frac{h(x)}{\sqrt{m}}\begin{bmatrix}f_1(w_1^Tx), ..., f_1(w_m^Tx)\\f_2(w_1^Tx), ..., f_2(w_m^Tx)\\...\\f_l(w_1^Tx), ..., f_l(w_m^Tx)\end{bmatrix}\]</span> for some <span class="math inline">\(h: \mathbb{R}^d \to \R\)</span></p>
 <p>Example:</p>
 <ol type="1">
 <li>Dot-product kernel, <span class="math inline">\(l = 1\)</span>, <span class="math inline">\(f_1(x)=x\)</span>, <span class="math inline">\(h(x)=1\)</span>, <span class="math inline">\(\Omega = N(0, I_d)\)</span></li>
@@ -2128,7 +2128,7 @@ Date
 <li>Constuct <span class="math inline">\(w_1, ..., w_m \sim iid \Omega\)</span></li>
 <li>Construct matrix G:</li>
 </ol>
-<p><span class="math display">\[ G = \begin{pmatrix}w_1^T\\...\\w_m^T\end{pmatrix} \in \R^{m\times d}\]</span></p>
+<p><span class="math display">\[ G = \begin{pmatrix}w_1^T\\...\\w_m^T\end{pmatrix} \in \mathbb{R}^{m\times d}\]</span></p>
 <ol start="3" type="1">
 <li><p>Conduct Gram-Schmidt orthogon of <span class="math inline">\(G_{ort}\)</span> to get with L2-normalized rows</p></li>
 <li><p>Renormalize each row of <span class="math inline">\(G_{ort}\)</span> simply by multiplying it with a scalar random variable <span class="math inline">\(X\sim \Omega\)</span>, distribution of lengths of vectors taken from <span class="math inline">\(\Omega\)</span></p></li>
@@ -2139,12 +2139,12 @@ Date
 <li>Random-Hadamand Matrices <span class="math display">\[ G_{ort} = (\frac{1}{\sqrt{d}}HD_1)...(\frac{1}{\sqrt{d}}HD_k) \]</span> for some <span class="math inline">\(k\in N_{+}\)</span></li>
 </ol>
 <p><span class="math display">\[ D_i = diag(\tau_i^1, ... \tau_i^d) \]</span> <span class="math display">\[\tau_i \sim iid \{-1, +1\} \]</span></p>
-<p>H is a Hadamand matrix (to be more precise, H is called a Kronecker-Hadamand matrix) <span class="math display">\[ H_0 = [1] \in \R^{1\times 1} \]</span> <span class="math display">\[ H_{t+1} = \begin{bmatrix} H_t, H_t\\ H_t, -H_t \end{bmatrix} \]</span></p>
+<p>H is a Hadamand matrix (to be more precise, H is called a Kronecker-Hadamand matrix) <span class="math display">\[ H_0 = [1] \in \mathbb{R}^{1\times 1} \]</span> <span class="math display">\[ H_{t+1} = \begin{bmatrix} H_t, H_t\\ H_t, -H_t \end{bmatrix} \]</span></p>
 <ul>
-<li><span class="math inline">\(H_t \in \R^{2^t \times 2^t}\)</span> has orthogonal rows/columns.</li>
+<li><span class="math inline">\(H_t \in \mathbb{R}^{2^t \times 2^t}\)</span> has orthogonal rows/columns.</li>
 <li><span class="math inline">\(H_t\)</span> is symmetric</li>
 </ul>
-<p><span class="math display">\[ G_{ort} \in \R^{d \times d} = (\frac{1}{\sqrt{d}}HD_1)...(\frac{1}{\sqrt{d}}HD_k) \]</span> H have to be <span class="math inline">\(\R^{d \times d}\)</span>, what if not power of 2? <strong>Zero padding</strong> to our input data.</p>
+<p><span class="math display">\[ G_{ort} \in \mathbb{R}^{d \times d} = (\frac{1}{\sqrt{d}}HD_1)...(\frac{1}{\sqrt{d}}HD_k) \]</span> H have to be <span class="math inline">\(\mathbb{R}^{d \times d}\)</span>, what if not power of 2? <strong>Zero padding</strong> to our input data.</p>
 <ul>
 <li>Larger k implies better approximation of the original mechanism, <span class="math inline">\(\frac{1}{\sqrt{d}}\)</span> is normalized orthogonal, doing this for k times</li>
 </ul>
@@ -2155,7 +2155,7 @@ Date
 <p>Givens rotations: ... diagonal 1, where i, j exhibits <span class="math display">\[ \begin{bmatrix} \cos{\theta}, \sin{\theta}\\ -\sin{\theta}, \cos{\theta}\end{bmatrix} \]</span></p>
 <p>The ith and jth rotated <span class="math inline">\(\theta\)</span></p>
 <h2 id="neural-networks-attention-mechanism">Neural Networks &amp; Attention Mechanism</h2>
-<p>Our object of interest: sequential data <span class="math inline">\((x_1, ..., x_L)\)</span> -&gt; L-tuple, each <span class="math inline">\(\in \R^d\)</span></p>
+<p>Our object of interest: sequential data <span class="math inline">\((x_1, ..., x_L)\)</span> -&gt; L-tuple, each <span class="math inline">\(\in \mathbb{R}^d\)</span></p>
 <h3 id="examples">Examples</h3>
 <ol type="a">
 <li><p>text data, where <span class="math inline">\(x_i\)</span>s correspond to embeddings of words.</p></li>
@@ -2166,7 +2166,7 @@ Date
 <p><span class="math inline">\((x_1, ..., x_L)\)</span>, understanding how the tokens attend to each other</p>
 <p>similarity functions: <span class="math inline">\(K(x_i, x_j) \to \R\)</span></p>
 <h2 id="attention-matrix-a">Attention matrix A</h2>
-<p><span class="math inline">\(A \in R^{L \times L}\)</span></p>
+<p><span class="math inline">\(A \in \mathbb{R}^{L \times L}\)</span></p>
 <p><span class="math inline">\(A_{i,j} = K(x_i, x_j)\)</span></p>
 <p>a.k.a kernel matrix corresponding to Kernel sequence <span class="math inline">\((x_1, ..., x_L)\)</span></p>
 <p>usually fixed kernel, <span class="math inline">\(K(x_i, x_j) = SM(x_i, x_j) = e^{x_i^Tx_j}\)</span></p>
@@ -2186,7 +2186,7 @@ Date
 <h3 id="attention-block-version-i">Attention Block version I</h3>
 <p>Input: <span class="math inline">\(X\)</span></p>
 <p>Hyperparams: <span class="math inline">\(W_Q, W_K, W_V\)</span></p>
-<p>Compute <span class="math inline">\(Q = XW_Q \in \R^{L\times d}\)</span>, and so are <span class="math inline">\(K, V\)</span></p>
+<p>Compute <span class="math inline">\(Q = XW_Q \in \mathbb{R}^{L\times d}\)</span>, and so are <span class="math inline">\(K, V\)</span></p>
 <p>Output: <span class="math inline">\(AV\)</span> where <span class="math inline">\(A = e^{\frac{QK^T}{\sqrt{d}}}\)</span></p>
 <p>Attention block is parametrized by 3 matrices.</p>
 <p><span class="math inline">\(x_i\)</span> to <span class="math inline">\(q_i, k_i, v_i\)</span></p>
@@ -2220,15 +2220,15 @@ Date
     <title>Data-Mining-Lec4</title>
     <url>/2020/09/30/Data-Mining-Lec4/</url>
     <content><![CDATA[<h1 id="attention-mechanism">Attention Mechanism</h1>
-<p>Attention block: takes a sequence of vectors, <span class="math inline">\(x_1, ... x_L (\R^d)\)</span>, and output another series <span class="math inline">\(x_1, ... x_L (\R^d)\)</span></p>
-<p>Within the block, <span class="math inline">\(W_Q, W_K, W_V\)</span>, <span class="math inline">\(X = \begin{bmatrix}x_1\\x_2\\...\\x_L\end{bmatrix} \in \R^{L\times d}\)</span> <span class="math display">\[ \R^{L\times d}\begin{cases} Q = W_QX\\ K = W_KX\\V=W_VX\end{cases} \]</span> <span class="math display">\[ Q = \begin{bmatrix}q_1\\q_2\\...\\q_L\end{bmatrix} \]</span> all these weight matrices will be learned.</p>
+<p>Attention block: takes a sequence of vectors, <span class="math inline">\(x_1, ... x_L (\mathbb{R}^d)\)</span>, and output another series <span class="math inline">\(x_1, ... x_L (\mathbb{R}^d)\)</span></p>
+<p>Within the block, <span class="math inline">\(W_Q, W_K, W_V\)</span>, <span class="math inline">\(X = \begin{bmatrix}x_1\\x_2\\...\\x_L\end{bmatrix} \in \mathbb{R}^{L\times d}\)</span> <span class="math display">\[ \mathbb{R}^{L\times d}\begin{cases} Q = W_QX\\ K = W_KX\\V=W_VX\end{cases} \]</span> <span class="math display">\[ Q = \begin{bmatrix}q_1\\q_2\\...\\q_L\end{bmatrix} \]</span> all these weight matrices will be learned.</p>
 <p>rows:<span class="math inline">\(q_1, ..., q_L\)</span>, columns: <span class="math inline">\(k_1, ..., k_L\)</span> compose a orthogonal matrix A. <span class="math display">\[ A_{ij} = K(q_i, k_j) \]</span></p>
 <p>...</p>
 <h3 id="not-normalized-attention-av">Not normalized attention: <span class="math inline">\(AV\)</span></h3>
 <p>The rows would be embeddings</p>
-<p><span class="math display">\[\begin{bmatrix} x_1&#39;\\...\\x_L&#39;\end{bmatrix} = AV \in \R^{L\times L}\]</span> <span class="math display">\[ A:L\times L; V: L\times d\]</span> <span class="math display">\[ x_i&#39; = \sum_{j=1}^{L}{K(q_ik_j)v_j} \]</span></p>
+<p><span class="math display">\[\begin{bmatrix} x_1&#39;\\...\\x_L&#39;\end{bmatrix} = AV \in \mathbb{R}^{L\times L}\]</span> <span class="math display">\[ A:L\times L; V: L\times d\]</span> <span class="math display">\[ x_i&#39; = \sum_{j=1}^{L}{K(q_ik_j)v_j} \]</span></p>
 <h3 id="normalized-attention">Normalized attention:</h3>
-<p><span class="math display">\[ x_i&#39; = \sum_{j=1}^{L}{\frac{K(q_ik_j)v_j}{\sum_{s=1}^{L}{K(q_i, k_s)}}} \]</span> The weight sum up to 1 and &gt;=0; <span class="math inline">\(K: R^d\times R^d: R^+\)</span></p>
+<p><span class="math display">\[ x_i&#39; = \sum_{j=1}^{L}{\frac{K(q_ik_j)v_j}{\sum_{s=1}^{L}{K(q_i, k_s)}}} \]</span> The weight sum up to 1 and &gt;=0; <span class="math inline">\(K: \mathbb{R}^d\times \mathbb{R}^d: \mathbb{R}^+\)</span></p>
 <p><span class="math display">\[D^{-1}AV\]</span> D: diagonal L*L,</p>
 <p>partition function: <span class="math display">\[ d_i = \sum_{s=1}^{L}{K(q_i, k_s)} \]</span></p>
 <h2 id="unidirectional-attention">Unidirectional Attention</h2>
@@ -2267,7 +2267,7 @@ Date
 <h3 id="bidirectional-not-normalized-attention">Bidirectional not-normalized attention</h3>
 <p><span class="math inline">\(AV\)</span></p>
 <p>Let's try to rewrite <span class="math inline">\(A\)</span> as <span class="math inline">\(A\approx F_1\cdot F_2 \cdot... \cdot F_L\)</span> for some simpler matrices <span class="math inline">\(F_i\)</span></p>
-<p><span class="math display">\[ (F_1\cdot F_2\cdot...\cdot F_L)\cdot V = F_1\cdot (F_2\cdot(...\cdot(F_L\cdot V)...) \]</span> <span class="math display">\[ AV \in \R^{L \times d} \]</span></p>
+<p><span class="math display">\[ (F_1\cdot F_2\cdot...\cdot F_L)\cdot V = F_1\cdot (F_2\cdot(...\cdot(F_L\cdot V)...) \]</span> <span class="math display">\[ AV \in \mathbb{R}^{L \times d} \]</span></p>
 <p>Q: Can we rewrite <span class="math inline">\(A = F_1 \cdot F_2, L\times L = L \times m * m\times L\)</span>, where <span class="math inline">\(m &lt; L\)</span> <span class="math inline">\(A\)</span> can be full rank (<span class="math inline">\(\det A \neq 0\)</span>)</p>
 <p>large matrices on the diagonal, small every where else</p>
 <p>Look at the rank, <span class="math inline">\(F_1, F_2\)</span> has rank <span class="math inline">\(\leq m\)</span>, so no solution.</p>
@@ -2287,14 +2287,14 @@ Date
 <p><span class="math display">\[ \phi_{SM}(x) = e^{\frac{||x||^2}{2}}\phi_{Gauss}(x) = e^{\frac{||x||^2}{2}} \frac{1}{\sqrt{m}} \begin{bmatrix}\cos(w_1^Ty)\\...\\\cos(w_m^Ty)\\\sin(w_1^Ty)\\...\\\sin(w_m^Ty) \end{bmatrix} \]</span></p>
 <p><span class="math display">\[ AV = E[Q&#39;(K&#39;)^T]V = E[Q&#39;(K&#39;)^TV] \]</span></p>
 <p><span class="math display">\[ AV \approx Q&#39;K&#39;^TV = Q&#39;(K&#39;^TV)\]</span></p>
-<p><span class="math display">\[ Q\in R^{L\times m}, K&#39; \in R^{m\times L}, V \in R^{L\times d} \]</span> <span class="math display">\[ m = 2v \]</span> space complexity: <span class="math inline">\(O(L\times d + m\times d + L\times m)\)</span></p>
+<p><span class="math display">\[ Q\in \mathbb{R}^{L\times m}, K&#39; \in \mathbb{R}^{m\times L}, V \in \mathbb{R}^{L\times d} \]</span> <span class="math display">\[ m = 2v \]</span> space complexity: <span class="math inline">\(O(L\times d + m\times d + L\times m)\)</span></p>
 <p>time complexity: <span class="math inline">\(O(mLd)\)</span> versus <span class="math inline">\(O(L^2d)\)</span> for standard attention complexity.</p>
 <p>if <span class="math inline">\(m &lt;&lt; L\)</span></p>
 <h2 id="problems-with-tripnometric-features">Problems with tripnometric features</h2>
 <p>for a row, <span class="math display">\[ \sum_{s=1}^{L}{K(q_i, ks)}\]</span> if lots of entries in a row are close to 0 then lots of estimators' values could be potentially <strong>negative</strong></p>
 <p>In general, as long as kernel used for attention can be written as</p>
 <p><span class="math display">\[ K(x,y) = E[\phi(x)\phi(y)^T] \]</span></p>
-<p>for some <span class="math inline">\(\phi: R^{d} \to R^{m} (m &lt; \infty)\)</span> deterministic or random, we can get attention computation mechanism with $O(mLd) time complexity and O(mL+Ld+md) space complexity</p>
+<p>for some <span class="math inline">\(\phi: \mathbb{R}^{d} \to \mathbb{R}^{m} (m &lt; \infty)\)</span> deterministic or random, we can get attention computation mechanism with $O(mLd) time complexity and O(mL+Ld+md) space complexity</p>
 <p>Remark:</p>
 <p>if random features are used, random features for attention computation should be periodically redrawn in downstream algorithms using attention-based models.</p>
 <p>Remark:</p>

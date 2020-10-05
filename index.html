@@ -382,10 +382,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-09-30 19:08:17 / 修改时间：20:44:17" itemprop="dateCreated datePublished" datetime="2020-09-30T19:08:17-05:00">2020-09-30</time>
+              <time title="创建时间：2020-09-30 19:08:17" itemprop="dateCreated datePublished" datetime="2020-09-30T19:08:17-05:00">2020-09-30</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-05 00:24:34" itemprop="dateModified" datetime="2020-10-05T00:24:34-05:00">2020-10-05</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -408,8 +414,8 @@
 
       
           <h1 id="attention-mechanism">Attention Mechanism</h1>
-<p>Attention block: takes a sequence of vectors, <span class="math inline">\(x_1, ... x_L (\R^d)\)</span>, and output another series <span class="math inline">\(x_1, ... x_L (\R^d)\)</span></p>
-<p>Within the block, <span class="math inline">\(W_Q, W_K, W_V\)</span>, <span class="math inline">\(X = \begin{bmatrix}x_1\\x_2\\...\\x_L\end{bmatrix} \in \R^{L\times d}\)</span> <span class="math display">\[ \R^{L\times d}\begin{cases} Q = W_QX\\ K = W_KX\\V=W_VX\end{cases} \]</span> <span class="math display">\[ Q = \begin{bmatrix}q_1\\q_2\\...\\q_L\end{bmatrix} \]</span> all these weight matrices will be learned.</p>
+<p>Attention block: takes a sequence of vectors, <span class="math inline">\(x_1, ... x_L (\mathbb{R}^d)\)</span>, and output another series <span class="math inline">\(x_1, ... x_L (\mathbb{R}^d)\)</span></p>
+<p>Within the block, <span class="math inline">\(W_Q, W_K, W_V\)</span>, <span class="math inline">\(X = \begin{bmatrix}x_1\\x_2\\...\\x_L\end{bmatrix} \in \mathbb{R}^{L\times d}\)</span> <span class="math display">\[ \mathbb{R}^{L\times d}\begin{cases} Q = W_QX\\ K = W_KX\\V=W_VX\end{cases} \]</span> <span class="math display">\[ Q = \begin{bmatrix}q_1\\q_2\\...\\q_L\end{bmatrix} \]</span> all these weight matrices will be learned.</p>
 <p>rows:<span class="math inline">\(q_1, ..., q_L\)</span>, columns: <span class="math inline">\(k_1, ..., k_L\)</span> compose a orthogonal matrix A. <span class="math display">\[ A_{ij} = K(q_i, k_j) \]</span></p>
 <p>...</p>
           <!--noindex-->
@@ -544,10 +550,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-09-23 19:11:56 / 修改时间：20:40:42" itemprop="dateCreated datePublished" datetime="2020-09-23T19:11:56-05:00">2020-09-23</time>
+              <time title="创建时间：2020-09-23 19:11:56" itemprop="dateCreated datePublished" datetime="2020-09-23T19:11:56-05:00">2020-09-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-05 00:24:33" itemprop="dateModified" datetime="2020-10-05T00:24:33-05:00">2020-10-05</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -570,9 +582,9 @@
 
       
           <h2 id="general-scheme">General scheme</h2>
-<p>Approximating the kernel <span class="math inline">\(K(x,y) : \R^d \times \R^d \to \R\)</span></p>
-<p><span class="math inline">\(\phi: \R^d \to \R^m\)</span> randomized</p>
-<p><span class="math inline">\(K(x,y) = E[\phi(x)^T\phi(y)]\)</span> <span class="math display">\[\phi(x) = \frac{h(x)}{\sqrt{m}}\begin{bmatrix}f_1(w_1^Tx), ..., f_1(w_m^Tx)\\f_2(w_1^Tx), ..., f_2(w_m^Tx)\\...\\f_l(w_1^Tx), ..., f_l(w_m^Tx)\end{bmatrix}\]</span> for some <span class="math inline">\(h: \R^d \to \R\)</span></p>
+<p>Approximating the kernel <span class="math inline">\(K(x,y) : \mathbb{R}^d \times \mathbb{R}^d \to \R\)</span></p>
+<p><span class="math inline">\(\phi: \mathbb{R}^d \to \mathbb{R}^m\)</span> randomized</p>
+<p><span class="math inline">\(K(x,y) = E[\phi(x)^T\phi(y)]\)</span> <span class="math display">\[\phi(x) = \frac{h(x)}{\sqrt{m}}\begin{bmatrix}f_1(w_1^Tx), ..., f_1(w_m^Tx)\\f_2(w_1^Tx), ..., f_2(w_m^Tx)\\...\\f_l(w_1^Tx), ..., f_l(w_m^Tx)\end{bmatrix}\]</span> for some <span class="math inline">\(h: \mathbb{R}^d \to \R\)</span></p>
 <p>Example:</p>
           <!--noindex-->
             <div class="post-button">
@@ -786,7 +798,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-20 16:57:14" itemprop="dateModified" datetime="2020-09-20T16:57:14-05:00">2020-09-20</time>
+                <time title="修改时间：2020-10-05 00:25:18" itemprop="dateModified" datetime="2020-10-05T00:25:18-05:00">2020-10-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
