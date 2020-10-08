@@ -194,6 +194,185 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/08/20/CS224NA4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
+      <meta itemprop="name" content="姚华(Hua Yao)">
+      <meta itemprop="description" content="hy2632@columbia.edu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="豁蒙楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/20/CS224NA4/" class="post-title-link" itemprop="url">CS224NA4</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-20 03:59:29 / 修改时间：17:39:20" itemprop="dateCreated datePublished" datetime="2020-08-20T03:59:29-05:00">2020-08-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS224N%E4%BD%9C%E4%B8%9A%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">CS224N作业笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="cs224n-a4-nmt-assignment">CS224N A4: NMT Assignment</h1>
+<p>Note: Heavily inspired by the https://github.com/pcyin/pytorch_nmt repository</p>
+<p>作业分为两部分， 第一部分代码实现 NMT with RNN， 第二部分文字题分析 NMT</p>
+<h2 id="nmt-with-rnn">1. NMT with RNN</h2>
+<ul>
+<li>Bidirectional LSTM Encoder &amp; Unidirectional LSTM Decoder</li>
+<li>勘误：
+<ul>
+<li>h 为(embedding size)</li>
+<li><strong>(3), (4) 式中的下标 1 应改为 m</strong></li>
+</ul></li>
+<li><ol type="a">
+<li>utils.py</li>
+</ol>
+<ul>
+<li>要求每个 batch 里的句子有相同 length。utils.py 中实现 pad_sents(padding)</li>
+</ul></li>
+<li><ol start="2" type="a">
+<li>model_embeddings.py</li>
+</ol>
+<ul>
+<li>先去 vocab.py 里了解类的定义。</li>
+<li>VocabEntry 类初始化参数 word2id(dict: words -&gt; indices), id2word 返回 idx 对应的 word 值，from_corpus 从 corpus 生成一个 VocabEntry 实例，from <strong>collections</strong> import <strong>Counter</strong>，Counter 可以直接查找出字符串中字母出现次数</li>
+<li>Vocab 类包含 src 和 tgt 语言，初始化参数式两种语言的 VocabEntry， <span class="citation" data-cites="staticmethod">@staticmethod</span> 静态方法</li>
+<li>VocabEntry.from_corpus 创建一个 vocab_entry 对象。Vocab.build 分别用 src_sents, tgt_sents 创建 src, tgt 两个 vocab_entry 并返回包含两者的 Vocab(src, tgt)</li>
+<li>运用 nn.Embedding 初始化词嵌。</li>
+</ul></li>
+<li><ol start="3" type="a">
+<li>nmt_model.py</li>
+</ol>
+<ul>
+<li>按照 pdf 中的维度对各层初始化</li>
+</ul></li>
+<li><ol start="4" type="a">
+<li>nmt_model.py 中 encode 方法实现</li>
+</ol>
+<ul>
+<li><code>self.encoder</code> 是一个双向 lstm</li>
+<li><code>encode</code> 方法传入两个参数：<code>source_padded, source_lengths</code>。前者是已经 pad 后(src_len, b)的 tensor，每一列是一个句子。后者是一个整数列表，表示每个句子实际多少词。</li>
+<li>需要返回两个值：enc_hiddens = hencs(所有 1&lt;=i&lt;=m(句长),每一句中所有词，同时对于整个 batch 所有句子), dec_init_state = (hdec0, cdec0)</li>
+<li>lstm 要求输入满足规范形状，所以需要<code>pad_packed_sequence</code> 和<code>packed_pad_sequence</code>进行变形</li>
+<li>第一步用<code>self.model_embeddings</code>把 source_padded 转换为词嵌入</li>
+</ul></li>
+<li><ol start="5" type="a">
+<li><code>decode</code>方法</li>
+</ol>
+<ul>
+<li><code>self.decode</code>r 是<code>nn.LSTMCell</code>，返回值 h、c，但这部分包装在 step 里面，本 decode 方法里从<code>self.step</code>取得返回值<code>dec_state, combined_output, e_t</code></li>
+<li>还是先用<code>model_embeddings</code>将 target_padded 转换为 Y，一个目标词嵌入，(tgt_len, b, e)</li>
+<li>用<code>torch.split</code>方法， 将 Y 按第 0 维分成步长为 1 的步数，相当于逐词(t)操作。</li>
+<li>(5)式表明了一个迭代过程，最后关心的<code>combined_outputs</code>是 o_t 集合</li>
+<li><strong>07/23 勘误</strong> 做a5时发现dedcode忘记更新o_prev</li>
+</ul></li>
+<li><ol start="6" type="a">
+<li><code>step</code>方法</li>
+</ol>
+<ul>
+<li>step 方法具体处理(5)到(12)式。</li>
+<li>第一部分，(5)-(7)，运用 bmm、(un)squeeze。bmm 需要注意第 0 维度是留给 batch_size 的，两个三维 tensor 的第一二维相乘，满足维度要求。常见的是在 dim=1/2 做 unsqueeze，乘完再 squeeze</li>
+<li>注意到调换乘法次序+不同的变换维度方式会造成最终结果的精度损失。</li>
+</ul></li>
+<li><ol start="7" type="a">
+<li>文字题：<code>generate_sent_masks()</code> 生成 <code>enc_masks(b, src_len)</code>标识 batch 中每个 sentence 每个词是否是 pad，这样做对 attention 计算的影响以及其必要性。</li>
+</ol>
+<ul>
+<li><code>step</code>中，(8)式 α_t 进行了 softmax，后续 a_t 计算为确保 attention 不受 padding 影响要求 padding 处 α_t=0，即 e_t 设置为-∞。</li>
+</ul></li>
+<li><ol type="i">
+<li></li>
+</ol>
+<ul>
+<li><p>git 配置：git remote add origin https://github.com/hy2632/cs224n.git</p></li>
+<li><p>git push origin master</p></li>
+<li><p>..</p></li>
+<li><p>Corpus BLEU: 31.892219171042335</p></li>
+</ul></li>
+<li><ol start="10" type="a">
+<li><table>
+<thead>
+<tr class="header">
+<th>Attention Type</th>
+<th>Advantage</th>
+<th>Disadvantage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Dot Product</td>
+<td>不需要<code>self.att_projection</code>层</td>
+<td>需要满足维度一致</td>
+</tr>
+<tr class="even">
+<td>Multiplicative</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr class="odd">
+<td>Additive</td>
+<td>tanh 操作 normalize 了数值</td>
+<td>两个参数矩阵，参数更多，空间复杂度大</td>
+</tr>
+</tbody>
+</table></li>
+</ol></li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/20/CS224NA4/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/08/20/My-New-Post/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -400,7 +579,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
