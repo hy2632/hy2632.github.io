@@ -3287,4 +3287,825 @@ s-65,47,-65,47z M834 80H400000v40H845z'/></svg></span></span></span><span class=
         <tag>笔记</tag>
       </tags>
   </entry>
+  <entry>
+    <title>谈判案例模拟：Leckenby Company</title>
+    <url>/2020/10/09/%E8%B0%88%E5%88%A4%E6%A1%88%E4%BE%8B%E6%A8%A1%E6%8B%9F%EF%BC%9ALeckenby-Company/</url>
+    <content><![CDATA[<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Managerial Negotiation 第五周的案例，强调了在谈判前要发现双方共同利益、maximize value creation。在本案例情境中，谈判轮数增加会导致双方可变成本增加，且谈判核心-$w$值的增加会导致双方总福利的降低。在设计本模拟工具时也考虑了两种情况：</p>
+<ul>
+<li>君子条约: 在罢工（即造成双方成本增加）开始前确定$w$在 $0.5-0.52$ 范围内，对两者较为公平且最大化总价值</li>
+<li>消耗战(War of Attrition): 通过模拟发现作为Kunzler(希望w小)，利用前两轮压价、第三轮结束通常能获得最好结果，但该结果仍比君子条约差；作为Arnold(希望w大)，第六轮后结果比君子条约差，但在此之前有较大的议价空间。没有达成君子条约默契并消耗至第六轮，最终结果$w$通常在0.6左右，Arnold小赚而Kunzler较亏</li>
+</ul>
+<p>针对消耗战情况，又设计了一个函数<code>find_Case</code>来针对当前已知信息（轮数，己方出价，对方出价），找出一个模拟情况，从而对未来局势有所判断。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_Case</span>(<span class="params">round, w_K, w_A</span>)</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="代码部分"><a href="#代码部分" class="headerlink" title="代码部分"></a>代码部分</h1><h1 id="Import"><a href="#Import" class="headerlink" title="Import"></a>Import</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line"><span class="keyword">import</span> scipy.stats <span class="keyword">as</span> spst</span><br></pre></td></tr></table></figure>
+
+<h1 id="Simulation1"><a href="#Simulation1" class="headerlink" title="Simulation1"></a>Simulation1</h1><h2 id="Distribution-triangular-0-0-1"><a href="#Distribution-triangular-0-0-1" class="headerlink" title="Distribution: triangular(0,0,1)"></a>Distribution: triangular(0,0,1)</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">h = plt.hist(np.random.triangular(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">10000</span>),bins = <span class="number">200</span>, density=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="/2020/10/09/%E8%B0%88%E5%88%A4%E6%A1%88%E4%BE%8B%E6%A8%A1%E6%8B%9F%EF%BC%9ALeckenby-Company/LeckenbySimulation_files/LeckenbySimulation_4_0.png"></p>
+<h2 id="Simulation-Code"><a href="#Simulation-Code" class="headerlink" title="Simulation Code"></a>Simulation Code</h2><p>As two parties approaching the final $w$, they do not calculate their gain&amp;loss in each round. The next bid is solely subject to the triangular distribution</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># bid_Kunzler = 10</span></span><br><span class="line"><span class="comment"># bid_Arnold = 11</span></span><br><span class="line"><span class="comment"># round = 0</span></span><br><span class="line"><span class="comment"># while ((bid_Kunzler+0.0004 &lt; bid_Arnold) &amp; (round &lt;=22)):</span></span><br><span class="line"><span class="comment">#     round += 1</span></span><br><span class="line"><span class="comment">#     bid_Kunzler += (bid_Arnold - bid_Kunzler)*np.random.triangular(0, 0.4, 1)</span></span><br><span class="line"><span class="comment">#     bid_Arnold -= (bid_Arnold - bid_Kunzler)*np.random.triangular(0, 0.2, 1)</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># np.around(bid_Kunzler, 3,), np.around(bid_Arnold, 3,)</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Kunzler</span>(<span class="params">w, d</span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">-5</span>*w -(<span class="number">0.1</span>*d + <span class="number">0.015</span>*d**<span class="number">2</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Arnold</span>(<span class="params">w, d</span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">4</span>*w - (<span class="number">0.05</span>*d + <span class="number">0.005</span>*d**<span class="number">2</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">simulation</span>():</span></span><br><span class="line">    bid_Kunzler = <span class="number">10</span></span><br><span class="line">    bid_Arnold = <span class="number">11</span></span><br><span class="line">    round = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> ((bid_Kunzler+<span class="number">0.0004</span> &lt; bid_Arnold) &amp; (round &lt;=<span class="number">22</span>)):</span><br><span class="line">        round += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> (np.random.random()&gt;<span class="number">0.2</span>): <span class="comment"># 20% chance stick to the previous bid</span></span><br><span class="line">            bid_Kunzler += (bid_Arnold - bid_Kunzler)*np.random.triangular(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">if</span> (np.random.random()&gt;<span class="number">0.2</span>):</span><br><span class="line">            bid_Arnold -= (bid_Arnold - bid_Kunzler)*np.random.triangular(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line">    round -= <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> round==<span class="number">22</span>:</span><br><span class="line">        w = <span class="number">0</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        w = np.around(bid_Kunzler, <span class="number">3</span>) - <span class="number">10</span></span><br><span class="line"></span><br><span class="line">    d = (round &gt; <span class="number">2</span>)*(round - <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (round, w, Kunzler(w, d), Arnold(w, d))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="Run-Simulation-100000-times"><a href="#Run-Simulation-100000-times" class="headerlink" title="Run Simulation 100000 times"></a>Run Simulation 100000 times</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">sim = np.array([simulation() <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100000</span>)])</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df_sim = pd.DataFrame(sim, columns = [<span class="string">&quot;round&quot;</span>, <span class="string">&quot;w&quot;</span>, <span class="string">&quot;Kunzler&quot;</span>, <span class="string">&quot;Arnold&quot;</span>])</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df_sim = df_sim.assign(total = <span class="keyword">lambda</span> x: x.Kunzler + x.Arnold)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Scatterplot-Kunzler-Arnold-hue-”round”-“w”"><a href="#Scatterplot-Kunzler-Arnold-hue-”round”-“w”" class="headerlink" title="Scatterplot (Kunzler, Arnold), hue=”round” / “w”"></a>Scatterplot (Kunzler, Arnold), hue=”round” / “w”</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">12</span>,<span class="number">8</span>))</span><br><span class="line">sns.scatterplot(data=df_sim, x=<span class="string">&quot;Kunzler&quot;</span>, y=<span class="string">&quot;Arnold&quot;</span>, hue=<span class="string">&quot;round&quot;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="/2020/10/09/%E8%B0%88%E5%88%A4%E6%A1%88%E4%BE%8B%E6%A8%A1%E6%8B%9F%EF%BC%9ALeckenby-Company/LeckenbySimulation_files/LeckenbySimulation_14_0.png"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">12</span>,<span class="number">8</span>))</span><br><span class="line">sns.scatterplot(data=df_sim, x=<span class="string">&quot;Kunzler&quot;</span>, y=<span class="string">&quot;Arnold&quot;</span>, hue=<span class="string">&quot;w&quot;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="/2020/10/09/%E8%B0%88%E5%88%A4%E6%A1%88%E4%BE%8B%E6%A8%A1%E6%8B%9F%EF%BC%9ALeckenby-Company/LeckenbySimulation_files/LeckenbySimulation_15_0.png"></p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df_sim.sort_values([<span class="string">&quot;round&quot;</span>, <span class="string">&quot;Kunzler&quot;</span>]).groupby(<span class="string">&quot;round&quot;</span>).agg(<span class="string">&quot;mean&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>w</th>
+      <th>Kunzler</th>
+      <th>Arnold</th>
+      <th>total</th>
+    </tr>
+    <tr>
+      <th>round</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1.0</th>
+      <td>0.750143</td>
+      <td>-3.750714</td>
+      <td>3.000571</td>
+      <td>-0.750143</td>
+    </tr>
+    <tr>
+      <th>2.0</th>
+      <td>0.741615</td>
+      <td>-3.708077</td>
+      <td>2.966462</td>
+      <td>-0.741615</td>
+    </tr>
+    <tr>
+      <th>3.0</th>
+      <td>0.645737</td>
+      <td>-3.343684</td>
+      <td>2.527947</td>
+      <td>-0.815737</td>
+    </tr>
+    <tr>
+      <th>4.0</th>
+      <td>0.645440</td>
+      <td>-3.487198</td>
+      <td>2.461759</td>
+      <td>-1.025440</td>
+    </tr>
+    <tr>
+      <th>5.0</th>
+      <td>0.615148</td>
+      <td>-3.510739</td>
+      <td>2.265591</td>
+      <td>-1.245148</td>
+    </tr>
+    <tr>
+      <th>6.0</th>
+      <td>0.603678</td>
+      <td>-3.658389</td>
+      <td>2.134711</td>
+      <td>-1.523678</td>
+    </tr>
+    <tr>
+      <th>7.0</th>
+      <td>0.590758</td>
+      <td>-3.828791</td>
+      <td>1.988033</td>
+      <td>-1.840758</td>
+    </tr>
+    <tr>
+      <th>8.0</th>
+      <td>0.584565</td>
+      <td>-4.062823</td>
+      <td>1.858259</td>
+      <td>-2.204565</td>
+    </tr>
+    <tr>
+      <th>9.0</th>
+      <td>0.575110</td>
+      <td>-4.310551</td>
+      <td>1.705441</td>
+      <td>-2.605110</td>
+    </tr>
+    <tr>
+      <th>10.0</th>
+      <td>0.571312</td>
+      <td>-4.616559</td>
+      <td>1.565247</td>
+      <td>-3.051312</td>
+    </tr>
+    <tr>
+      <th>11.0</th>
+      <td>0.569395</td>
+      <td>-4.961974</td>
+      <td>1.422579</td>
+      <td>-3.539395</td>
+    </tr>
+    <tr>
+      <th>12.0</th>
+      <td>0.561997</td>
+      <td>-5.309983</td>
+      <td>1.247986</td>
+      <td>-4.061997</td>
+    </tr>
+    <tr>
+      <th>13.0</th>
+      <td>0.556362</td>
+      <td>-5.696812</td>
+      <td>1.070450</td>
+      <td>-4.626362</td>
+    </tr>
+    <tr>
+      <th>14.0</th>
+      <td>0.552071</td>
+      <td>-6.120357</td>
+      <td>0.888286</td>
+      <td>-5.232071</td>
+    </tr>
+    <tr>
+      <th>15.0</th>
+      <td>0.559690</td>
+      <td>-6.633452</td>
+      <td>0.743762</td>
+      <td>-5.889690</td>
+    </tr>
+    <tr>
+      <th>16.0</th>
+      <td>0.546763</td>
+      <td>-7.073814</td>
+      <td>0.507051</td>
+      <td>-6.566763</td>
+    </tr>
+    <tr>
+      <th>17.0</th>
+      <td>0.540981</td>
+      <td>-7.579907</td>
+      <td>0.288926</td>
+      <td>-7.290981</td>
+    </tr>
+    <tr>
+      <th>18.0</th>
+      <td>0.540375</td>
+      <td>-8.141877</td>
+      <td>0.081502</td>
+      <td>-8.060375</td>
+    </tr>
+    <tr>
+      <th>19.0</th>
+      <td>0.532353</td>
+      <td>-8.696763</td>
+      <td>-0.165590</td>
+      <td>-8.862353</td>
+    </tr>
+    <tr>
+      <th>20.0</th>
+      <td>0.581473</td>
+      <td>-9.567364</td>
+      <td>-0.194109</td>
+      <td>-9.761473</td>
+    </tr>
+    <tr>
+      <th>21.0</th>
+      <td>0.622667</td>
+      <td>-10.428333</td>
+      <td>-0.264333</td>
+      <td>-10.692667</td>
+    </tr>
+    <tr>
+      <th>22.0</th>
+      <td>0.000000</td>
+      <td>-8.000000</td>
+      <td>-3.000000</td>
+      <td>-11.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<h3 id="Try-to-end-it-early…-The-upperright-midpoint-looks-good"><a href="#Try-to-end-it-early…-The-upperright-midpoint-looks-good" class="headerlink" title="Try to end it early… The upperright midpoint looks good"></a>Try to end it early… The upperright midpoint looks good</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">sns.set_theme(style=<span class="string">&quot;ticks&quot;</span>, font_scale=<span class="number">1.25</span>,)</span><br><span class="line">sns.jointplot(data=df_sim, y=<span class="string">&quot;Kunzler&quot;</span>, x=<span class="string">&quot;Arnold&quot;</span>, hue=<span class="string">&quot;round&quot;</span>,height=<span class="number">8</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<pre><code>/usr/local/lib/python3.6/dist-packages/seaborn/distributions.py:305: UserWarning: Dataset has 0 variance; skipping density estimate.
+  warnings.warn(msg, UserWarning)
+/usr/local/lib/python3.6/dist-packages/seaborn/distributions.py:305: UserWarning: Dataset has 0 variance; skipping density estimate.
+  warnings.warn(msg, UserWarning)</code></pre>
+<p><img src="/2020/10/09/%E8%B0%88%E5%88%A4%E6%A1%88%E4%BE%8B%E6%A8%A1%E6%8B%9F%EF%BC%9ALeckenby-Company/LeckenbySimulation_files/LeckenbySimulation_19_1.png"></p>
+<h3 id="If-we-end-early-before-round3-what-would-be-a-good-proposition-Answer-w-in-0-5-0-53"><a href="#If-we-end-early-before-round3-what-would-be-a-good-proposition-Answer-w-in-0-5-0-53" class="headerlink" title="If we end early before round3, what would be a good proposition? Answer: $w\in [0.5,0.53]$"></a>If we end early before round3, what would be a good proposition? Answer: $w\in [0.5,0.53]$</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df_early = df_sim.loc[df_sim[<span class="string">&quot;round&quot;</span>]&lt;=<span class="number">3</span>].sort_values(<span class="string">&quot;total&quot;</span>, ascending=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">(df_early[<span class="string">&quot;Kunzler&quot;</span>].min() + df_early[<span class="string">&quot;Kunzler&quot;</span>].max()) / <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>-2.6799999999999997</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">(df_early[<span class="string">&quot;Arnold&quot;</span>].min() + df_early[<span class="string">&quot;Arnold&quot;</span>].max()) / <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>2.026500000000002</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Arnold(<span class="number">0.53</span>,<span class="number">0</span>), Kunzler(<span class="number">0.53</span>,<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>(2.12, -2.6500000000000004)</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Arnold(<span class="number">0.5</span>,<span class="number">0</span>), Kunzler(<span class="number">0.5</span>,<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>(2.0, -2.5)</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">12</span>,<span class="number">8</span>))</span><br><span class="line">sns.scatterplot(data=df_early, x=<span class="string">&quot;Arnold&quot;</span>, y=<span class="string">&quot;Kunzler&quot;</span>, hue=<span class="string">&quot;round&quot;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="/2020/10/09/%E8%B0%88%E5%88%A4%E6%A1%88%E4%BE%8B%E6%A8%A1%E6%8B%9F%EF%BC%9ALeckenby-Company/LeckenbySimulation_files/LeckenbySimulation_26_0.png"></p>
+<h1 id="Simulation-2-What-if-my-counterpart-does-not-end-early"><a href="#Simulation-2-What-if-my-counterpart-does-not-end-early" class="headerlink" title="Simulation 2: What if my counterpart does not end early?"></a>Simulation 2: What if my counterpart does not end early?</h1><h2 id="Another-simulation-function-Exhibits-the-process-of-negotiation"><a href="#Another-simulation-function-Exhibits-the-process-of-negotiation" class="headerlink" title="Another simulation function: Exhibits the process of negotiation"></a>Another simulation function: Exhibits the process of negotiation</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">simulation</span>():</span> <span class="comment"># Exhibits the process of negotiation</span></span><br><span class="line">    bid_Kunzler = <span class="number">10</span></span><br><span class="line">    bid_Arnold = <span class="number">11</span></span><br><span class="line">    round = <span class="number">0</span></span><br><span class="line">    <span class="comment"># p_Kunzler = 0</span></span><br><span class="line">    <span class="comment"># p_Arnold = 0</span></span><br><span class="line">    rows = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> ((bid_Kunzler+<span class="number">0.004</span> &lt; bid_Arnold) &amp; (round &lt;=<span class="number">22</span>)):</span><br><span class="line">        round += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> (np.random.random()&gt;<span class="number">0.2</span>): <span class="comment"># 20% chance stick to the previous bid</span></span><br><span class="line">            bid_Kunzler += (bid_Arnold - bid_Kunzler)*np.random.triangular(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">if</span> (np.random.random()&gt;<span class="number">0.2</span>):</span><br><span class="line">            bid_Arnold -= (bid_Arnold - bid_Kunzler)*np.random.triangular(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line">        w_Kunzler = bid_Kunzler- <span class="number">10</span></span><br><span class="line">        w_Arnold = bid_Arnold<span class="number">-10</span></span><br><span class="line">        d = (round &gt; <span class="number">2</span>)*(round - <span class="number">2</span>)</span><br><span class="line">        Kunzler_ = Kunzler(w_Kunzler, d)</span><br><span class="line">        Arnold_ = Arnold(w_Arnold, d)</span><br><span class="line">        rows.append(np.array([round, w_Kunzler, w_Arnold, Kunzler_, Arnold_]))</span><br><span class="line">    df = pd.DataFrame(np.array(rows), columns = [<span class="string">&quot;round&quot;</span>, <span class="string">&quot;w_Kunzler&quot;</span>, <span class="string">&quot;w_Arnold&quot;</span>, <span class="string">&quot;Kunzler_&quot;</span>, <span class="string">&quot;Arnold_&quot;</span>])</span><br><span class="line">    df = df.assign(sum = <span class="keyword">lambda</span> x: x.Kunzler_ + x.Arnold_)</span><br><span class="line">    <span class="keyword">return</span> df</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">simulation()</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>round</th>
+      <th>w_Kunzler</th>
+      <th>w_Arnold</th>
+      <th>Kunzler_</th>
+      <th>Arnold_</th>
+      <th>sum</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.0</td>
+      <td>0.000000</td>
+      <td>0.868807</td>
+      <td>0.000000</td>
+      <td>3.475230</td>
+      <td>3.475230</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2.0</td>
+      <td>0.000000</td>
+      <td>0.420516</td>
+      <td>0.000000</td>
+      <td>1.682066</td>
+      <td>1.682066</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3.0</td>
+      <td>0.000297</td>
+      <td>0.420516</td>
+      <td>-0.116485</td>
+      <td>1.627066</td>
+      <td>1.510581</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4.0</td>
+      <td>0.107588</td>
+      <td>0.201068</td>
+      <td>-0.797939</td>
+      <td>0.684272</td>
+      <td>-0.113667</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5.0</td>
+      <td>0.132680</td>
+      <td>0.157974</td>
+      <td>-1.098401</td>
+      <td>0.436896</td>
+      <td>-0.661505</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6.0</td>
+      <td>0.147227</td>
+      <td>0.156502</td>
+      <td>-1.376134</td>
+      <td>0.346006</td>
+      <td>-1.030128</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7.0</td>
+      <td>0.149804</td>
+      <td>0.156216</td>
+      <td>-1.624022</td>
+      <td>0.249866</td>
+      <td>-1.374156</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8.0</td>
+      <td>0.151529</td>
+      <td>0.156216</td>
+      <td>-1.897647</td>
+      <td>0.144866</td>
+      <td>-1.752782</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9.0</td>
+      <td>0.155463</td>
+      <td>0.155972</td>
+      <td>-2.212317</td>
+      <td>0.028890</td>
+      <td>-2.183427</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<h2 id="Tool-for-finding-a-similar-case-round-w-K-w-A-when-negotiating"><a href="#Tool-for-finding-a-similar-case-round-w-K-w-A-when-negotiating" class="headerlink" title="Tool for finding a similar case(round, w_K, w_A) when negotiating"></a>Tool for finding a similar case(round, w_K, w_A) when negotiating</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Arnold(<span class="number">0</span>, <span class="number">20</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>-3.0</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Kunzler(<span class="number">0</span>, <span class="number">20</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>-8.0</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_Case</span>(<span class="params">round, w_K, w_A</span>):</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">True</span>):</span><br><span class="line">        df = simulation()</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            row = df.iloc[round<span class="number">-1</span>]</span><br><span class="line">            flag = (np.abs(row[<span class="string">&quot;w_Kunzler&quot;</span>]-w_K)&lt;<span class="number">0.01</span>) &amp; (np.abs(row[<span class="string">&quot;w_Arnold&quot;</span>]-w_A)&lt;<span class="number">0.01</span>)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            flag = <span class="literal">False</span></span><br><span class="line">        <span class="keyword">if</span> (flag):</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">return</span> df</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">find_Case(<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>round</th>
+      <th>w_Kunzler</th>
+      <th>w_Arnold</th>
+      <th>Kunzler_</th>
+      <th>Arnold_</th>
+      <th>sum</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.0</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>4.000000</td>
+      <td>4.000000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2.0</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>4.000000</td>
+      <td>4.000000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3.0</td>
+      <td>0.382837</td>
+      <td>0.997914</td>
+      <td>-2.029186</td>
+      <td>3.936654</td>
+      <td>1.907469</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4.0</td>
+      <td>0.387834</td>
+      <td>0.603973</td>
+      <td>-2.199168</td>
+      <td>2.295893</td>
+      <td>0.096725</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5.0</td>
+      <td>0.495310</td>
+      <td>0.586222</td>
+      <td>-2.911552</td>
+      <td>2.149887</td>
+      <td>-0.761664</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6.0</td>
+      <td>0.529410</td>
+      <td>0.584511</td>
+      <td>-3.287050</td>
+      <td>2.058045</td>
+      <td>-1.229006</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7.0</td>
+      <td>0.529410</td>
+      <td>0.579932</td>
+      <td>-3.522050</td>
+      <td>1.944727</td>
+      <td>-1.577323</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8.0</td>
+      <td>0.533581</td>
+      <td>0.579932</td>
+      <td>-3.807903</td>
+      <td>1.839727</td>
+      <td>-1.968176</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9.0</td>
+      <td>0.541261</td>
+      <td>0.577473</td>
+      <td>-4.141303</td>
+      <td>1.714890</td>
+      <td>-2.426413</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10.0</td>
+      <td>0.541261</td>
+      <td>0.577473</td>
+      <td>-4.466303</td>
+      <td>1.589890</td>
+      <td>-2.876413</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>11.0</td>
+      <td>0.541261</td>
+      <td>0.575655</td>
+      <td>-4.821303</td>
+      <td>1.447619</td>
+      <td>-3.373685</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>12.0</td>
+      <td>0.572203</td>
+      <td>0.575655</td>
+      <td>-5.361013</td>
+      <td>1.302619</td>
+      <td>-4.058394</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">find_Case(<span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>round</th>
+      <th>w_Kunzler</th>
+      <th>w_Arnold</th>
+      <th>Kunzler_</th>
+      <th>Arnold_</th>
+      <th>sum</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.0</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>4.000000</td>
+      <td>4.000000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2.0</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>4.000000</td>
+      <td>4.000000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3.0</td>
+      <td>0.000000</td>
+      <td>0.470998</td>
+      <td>-0.115000</td>
+      <td>1.828994</td>
+      <td>1.713994</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4.0</td>
+      <td>0.000000</td>
+      <td>0.337204</td>
+      <td>-0.260000</td>
+      <td>1.228817</td>
+      <td>0.968817</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5.0</td>
+      <td>0.000000</td>
+      <td>0.094733</td>
+      <td>-0.435000</td>
+      <td>0.183932</td>
+      <td>-0.251068</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6.0</td>
+      <td>0.000000</td>
+      <td>0.094733</td>
+      <td>-0.640000</td>
+      <td>0.098932</td>
+      <td>-0.541068</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7.0</td>
+      <td>0.000000</td>
+      <td>0.072679</td>
+      <td>-0.875000</td>
+      <td>-0.084283</td>
+      <td>-0.959283</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8.0</td>
+      <td>0.009111</td>
+      <td>0.068337</td>
+      <td>-1.185556</td>
+      <td>-0.206651</td>
+      <td>-1.392207</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9.0</td>
+      <td>0.044854</td>
+      <td>0.058973</td>
+      <td>-1.659270</td>
+      <td>-0.359107</td>
+      <td>-2.018377</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10.0</td>
+      <td>0.047908</td>
+      <td>0.056863</td>
+      <td>-1.999541</td>
+      <td>-0.492550</td>
+      <td>-2.492091</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>11.0</td>
+      <td>0.048806</td>
+      <td>0.055739</td>
+      <td>-2.359032</td>
+      <td>-0.632043</td>
+      <td>-2.991074</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>12.0</td>
+      <td>0.048806</td>
+      <td>0.052226</td>
+      <td>-2.744032</td>
+      <td>-0.791096</td>
+      <td>-3.535128</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">find_Case(<span class="number">4</span>, <span class="number">0.3</span>, <span class="number">0.6</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>round</th>
+      <th>w_Kunzler</th>
+      <th>w_Arnold</th>
+      <th>Kunzler_</th>
+      <th>Arnold_</th>
+      <th>sum</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.0</td>
+      <td>0.155860</td>
+      <td>0.919539</td>
+      <td>-0.779300</td>
+      <td>3.678158</td>
+      <td>2.898858</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2.0</td>
+      <td>0.262073</td>
+      <td>0.819940</td>
+      <td>-1.310366</td>
+      <td>3.279758</td>
+      <td>1.969392</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3.0</td>
+      <td>0.304963</td>
+      <td>0.808350</td>
+      <td>-1.639815</td>
+      <td>3.178401</td>
+      <td>1.538586</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4.0</td>
+      <td>0.304963</td>
+      <td>0.597116</td>
+      <td>-1.784815</td>
+      <td>2.268465</td>
+      <td>0.483650</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5.0</td>
+      <td>0.400535</td>
+      <td>0.532053</td>
+      <td>-2.437677</td>
+      <td>1.933211</td>
+      <td>-0.504466</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6.0</td>
+      <td>0.400584</td>
+      <td>0.417896</td>
+      <td>-2.642919</td>
+      <td>1.391584</td>
+      <td>-1.251335</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7.0</td>
+      <td>0.412972</td>
+      <td>0.415010</td>
+      <td>-2.939859</td>
+      <td>1.285039</td>
+      <td>-1.654820</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<h2 id="Do-not-concede-before-Round-4"><a href="#Do-not-concede-before-Round-4" class="headerlink" title="Do not concede before Round 4!!!"></a>Do not concede before Round 4!!!</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">%<span class="built_in">cd</span> /content/drive/My Drive/20FA</span><br><span class="line">!jupyter nb</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="案例材料"><a href="#案例材料" class="headerlink" title="案例材料"></a>案例材料</h1><div class="pdfobject-container" data-target="./Leckenby" data-height="Company1.pdf"></div>]]></content>
+      <categories>
+        <category>Simulation</category>
+      </categories>
+      <tags>
+        <tag>Managerial Negotiation</tag>
+      </tags>
+  </entry>
 </search>
