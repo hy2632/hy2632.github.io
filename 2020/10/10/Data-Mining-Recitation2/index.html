@@ -20,21 +20,20 @@
     var CONFIG = {"hostname":"hy2632.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="十月    At terrace, 10&#x2F;05&#x2F;2020    回首荒城斜日 倚栏目送飞鸿         HUA YAO  Email: &amp;#104;&amp;#121;&amp;#x32;&amp;#x36;&amp;#x33;&amp;#x32;&amp;#x40;&amp;#x63;&amp;#x6f;&amp;#x6c;&amp;#117;&amp;#x6d;&amp;#98;&amp;#105;&amp;#x61;&amp;#46;&amp;#x65;&amp;#100;&amp;#x75; | &amp;#121;&amp;#x61;&amp;#">
-<meta property="og:type" content="website">
-<meta property="og:title" content="豁蒙楼">
-<meta property="og:url" content="https://hy2632.github.io/about/index.html">
+  <meta name="description" content="Monte Carlo Approximation techniques Evolutionary Strategies, 策略梯度 Policy optimization can be done through gradient ascend: \[\nabla_\theta \mathbb{E}_{\epsilon\sim\mathcal{N}(0, I)} F(\theta + \sigma">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Data-Mining-Recitation2">
+<meta property="og:url" content="https://hy2632.github.io/2020/10/10/Data-Mining-Recitation2/index.html">
 <meta property="og:site_name" content="豁蒙楼">
-<meta property="og:description" content="十月    At terrace, 10&#x2F;05&#x2F;2020    回首荒城斜日 倚栏目送飞鸿         HUA YAO  Email: &amp;#104;&amp;#121;&amp;#x32;&amp;#x36;&amp;#x33;&amp;#x32;&amp;#x40;&amp;#x63;&amp;#x6f;&amp;#x6c;&amp;#117;&amp;#x6d;&amp;#98;&amp;#105;&amp;#x61;&amp;#46;&amp;#x65;&amp;#100;&amp;#x75; | &amp;#121;&amp;#x61;&amp;#">
+<meta property="og:description" content="Monte Carlo Approximation techniques Evolutionary Strategies, 策略梯度 Policy optimization can be done through gradient ascend: \[\nabla_\theta \mathbb{E}_{\epsilon\sim\mathcal{N}(0, I)} F(\theta + \sigma">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://hy2632.github.io/about/index/20201005.jpg">
-<meta property="article:published_time" content="2020-10-05T23:01:38.749Z">
-<meta property="article:modified_time" content="2020-10-05T23:01:38.749Z">
+<meta property="article:published_time" content="2020-10-10T23:37:28.000Z">
+<meta property="article:modified_time" content="2020-10-13T02:10:04.926Z">
 <meta property="article:author" content="姚华(Hua Yao)">
+<meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://hy2632.github.io/about/index/20201005.jpg">
 
-<link rel="canonical" href="https://hy2632.github.io/about/">
+<link rel="canonical" href="https://hy2632.github.io/2020/10/10/Data-Mining-Recitation2/">
 
 
 <script id="page-configurations">
@@ -42,13 +41,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title> | 豁蒙楼
-</title>
+  <title>Data-Mining-Recitation2 | 豁蒙楼</title>
   
 
 
@@ -192,107 +190,132 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
-          <div class="content page posts-expand">
+          <div class="content post posts-expand">
             
 
     
-    
-    
-    <div class="post-block" lang="zh-CN">
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/10/10/Data-Mining-Recitation2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
+      <meta itemprop="name" content="姚华(Hua Yao)">
+      <meta itemprop="description" content="hy2632@columbia.edu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="豁蒙楼">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Data-Mining-Recitation2
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
 
-<div class="post-meta">
+              <time title="创建时间：2020-10-10 18:37:28" itemprop="dateCreated datePublished" datetime="2020-10-10T18:37:28-05:00">2020-10-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-12 21:10:04" itemprop="dateModified" datetime="2020-10-12T21:10:04-05:00">2020-10-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Data-Mining/" itemprop="url" rel="index"><span itemprop="name">Data Mining</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="monte-carlo-approximation-techniques">Monte Carlo Approximation techniques</h2>
+<h2 id="evolutionary-strategies-策略梯度">Evolutionary Strategies, 策略梯度</h2>
+<p>Policy optimization can be done through gradient ascend:</p>
+<p><span class="math display">\[\nabla_\theta \mathbb{E}_{\epsilon\sim\mathcal{N}(0, I)} F(\theta + \sigma \epsilon) = \frac{1}{\sigma}\mathbb{E}_{\epsilon\sim\mathcal{N}(0, I)} [ \epsilon F(\theta + \sigma\epsilon) ]\]</span></p>
+<p><strong>Proof:</strong></p>
+<p>一些参考资料：<br />
+<a target="_blank" rel="noopener" href="https://lilianweng.github.io/lil-log/2019/09/05/evolution-strategies.html">Evolution Strategies</a> <!-- $$
+\begin{aligned}
+& \nabla_\theta \mathbb{E}_{\theta\sim\mathcal{N}(\hat{\theta}, \sigma^2 I)} F(\theta) \\
+&= \nabla_\theta \mathbb{E}_{\epsilon\sim\mathcal{N}(0, I)} F(\hat{\theta} + \sigma\epsilon) \\
+&= \nabla_\theta \int_{\epsilon} p(\epsilon) F(\hat{\theta} + \sigma\epsilon) d\epsilon & \scriptstyle{\text{; Gaussian }p(\epsilon)=(2\pi)^{-\frac{n}{2}} \exp(-\frac{1}{2}\epsilon^\top\epsilon)} \\
+&= \int_{\epsilon} p(\epsilon) \nabla_\epsilon \log p(\epsilon) \nabla_\theta \epsilon\;F(\hat{\theta} + \sigma\epsilon) d\epsilon & \scriptstyle{\text{; log-likelihood trick}}\\
+&= \mathbb{E}_{\epsilon\sim\mathcal{N}(0, I)} [ \nabla_\epsilon \big(-\frac{1}{2}\epsilon^\top\epsilon\big) \nabla_\theta \big(\frac{\theta - \hat{\theta}}{\sigma}\big) F(\hat{\theta} + \sigma\epsilon) ] & \\
+&= \mathbb{E}_{\epsilon\sim\mathcal{N}(0, I)} [ (-\epsilon) (\frac{1}{\sigma}) F(\hat{\theta} + \sigma\epsilon) ] & \\
+&= \frac{1}{\sigma}\mathbb{E}_{\epsilon\sim\mathcal{N}(0, I)} [ \epsilon F(\hat{\theta} + \sigma\epsilon) ] & \scriptstyle{\text{; negative sign can be absorbed.}}
+\end{aligned}
+$$ --> <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1703.03864.pdf">Evolution Strategies as a Scalable Alternative to Reinforcement Learning</a><br />
+<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/275040392/answer/383301722">知乎回答 OpenAI ES</a><br />
+<a target="_blank" rel="noopener" href="https://blog.csdn.net/Xurui_Luo/article/details/106160581">CSDN推导</a></p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp;\nabla_\theta \mathbb{E}_{\epsilon\sim\mathcal{N}(0, I)} F(\theta + \sigma\epsilon) \\
+&amp;= \nabla_\theta \int_{\epsilon} p(\epsilon) F(\theta + \sigma\epsilon) d\epsilon &amp; \scriptstyle{\text{; Gaussian }p(\epsilon)=(2\pi)^{-\frac{n}{2}} \exp(-\frac{1}{2}\epsilon^\top\epsilon)} \\
+&amp;= \frac{1}{\sigma}\int_{\epsilon} \nabla_\epsilon p(\epsilon) F(\theta + \sigma\epsilon) d\epsilon  \\
+&amp;= \frac{1}{\sigma}\int_{\epsilon} p(\epsilon) \nabla_\epsilon \log p(\epsilon) F(\hat{\theta} + \sigma\epsilon) d\epsilon &amp; \scriptstyle{\text{; log-likelihood trick}}\\
+&amp;= \frac{1}{\sigma}\mathbb{E}_{\epsilon\sim\mathcal{N}(0, I)} [ \nabla_\epsilon \big(-\frac{1}{2}\epsilon^\top\epsilon\big)  F(\hat{\theta} + \sigma\epsilon) ] &amp; \\
+&amp;= \frac{1}{\sigma}\mathbb{E}_{\epsilon\sim\mathcal{N}(0, I)} [ (-\epsilon)  F(\hat{\theta} + \sigma\epsilon) ] &amp; \\
+&amp;= \frac{1}{\sigma}\mathbb{E}_{\epsilon\sim\mathcal{N}(0, I)} [ \epsilon F(\hat{\theta} + \sigma\epsilon) ] &amp; \scriptstyle{\text{; negative sign can be absorbed.}}
+\end{aligned}
+\]</span></p>
+<p><a target="_blank" rel="noopener" href="http://blog.shakirm.com/2015/11/machine-learning-trick-of-the-day-5-log-derivative-trick/">Log likelihood trick</a></p>
+<p><a target="_blank" rel="noopener" href="http://gregorygundersen.com/blog/2018/04/29/reparameterization/">The Reparameterization Trick</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/09/%E8%B0%88%E5%88%A4%E6%A1%88%E4%BE%8B%E6%A8%A1%E6%8B%9F%EF%BC%9ALeckenby-Company/" rel="prev" title="谈判案例模拟：Leckenby Company">
+      <i class="fa fa-chevron-left"></i> 谈判案例模拟：Leckenby Company
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/10/14/Data-Mining-Lec6/" rel="next" title="Data-Mining-Lec6">
+      Data-Mining-Lec6 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-          <div style="text-align: center;font-family:kaiti;font-size: 48px;font-weight:bold;" > 十月</div>
-
-<p><img src="index/20201005.jpg"></p>
-<div style="text-align: right;font-family:cambria;font-size: 12px;" > At terrace, 10/05/2020</div>
-<!-- <div style="text-align: right;font-family:cambria;font-size: 12px;" > Credit to Kenneth Yang(https://unsplash.com/photos/lJWJLkwIsng)</div> -->
-
-<div style="text-align: left;font-family:fangsong;font-size: 28px;" > 回首荒城斜日 倚栏目送飞鸿</div>
-
-
-
-<!-- ![](https://1.bp.blogspot.com/-UeWzaw52JfI/V7_oMoBoj3I/AAAAAAAAAiQ/lqrvb1L9ZE8d-aaGXwLsfBzdIajCWr7mwCLcB/s1600/CCM_36.jpg)
-
-<div style="text-align: left;font-family:cambria;font-style:italic;font-weight:bold;font-size: 28px;" > So we beat on, boats against the current, borne back ceaselessly into the past. </div>
-<div style="text-align: right;font-family:cambria;font-style:italic;font-size: 18px;"> ——《The Great Gatsby》, F. Scott Fitzgerald </div> -->
-
-<hr>
-<!-- <div style="text-align: left;font-family:cambria;font-style:italic;font-weight:bold;font-size: 28px;" > His soul swooned slowly as he heard the snow falling faintly through the universe and faintly falling, like the descent of their last end, upon all the living and the dead. </div>                                                       
-<div style="text-align: right;font-family:cambria;font-style:italic;font-size: 18px;"> ——《The Dead》, James Joyce </div> -->
-
-<h1 id="HUA-YAO"><a href="#HUA-YAO" class="headerlink" title="HUA YAO"></a>HUA YAO</h1><!-- ![Headshot](https://raw.githubusercontent.com/hy2632/hy2632.github.io/master/images/headshot.jpg) -->
-
-<p>Email: <a href="mailto:&#104;&#121;&#x32;&#x36;&#x33;&#x32;&#x40;&#x63;&#x6f;&#x6c;&#117;&#x6d;&#98;&#105;&#x61;&#46;&#x65;&#100;&#x75;">&#104;&#121;&#x32;&#x36;&#x33;&#x32;&#x40;&#x63;&#x6f;&#x6c;&#117;&#x6d;&#98;&#105;&#x61;&#46;&#x65;&#100;&#x75;</a> | <a href="mailto:&#121;&#x61;&#111;&#x68;&#x75;&#x61;&#x63;&#x6e;&#x40;&#x6f;&#x75;&#x74;&#108;&#x6f;&#111;&#107;&#x2e;&#99;&#x6f;&#x6d;">&#121;&#x61;&#111;&#x68;&#x75;&#x61;&#x63;&#x6e;&#x40;&#x6f;&#x75;&#x74;&#108;&#x6f;&#111;&#107;&#x2e;&#99;&#x6f;&#x6d;</a><br>LinkedIn: <a href="linkedin.com/in/yaohuacn">linkedin.com/in/yaohuacn</a><br>Mobile: 1-646-318-8174 | 86-18888120881<br>Address: <a target="_blank" rel="noopener" href="https://www.google.com/maps/place/1+QPS/@40.75097,-73.9426938,18.25z/data=!4m5!3m4!1s0x89c25933db3371a7:0x7934bef6849eeca0!8m2!3d40.7505894!4d-73.942261">42-20 24th St., Long Island City, NY 11101</a></p>
-<h2 id="EDUCATION"><a href="#EDUCATION" class="headerlink" title="EDUCATION"></a>EDUCATION</h2><h3 id="Columbia-University-New-York-City-NY"><a href="#Columbia-University-New-York-City-NY" class="headerlink" title="Columbia University, New York City, NY"></a><strong>Columbia University</strong>, New York City, NY</h3><p><strong>M.S. in Management Science &amp; Engineering</strong><br>Aug 2019 – Dec 2020</p>
-<ul>
-<li><strong>Cumulative GPA</strong>: 4.06/4.33</li>
-<li><strong>Award</strong>: Frydman Graduate Fellowship (10%)</li>
-<li><strong>Coursework</strong>: Operations Consulting, Advanced Corporate Finance, Capital Markets and Investment, Business Analytics, Business Analytics Strategy, Tools for Data Analytics, Probability Statistics and Simulation, Optimization Methods, Stochastic Modeling</li>
-</ul>
-<h3 id="Tsinghua-University-Beijing-CN"><a href="#Tsinghua-University-Beijing-CN" class="headerlink" title="Tsinghua University, Beijing, CN"></a><strong>Tsinghua University</strong>, Beijing, CN</h3><p><strong>B.S. in Civil Engineering</strong><br>Jul 2019</p>
-<ul>
-<li><strong>Cumulative GPA</strong>: 3.56/4.0</li>
-</ul>
-<h2 id="DATA-ANALYTICS-EXPERIENCE"><a href="#DATA-ANALYTICS-EXPERIENCE" class="headerlink" title="DATA ANALYTICS EXPERIENCE"></a>DATA ANALYTICS EXPERIENCE</h2><h3 id="Marc-Jacobs-International-New-York-NY"><a href="#Marc-Jacobs-International-New-York-NY" class="headerlink" title="Marc Jacobs International, New York, NY"></a>Marc Jacobs International, New York, NY</h3><p><strong>Data Analytics Consultant (Part-time), Global Retail Planning</strong><br>Aug 2019 – May 2020</p>
-<p><strong><em>Buy tool design: product sales forecast based on Random Forest model</em></strong></p>
-<ul>
-<li>Collected historical sales data of products by region and season and used Pandas for data cleaning and preprocessing</li>
-<li>Drew qualitative conclusions on regional effects, general trend, etc. through data exploration and visualization, using matplotlib and seaborn, identified and defined key attributes based on the opinions of procurement SMEs and model validation</li>
-<li>Built a Random Forest regression model to predict sales volume of new products based on historical data and key attributes, optimizing the buying process and increasing the sell-through rate</li>
-</ul>
-<h3 id="Novo-Nordisk-Plainsboro-NJ"><a href="#Novo-Nordisk-Plainsboro-NJ" class="headerlink" title="Novo Nordisk, Plainsboro, NJ"></a>Novo Nordisk, Plainsboro, NJ</h3><p><strong>Data Analytics Consultant (Part-time), Insights and Analytics</strong><br>Aug 2019 – May 2020</p>
-<p><strong><em>Established a hierarchical clustering model to identify patients’ receptiveness to their anti-obesity medicine Saxenda</em></strong></p>
-<ul>
-<li>Used SQL and IQVIA database to create a database containing patients’ DX, PX, RX and socioeconomic data with a primary key of patient ID and provided SQL source code for database auto-updating </li>
-<li>Used K-means, Gaussian Mixture, and other hierarchical clustering algorithms to develop a ranking system based on patients’ receptiveness to the medicine</li>
-<li>Explained the patterns of each patient group and used Tableau to generate a choropleth map, visualizing the geographical distribution of high priority patients, and provided business insights on determining prioritized regions</li>
-<li>Gave two informative presentations to SMEs from Novo Nordisk US’s Business Strategy &amp; Development team and was highly rated by Director of Commercial Insights &amp; Analytics</li>
-</ul>
-<h2 id="RESEARCH"><a href="#RESEARCH" class="headerlink" title="RESEARCH"></a>RESEARCH</h2><p><strong><em>CS 224N Final Project: Question Answering on SQuAD 2.0</em></strong></p>
-<ul>
-<li>Implemented two Non-PCE models: BiDAF (with char-embedding) and QANet using PyTorch</li>
-<li>Achived a EM score of 60.07 and F1 score of 63.48</li>
-</ul>
-<p><strong><em>Research on Uber’s Prospect of Profitability and Strategy to achieve Sustainability of Business</em></strong></p>
-<ul>
-<li>Conducted analysis on Uber’s core business, Ride-hailing, from Contributed Value, Sustainability, WTP, etc. </li>
-<li>Link: <a href="https://hy2632.github.io/2020/08/22/ResearchOnUber/#more">https://hy2632.github.io/2020/08/22/ResearchOnUber/#more</a> </li>
-</ul>
-<h2 id="SKILLS"><a href="#SKILLS" class="headerlink" title="SKILLS"></a>SKILLS</h2><ul>
-<li><strong>Data Analytics &amp; Programming</strong>: Python (pandas, NumPy, Matplotlib, scikit-learn, PyTorch), Java, SQL, Git, MS Azure, Tableau, Excel</li>
-<li><strong>Deep Learning</strong>: CS224N (Natural Language Processing with Deep Learning), CS231N (Convolutional Neural Nets for Visual Recognition)</li>
-<li><strong>Certificate</strong>: CFA Level I Passed</li>
-<li><strong>Language</strong>: Chinese (Native), French (Basic)</li>
-<li><strong>Interests</strong>: <a target="_blank" rel="noopener" href="https://500px.com/yaohua">Photography</a>, Fine Art, Soccer</li>
-</ul>
-
-      </div>
-      
-      
-      
-    </div>
-    
-
-    
-    
-    
 
 
           </div>
@@ -343,7 +366,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HUA-YAO"><span class="nav-number">1.</span> <span class="nav-text">HUA YAO</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#EDUCATION"><span class="nav-number">1.1.</span> <span class="nav-text">EDUCATION</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Columbia-University-New-York-City-NY"><span class="nav-number">1.1.1.</span> <span class="nav-text">Columbia University, New York City, NY</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tsinghua-University-Beijing-CN"><span class="nav-number">1.1.2.</span> <span class="nav-text">Tsinghua University, Beijing, CN</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DATA-ANALYTICS-EXPERIENCE"><span class="nav-number">1.2.</span> <span class="nav-text">DATA ANALYTICS EXPERIENCE</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Marc-Jacobs-International-New-York-NY"><span class="nav-number">1.2.1.</span> <span class="nav-text">Marc Jacobs International, New York, NY</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Novo-Nordisk-Plainsboro-NJ"><span class="nav-number">1.2.2.</span> <span class="nav-text">Novo Nordisk, Plainsboro, NJ</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RESEARCH"><span class="nav-number">1.3.</span> <span class="nav-text">RESEARCH</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SKILLS"><span class="nav-number">1.4.</span> <span class="nav-text">SKILLS</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#monte-carlo-approximation-techniques"><span class="nav-number">1.</span> <span class="nav-text">Monte Carlo Approximation techniques</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#evolutionary-strategies-%E7%AD%96%E7%95%A5%E6%A2%AF%E5%BA%A6"><span class="nav-number">2.</span> <span class="nav-text">Evolutionary Strategies, 策略梯度</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

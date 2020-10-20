@@ -2359,6 +2359,16 @@ s-65,47,-65,47z M834 80H400000v40H845z'/></svg></span></span></span><span class=
 <li>考点： 哈希，双指针，字符串</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> arr int整型一维数组 the array</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> int整型</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NowCoder_MaxLength</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 滑动窗口是一个set，如果没有就添加，否则比较长度，start增加1</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">maxLength</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</span><br><span class="line">        HashMap&lt;Integer, Integer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        <span class="keyword">int</span> max = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> start = <span class="number">0</span>, end = <span class="number">0</span>; end &lt; arr.length; end++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (map.containsKey(arr[end])) &#123;</span><br><span class="line">                start = Math.max(start, map.get(arr[end]) + <span class="number">1</span>); <span class="comment">// 注意点</span></span><br><span class="line">            &#125;</span><br><span class="line">            max = Math.max(max, end - start + <span class="number">1</span>);</span><br><span class="line">            map.put(arr[end], end);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> max;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] a = &#123; <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">4</span> &#125;;</span><br><span class="line">        System.out.println(maxLength(a));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="nc61-twosum">NC61 TwoSum</h3>
+<ul>
+<li><p>题目描述</p>
+<p>给出一个整数数组，请在数组中找出两个加起来等于目标值的数， 你给出的函数twoSum 需要返回这两个数字的下标（index1，index2），需要满足 index1 小于index2</p>
+<p>注意：下标是从1开始的 假设给出的数组中只存在唯一解</p>
+<p>例如： 给出的数组为 {20, 70, 110, 150},目标值为90</p>
+<p>输出 index1=1, index2=2</p></li>
+<li><p>代码</p></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NC61</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> numbers int整型一维数组</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> target  int整型</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> int整型一维数组</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] twoSum(<span class="keyword">int</span>[] numbers, <span class="keyword">int</span> target) &#123;</span><br><span class="line">        <span class="comment">// write code here</span></span><br><span class="line">        HashMap&lt;Integer, Integer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numbers.length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (map.containsKey(target - numbers[i])) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[] &#123; map.get(target - numbers[i]) + <span class="number">1</span>, i + <span class="number">1</span> &#125;;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                map.put(numbers[i], i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] nums = &#123; <span class="number">3</span>, <span class="number">2</span>, <span class="number">4</span> &#125;;</span><br><span class="line">        <span class="keyword">int</span> tgt = <span class="number">6</span>;</span><br><span class="line">        System.out.println(Arrays.toString(twoSum(nums, tgt)));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>Java数据结构与算法</category>
@@ -2438,7 +2448,7 @@ s-65,47,-65,47z M834 80H400000v40H845z'/></svg></span></span></span><span class=
 <p><span class="math display">\[ Q\in \mathbb{R}^{L\times m}, K&#39; \in \mathbb{R}^{m\times L}, V \in \mathbb{R}^{L\times d} \]</span> <span class="math display">\[ m = 2v \]</span> space complexity: <span class="math inline">\(O(L\times d + m\times d + L\times m)\)</span></p>
 <p>time complexity: <span class="math inline">\(O(mLd)\)</span> versus <span class="math inline">\(O(L^2d)\)</span> for standard attention complexity.</p>
 <p>if <span class="math inline">\(m &lt;&lt; L\)</span></p>
-<h2 id="problems-with-tripnometric-features">Problems with tripnometric features</h2>
+<h2 id="problems-with-trignometric-features">Problems with trignometric features</h2>
 <p>for a row, <span class="math display">\[ \sum_{s=1}^{L}{K(q_i, ks)}\]</span> if lots of entries in a row are close to 0 then lots of estimators' values could be potentially <strong>negative</strong></p>
 <p>In general, as long as kernel used for attention can be written as</p>
 <p><span class="math display">\[ K(x,y) = E[\phi(x)\phi(y)^T] \]</span></p>
@@ -4941,6 +4951,213 @@ sum
       </categories>
       <tags>
         <tag>Managerial Negotiation</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Data-Mining-Lec6</title>
+    <url>/2020/10/14/Data-Mining-Lec6/</url>
+    <content><![CDATA[<p><a href="https://syncedreview.com/2020/10/02/google-cambridge-deepmind-alan-turing-institutes-performer-transformer-slashes-compute-costs/#comments">Performers: variant of transformer</a></p>
+<p>Random feature for different kernels Softmax: triangnometric, positive Orthogonal features construction: different ways(Givens, Hadamard, regular(GM), or even more), different renormalizations</p>
+<p>concentration, <strong>computing variance</strong> of certain feature map, Cherbychev, concentration results</p>
+<p>attention: ..., transformer, MLP, resnet, ...</p>
+<h2 id="markovs-inequality">Markov's inequality</h2>
+<p><span class="math display">\[ \mathbb{P}(Z\geq t) \leq \frac{\mathbb{E}[Z]}{t} , t\geq 0\]</span> Proof: <span class="math display">\[
+\mathbb{P}(Z\geq t) = E[1\{Z\geq t\}] \leq E[\frac{Z}{t}]=\frac{\mathbb{E}[Z]}{t}
+\]</span></p>
+<h2 id="chebyshevs-inequality">Chebyshev's inequality</h2>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+%5Cmathbb%7BP%7D%28Z%5Cge+%5Cmathbb%7BE%7D%5BZ%5D%2Bt+~or~Z%5Cle+%5Cmathbb%7BE%7D%5BZ%5D-t%29%5Cle+%5Cfrac%7BVar%28Z%29%7D%7Bt%5E2%7D" /></p>
+<p><img src="https://pic1.zhimg.com/v2-7e8070e499bcb47e78c3f668b8f00504_b.jpg" /> ## Hoeffding's inequality</p>
+]]></content>
+      <categories>
+        <category>Data Mining</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Data-Mining-Midterm</title>
+    <url>/2020/10/18/Data-Mining-Midterm/</url>
+    <content><![CDATA[<h2 id="problem-1-anisotropic-gaussian-kernels-50-points">Problem 1: Anisotropic Gaussian Kernels (50 points)</h2>
+<p>Given: <span class="math display">\[K(x,y) = (2\pi)^{-\frac{d}{2}}(\det(\Sigma))^{-\frac{1}{2}}\exp(-\frac{1}{2}(x-y)^{\top}\Sigma^{-1}(x-y)), \]</span></p>
+<p><span class="math inline">\(\Sigma \in \mathbb{R}^{d\times d}\)</span> is positive definite symmetric.</p>
+<h3 id="show-that-k-does-not-need-to-be-an-rbf-kernel-10-points">Show that K does not need to be an RBF kernel (10 points)</h3>
+<p>Radius basis function kernel(RBF) is defined as <span class="math display">\[K(x,y) = \exp\big( -\frac{||x-y||^2}{2\sigma^2}  \big)\]</span></p>
+<p>While <span class="math display">\[K(x,y) = \big[(2\pi)^{-\frac{d}{2}}(\det(\Sigma))^{-\frac{1}{2}}\big] \cdot \big[\exp(-\frac{1}{2}(x-y)^{\top}\Sigma^{-1}(x-y))\big]\]</span></p>
+<p>Therefore, K is not necessarily an RBF for 2 reasons:</p>
+<ul>
+<li>The constant coefficient <span class="math inline">\((2\pi)^{-\frac{d}{2}}(\det(\Sigma))^{-\frac{1}{2}}\)</span> is not necessarily <span class="math inline">\(1\)</span></li>
+<li><span class="math inline">\(\exp(-\frac{1}{2}(x-y)^{\top}\Sigma^{-1}(x-y))\)</span> does not necessarily have the form of <span class="math inline">\(\exp\big( -\frac{||x-y||^2_2}{2\sigma^2}\big)\)</span></li>
+</ul>
+<h3 id="give-necessary-and-sufficient-conditions-for-k-to-be-an-rbf-function-10-points">Give necessary and sufficient conditions for K to be an RBF function (10 points)</h3>
+<h4 id="pi-fracd2detsigma-frac12-1">1. <span class="math inline">\((2\pi)^{-\frac{d}{2}}(\det(\Sigma))^{-\frac{1}{2}} = 1\)</span></h4>
+<p><span class="math display">\[\det(\Sigma) = (\frac{1}{2\pi})^d\]</span> Also, since <span class="math inline">\(\Sigma\)</span> is positive definite symmetric, all of its eigenvalues are positive, <span class="math display">\[\therefore \det(\Sigma^{-1}) = (2\pi)^d \]</span></p>
+<h4 id="exp-frac12x-ytopsigma-1x-y-expbig--fracx-y22sigma2big">2. <span class="math inline">\(\exp(-\frac{1}{2}(x-y)^{\top}\Sigma^{-1}(x-y)) = \exp\big( -\frac{||x-y||^2}{2\sigma^2}\big)\)</span></h4>
+<p>Related: <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0237654#sec001">Anisotropic Gaussian kernel adaptive filtering by Lie-group dictionary learning</a></p>
+<p><span class="math inline">\(\Rightarrow\)</span></p>
+<p><span class="math display">\[(x-y)^{\top}\Sigma^{-1}(x-y) = \frac{||x-y||^2}{\sigma^2}\]</span></p>
+<p>Let <span class="math inline">\(z = x-y \in \mathbb{R}^{d}\)</span>,</p>
+<p><span class="math inline">\(\Rightarrow\)</span></p>
+<p><span class="math display">\[z^{\top}\Sigma^{-1}z = \frac{||z||^2}{\sigma^2} = \frac{z^{\top}z}{\sigma^2} = z^{\top}\frac{I}{\sigma^2}z\]</span></p>
+<p><span class="math inline">\(\Rightarrow\)</span></p>
+<p><span class="math display">\[z^{\top}(\Sigma^{-1}-\frac{I}{\sigma^2})z = \mathbf{0}\]</span></p>
+<p><span class="math inline">\(\because \Sigma^{-1}, \frac{I}{\sigma^2}\)</span> are both real symmetric</p>
+<p><span class="math display">\[\therefore \Sigma^{-1} - \frac{I}{\sigma^2} = 0\]</span></p>
+<p><span class="math display">\[\therefore \Sigma^{-1} = \frac{I}{\sigma^2}, \Sigma = \sigma^2 I\]</span></p>
+<h4 id="combine-results-from-the-previous-2-parts">3. Combine results from the previous 2 parts</h4>
+<p>From Part 2, <span class="math display">\[\det({\Sigma}) = \prod_{i=1}^d{\lambda_i} = (\sigma^2)^d\]</span></p>
+<p>From Part 1, <span class="math display">\[\det(\Sigma) = (\frac{1}{2\pi})^d\]</span></p>
+<p><span class="math display">\[\therefore \sigma^2 = \frac{1}{2\pi}\]</span></p>
+<h4 id="conclusion">4. Conclusion</h4>
+<p>To sum up, the necessary and sufficient conditions for <span class="math inline">\(K\)</span> to be an RBF function is <span class="math display">\[\Sigma = \frac{1}{2\pi}I_d\]</span> <span class="math display">\[\Sigma^{-1} = 2\pi I_d\]</span></p>
+<h3 id="show-that-k-is-psd-function-and-provide-random-feature-map-phi-mathbbr_d-mathbbr_m-for-k-25-points">Show that K is PSD function and provide random feature map <span class="math inline">\(\phi: \mathbb{R}_{d} → \mathbb{R}_{m}\)</span> for <span class="math inline">\(K\)</span> (25 points)</h3>
+<p><span class="math display">\[K(x,y) = (2\pi)^{-\frac{d}{2}}(\det(\Sigma))^{-\frac{1}{2}}\exp(-\frac{1}{2}(x-y)^{\top}\Sigma^{-1}(x-y)) \]</span></p>
+<p><span class="math display">\[X = \{x_1, ...x_N\} \in \mathbb{R}^{d\times N}\]</span></p>
+<p><span class="math display">\[\Sigma = \frac{1}{N-1}X^TX\]</span></p>
+<p><span class="math display">\[\kappa(X)_{ij} = (2\pi)^{-\frac{d}{2}}(\det(\Sigma))^{-\frac{1}{2}}\exp(-\frac{1}{2}(x_i-x_j)^{\top}\Sigma^{-1}(x_i-x_j))\]</span></p>
+<p>To prove <span class="math inline">\(\kappa(X)\)</span> is PSD, we prove that <span class="math inline">\(\kappa(X) = A^\top A\)</span></p>
+<!-- Let $Z_{ij} = x_i-x_j$, $Z\in\mathbb{R}^{N*N*d}$, $Z_{ik} = Z_{ij} + Z_{jk}$ -->
+<p><span class="math display">\[v^\top \kappa(X) v = \sum_{i,j=1}^{N}{v_iv_j}\kappa(X)_{ij}\]</span> <span class="math display">\[ = \sum_{i}^{N}{v_i^2}\kappa(X)_{ii} + \sum_{i\neq j}^{N}{v_iv_j}\kappa(X)_{ij}\]</span></p>
+<hr />
+<h2 id="problem-2-composite-attention-50-points">Problem 2: Composite Attention (50 points)</h2>
+<p>Reference: <a href="https://arxiv.org/pdf/2006.16236.pdf">Transformers are RNNs: Fast Autoregressive Transformers with Linear Attention</a></p>
+<h3 id="online-linear-time-attention">1. Online Linear-Time Attention</h3>
+<p>Reference: <a href="https://arxiv.org/pdf/1704.00784.pdf">Online and Linear-Time Attention by Enforcing Monotonic Alignments</a></p>
+<p>For example, we only attend to the closest 1 token, a.k.a only compute <span class="math inline">\(A_{i,i\plusmn 1}\)</span>; Or attend to a few tokens, but learn what to attend to.</p>
+<h3 id="efficient-dense-attention">2. Efficient Dense Attention</h3>
+<p><span class="math display">\[\begin{aligned}
+A_{ij} &amp;= K_{SM}(d^{-\frac{1}{4}}q_i, d^{-\frac{1}{4}}k_j)K_{Angular}(q_i, k_j)\\
+&amp;=E[\phi_{SM}(\bar{q_i})\phi_{SM}(\bar{k_j})^T]  E[\phi_{Angular}(q_i)\phi_{Angular}(k_j)^T]\\
+&amp;= E[\phi_{SM}(\bar{q_i})\phi_{SM}(\bar{k_j})^T * \phi_{Angular}(q_i)\phi_{Angular}(k_j)^T]
+\end{aligned}\]</span></p>
+<p>We can share the weights <span class="math inline">\(W\)</span> in softmax and angular. Computing one <span class="math inline">\(A_{ij}\)</span> takes <span class="math inline">\(O(m^2d)\)</span> time.</p>
+<h4 id="construct-random-feature-map-for-this-kernel">Construct random feature map for this kernel</h4>
+<p><a href="https://arxiv.org/pdf/1201.6530.pdf">Random Feature Maps for Dot Product Kernels</a></p>
+<p>(Have no idea)</p>
+<h4 id="attention-mechanism">Attention mechanism</h4>
+<p>Suppose we already found <strong>a proper random feature map</strong> for this composite kernel to conduct "efficient dense attention" algorithm.</p>
+<p><span class="math display">\[\begin{aligned}
+A_{ij} &amp;= K_{SM}(d^{-\frac{1}{4}}q_i, d^{-\frac{1}{4}}k_j)K_{Angular}(q_i, k_j)\\
+&amp;= K_{comp}(q_i, kj)\\
+&amp;= E[\phi(q_i)^T\phi(k_j)]
+\end{aligned}\]</span></p>
+<p>Then in matrix form, <span class="math display">\[A=E[Q&#39;(K&#39;)^T]\]</span> <span class="math display">\[Q&#39;=[\phi(q_1)..., \phi(q_l)]^T\]</span> <span class="math display">\[K&#39;=[\phi(k_1)..., \phi(k_l)]^T\]</span> <span class="math display">\[AV = E[Q&#39;(K&#39;)^T]V = E[Q&#39;(K&#39;)^TV]\approx Q&#39;(K&#39;)^TV = Q&#39;((K&#39;)^TV)\]</span> <span class="math display">\[Q&#39;,K&#39;\in \reals^{L\times m}, V\in \reals^{L\times d}\]</span></p>
+<p>We take: <span class="math inline">\(O(mLd)\)</span> time to get <span class="math inline">\((K&#39;)^TV\in \reals^{m\times d}\)</span> and <span class="math inline">\(O(mLd)\)</span> time to get <span class="math inline">\(Q&#39;(K&#39;)^TV\)</span>.</p>
+<hr />
+<h2 id="problem-3-mlps-for-attention-30-points">Problem 3: MLPs for attention (30 points)</h2>
+<p><span class="math display">\[Q&#39;(K&#39;)^T \simeq A = \exp(\frac{QK^T}{\sqrt{d}})\]</span> <span class="math display">\[Q\in \mathbb{R}^{L\times d}, Q&#39;\in \mathbb{R}^{L\times m}\]</span> <span class="math display">\[A_{ij} = \exp(\frac{q_ik_j^T}{\sqrt{d}})\]</span> <span class="math display">\[\begin{aligned}
+\therefore E[q_i&#39;k_j&#39;^T]   
+&amp; =\exp(\frac{q_ik_j^T}{\sqrt{d}})\\
+&amp; =K_{SM}(d^{-\frac{1}{4}}q_i, d^{-\frac{1}{4}}k_j)\\
+&amp; =E[\phi(d^{-\frac{1}{4}}q_i)\phi(d^{-\frac{1}{4}}k_j)^T]
+\end{aligned}\]</span></p>
+<p>One valid pair of <span class="math inline">\(Q&#39;\)</span> and <span class="math inline">\(K&#39;\)</span> satisfy:</p>
+<p><span class="math display">\[q_i&#39; = \phi(d^{-\frac{1}{4}}q_i)\]</span> <span class="math display">\[k_j&#39; = \phi(d^{-\frac{1}{4}}k_j)\]</span> <span class="math display">\[q_i&#39;, k_j&#39; \in \mathbb{R}^{m}\]</span></p>
+<p>Here we use positive random features <span class="math inline">\(\phi_m^+:\mathbb{R}^d \to \mathbb{R}^m\)</span> to guarantee that the dimensionality of output is <span class="math inline">\(m\)</span>.</p>
+<p><span class="math display">\[\phi_m^{+}(x) = e^{-\frac{||x||^2}{2}}\frac{1}{\sqrt{m}}\begin{bmatrix}\exp(w_1^Tx)\\...\\\exp(w_m^Tx) \end{bmatrix}\]</span> $<span class="math display">\[$
+\]</span>w_1,...w_m N(0,I_d)<span class="math display">\[
+\]</span>q_i' = _m<sup>{+}(d</sup>{-}q_i)<span class="math display">\[
+\]</span>k_j' = _m<sup>{+}(d</sup>{-}k_j)$$</p>
+<p>Map all rows of <span class="math inline">\(Q\)</span> and <span class="math inline">\(K\)</span> to generate rows of <span class="math inline">\(Q&#39;\)</span> and <span class="math inline">\(K&#39;\)</span>.</p>
+<hr />
+<h2 id="problem-4-gaussian-kernel-via-random-feature-maps-40-points">Problem 4: Gaussian kernel via random feature maps (40 points)</h2>
+<p>Take hyperparameter <span class="math inline">\(\sigma^2=1\)</span>,</p>
+<p><span class="math display">\[K_{Gauss}(x,y) = \exp(-\frac{||x-y||^2}{2})\]</span></p>
+<h3 id="trigonometric-feature-map">Trigonometric feature map</h3>
+<p><span class="math display">\[K_{Gauss}(x,y) = E[\phi(x)\phi(y)^T]\]</span> <span class="math display">\[\phi(x)\stackrel{def}{=}\frac{1}{\sqrt{m}} \begin{bmatrix}\cos(w_1^Tx)\\...\\\cos(w_m^Tx)\\\sin(w_1^Tx)\\...\\\sin(w_m^Tx) \end{bmatrix}\]</span> <span class="math display">\[w\stackrel{dist}{=} N(0,I_d)\]</span></p>
+<p>This feature map leads to unbiased estimation.</p>
+<p><span class="math display">\[\begin{aligned}
+\phi(x)\phi(y)^T &amp;= \frac{1}{m}\sum_{i=1}^{m}{cos(w_i^Tx)cos(w_i^Ty)+sin(w_i^Tx)sin(w_i^Ty)}\\
+&amp;= \frac{1}{m}\sum_{i=1}^{m}{cos(w_i^T(x-y))}
+\end{aligned} \]</span></p>
+<p><span class="math display">\[\begin{aligned}
+E[\phi(x)\phi(y)^T] &amp;= E[\frac{1}{m}\sum_{i=1}^{m}{cos(w_i^T(x-y))}]\\
+&amp;=E_w[cos(w^T(x-y))]\\
+&amp;= \Re \int{e^{w^T(x-y)i}dP(w)}\\
+&amp;=\exp(-\frac{||x-y||^2}{2})
+\end{aligned} \]</span></p>
+<h3 id="positive-feature-map">Positive feature map</h3>
+<p>For softmax kernel, <span class="math display">\[\phi_m^{+}(x) = e^{-\frac{||x||^2}{2}}\frac{1}{\sqrt{m}}\begin{bmatrix}\exp(w_1^Tx)\\...\\\exp(w_m^Tx) \end{bmatrix}\]</span></p>
+We know that $$
+<span class="math display">\[\begin{aligned}
+K_{Gauss}(x,y) &amp;= \exp(-\frac{||x-y||^2}{2}) \\
+&amp;= e^{-\frac{||x||^2}{2}}e^{-\frac{||y||^2}{2}}e^{x^Ty}\\
+&amp;= e^{-\frac{||x||^2}{2}}e^{-\frac{||y||^2}{2}}K_{SM}(x,y)\\
+
+\end{aligned}\]</span>
+<p>$$</p>
+<p><span class="math display">\[\phi_{Gauss}(x) = e^{-\frac{||x||^2}{2}}\phi_{SM}(x)\]</span></p>
+<p>Then for Gaussian kernel <span class="math display">\[\phi_m^{+}(x) = e^{-||x||^2}\frac{1}{\sqrt{m}}\begin{bmatrix}\exp(w_1^Tx)\\...\\\exp(w_m^Tx) \end{bmatrix}\]</span></p>
+<p>Next we prove that positive random map for gaussian kernel is unbiased.</p>
+<p><span class="math display">\[\phi_m^{+}(x)\phi_m^{+}(y)^T = e^{-||x||^2}e^{-||y||^2}\frac{1}{m}\sum_{i=1}^{m}{\exp(w_i^T(x+y))}\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+E[\phi_m^{+}(x)\phi_m^{+}(y)^T] &amp;= E\big[e^{-||x||^2}e^{-||y||^2}\frac{1}{m}\sum_{i=1}^{m}{\exp(w_i^T(x+y))}\big]\\
+&amp;=e^{-||x||^2}e^{-||y||^2}E\big[\frac{1}{m}\sum_{i=1}^{m}{\exp(w_i^T(x+y))}\big]\\
+&amp;=e^{-||x||^2}e^{-||y||^2}E_w\big[\exp(w^T(x+y))\big]
+\end{aligned} \]</span></p>
+<p>Calculate <span class="math inline">\(E_w\big[\exp(w^T(x+y))\big]\)</span>, <span class="math display">\[\begin{aligned}E_w\big[\exp(w^T(x+y))\big] 
+&amp;= \int{e^{w^T(x+y)}dP(w)}\\
+&amp;= \int_{-\infty}^{+\infty}{e^{w^Tz}\cdot \frac{1}{\sqrt{2\pi}}\cdot e^{-\frac{||w||^2}{2}}dw}\\
+&amp;= \frac{1}{\sqrt{2\pi}} e^{\frac{||z||^2}{2}} \int_{-\infty}^{+\infty}{e^{-\frac{||z-w||^2}{2}}dw}\\
+&amp;= \frac{1}{\sqrt{2\pi}} e^{\frac{||z||^2}{2}} \int_{-\infty}^{+\infty}{e^{-\frac{||a||^2}{2}}da} \\
+&amp;= \frac{1}{\sqrt{2\pi}} e^{\frac{||z||^2}{2}}\cdot \sqrt{2\pi} \\
+&amp;= e^{\frac{||z||^2}{2}}\\ 
+&amp;= e^{\frac{||x+y||^2}{2}}\\ 
+&amp;= e^{\frac{||x||^2}{2}}e^{\frac{||y||^2}{2}}e^{x^Ty}
+\end{aligned}\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+\therefore  E[\phi_m^{+}(x)\phi_m^{+}(y)^T] 
+&amp;= e^{-||x||^2}e^{-||y||^2}e^{\frac{||x||^2}{2}}e^{\frac{||y||^2}{2}}e^{x^Ty}\\ 
+&amp;= e^{-\frac{||x||^2}{2}}e^{-\frac{||y||^2}{2}}e^{x^Ty}\\
+&amp;= \exp(-\frac{||x-y||^2}{2}) \\
+&amp;= K_{Gauss}(x,y) 
+\end{aligned}\]</span></p>
+]]></content>
+      <categories>
+        <category>Data Mining</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Data-Mining-Recitation2</title>
+    <url>/2020/10/10/Data-Mining-Recitation2/</url>
+    <content><![CDATA[<h2 id="monte-carlo-approximation-techniques">Monte Carlo Approximation techniques</h2>
+<h2 id="evolutionary-strategies-策略梯度">Evolutionary Strategies, 策略梯度</h2>
+<p>Policy optimization can be done through gradient ascend:</p>
+<p><span class="math display">\[\nabla_\theta \mathbb{E}_{\epsilon\sim\mathcal{N}(0, I)} F(\theta + \sigma \epsilon) = \frac{1}{\sigma}\mathbb{E}_{\epsilon\sim\mathcal{N}(0, I)} [ \epsilon F(\theta + \sigma\epsilon) ]\]</span></p>
+<p><strong>Proof:</strong></p>
+<p>一些参考资料：<br />
+<a href="https://lilianweng.github.io/lil-log/2019/09/05/evolution-strategies.html">Evolution Strategies</a> <!-- $$
+\begin{aligned}
+& \nabla_\theta \mathbb{E}_{\theta\sim\mathcal{N}(\hat{\theta}, \sigma^2 I)} F(\theta) \\
+&= \nabla_\theta \mathbb{E}_{\epsilon\sim\mathcal{N}(0, I)} F(\hat{\theta} + \sigma\epsilon) \\
+&= \nabla_\theta \int_{\epsilon} p(\epsilon) F(\hat{\theta} + \sigma\epsilon) d\epsilon & \scriptstyle{\text{; Gaussian }p(\epsilon)=(2\pi)^{-\frac{n}{2}} \exp(-\frac{1}{2}\epsilon^\top\epsilon)} \\
+&= \int_{\epsilon} p(\epsilon) \nabla_\epsilon \log p(\epsilon) \nabla_\theta \epsilon\;F(\hat{\theta} + \sigma\epsilon) d\epsilon & \scriptstyle{\text{; log-likelihood trick}}\\
+&= \mathbb{E}_{\epsilon\sim\mathcal{N}(0, I)} [ \nabla_\epsilon \big(-\frac{1}{2}\epsilon^\top\epsilon\big) \nabla_\theta \big(\frac{\theta - \hat{\theta}}{\sigma}\big) F(\hat{\theta} + \sigma\epsilon) ] & \\
+&= \mathbb{E}_{\epsilon\sim\mathcal{N}(0, I)} [ (-\epsilon) (\frac{1}{\sigma}) F(\hat{\theta} + \sigma\epsilon) ] & \\
+&= \frac{1}{\sigma}\mathbb{E}_{\epsilon\sim\mathcal{N}(0, I)} [ \epsilon F(\hat{\theta} + \sigma\epsilon) ] & \scriptstyle{\text{; negative sign can be absorbed.}}
+\end{aligned}
+$$ --> <a href="https://arxiv.org/pdf/1703.03864.pdf">Evolution Strategies as a Scalable Alternative to Reinforcement Learning</a><br />
+<a href="https://www.zhihu.com/question/275040392/answer/383301722">知乎回答 OpenAI ES</a><br />
+<a href="https://blog.csdn.net/Xurui_Luo/article/details/106160581">CSDN推导</a></p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp;\nabla_\theta \mathbb{E}_{\epsilon\sim\mathcal{N}(0, I)} F(\theta + \sigma\epsilon) \\
+&amp;= \nabla_\theta \int_{\epsilon} p(\epsilon) F(\theta + \sigma\epsilon) d\epsilon &amp; \scriptstyle{\text{; Gaussian }p(\epsilon)=(2\pi)^{-\frac{n}{2}} \exp(-\frac{1}{2}\epsilon^\top\epsilon)} \\
+&amp;= \frac{1}{\sigma}\int_{\epsilon} \nabla_\epsilon p(\epsilon) F(\theta + \sigma\epsilon) d\epsilon  \\
+&amp;= \frac{1}{\sigma}\int_{\epsilon} p(\epsilon) \nabla_\epsilon \log p(\epsilon) F(\hat{\theta} + \sigma\epsilon) d\epsilon &amp; \scriptstyle{\text{; log-likelihood trick}}\\
+&amp;= \frac{1}{\sigma}\mathbb{E}_{\epsilon\sim\mathcal{N}(0, I)} [ \nabla_\epsilon \big(-\frac{1}{2}\epsilon^\top\epsilon\big)  F(\hat{\theta} + \sigma\epsilon) ] &amp; \\
+&amp;= \frac{1}{\sigma}\mathbb{E}_{\epsilon\sim\mathcal{N}(0, I)} [ (-\epsilon)  F(\hat{\theta} + \sigma\epsilon) ] &amp; \\
+&amp;= \frac{1}{\sigma}\mathbb{E}_{\epsilon\sim\mathcal{N}(0, I)} [ \epsilon F(\hat{\theta} + \sigma\epsilon) ] &amp; \scriptstyle{\text{; negative sign can be absorbed.}}
+\end{aligned}
+\]</span></p>
+<p><a href="http://blog.shakirm.com/2015/11/machine-learning-trick-of-the-day-5-log-derivative-trick/">Log likelihood trick</a></p>
+<p><a href="http://gregorygundersen.com/blog/2018/04/29/reparameterization/">The Reparameterization Trick</a></p>
+]]></content>
+      <categories>
+        <category>Data Mining</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
       </tags>
   </entry>
 </search>
