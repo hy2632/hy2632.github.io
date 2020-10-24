@@ -5254,4 +5254,185 @@ $$ --> <a href="https://arxiv.org/pdf/1703.03864.pdf">Evolution Strategies as a 
         <tag>LeetCode</tag>
       </tags>
   </entry>
+  <entry>
+    <title>CS229-LinearAlgebra Recap</title>
+    <url>/2020/10/23/CS229-LinearAlgebra-Recap/</url>
+    <content><![CDATA[<h2 id="link">Link</h2>
+<p><a href="http://cs229.stanford.edu/summer2020/cs229-linalg.pdf">CS229: Review of Linear Algebra</a></p>
+<h1 id="operations-and-properties">Operations and properties</h1>
+<h2 id="norms">Norms</h2>
+<p>Euclidean or <span class="math inline">\(l_2\)</span> norm;</p>
+<p>More formally, a <strong>norm</strong> can be any function <span class="math inline">\(f: R^n \to R\)</span> that satisfies 4 properties:</p>
+<ul>
+<li>Non-negativity: <span class="math inline">\(f(x)\geq 0\)</span></li>
+<li>Definiteness: <span class="math inline">\(f(x)=0\)</span> iff <span class="math inline">\(x=0\)</span></li>
+<li>Homogeneity: <span class="math inline">\(f(tx) = |t|f(x)\)</span></li>
+<li>Triangle inequality: <span class="math inline">\(f(x+y) \leq f(x) + f(y)\)</span></li>
+</ul>
+<p>Comment: According to the Bochner's Theorem, a <strong>kernel</strong> <span class="math inline">\(K(x,y): R^d \times R^d \to R\)</span> should have property that <span class="math inline">\(\kappa(X) = K(X^T, X)\)</span> is PSD.</p>
+<p><span class="math inline">\(l_1\)</span> norm: <span class="math inline">\(\sum_{i}{|x_i|}\)</span></p>
+<p><span class="math inline">\(l_{\infty}\)</span> norm: <span class="math inline">\(\max_i{x_i}\)</span>. This is because other dimensions diminishes.</p>
+<ul>
+<li>General form of <span class="math inline">\(l_p\)</span> norm</li>
+</ul>
+<p><span class="math display">\[||x||_p = \bigg(\sum_{i=1}^{n}{|x_i|^p}\bigg)^{\frac{1}{p}}\]</span></p>
+<ul>
+<li>Norm definition for Matrices: Frobenius norm</li>
+</ul>
+<p><span class="math display">\[||A||_F = \sqrt{\sum_{i,j}{A_{ij}^2} } = \sqrt{\textrm{tr}(A^TA)}\]</span></p>
+<h2 id="linear-independence-and-rank">Linear independence and rank</h2>
+<p>Linearly dependent:</p>
+<p><span class="math display">\[ x_n = \sum_{i=1}^{n-1}{\alpha_ix_i}\]</span></p>
+<p>Column rank: # of linearly independent columns of A</p>
+<p>Row rank is similarly defined and equals to column rank. <a href="https://ocw.mit.edu/courses/mathematics/18-701-algebra-i-fall-2010/study-materials/MIT18_701F10_rrk_crk.pdf">Proof</a></p>
+<p>Both called rank.</p>
+<ul>
+<li>Full rank if the <span class="math inline">\(=\min(m,n)\)</span></li>
+<li>rank(<span class="math inline">\(A\)</span>) = rank(<span class="math inline">\(A^T\)</span>)</li>
+<li>rank(<span class="math inline">\(AB\)</span>) <span class="math inline">\(\leq\)</span> min(rank(<span class="math inline">\(A\)</span>), rank(<span class="math inline">\(B\)</span>))</li>
+<li>rank(<span class="math inline">\(A+B\)</span>) <span class="math inline">\(\leq\)</span> rank(<span class="math inline">\(A\)</span>) + rank(<span class="math inline">\(B\)</span>)</li>
+</ul>
+<p>Comment: <a href="https://yutsumura.com/the-rank-of-the-sum-of-two-matrices/">Proof</a> <span class="math display">\[rank(A) = dim(span(a_1, ..., a_n))\]</span> Use this to easily get the 4th property.</p>
+<h2 id="orthogonal-matrices">Orthogonal Matrices</h2>
+<p><span class="math display">\[U^TU = I = UU^T\]</span></p>
+<p>Comment: This generally requires that, all the column vectors of <span class="math inline">\(U\)</span> has norm <span class="math inline">\(1\)</span> and orthogonal to any other columns. This property requires that <span class="math inline">\(n\leq m\)</span> because the dimension of the column space cannot surpass its dimensionality <span class="math inline">\(m\)</span>. And vice versa. Therefore only square matrices can satisfy both.</p>
+<p>Property: Norm immutability</p>
+<p><span class="math display">\[||Ux||_2 = ||x||_2\]</span></p>
+<p>Comment: Expand by definition and find out that the cross quadratic terms equals 0.</p>
+<h2 id="range-and-nullspace-of-a-matrix">Range and Nullspace of a Matrix</h2>
+<p><strong>Span(线性生成空间)</strong>: all linear combinations of columns</p>
+<p><strong>Projection</strong> of <span class="math inline">\(y\)</span> onto the span of <span class="math inline">\(\{x_1, ..., x_n\}\)</span>: minimizes the euclidean norm of the residual</p>
+<p><span class="math display">\[Proj(y; {x_1,...,x_n}) = argmin_{v\in span(X)}||y-v||_2\]</span></p>
+<p><strong>Range/Columnspace</strong>: span of columns of matrix</p>
+<p><span class="math display">\[R(A) = \{ v \in \mathbb{R}^m: v = Ax, x\in \mathbb{R}^n \}\]</span></p>
+<p>Projection of <span class="math inline">\(y\in \mathbb{R}^m\)</span> on to the range of <span class="math inline">\(A\)</span> is given by <span class="math display">\[Proj(y; A) = argmin_{v\in R(A)}||v-y||_2 = A(A^TA)^{-1}A^Ty\]</span></p>
+<p>Proof: <a href="https://hy2632.github.io/2020/10/01/Data-Mining-%E6%96%BD%E5%AF%86%E7%89%B9%E6%AD%A3%E4%BA%A4%E5%8C%96/">最小二乘法与投影</a></p>
+<p>When A is a column vector, the expression regenerates to <span class="math inline">\(\frac{aa^T}{a^Ta}y\)</span></p>
+<p><strong>Nullspace</strong>:</p>
+<p><span class="math display">\[N(A) = \{x\in\mathbb{R}^n: Ax=0\}\]</span></p>
+<p>Comment: <span class="math inline">\(x\)</span> is a coordinate and <span class="math inline">\(A\)</span> is a set of column vectors. Certain <span class="math inline">\(x\)</span> could map to a zero vector.</p>
+<p><strong>Orthogonal complements(正交补)</strong>:</p>
+<p>Note that <span class="math inline">\(R(A)\subseteq \mathbb{R}^n\)</span> while <span class="math inline">\(N(A) \subseteq \mathbb{R}^m\)</span>. This is because, range is linear combination of <span class="math inline">\(n\)</span> <span class="math inline">\(\mathbb{R}^m\)</span> column vectors, while <span class="math inline">\(nullspace\)</span> consists of the coordinates <span class="math inline">\(x \in \mathbb{R}^n\)</span>.</p>
+<p><span class="math inline">\(R(A^T)\)</span> and <span class="math inline">\(N(A)\)</span> are both in <span class="math inline">\(\mathbb{R}^n\)</span>. It can be proved that these two are disjoint subsets that together span the entire <span class="math inline">\(\mathbb{R}^n\)</span> space.</p>
+<p><span class="math display">\[\{ w:w=u+v, u\in R(A^T), v\in N(A)\} = \mathbb{R}^n, \quad R(A^T)\cap N(A) = \{0\} \]</span></p>
+<p>Comment:</p>
+<p><span class="math display">\[w = u+v = A^Tx +y, \quad Ay = 0, \quad x \in \mathbb{R}^m, y,w \in \mathbb{R}^n \]</span></p>
+<p><span class="math display">\[Aw = AA^Tx\]</span></p>
+<p><span class="math display">\[rank(AA^T) = rank(A)\]</span></p>
+<h2 id="determinantain-mathbbrntimes-n">Determinant(<span class="math inline">\(A\in \mathbb{R}^{n\times n}\)</span>)</h2>
+<p>Set of points <span class="math inline">\(S \subset \mathbb{R}^n\)</span>: <span class="math display">\[S = \{ v\in \mathbb{R}^n: v = \sum_{i=1}^{n}{\alpha_ia_i}, \quad 0\leq \alpha_i \leq 1 \}\]</span></p>
+<p>S is a restriction of span. |A| measures the <strong>"volume"</strong> of the set S.</p>
+<p>Consider <span class="math display">\[\begin{bmatrix} a_1^T \\ a_2^T \end{bmatrix} = \begin{bmatrix} 1 \quad 3 \\ 3 \quad 2 \end{bmatrix}\]</span></p>
+<p>The area of the parrelogram: <span class="math display">\[\sqrt{||a_1||^2||a_2||^2 - ||a_1\cdot a_2||^2}\]</span></p>
+<ol type="1">
+<li>The determinant of the identity is 1, |I| = 1. (Geometrically, the volume of a unit hypercube is 1).</li>
+<li>Given a matrix <span class="math inline">\(A ∈ R^{n×n}\)</span>, if we multiply a single row in <span class="math inline">\(A\)</span> by a scalar <span class="math inline">\(t ∈ R\)</span>, then the determinant of the new matrix is <span class="math inline">\(t|A|\)</span>(Geometrically, multiplying one of the sides of the set <span class="math inline">\(S\)</span> by a factor <span class="math inline">\(t\)</span> causes the volume to increase by a factor <span class="math inline">\(t\)</span>.)</li>
+<li>If we exchange any two rows of <span class="math inline">\(A\)</span>, then the determinant of the new matrix is <span class="math inline">\(−|A|\)</span></li>
+</ol>
+<p>For <span class="math inline">\(A,B\in \mathbb{R}^{n\times n}\)</span>, - <span class="math inline">\(|A| = |A^T|\)</span> - <span class="math inline">\(|AB| = |A||B|\)</span> - <span class="math inline">\(|A|=0\)</span> iff <span class="math inline">\(A\)</span> is singular(non-invertible). - For non-singular <span class="math inline">\(|A|^{-1} = 1/|A|\)</span></p>
+<p><strong>Recursive formula for determinant</strong> <a href="https://en.wikipedia.org/wiki/Laplace_expansion">Laplace expansion</a> <strong>Complete expansion has <span class="math inline">\(n!\)</span> terms!</strong></p>
+<p><span class="math display">\[|A| = \sum_{i=1}^{n}{a_{ij}|A_{\backslash i,\backslash j}|}, \forall j\]</span></p>
+<p><strong>(Classical) adjoint</strong></p>
+<p><span class="math display">\[(adj(A))_{ij} = (-1)^{i+j}|A_{\backslash j,\backslash i}|\]</span></p>
+<p><span class="math display">\[A^{-1} = \frac{1}{|A|}adj(A)\]</span></p>
+<h2 id="quadratic-forms-and-psd-matrices">Quadratic Forms and PSD matrices</h2>
+<p><span class="math display">\[x^TAx = \sum_{i=1}^{n}\sum_{j=1}^{n}{A_{ij}x_ix_j}\]</span></p>
+<p>Note that only the symmetric part contributes so generally we assume that <span class="math inline">\(A\)</span> is symmetric.</p>
+<p><span class="math display">\[x^TAx = (x^TAx)^T = x^TA^Tx = x^T(\frac12A + \frac12A^T)x\]</span></p>
+<p><strong>Property</strong>: PD/ND matrices are full rank and invertible.</p>
+<p>Proof: if not, <span class="math inline">\(\exist x \neq 0, Ax=0\)</span>, then <span class="math inline">\(x^TAx=0\)</span></p>
+<p><strong>Gram matrix</strong>: one type of PD matrix.</p>
+<p><span class="math display">\[G = A^TA\]</span></p>
+<p><span class="math inline">\(G\)</span> is PSD, and if <span class="math inline">\(m\geq n\)</span> and full rank, G is PD</p>
+<h2 id="eigenvalues-and-eigenvectors">Eigenvalues and Eigenvectors</h2>
+<p><span class="math display">\[Ax = \lambda x, x\neq 0\]</span></p>
+<p>if <span class="math inline">\(x\)</span> is a eigenvector to eigenvalue <span class="math inline">\(\lambda\)</span>, then <span class="math inline">\(cx\)</span> is also a eigenvector. So we can normalize the eigenvectors.</p>
+<p><span class="math display">\[(\lambda I - A)x = 0, x\neq 0\]</span> This has non-zero solution iff <span class="math inline">\((\lambda I - A)\)</span> has a non-empty nullspace. <span class="math display">\[|\lambda I - A| = 0\]</span></p>
+<p><strong>Properties of eigenvalues/eigenvectors</strong></p>
+<ul>
+<li>trace equals to sum of eigenvalues</li>
+<li>determinant equals to product of eigenvalues</li>
+<li>rank equals to # of non-zero eigenvalues</li>
+<li>for one pair, <span class="math inline">\(A^{-1}x = (1/\lambda)x\)</span></li>
+<li>diagonal matrix: diagonal are eigen values</li>
+</ul>
+<h2 id="eigenvalues-and-eigenvectors-for-symmetric-matrices">Eigenvalues and Eigenvectors for symmetric matrices</h2>
+<p>If <span class="math inline">\(A\)</span> is symmetric, 1. All eigenvalues are real 2. exist unit and orthogonal eigenvectors</p>
+<p>Let <span class="math display">\[U = [u_1, ..., u_n]\]</span></p>
+<p><span class="math inline">\(U\)</span> is orthogonal so <span class="math inline">\(UU^T=I\)</span>.</p>
+<p><span class="math display">\[\Lambda = diag(\lambda_1, ..., \lambda_n)\]</span></p>
+<p><span class="math display">\[AU = [Au_1, ... Au_n] = [\lambda_1u_1, ... \lambda_nu_n] = U\Lambda\]</span></p>
+<p><span class="math display">\[A = AUU^T = U\Lambda U^T\]</span></p>
+<p>This is just the diagonalization of the symmetric matrix A.</p>
+<p>Comment: When PD a.k.a all eigenvalues positive, <span class="math inline">\(A = (U\Lambda^{\frac12})(U\Lambda^{\frac12})^T\)</span></p>
+<p><strong>Representing vector w.r.t. another basis</strong> Switching coordinate system to orghogonal</p>
+<p><span class="math display">\[x = U\hat{x}\]</span></p>
+<p><span class="math display">\[\hat{x} = U^Tx\]</span></p>
+<p>This indicates <span class="math inline">\(U^Tx\)</span> is another representation of x.</p>
+<p><strong>Diagonalizing matrix-vector multiplication</strong></p>
+<p><span class="math display">\[\hat{z} = U^Tz = U^TAx = U^TU\Lambda U^Tx = \Lambda \hat{x}\]</span></p>
+<p>Then matrix multiplication is simpler because it merely scales each coordinate by the corresponding eigenvalue.</p>
+<p>Especially when you left multiply one <span class="math inline">\(A^n\)</span></p>
+<p><span class="math display">\[\hat{q} = U^Tq = U^TAAAx = U^TU\Lambda U^TU\Lambda U^TU\Lambda U^Tx = \Lambda^3\hat{x} \]</span></p>
+<p>Comment: Time complexity of diagonalization is <span class="math inline">\(O(N^3)\)</span></p>
+<p><strong>Diagonalizing quadratic form</strong></p>
+<p><span class="math display">\[x^TAx = x^TU\Lambda U^Tx = \hat{x}^T \Lambda \hat{x} = \sum_{i=1}^{n}{\lambda_i \hat{x}_i^2}\]</span></p>
+<p>Then the dedfiniteness of A is decided by the sign of its eigenvalues.</p>
+<p>W.r.t <strong>maximizing the quadratic form</strong>, <span class="math inline">\(s.t. ||\hat{x}||_2^2 = 1\)</span></p>
+<p>Upper bound is all weights on the largest eigenvalue <span class="math inline">\(\lambda_1\)</span>. Then <span class="math inline">\(x=u_1\)</span>.</p>
+<h1 id="matrix-calculus">Matrix Calculus</h1>
+<h2 id="the-gradient">The Gradient</h2>
+<p>matrix of partial derivatives,</p>
+<p><span class="math display">\[(\nabla_{A}f(A))_{ij} = \frac{\partial f(A)}{\partial A_{ij}}\]</span></p>
+<p>Keep the notation clear by declaring the differentiated variable (<span class="math inline">\(z\)</span> for the whole chunk)</p>
+<h2 id="the-hessian">The Hessian</h2>
+<p><span class="math display">\[(\nabla_x^2f(x))_{ij} = \frac{\partial^2f(x)}{\partial x_i\partial x_j} \]</span></p>
+<p>Symmetric (<span class="math inline">\(\mathbb{R}^{n\times n}\)</span>, real valued)</p>
+<p>Caveat:</p>
+<p>We cannot see the Hessian as the gradient of the gradient, because this is <strong>undefined</strong>:</p>
+<p><span class="math display">\[\nabla_x\nabla_xf(x) = \nabla_x
+\begin{bmatrix}
+\frac{\partial f(x)}{\partial x_1}\\
+...\\
+\frac{\partial f(x)}{\partial x_n}
+\end{bmatrix}\]</span></p>
+<p>However, the column of the Hessian can be defined as</p>
+<p><span class="math display">\[\nabla_x\nabla \frac{\partial f(x)}{\partial x_i} = 
+\begin{bmatrix}
+\frac{\partial^2 f(x)}{\partial x_i \partial x_1}\\
+...\\
+\frac{\partial^2 f(x)}{\partial x_i \partial x_n}
+\end{bmatrix}\]</span></p>
+<p>Therefore, Hessian can be defined by (fix one and derive another)</p>
+<p><span class="math display">\[\nabla_x^2f(x) = [\nabla_x(\nabla_xf(x))_1, ...\nabla_x(\nabla_xf(x))_n]\]</span></p>
+<h2 id="gradients-and-hessians-of-quadratic-and-linear-forms">Gradients and Hessians of Quadratic and Linear Forms</h2>
+<p>Analogous to scalars. Note that the multiplier is <strong>transposed</strong>.</p>
+<p><span class="math display">\[\nabla_x b^Tx = b\]</span></p>
+<h2 id="least-squares">Least Squares</h2>
+<p>Before we derived the expression <a href="https://hy2632.github.io/2020/10/01/Data-Mining-%E6%96%BD%E5%AF%86%E7%89%B9%E6%AD%A3%E4%BA%A4%E5%8C%96/">最小二乘法与投影</a></p>
+<p>We want to minimize the residual when doing projection. This time we use derivative.</p>
+<p><span class="math display">\[||Ax-b||_2^2 = (Ax-b)^T(Ax-b) = x^TA^TAx-2b^TAx+b^2\]</span></p>
+<p><span class="math display">\[\nabla_x(||Ax-b||_2^2) = 2A^TAx-2A^Tb\]</span></p>
+<p><span class="math display">\[x = (A^TA)^{-1}A^Tb\]</span></p>
+<h2 id="gradients-of-the-determinent">Gradients of the Determinent</h2>
+<p>For symmetric <span class="math inline">\(A\)</span>,</p>
+<p><span class="math display">\[\nabla_A log|A| = \frac{1}{|A|}\nabla_A|A| = A^{-1}\]</span></p>
+<p>The proof uses the adjoint(伴随矩阵) and cofactor(代数余子式).</p>
+<h2 id="eigenvalus-as-optimization">Eigenvalus as optimization</h2>
+<p>Before in the eigenvalue and eigenvector part we discussed maximizing a quadratic form with restricted norm.</p>
+<p><span class="math display">\[\max_{x\in\mathbb{R}^n} x^TAx, s.t. ||x||_2^2=1\]</span></p>
+<p>From the angle of Lagrangian multiplier</p>
+<p><span class="math display">\[L(x, \lambda) = x^TAx - \lambda(x^Tx-1)\]</span></p>
+<p><span class="math display">\[\nabla_x L(x,\lambda) = \nabla_x(x^TAx - \lambda x^Tx) = 2Ax - 2\lambda x = 0\]</span></p>
+<p><span class="math display">\[Ax = \lambda x\]</span></p>
+<p>Lagrangian multiplier method ensures that the optimal solution of the original is within the solution of the Lagrangian function.<a href="https://zh.wikipedia.org/wiki/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E6%95%B0">拉格朗日乘数法所得的极点会包含原问题的所有极值点，但并不保证每个极值点都是原问题的极值点。</a></p>
+<p>This indicates that the optimal solution <span class="math inline">\(x\)</span> of this problem must be one eigenvector of <span class="math inline">\(A\)</span>.</p>
+]]></content>
+      <categories>
+        <category>Machine Learning</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
 </search>

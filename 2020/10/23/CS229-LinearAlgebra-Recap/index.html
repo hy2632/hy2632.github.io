@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hy2632.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Link CS229: Review of Linear Algebra Operations and properties Norms Euclidean or \(l_2\) norm;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS229-LinearAlgebra Recap">
+<meta property="og:url" content="https://hy2632.github.io/2020/10/23/CS229-LinearAlgebra-Recap/index.html">
+<meta property="og:site_name" content="豁蒙楼">
+<meta property="og:description" content="Link CS229: Review of Linear Algebra Operations and properties Norms Euclidean or \(l_2\) norm;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-23T09:32:37.000Z">
+<meta property="article:modified_time" content="2020-10-24T23:51:50.627Z">
+<meta property="article:author" content="姚华(Hua Yao)">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://hy2632.github.io/2020/10/23/CS229-LinearAlgebra-Recap/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>CS229-LinearAlgebra Recap | 豁蒙楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">豁蒙楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/hy2632" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/10/23/CS229-LinearAlgebra-Recap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
+      <meta itemprop="name" content="姚华(Hua Yao)">
+      <meta itemprop="description" content="hy2632@columbia.edu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="豁蒙楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CS229-LinearAlgebra Recap
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-23 04:32:37" itemprop="dateCreated datePublished" datetime="2020-10-23T04:32:37-05:00">2020-10-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-24 18:51:50" itemprop="dateModified" datetime="2020-10-24T18:51:50-05:00">2020-10-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="link">Link</h2>
+<p><a target="_blank" rel="noopener" href="http://cs229.stanford.edu/summer2020/cs229-linalg.pdf">CS229: Review of Linear Algebra</a></p>
+<h1 id="operations-and-properties">Operations and properties</h1>
+<h2 id="norms">Norms</h2>
+<p>Euclidean or <span class="math inline">\(l_2\)</span> norm;</p>
+<p>More formally, a <strong>norm</strong> can be any function <span class="math inline">\(f: R^n \to R\)</span> that satisfies 4 properties:</p>
+<ul>
+<li>Non-negativity: <span class="math inline">\(f(x)\geq 0\)</span></li>
+<li>Definiteness: <span class="math inline">\(f(x)=0\)</span> iff <span class="math inline">\(x=0\)</span></li>
+<li>Homogeneity: <span class="math inline">\(f(tx) = |t|f(x)\)</span></li>
+<li>Triangle inequality: <span class="math inline">\(f(x+y) \leq f(x) + f(y)\)</span></li>
+</ul>
+<p>Comment: According to the Bochner's Theorem, a <strong>kernel</strong> <span class="math inline">\(K(x,y): R^d \times R^d \to R\)</span> should have property that <span class="math inline">\(\kappa(X) = K(X^T, X)\)</span> is PSD.</p>
+<p><span class="math inline">\(l_1\)</span> norm: <span class="math inline">\(\sum_{i}{|x_i|}\)</span></p>
+<p><span class="math inline">\(l_{\infty}\)</span> norm: <span class="math inline">\(\max_i{x_i}\)</span>. This is because other dimensions diminishes.</p>
+<ul>
+<li>General form of <span class="math inline">\(l_p\)</span> norm</li>
+</ul>
+<p><span class="math display">\[||x||_p = \bigg(\sum_{i=1}^{n}{|x_i|^p}\bigg)^{\frac{1}{p}}\]</span></p>
+<ul>
+<li>Norm definition for Matrices: Frobenius norm</li>
+</ul>
+<p><span class="math display">\[||A||_F = \sqrt{\sum_{i,j}{A_{ij}^2} } = \sqrt{\textrm{tr}(A^TA)}\]</span></p>
+<h2 id="linear-independence-and-rank">Linear independence and rank</h2>
+<p>Linearly dependent:</p>
+<p><span class="math display">\[ x_n = \sum_{i=1}^{n-1}{\alpha_ix_i}\]</span></p>
+<p>Column rank: # of linearly independent columns of A</p>
+<p>Row rank is similarly defined and equals to column rank. <a target="_blank" rel="noopener" href="https://ocw.mit.edu/courses/mathematics/18-701-algebra-i-fall-2010/study-materials/MIT18_701F10_rrk_crk.pdf">Proof</a></p>
+<p>Both called rank.</p>
+<ul>
+<li>Full rank if the <span class="math inline">\(=\min(m,n)\)</span></li>
+<li>rank(<span class="math inline">\(A\)</span>) = rank(<span class="math inline">\(A^T\)</span>)</li>
+<li>rank(<span class="math inline">\(AB\)</span>) <span class="math inline">\(\leq\)</span> min(rank(<span class="math inline">\(A\)</span>), rank(<span class="math inline">\(B\)</span>))</li>
+<li>rank(<span class="math inline">\(A+B\)</span>) <span class="math inline">\(\leq\)</span> rank(<span class="math inline">\(A\)</span>) + rank(<span class="math inline">\(B\)</span>)</li>
+</ul>
+<p>Comment: <a target="_blank" rel="noopener" href="https://yutsumura.com/the-rank-of-the-sum-of-two-matrices/">Proof</a> <span class="math display">\[rank(A) = dim(span(a_1, ..., a_n))\]</span> Use this to easily get the 4th property.</p>
+<h2 id="orthogonal-matrices">Orthogonal Matrices</h2>
+<p><span class="math display">\[U^TU = I = UU^T\]</span></p>
+<p>Comment: This generally requires that, all the column vectors of <span class="math inline">\(U\)</span> has norm <span class="math inline">\(1\)</span> and orthogonal to any other columns. This property requires that <span class="math inline">\(n\leq m\)</span> because the dimension of the column space cannot surpass its dimensionality <span class="math inline">\(m\)</span>. And vice versa. Therefore only square matrices can satisfy both.</p>
+<p>Property: Norm immutability</p>
+<p><span class="math display">\[||Ux||_2 = ||x||_2\]</span></p>
+<p>Comment: Expand by definition and find out that the cross quadratic terms equals 0.</p>
+<h2 id="range-and-nullspace-of-a-matrix">Range and Nullspace of a Matrix</h2>
+<p><strong>Span(线性生成空间)</strong>: all linear combinations of columns</p>
+<p><strong>Projection</strong> of <span class="math inline">\(y\)</span> onto the span of <span class="math inline">\(\{x_1, ..., x_n\}\)</span>: minimizes the euclidean norm of the residual</p>
+<p><span class="math display">\[Proj(y; {x_1,...,x_n}) = argmin_{v\in span(X)}||y-v||_2\]</span></p>
+<p><strong>Range/Columnspace</strong>: span of columns of matrix</p>
+<p><span class="math display">\[R(A) = \{ v \in \mathbb{R}^m: v = Ax, x\in \mathbb{R}^n \}\]</span></p>
+<p>Projection of <span class="math inline">\(y\in \mathbb{R}^m\)</span> on to the range of <span class="math inline">\(A\)</span> is given by <span class="math display">\[Proj(y; A) = argmin_{v\in R(A)}||v-y||_2 = A(A^TA)^{-1}A^Ty\]</span></p>
+<p>Proof: <a href="https://hy2632.github.io/2020/10/01/Data-Mining-%E6%96%BD%E5%AF%86%E7%89%B9%E6%AD%A3%E4%BA%A4%E5%8C%96/">最小二乘法与投影</a></p>
+<p>When A is a column vector, the expression regenerates to <span class="math inline">\(\frac{aa^T}{a^Ta}y\)</span></p>
+<p><strong>Nullspace</strong>:</p>
+<p><span class="math display">\[N(A) = \{x\in\mathbb{R}^n: Ax=0\}\]</span></p>
+<p>Comment: <span class="math inline">\(x\)</span> is a coordinate and <span class="math inline">\(A\)</span> is a set of column vectors. Certain <span class="math inline">\(x\)</span> could map to a zero vector.</p>
+<p><strong>Orthogonal complements(正交补)</strong>:</p>
+<p>Note that <span class="math inline">\(R(A)\subseteq \mathbb{R}^n\)</span> while <span class="math inline">\(N(A) \subseteq \mathbb{R}^m\)</span>. This is because, range is linear combination of <span class="math inline">\(n\)</span> <span class="math inline">\(\mathbb{R}^m\)</span> column vectors, while <span class="math inline">\(nullspace\)</span> consists of the coordinates <span class="math inline">\(x \in \mathbb{R}^n\)</span>.</p>
+<p><span class="math inline">\(R(A^T)\)</span> and <span class="math inline">\(N(A)\)</span> are both in <span class="math inline">\(\mathbb{R}^n\)</span>. It can be proved that these two are disjoint subsets that together span the entire <span class="math inline">\(\mathbb{R}^n\)</span> space.</p>
+<p><span class="math display">\[\{ w:w=u+v, u\in R(A^T), v\in N(A)\} = \mathbb{R}^n, \quad R(A^T)\cap N(A) = \{0\} \]</span></p>
+<p>Comment:</p>
+<p><span class="math display">\[w = u+v = A^Tx +y, \quad Ay = 0, \quad x \in \mathbb{R}^m, y,w \in \mathbb{R}^n \]</span></p>
+<p><span class="math display">\[Aw = AA^Tx\]</span></p>
+<p><span class="math display">\[rank(AA^T) = rank(A)\]</span></p>
+<h2 id="determinantain-mathbbrntimes-n">Determinant(<span class="math inline">\(A\in \mathbb{R}^{n\times n}\)</span>)</h2>
+<p>Set of points <span class="math inline">\(S \subset \mathbb{R}^n\)</span>: <span class="math display">\[S = \{ v\in \mathbb{R}^n: v = \sum_{i=1}^{n}{\alpha_ia_i}, \quad 0\leq \alpha_i \leq 1 \}\]</span></p>
+<p>S is a restriction of span. |A| measures the <strong>"volume"</strong> of the set S.</p>
+<p>Consider <span class="math display">\[\begin{bmatrix} a_1^T \\ a_2^T \end{bmatrix} = \begin{bmatrix} 1 \quad 3 \\ 3 \quad 2 \end{bmatrix}\]</span></p>
+<p>The area of the parrelogram: <span class="math display">\[\sqrt{||a_1||^2||a_2||^2 - ||a_1\cdot a_2||^2}\]</span></p>
+<ol type="1">
+<li>The determinant of the identity is 1, |I| = 1. (Geometrically, the volume of a unit hypercube is 1).</li>
+<li>Given a matrix <span class="math inline">\(A ∈ R^{n×n}\)</span>, if we multiply a single row in <span class="math inline">\(A\)</span> by a scalar <span class="math inline">\(t ∈ R\)</span>, then the determinant of the new matrix is <span class="math inline">\(t|A|\)</span>(Geometrically, multiplying one of the sides of the set <span class="math inline">\(S\)</span> by a factor <span class="math inline">\(t\)</span> causes the volume to increase by a factor <span class="math inline">\(t\)</span>.)</li>
+<li>If we exchange any two rows of <span class="math inline">\(A\)</span>, then the determinant of the new matrix is <span class="math inline">\(−|A|\)</span></li>
+</ol>
+<p>For <span class="math inline">\(A,B\in \mathbb{R}^{n\times n}\)</span>, - <span class="math inline">\(|A| = |A^T|\)</span> - <span class="math inline">\(|AB| = |A||B|\)</span> - <span class="math inline">\(|A|=0\)</span> iff <span class="math inline">\(A\)</span> is singular(non-invertible). - For non-singular <span class="math inline">\(|A|^{-1} = 1/|A|\)</span></p>
+<p><strong>Recursive formula for determinant</strong> <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Laplace_expansion">Laplace expansion</a> <strong>Complete expansion has <span class="math inline">\(n!\)</span> terms!</strong></p>
+<p><span class="math display">\[|A| = \sum_{i=1}^{n}{a_{ij}|A_{\backslash i,\backslash j}|}, \forall j\]</span></p>
+<p><strong>(Classical) adjoint</strong></p>
+<p><span class="math display">\[(adj(A))_{ij} = (-1)^{i+j}|A_{\backslash j,\backslash i}|\]</span></p>
+<p><span class="math display">\[A^{-1} = \frac{1}{|A|}adj(A)\]</span></p>
+<h2 id="quadratic-forms-and-psd-matrices">Quadratic Forms and PSD matrices</h2>
+<p><span class="math display">\[x^TAx = \sum_{i=1}^{n}\sum_{j=1}^{n}{A_{ij}x_ix_j}\]</span></p>
+<p>Note that only the symmetric part contributes so generally we assume that <span class="math inline">\(A\)</span> is symmetric.</p>
+<p><span class="math display">\[x^TAx = (x^TAx)^T = x^TA^Tx = x^T(\frac12A + \frac12A^T)x\]</span></p>
+<p><strong>Property</strong>: PD/ND matrices are full rank and invertible.</p>
+<p>Proof: if not, <span class="math inline">\(\exist x \neq 0, Ax=0\)</span>, then <span class="math inline">\(x^TAx=0\)</span></p>
+<p><strong>Gram matrix</strong>: one type of PD matrix.</p>
+<p><span class="math display">\[G = A^TA\]</span></p>
+<p><span class="math inline">\(G\)</span> is PSD, and if <span class="math inline">\(m\geq n\)</span> and full rank, G is PD</p>
+<h2 id="eigenvalues-and-eigenvectors">Eigenvalues and Eigenvectors</h2>
+<p><span class="math display">\[Ax = \lambda x, x\neq 0\]</span></p>
+<p>if <span class="math inline">\(x\)</span> is a eigenvector to eigenvalue <span class="math inline">\(\lambda\)</span>, then <span class="math inline">\(cx\)</span> is also a eigenvector. So we can normalize the eigenvectors.</p>
+<p><span class="math display">\[(\lambda I - A)x = 0, x\neq 0\]</span> This has non-zero solution iff <span class="math inline">\((\lambda I - A)\)</span> has a non-empty nullspace. <span class="math display">\[|\lambda I - A| = 0\]</span></p>
+<p><strong>Properties of eigenvalues/eigenvectors</strong></p>
+<ul>
+<li>trace equals to sum of eigenvalues</li>
+<li>determinant equals to product of eigenvalues</li>
+<li>rank equals to # of non-zero eigenvalues</li>
+<li>for one pair, <span class="math inline">\(A^{-1}x = (1/\lambda)x\)</span></li>
+<li>diagonal matrix: diagonal are eigen values</li>
+</ul>
+<h2 id="eigenvalues-and-eigenvectors-for-symmetric-matrices">Eigenvalues and Eigenvectors for symmetric matrices</h2>
+<p>If <span class="math inline">\(A\)</span> is symmetric, 1. All eigenvalues are real 2. exist unit and orthogonal eigenvectors</p>
+<p>Let <span class="math display">\[U = [u_1, ..., u_n]\]</span></p>
+<p><span class="math inline">\(U\)</span> is orthogonal so <span class="math inline">\(UU^T=I\)</span>.</p>
+<p><span class="math display">\[\Lambda = diag(\lambda_1, ..., \lambda_n)\]</span></p>
+<p><span class="math display">\[AU = [Au_1, ... Au_n] = [\lambda_1u_1, ... \lambda_nu_n] = U\Lambda\]</span></p>
+<p><span class="math display">\[A = AUU^T = U\Lambda U^T\]</span></p>
+<p>This is just the diagonalization of the symmetric matrix A.</p>
+<p>Comment: When PD a.k.a all eigenvalues positive, <span class="math inline">\(A = (U\Lambda^{\frac12})(U\Lambda^{\frac12})^T\)</span></p>
+<p><strong>Representing vector w.r.t. another basis</strong> Switching coordinate system to orghogonal</p>
+<p><span class="math display">\[x = U\hat{x}\]</span></p>
+<p><span class="math display">\[\hat{x} = U^Tx\]</span></p>
+<p>This indicates <span class="math inline">\(U^Tx\)</span> is another representation of x.</p>
+<p><strong>Diagonalizing matrix-vector multiplication</strong></p>
+<p><span class="math display">\[\hat{z} = U^Tz = U^TAx = U^TU\Lambda U^Tx = \Lambda \hat{x}\]</span></p>
+<p>Then matrix multiplication is simpler because it merely scales each coordinate by the corresponding eigenvalue.</p>
+<p>Especially when you left multiply one <span class="math inline">\(A^n\)</span></p>
+<p><span class="math display">\[\hat{q} = U^Tq = U^TAAAx = U^TU\Lambda U^TU\Lambda U^TU\Lambda U^Tx = \Lambda^3\hat{x} \]</span></p>
+<p>Comment: Time complexity of diagonalization is <span class="math inline">\(O(N^3)\)</span></p>
+<p><strong>Diagonalizing quadratic form</strong></p>
+<p><span class="math display">\[x^TAx = x^TU\Lambda U^Tx = \hat{x}^T \Lambda \hat{x} = \sum_{i=1}^{n}{\lambda_i \hat{x}_i^2}\]</span></p>
+<p>Then the dedfiniteness of A is decided by the sign of its eigenvalues.</p>
+<p>W.r.t <strong>maximizing the quadratic form</strong>, <span class="math inline">\(s.t. ||\hat{x}||_2^2 = 1\)</span></p>
+<p>Upper bound is all weights on the largest eigenvalue <span class="math inline">\(\lambda_1\)</span>. Then <span class="math inline">\(x=u_1\)</span>.</p>
+<h1 id="matrix-calculus">Matrix Calculus</h1>
+<h2 id="the-gradient">The Gradient</h2>
+<p>matrix of partial derivatives,</p>
+<p><span class="math display">\[(\nabla_{A}f(A))_{ij} = \frac{\partial f(A)}{\partial A_{ij}}\]</span></p>
+<p>Keep the notation clear by declaring the differentiated variable (<span class="math inline">\(z\)</span> for the whole chunk)</p>
+<h2 id="the-hessian">The Hessian</h2>
+<p><span class="math display">\[(\nabla_x^2f(x))_{ij} = \frac{\partial^2f(x)}{\partial x_i\partial x_j} \]</span></p>
+<p>Symmetric (<span class="math inline">\(\mathbb{R}^{n\times n}\)</span>, real valued)</p>
+<p>Caveat:</p>
+<p>We cannot see the Hessian as the gradient of the gradient, because this is <strong>undefined</strong>:</p>
+<p><span class="math display">\[\nabla_x\nabla_xf(x) = \nabla_x
+\begin{bmatrix}
+\frac{\partial f(x)}{\partial x_1}\\
+...\\
+\frac{\partial f(x)}{\partial x_n}
+\end{bmatrix}\]</span></p>
+<p>However, the column of the Hessian can be defined as</p>
+<p><span class="math display">\[\nabla_x\nabla \frac{\partial f(x)}{\partial x_i} = 
+\begin{bmatrix}
+\frac{\partial^2 f(x)}{\partial x_i \partial x_1}\\
+...\\
+\frac{\partial^2 f(x)}{\partial x_i \partial x_n}
+\end{bmatrix}\]</span></p>
+<p>Therefore, Hessian can be defined by (fix one and derive another)</p>
+<p><span class="math display">\[\nabla_x^2f(x) = [\nabla_x(\nabla_xf(x))_1, ...\nabla_x(\nabla_xf(x))_n]\]</span></p>
+<h2 id="gradients-and-hessians-of-quadratic-and-linear-forms">Gradients and Hessians of Quadratic and Linear Forms</h2>
+<p>Analogous to scalars. Note that the multiplier is <strong>transposed</strong>.</p>
+<p><span class="math display">\[\nabla_x b^Tx = b\]</span></p>
+<h2 id="least-squares">Least Squares</h2>
+<p>Before we derived the expression <a href="https://hy2632.github.io/2020/10/01/Data-Mining-%E6%96%BD%E5%AF%86%E7%89%B9%E6%AD%A3%E4%BA%A4%E5%8C%96/">最小二乘法与投影</a></p>
+<p>We want to minimize the residual when doing projection. This time we use derivative.</p>
+<p><span class="math display">\[||Ax-b||_2^2 = (Ax-b)^T(Ax-b) = x^TA^TAx-2b^TAx+b^2\]</span></p>
+<p><span class="math display">\[\nabla_x(||Ax-b||_2^2) = 2A^TAx-2A^Tb\]</span></p>
+<p><span class="math display">\[x = (A^TA)^{-1}A^Tb\]</span></p>
+<h2 id="gradients-of-the-determinent">Gradients of the Determinent</h2>
+<p>For symmetric <span class="math inline">\(A\)</span>,</p>
+<p><span class="math display">\[\nabla_A log|A| = \frac{1}{|A|}\nabla_A|A| = A^{-1}\]</span></p>
+<p>The proof uses the adjoint(伴随矩阵) and cofactor(代数余子式).</p>
+<h2 id="eigenvalus-as-optimization">Eigenvalus as optimization</h2>
+<p>Before in the eigenvalue and eigenvector part we discussed maximizing a quadratic form with restricted norm.</p>
+<p><span class="math display">\[\max_{x\in\mathbb{R}^n} x^TAx, s.t. ||x||_2^2=1\]</span></p>
+<p>From the angle of Lagrangian multiplier</p>
+<p><span class="math display">\[L(x, \lambda) = x^TAx - \lambda(x^Tx-1)\]</span></p>
+<p><span class="math display">\[\nabla_x L(x,\lambda) = \nabla_x(x^TAx - \lambda x^Tx) = 2Ax - 2\lambda x = 0\]</span></p>
+<p><span class="math display">\[Ax = \lambda x\]</span></p>
+<p>Lagrangian multiplier method ensures that the optimal solution of the original is within the solution of the Lagrangian function.<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E6%95%B0">拉格朗日乘数法所得的极点会包含原问题的所有极值点，但并不保证每个极值点都是原问题的极值点。</a></p>
+<p>This indicates that the optimal solution <span class="math inline">\(x\)</span> of this problem must be one eigenvector of <span class="math inline">\(A\)</span>.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/23/LC1541%E5%B9%B3%E8%A1%A1%E6%8B%AC%E5%8F%B7%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%9C%80%E5%B0%91%E6%8F%92%E5%85%A5%E6%AC%A1%E6%95%B0/" rel="prev" title="LC1541平衡括号字符串的最少插入次数">
+      <i class="fa fa-chevron-left"></i> LC1541平衡括号字符串的最少插入次数
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#link"><span class="nav-number">1.</span> <span class="nav-text">Link</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#operations-and-properties"><span class="nav-number"></span> <span class="nav-text">Operations and properties</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#norms"><span class="nav-number">1.</span> <span class="nav-text">Norms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linear-independence-and-rank"><span class="nav-number">2.</span> <span class="nav-text">Linear independence and rank</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#orthogonal-matrices"><span class="nav-number">3.</span> <span class="nav-text">Orthogonal Matrices</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#range-and-nullspace-of-a-matrix"><span class="nav-number">4.</span> <span class="nav-text">Range and Nullspace of a Matrix</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#determinantain-mathbbrntimes-n"><span class="nav-number">5.</span> <span class="nav-text">Determinant(\(A\in \mathbb{R}^{n\times n}\))</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#quadratic-forms-and-psd-matrices"><span class="nav-number">6.</span> <span class="nav-text">Quadratic Forms and PSD matrices</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#eigenvalues-and-eigenvectors"><span class="nav-number">7.</span> <span class="nav-text">Eigenvalues and Eigenvectors</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#eigenvalues-and-eigenvectors-for-symmetric-matrices"><span class="nav-number">8.</span> <span class="nav-text">Eigenvalues and Eigenvectors for symmetric matrices</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#matrix-calculus"><span class="nav-number"></span> <span class="nav-text">Matrix Calculus</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#the-gradient"><span class="nav-number">1.</span> <span class="nav-text">The Gradient</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#the-hessian"><span class="nav-number">2.</span> <span class="nav-text">The Hessian</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gradients-and-hessians-of-quadratic-and-linear-forms"><span class="nav-number">3.</span> <span class="nav-text">Gradients and Hessians of Quadratic and Linear Forms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#least-squares"><span class="nav-number">4.</span> <span class="nav-text">Least Squares</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gradients-of-the-determinent"><span class="nav-number">5.</span> <span class="nav-text">Gradients of the Determinent</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#eigenvalus-as-optimization"><span class="nav-number">6.</span> <span class="nav-text">Eigenvalus as optimization</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="姚华(Hua Yao)"
+      src="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
+  <p class="site-author-name" itemprop="name">姚华(Hua Yao)</p>
+  <div class="site-description" itemprop="description">hy2632@columbia.edu</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hy2632" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hy2632" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hy2632@columbia.edu" title="E-Mail → mailto:hy2632@columbia.edu" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.instagram.com/nocturnima1/" title="Instagram → https:&#x2F;&#x2F;www.instagram.com&#x2F;nocturnima1&#x2F;" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">姚华(Hua Yao)</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
