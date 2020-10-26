@@ -5432,7 +5432,47 @@ $$ --> <a href="https://arxiv.org/pdf/1703.03864.pdf">Evolution Strategies as a 
         <category>Machine Learning</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
+        <tag>CS229</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CS229-ProbabilityTheory Recap</title>
+    <url>/2020/10/24/CS229-ProbabilityTheory-Recap/</url>
+    <content><![CDATA[<h3 id="some-common-random-variables">Some common random variables</h3>
+<ul>
+<li>Discrete random variables
+<ul>
+<li>Bernoulli(p)</li>
+<li>Binomial(n, p)</li>
+<li>Geometric(p)</li>
+<li>Poisson(<span class="math inline">\(\lambda\)</span>): <span class="math inline">\(p(x) = e^{-\lambda}\frac{\lambda^x}{x!}\)</span>, non-negative integers</li>
+</ul></li>
+<li>Continuous random variables
+<ul>
+<li>Uniform(a,b)</li>
+<li>Exponential(<span class="math inline">\(\lambda\)</span>): <span class="math inline">\(f(x) = \lambda e^{-\lambda x}, x\geq 0\)</span>; <span class="math inline">\(F(x) = e^{-\lambda x}, x\geq 0\)</span></li>
+<li>Normal(<span class="math inline">\(\mu\)</span>, <span class="math inline">\(\sigma^2\)</span>)</li>
+</ul></li>
+</ul>
+<p>Comment: some simulation methods 1. Inverse CDF technique : <span class="math inline">\(X = F^{-1}(U), U\sim unif(0,1)\)</span> 2. <a href="https://theclevermachine.wordpress.com/2012/09/11/sampling-from-the-normal-distribution-using-the-box-muller-transform/">Box Muller</a> method for generating Gaussian</p>
+<h3 id="two-random-variables">Two random variables</h3>
+<h4 id="expectation-covariance">Expectation &amp; Covariance</h4>
+<p><span class="math display">\[Cov[x,y] = E[(x-E[x])(y-E[y])] = E[XY] - E[X]E[Y]\]</span></p>
+<p>Properties: - Linearity of expectation - <span class="math inline">\(Var[X+Y] = Var[X] + Var[Y] + 2Cov[X,Y]\)</span> - If independent, <span class="math inline">\(Cov[X,Y]=0\)</span> - If Independet, <span class="math inline">\(E[XY] = E[X]E[Y]\)</span></p>
+<h3 id="multiple-random-variables">Multiple random variables</h3>
+<h4 id="random-vectors">Random vectors</h4>
+<p>Vectorized denotation: <span class="math inline">\(X\)</span></p>
+<p><strong>Covariance matrix</strong>: <strong>PSD</strong> and <strong>symmetric</strong> <span class="math display">\[\Sigma = E[XX^T] - E[X]E[X]^T = E[(X-E[X])(X-E[X])^T]\]</span></p>
+<h4 id="multivariate-gaussian-distribution">Multivariate Gaussian distribution</h4>
+<p><span class="math display">\[X\in \mathbb{R}^n \sim N(\mu, \Sigma)\]</span></p>
+<p><span class="math display">\[f_X(X;\mu;\Sigma) = \frac{1}{(2\pi)^{n/2}|\Sigma|^{1/2}}\exp{\bigg(-\frac12(X-\mu)^T\Sigma^{-1}(X-\mu)\bigg)}
+\]</span></p>
+]]></content>
+      <categories>
+        <category>Machine Learning</category>
+      </categories>
+      <tags>
+        <tag>CS229</tag>
       </tags>
   </entry>
 </search>
