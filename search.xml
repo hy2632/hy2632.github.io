@@ -5475,4 +5475,223 @@ $$ --> <a href="https://arxiv.org/pdf/1703.03864.pdf">Evolution Strategies as a 
         <tag>CS229</tag>
       </tags>
   </entry>
+  <entry>
+    <title>CS229 Notes1 Supervised Learning</title>
+    <url>/2020/10/25/CS229-Notes1-Supervised-Learning/</url>
+    <content><![CDATA[<h1 id="part-i-linear-regression">Part I Linear Regression</h1>
+<p>Try to train the hypothesis function <span class="math inline">\(h\)</span>.</p>
+<p>Letting <span class="math inline">\(x_0=1\)</span> gives the error term. <span class="math display">\[h(x) = \sum_{i=0}^d{\theta_ix_i}=\theta^T x\]</span></p>
+<p>Cost function w.r.t parameter <span class="math inline">\(\theta\)</span>:</p>
+<p><span class="math display">\[J(\theta) = \frac12\sum_{i=1}^{n}{(h_\theta(x^{(i)}) - y^{(i)})^2}\]</span></p>
+<h2 id="lms-algorithm">LMS algorithm</h2>
+<p>Gradient descent: <span class="math display">\[\theta_j := \theta_j - \alpha \frac{\partial}{\partial\theta_j}J(\theta)\]</span></p>
+<p><span class="math inline">\(\alpha\)</span> is the learning rate.</p>
+<p>Here, <span class="math display">\[\frac{\partial}{\partial\theta_j}J(\theta) = (h_\theta(x) - y)x_j\]</span></p>
+<p>For <strong>a single training example</strong>, the learning rule is <strong>LMS</strong>(least squared error) a.k.a <strong>Widrow-Hoff</strong></p>
+<p><span class="math display">\[\theta_j := \theta_j + \alpha (y - h_\theta(x))x_j\]</span></p>
+<p>Into vector level,</p>
+<p><span class="math display">\[\theta := \theta + \alpha {(y^{(i)} - h_\theta(x^{(i)}))x^{(i)}}\]</span></p>
+<p>One sample each time, we call this <strong>SGD</strong>(strochastic gradient descent).</p>
+<p>About applying the rule to <strong>a training set</strong>, - SGD - <strong>batch gradient descent</strong></p>
+<p><span class="math display">\[\theta := \theta + \alpha \sum_{i=1}^{n}{(y^{(i)} - h_\theta(x^{(i)}))x^{(i)}}\]</span></p>
+<p>SGD vs BGD: Fast / Robust</p>
+<h2 id="the-normal-equations">The normal equations</h2>
+<h3 id="matrix-derivatives-elementwise">Matrix derivatives (elementwise)</h3>
+<p>... ### Least squares revisited (vectorized)</p>
+<p>The <strong>design matrix</strong> <span class="math inline">\(X\)</span></p>
+<p><span class="math display">\[X = \begin{bmatrix} (x^{(1)})^T\\ (x^{(2)})^T\\...\\(x^{(n)})^T\end{bmatrix} \in \mathbb{R}^{n\times(d+1)}\]</span></p>
+<p><span class="math display">\[y = \begin{bmatrix} y^{(1)}\\ y^{(2)}\\...\\y^{(n)}\end{bmatrix}\]</span></p>
+<p><span class="math display">\[X\theta - y = \begin{bmatrix} h_\theta(x^{(1)})-y^{(1)}\\ h_\theta(x^{(2)})-y^{(2)}\\...\\h_\theta(x^{(n)})-y^{(n)}\end{bmatrix}\]</span></p>
+<p><span class="math display">\[J(\theta) = \frac12(X\theta-y)^T(X\theta-y)\]</span></p>
+<p><span class="math display">\[\nabla_\theta J(\theta) = X^TX\theta - X^Ty\]</span></p>
+<p>To minimize <span class="math inline">\(J\)</span>, we set its derivatives to zero, and obtain <strong>normal equations</strong>:</p>
+<p><span class="math display">\[X^TX\theta = X^Ty\]</span></p>
+<p>Thus, the value of <span class="math inline">\(\theta\)</span> that minimizes the <span class="math inline">\(J(\theta)\)</span> is given in closed form by the equation</p>
+<p><span class="math display">\[\theta = (X^TX)^{-1}X^Ty\]</span></p>
+<h3 id="probablistic-interpretation">Probablistic interpretation</h3>
+<p>Assume</p>
+<p><span class="math display">\[y^{(i)} = \theta^Tx^{(i)} + \epsilon^{(i)}  \]</span></p>
+<p>Assume that the error term <span class="math inline">\(\epsilon \sim N(0, \sigma^2)\)</span></p>
+<p>The density function of $^{(i)} $ is given by</p>
+<p><span class="math display">\[p(\epsilon^{(i)}) = \frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(\epsilon^{(i)})^2}{2\sigma^2}}\]</span></p>
+<p>Substitute <span class="math inline">\(\epsilon^{(i)}\)</span> with <span class="math inline">\(\theta^Tx^{(i)} -y^{(i)}\)</span></p>
+<p><span class="math display">\[p(y^{(i)} | x^{(i)}; \theta) = \frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(\theta^Tx^{(i)} -y^{(i)})^2}{2\sigma^2}}\]</span></p>
+<p>Note that we are not conditioning on <span class="math inline">\(\theta\)</span>, because <span class="math inline">\(\theta\)</span> is not a random variable. The distribution of <span class="math inline">\(y^{(i)}\)</span> can also be written as <span class="math inline">\(y^{(i)}|x^{(i)}; \theta \sim N(0, \sigma^2)\)</span></p>
+<p>By seeing the conditional distribution as a function of <span class="math inline">\(\theta\)</span>, we define the <strong>likelihood function</strong>:</p>
+<p><span class="math display">\[L(\theta) = \prod_{i=1}^{n}{\frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(\theta^Tx^{(i)} -y^{(i)})^2}{2\sigma^2}}}\]</span></p>
+<p>How to best guess the parameter <span class="math inline">\(\theta\)</span>? <strong>Maximum likelihood</strong> --- to make the data as high-probability as possible.</p>
+<p><em>Comment: 频率学派(Frequentist), MLE, "Seeing is believing"</em></p>
+<p>Maximize the <strong>log likelihood</strong> or minimize the negative log likelihood (NLL).</p>
+<p><span class="math display">\[\begin{aligned}l(\theta) &amp;= \log{L(\theta)}\\
+&amp;= n\log{\frac1{\sqrt{2\pi}\sigma}} - \frac1{\sigma^2}\cdot \frac12\sum_{i=1}^{n}(\theta^Tx^{(i)} -y^{(i)})^2
+\end{aligned}\]</span></p>
+<p>Hence it gives the same answer as minimizing the cost function.</p>
+<p>Note that here the choice of <span class="math inline">\(\theta\)</span> does not rely on <span class="math inline">\(\sigma^2\)</span></p>
+<h3 id="locally-weighted-linear-regression-lwr">Locally weighted linear regression (LWR)</h3>
+<p>Instead of fitting <span class="math inline">\(\theta\)</span> to minimize <span class="math inline">\(\sum_i{(y^{(i)}-\theta^Tx^{(i)})^2}\)</span>, minimize</p>
+<p><span class="math display">\[\sum_iw^{(i)}{(y^{(i)}-\theta^Tx^{(i)})^2}\]</span></p>
+<p>The standard choice for the weights:</p>
+<p><span class="math display">\[w^{(i)} = \exp\bigg( -\frac{(x^{(i)}-x)^2}{2\tau^2} \bigg)\]</span></p>
+<p>Comment: part of pdf of <span class="math inline">\(N(x, \tau^2)\)</span>, but has nothing to do with gaussian. Just measures the distance, lower weights to distant data points. <span class="math inline">\(tau\)</span> is called the <strong>bandwidth</strong> parameter which controls how quickly the weight diminishes with distance increasing.</p>
+<p>LWR is <strong>non-parametric</strong> algorithm. It means the model relies on the training data and scales with bigger size of the training dataset.</p>
+<h1 id="part-ii-classification-and-logistic-regression">Part II Classification and logistic regression</h1>
+<p>Problem: binary classification Keywords: positive/negative class, label</p>
+<h2 id="logistic-regression">Logistic regression</h2>
+<p>To limit the predicted value of <span class="math inline">\(y\)</span> to <span class="math inline">\([0,1]\)</span>, use <strong>sigmoid/logitstic</strong> function</p>
+<p><span class="math display">\[h_\theta(x) = g(\theta^Tx) = \frac1{1 + e^{-\theta^Tx}}\]</span></p>
+<p>Sigmoid's derivative has such property</p>
+<p><span class="math display">\[g&#39;(z) = g(z)(1-g(z))\]</span></p>
+<p>Probablistic assumptions:</p>
+<p><span class="math display">\[P(y=1 | x;\theta) = h_\theta(x)\]</span></p>
+<p><span class="math display">\[P(y=0 | x;\theta) = 1-h_\theta(x)\]</span></p>
+<p>Or more compactly written:</p>
+<p><span class="math display">\[P(y| x;\theta) = (h_\theta(x))^y(1-h_\theta(x))^{1-y}\]</span></p>
+<p>Then we can build a likelihood function for <span class="math inline">\(n\)</span> training examples</p>
+<p><span class="math display">\[\begin{aligned}L(\theta) &amp;= p(y|X; \theta)\\
+&amp;= \prod_{i=1}^{n}{(h_\theta(x^{(i)}))^{y^{(i)}}(1-h_\theta(x^{(i)}))^{1-y^{(i)}}}
+\end{aligned}\]</span></p>
+<p><span class="math display">\[\begin{aligned}l(\theta) &amp;= \log{L(\theta)}\\
+&amp;= \sum_{i=1}^{n}{y^{(i)}\log h(x^{(i)})+({1-y^{(i)}})\log(1-h(x^{(i)}))}
+\end{aligned}\]</span></p>
+<p>Optimize the LL by Stochastic Gradient Ascent(maximizing):</p>
+<p><span class="math display">\[\begin{aligned}\frac{\partial}{\partial \theta_j}l(\theta) 
+&amp;= \bigg(y\frac1{g(\theta^Tx)} + (1-y)\frac1{1-g(\theta^Tx)}\bigg)\frac{\partial}{\partial \theta_j}g(\theta^Tx)\\
+&amp;= \bigg(y\frac1{g(\theta^Tx)} + (1-y)\frac1{1-g(\theta^Tx)}\bigg)g(\theta^Tx)(1-g(\theta^Tx))\frac{\partial}{\partial \theta_j}\theta^Tx\\
+&amp;= \big(y(1-g(\theta^Tx)) - (1-y)g(\theta^Tx)\big)x_j\\
+&amp;= (y-h_\theta(x))x_j
+\end{aligned}\]</span></p>
+<p>Update rule:</p>
+<p><span class="math display">\[\theta_j := \theta_j + \alpha(y - h_\theta(x))x_j\]</span></p>
+<p>This looks identical with LMS update rule but <span class="math inline">\(h_\theta(x)\)</span> here is different. This is actually general rule.</p>
+<h2 id="digression-perceptron-learning-algorithm">Digression: perceptron learning algorithm</h2>
+<p>change <span class="math inline">\(g(z)\)</span> to <span class="math inline">\(1\{z\geq 0\}\)</span>, still using the previous update rule.</p>
+<h2 id="newtons-method-for-maximizing-ltheta">Newton's method for maximizing <span class="math inline">\(l(\theta)\)</span></h2>
+<p>Newton's method for finding a zero of a function. <span class="math display">\[\theta := \theta - \frac{f(\theta)}{f&#39;(\theta)}\]</span></p>
+<p>To maximize, we want the derivative <span class="math inline">\(l&#39;(\theta) = 0\)</span>. So we set <span class="math inline">\(f(\theta) = l&#39;(\theta)\)</span> <span class="math display">\[\theta := \theta - \frac{l&#39;(\theta)}{l&#39;&#39;(\theta)}\]</span></p>
+<p>Generalize Newton's method to vector-valued/multidimensional setting (a.k.a Newton-Raphson Method):</p>
+<p><span class="math display">\[\theta := \theta - H^{-1}\nabla_\theta l(\theta)\]</span></p>
+<p>Complexity: <span class="math inline">\(O(N^2)\)</span> for inverting <span class="math inline">\(d\times d\)</span> Hessian. Faster than batch gradient descent.</p>
+<p>When maximizing logistic regression, called <strong>Fisher scoring</strong>.</p>
+<h1 id="part-iii-generalized-linear-modelsglms">Part III Generalized Linear Models(GLMs)</h1>
+<p>In the Classification part, the derivative of sigmoid function is kind of relevant to Bernoulli distribution.</p>
+<p>Both of Linear regression and calssification are special cases of a broader family of models in GLM family.</p>
+<h2 id="the-exponential-family">The exponential family</h2>
+<p><span class="math display">\[p(y; \eta) = b(y)\exp(\eta^TT(y) - a(\eta))\]</span></p>
+<p><span class="math inline">\(\eta\)</span>: natural/canonical parameter</p>
+<p><span class="math inline">\(T(y)\)</span>: sufficient statistic, often <span class="math inline">\(y\)</span></p>
+<p><span class="math inline">\(a(\eta)\)</span>: log partition function. <span class="math inline">\(\exp{a(\eta)}\)</span> used to normalize so the distributino integrates into 1.</p>
+<p><span class="math inline">\(T\)</span> and <span class="math inline">\(b\)</span> dedfines a <strong>family</strong> of distributions parametrized by <span class="math inline">\(\eta\)</span></p>
+<p><strong>Bernoulli</strong> and <strong>Gaussian</strong> distributions are examples of <strong>exponential family distributions</strong>.</p>
+<p><span class="math display">\[\begin{aligned}
+p(y;\phi) 
+&amp;= \phi^y (1-\phi)^{1-y}\\
+&amp;= \exp(y\log\phi + (1-y)\log(1-\phi))\\
+&amp;= \exp\bigg( \bigg( \log \bigg( \frac{\phi}{1-\phi} \bigg)y + \log(1-\phi) \bigg) \bigg)
+\end{aligned}\]</span></p>
+<p>Exponential family distribution notations:</p>
+<p><span class="math display">\[\begin{aligned} 
+\eta &amp;= \log(\phi/(1-\phi))\\
+\phi &amp;=  \frac{1}{1+e^{-\eta}}\\
+T(y) &amp;=  y \\
+a(\eta) &amp;=  -log(1-\phi)\\
+&amp;= \log (1+e^{\eta})\\
+b(y) &amp;= 1
+\end{aligned}\]</span></p>
+<p>Notice that <span class="math inline">\(\phi\)</span> is the sigmoid function.</p>
+<p>For Gaussian distribution with <span class="math inline">\(\sigma^2 = 1\)</span> <span class="math display">\[\begin{aligned}
+p(y;\mu) &amp;= \frac1{\sqrt{2\pi}}\exp\bigg(-\frac12(y-\mu)^2  \bigg)\\
+&amp;= \frac1{\sqrt{2\pi}}\exp\bigg(-\frac12y^2 + \mu y -\frac12\mu^2  \bigg) \\
+&amp;= \frac1{\sqrt{2\pi}}\exp\bigg(-\frac12y^2\bigg) \cdot \exp\bigg(\mu y -\frac12\mu^2\bigg)
+\end{aligned}\]</span></p>
+<p>Compare with the exponential distribution family form <span class="math display">\[p(y; \eta) = b(y)\exp(\eta^TT(y) - a(\eta))\]</span></p>
+<p>We get</p>
+<p><span class="math display">\[\begin{aligned} 
+b(y) &amp;= \frac1{\sqrt{2\pi}}\exp\bigg(-\frac12y^2\bigg)\\
+\eta &amp;= \mu\\
+T(y) &amp;=  y \\
+a(\eta) &amp;=  \mu^2/2\\
+\end{aligned}\]</span></p>
+<h2 id="constructing-glms">Constructing GLMs</h2>
+<p>"<strong>Poisson distribution</strong> usually gives a good model for numbers of visitors". (Counting Model)</p>
+<p>Poisson is an exponential family distribution.</p>
+<p>To derive a GLM, make the following <strong>3 assumptions</strong>, 1. <span class="math inline">\(y|x; \theta\)</span>~ExponentialFamily<span class="math inline">\((\eta)\)</span>. Given <span class="math inline">\(x\)</span> and <span class="math inline">\(\eta\)</span>, the distribution of <span class="math inline">\(y\)</span> follows some exponential family distribution with partameter <span class="math inline">\(\eta\)</span> 2. Given <span class="math inline">\(x\)</span>, our goal is to <strong>predict <span class="math inline">\(T(y)\)</span></strong>. In most cases <span class="math inline">\(T(y) = y\)</span>. We would like <span class="math inline">\(h_\theta(x) = E[T(y)|x;\theta]\)</span>. 3. Natural parameter <span class="math inline">\(\eta\)</span> is linearly related with the inputs <span class="math inline">\(x\)</span>: <span class="math inline">\(\eta = \theta^Tx\)</span>. This is a <strong>"design choice"</strong></p>
+<h2 id="ols-revisited-using-glm-construction">OLS revisited using GLM construction</h2>
+<p>target variable <span class="math inline">\(y\)</span> is also called <strong>reponse variable</strong> in GLM terminology.</p>
+<p><span class="math display">\[y\sim N(\mu, \sigma^2)\]</span> where <span class="math inline">\(\mu\)</span> relies on <span class="math inline">\(x\)</span>.</p>
+<p>Previously we have GLM for Gaussian, <span class="math inline">\(\mu = \eta\)</span></p>
+<p><span class="math display">\[\begin{aligned} 
+h_\theta(x) &amp;= E[y|x;\theta]\\
+&amp;= \mu \\
+&amp;= \eta \\
+&amp;= \theta^Tx
+\end{aligned}\]</span></p>
+<p>First equality from <strong>assumption 2</strong>. Third equality from <strong>assumption 1</strong>. Last from <strong>assumption 3</strong>.</p>
+<h2 id="softmax-regression">Softmax Regression</h2>
+<p>Problem set - <strong>Multinomial distribution</strong>: multiple classification, <span class="math inline">\(y\in \{1, ..., k\}\)</span></p>
+<p><span class="math inline">\(T(y)\)</span> is a <span class="math inline">\(d-1\)</span> vector with y-th entry 1.</p>
+<p><span class="math display">\[T(y)_i = 1\{y = i\}\]</span></p>
+<p><span class="math inline">\((T(y))_i\)</span> is the i-th element of <span class="math inline">\(T(y)\)</span></p>
+<p><span class="math display">\[E[(T(y))_i] = \phi_i\]</span></p>
+<p>The multinomial is a member of the exponential family, where</p>
+<p><span class="math display">\[\begin{aligned} 
+b(y) &amp;= 1\\
+a(\eta) &amp;= -\log(\phi_k)\\
+\eta &amp;= \begin{bmatrix}
+\log(\phi_1/\phi_k)\\ \log(\phi_2/\phi_k) \\...\\\log(\phi_{k-1}/\phi_k)
+\end{bmatrix}
+\end{aligned}\]</span></p>
+<p>The link function is given by <span class="math display">\[\eta_i = \log\frac{\phi_i}{\phi_k}\]</span></p>
+<p>Invert the link function</p>
+<p><span class="math display">\[e^{\eta_i} = \phi_i/\phi_k\]</span></p>
+<p><span class="math display">\[\phi_ke^{\eta_i} = \phi_i\]</span></p>
+<p><span class="math display">\[\phi_k\sum_{i=1}^k{e^{\eta_i}} = \sum_{i=1}^k{\phi_i}=1\]</span></p>
+<p><span class="math display">\[\therefore \phi_k = \frac1{\sum_{i=1}^k{e^{\eta_i}}}\]</span></p>
+<p><span class="math display">\[\therefore \phi_i = \frac{e^{\eta_i}}{\sum_{j=1}^k{e^{\eta_j}}}\]</span></p>
+<p>This function mapping from <span class="math inline">\(\eta\)</span> to <span class="math inline">\(\phi\)</span> is called <strong>softmax</strong>.</p>
+<p>From assumption 3, <span class="math inline">\(\eta_i = \theta_i^Tx\)</span>, and since we define <span class="math inline">\(\theta_k = 0\)</span>, <span class="math inline">\(\eta_k = 0\)</span></p>
+<p><span class="math display">\[\begin{aligned} p(y=i|x; \theta) 
+&amp;= \phi_i \\
+&amp;= \frac{e^{\eta_i}}{\sum_{j=1}^k{e^{\eta_j}}} \\
+&amp;= \frac{e^{\theta_i^Tx}}{\sum_{j=1}^k{e^{\theta_j^Tx}}}
+\end{aligned}\]</span></p>
+<p>This is the <strong>softmax regression</strong>. It's a generalization of logistic regression (binary classification).</p>
+<p><span class="math display">\[\begin{aligned} h_\theta(x)
+&amp;= E[T(y)|x; \theta] \\
+&amp;= [\phi_1 ,.. \phi_{k-1}]^T\\
+&amp;= \bigg[\frac{e^{\theta_1^Tx}}{\sum_{j=1}^k{e^{\theta_j^Tx}}}, ..., \frac{e^{\theta_{k-1}^Tx}}{\sum_{j=1}^k{e^{\theta_j^Tx}}}\bigg]^T\\
+\end{aligned}\]</span></p>
+<p>Comment: the output is the estimated probability for each class.</p>
+<p>For parameter fitting, maximize the log likelihood using gradient ascent or Newton's method.</p>
+]]></content>
+      <categories>
+        <category>Machine Learning</category>
+      </categories>
+      <tags>
+        <tag>CS229</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CS229 Notes2 Generative Learning Algorithms</title>
+    <url>/2020/10/26/CS229-Notes2-Generative-Learning-Algorithms/</url>
+    <content><![CDATA[<p>Gaussian discriminant analysis - lemon的文章 - 知乎 https://zhuanlan.zhihu.com/p/22940577</p>
+<p>Normal Equation如何实现一步求解最优参数及其对比梯度下降的特点是什么？ - 深度碎片的回答 - 知乎 https://www.zhihu.com/question/273799498/answer/370173526</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>The Matrix Cookbook</title>
+    <url>/2020/10/30/The-Matrix-Cookbook/</url>
+    <content><![CDATA[<p>在学习cs229-notes11 时遇到了这样一个等式</p>
+<p><span class="math display">\[\nabla_W|W| = |W|(W^{-1})^T \]</span></p>
+<p>于是找到了这个 UCI 的“矩阵菜谱”。其中列举了与矩阵有关的公式，在此上传供以后查阅。</p>
+<p>Credit to: <a href="https://www.ics.uci.edu/~welling/teaching/KernelsICS273B/MatrixCookBook.pdf">Max Welling's CS 273B: Kernel-Based Learning, 2005</a></p>
+<p>(可见这是一个比较古早的研究kernel的课程)</p>
+<div class="pdfobject-container" data-target="./MatrixCookBook.pdf" data-height="1000px"></div>
+]]></content>
+      <categories>
+        <category>misc</category>
+      </categories>
+      <tags>
+        <tag>矩阵</tag>
+      </tags>
+  </entry>
 </search>
