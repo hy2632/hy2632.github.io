@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"hy2632.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="在学习cs229-notes11 时遇到了这样一个等式 \[\nabla_W|W| &#x3D; |W|(W^{-1})^T \] 于是找到了这个 UCI 的“矩阵菜谱”。其中列举了与矩阵有关的公式，在此上传供以后查阅。 Credit to: Max Welling&#39;s CS 273B: Kernel-Based Learning, 2005 (可见这是一个比较古早的研究kernel的课程)">
+  <meta name="description" content="The goal of Components Analysis is to find a new basis to represent the data. Cocktail party problem:  sources \(s\in R^d\) microphone recordings(receiver): \(x\in R^d\) mixing matrix \(A\): \(x &#x3D; As\">
 <meta property="og:type" content="article">
-<meta property="og:title" content="The Matrix Cookbook">
-<meta property="og:url" content="https://hy2632.github.io/2020/10/30/The-Matrix-Cookbook/index.html">
+<meta property="og:title" content="CS229 Notes11 Independent Components Analysis">
+<meta property="og:url" content="https://hy2632.github.io/2020/10/30/CS229-Notes11-Independent-Components-Analysis/index.html">
 <meta property="og:site_name" content="豁蒙楼">
-<meta property="og:description" content="在学习cs229-notes11 时遇到了这样一个等式 \[\nabla_W|W| &#x3D; |W|(W^{-1})^T \] 于是找到了这个 UCI 的“矩阵菜谱”。其中列举了与矩阵有关的公式，在此上传供以后查阅。 Credit to: Max Welling&#39;s CS 273B: Kernel-Based Learning, 2005 (可见这是一个比较古早的研究kernel的课程)">
+<meta property="og:description" content="The goal of Components Analysis is to find a new basis to represent the data. Cocktail party problem:  sources \(s\in R^d\) microphone recordings(receiver): \(x\in R^d\) mixing matrix \(A\): \(x &#x3D; As\">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-10-31T02:46:29.000Z">
-<meta property="article:modified_time" content="2020-10-31T01:57:27.165Z">
+<meta property="article:published_time" content="2020-10-31T03:47:36.000Z">
+<meta property="article:modified_time" content="2020-11-01T04:22:52.034Z">
 <meta property="article:author" content="姚华(Hua Yao)">
-<meta property="article:tag" content="矩阵">
+<meta property="article:tag" content="CS229">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://hy2632.github.io/2020/10/30/The-Matrix-Cookbook/">
+<link rel="canonical" href="https://hy2632.github.io/2020/10/30/CS229-Notes11-Independent-Components-Analysis/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>The Matrix Cookbook | 豁蒙楼</title>
+  <title>CS229 Notes11 Independent Components Analysis | 豁蒙楼</title>
   
 
 
@@ -198,7 +198,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/10/30/The-Matrix-Cookbook/">
+    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/10/30/CS229-Notes11-Independent-Components-Analysis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
@@ -211,7 +211,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          The Matrix Cookbook
+          CS229 Notes11 Independent Components Analysis
         </h1>
 
         <div class="post-meta">
@@ -220,17 +220,23 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-10-30 21:46:29 / 修改时间：20:57:27" itemprop="dateCreated datePublished" datetime="2020-10-30T21:46:29-05:00">2020-10-30</time>
+              <time title="创建时间：2020-10-30 22:47:36" itemprop="dateCreated datePublished" datetime="2020-10-30T22:47:36-05:00">2020-10-30</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-31 23:22:52" itemprop="dateModified" datetime="2020-10-31T23:22:52-05:00">2020-10-31</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/misc/" itemprop="url" rel="index"><span itemprop="name">misc</span></a>
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
                 </span>
             </span>
 
@@ -245,12 +251,69 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>在学习cs229-notes11 时遇到了这样一个等式</p>
-<p><span class="math display">\[\nabla_W|W| = |W|(W^{-1})^T \]</span></p>
-<p>于是找到了这个 UCI 的“矩阵菜谱”。其中列举了与矩阵有关的公式，在此上传供以后查阅。</p>
-<p>Credit to: <a target="_blank" rel="noopener" href="https://www.ics.uci.edu/~welling/teaching/KernelsICS273B/MatrixCookBook.pdf">Max Welling's CS 273B: Kernel-Based Learning, 2005</a></p>
-<p>(可见这是一个比较古早的研究kernel的课程)</p>
-<div class="pdfobject-container" data-target="./MatrixCookBook.pdf" data-height="1000px"></div>
+        <p>The goal of Components Analysis is to find a new basis to represent the data.</p>
+<h2 id="cocktail-party-problem">Cocktail party problem:</h2>
+<ul>
+<li>sources <span class="math inline">\(s\in R^d\)</span></li>
+<li>microphone recordings(receiver): <span class="math inline">\(x\in R^d\)</span></li>
+<li><strong>mixing matrix</strong> <span class="math inline">\(A\)</span>: <span class="math inline">\(x = As\)</span>, square matrix</li>
+<li>unmixing matrix: <span class="math inline">\(W = A^{-1}\)</span>, <span class="math inline">\(s^{(i)} = Wx^{(i)}\)</span>, the superscript means time i.</li>
+<li>j-th source at time i <span class="math inline">\(s_j^{(i)} = w_j^Tx^{(i)}\)</span>, <span class="math inline">\(W = [w_1^T, ...w_n^T]^T\)</span>, each row is a <span class="math inline">\(w_i^T\)</span></li>
+</ul>
+<h2 id="ica-ambiguities">ICA ambiguities</h2>
+<h3 id="scale-of-a">scale of A:</h3>
+<p><span class="math display">\[x = 2A(0.5s) = As\]</span></p>
+<p>Imagine the coupling of volume and distance.</p>
+<p><strong>There is no way to recover the correct scaling of the <span class="math inline">\(w_i\)</span>'s.</strong></p>
+<h3 id="non-gaussian">Non-Gaussian</h3>
+<p>Gaussian's <strong>Isotropy</strong> results in density rotationally symmetric.</p>
+<p>If <span class="math inline">\(s \sim N(0,I)\)</span></p>
+<p><span class="math display">\[E_s[x] = E[As] = AE[s] = 0\]</span></p>
+<p><span class="math display">\[\begin{aligned}Cov[x] 
+&amp; = E[xx^T] - (E[x])^2 \\
+&amp; = E[xx^T]\\
+&amp; = E[Ass^TA^T]\\
+&amp; = A\cdot Cov[s] \cdot A^T\\
+&amp; = AA^T
+\end{aligned}\]</span></p>
+<p>Basically, <span class="math display">\[A \sim N(0, AA^T)\]</span></p>
+<p>Let <span class="math inline">\(R\)</span> be an arbitrary orthogonal(e.g. rotation/reflection) matrix, <span class="math inline">\(A&#39; = AR\)</span>, then <span class="math inline">\(x&#39; = A&#39;s\)</span>,</p>
+<p>the distribution of <span class="math inline">\(x&#39;\)</span> is also gaussian <span class="math inline">\(x&#39;\sim N(0, AA^T)\)</span> because</p>
+<p><span class="math display">\[A&#39;A&#39;^T = ARR^TA^T = AA^T\]</span></p>
+<p>Then we could never figure out whether the mixing matrix is <span class="math inline">\(A\)</span> or <span class="math inline">\(A&#39;\)</span>.</p>
+<p>However, so long as <span class="math inline">\(s\)</span> is distributed anisotropically, we could recover the mixing matrix.(Imagine you have 4 rotation-symmetrical sources, the n rotating these sources simulatenously does not influence the volume)</p>
+<h2 id="densities-and-linear-transforms">Densities and linear transforms</h2>
+<p><span class="math display">\[p_x(x) = p_s(Wx)\cdot|W|\]</span></p>
+<p>E.g. uniform distribution.</p>
+<p>Remember <strong>determinant</strong> measures the <strong>volume</strong> of the span. (See this in linalg recap). Imagine the density dillutes in an enlarged hyperspace.</p>
+<h2 id="ica-algorithm">ICA Algorithm</h2>
+<p>Joint distribution of sources <span class="math inline">\(s\)</span> (with the assumption that sources are independent):</p>
+<p><span class="math display">\[p(s) = \prod_{j=1}^{d}{p_s(s_j)}\]</span></p>
+<p>then transit to <span class="math inline">\(x\)</span>, j-th source at time i <span class="math inline">\(s_j^{(i)} = w_j^Tx^{(i)}\)</span></p>
+<p><span class="math display">\[p(x) = \prod_{j=1}^{d}{p_s(w_j^Tx)\cdot |W|}\]</span></p>
+<p>We purposely choose <span class="math inline">\(p_s(s) = g&#39;(s)\)</span>, i.e. choose the sigmoid function as CDF.</p>
+<p>Given a training set, the log-likelihood</p>
+<p><span class="math display">\[l(w) = \sum_{i=1}^n \bigg(\sum_{j=1}^d{\log g&#39;(w_j^Tx^{(i)}) + \log|W|}\bigg)\]</span></p>
+<p><strong>Lemma</strong>:</p>
+<p><span class="math display">\[\nabla_W|W = |W|(W^{-1})^T\]</span></p>
+<p><span class="math display">\[g&#39;&#39; = \frac{\partial}{\partial x}g&#39; = \frac{\partial}{\partial x}\big(g(1-g)\big) = g&#39;(1-2g) \]</span></p>
+<p>Then compute the derivative of <span class="math inline">\(l(w)\)</span>,</p>
+<p><span class="math display">\[\begin{aligned}
+\therefore \frac{\partial}{\partial w} l(w) 
+&amp;= \sum_{i=1}^n \bigg(\sum_{j=1}^d{\frac{g&#39;&#39;(w_j^Tx^{(i)}) \cdot x^{(i)T}}{g&#39;(w_j^Tx^{(i)})} + (W^{-1})^T}\bigg) \\
+&amp;= \sum_{i=1}^n \bigg(\sum_{j=1}^d{(1-2g(w_j^Tx^{(i)}))x^{(i)T} + (W^{-1})^T}\bigg)
+\end{aligned}\]</span></p>
+<p>If we use stochastic gradient ascent,</p>
+<p><span class="math display">\[\begin{aligned}
+\frac{\partial}{\partial w} l(w) 
+&amp;= \sum_{j=1}^d{(1-2g(w_j^Tx^{(i)}))x^{(i)T} + (W^{-1})^T}\\
+&amp;= \begin{bmatrix}1-2g(w_1^Tx^{(i)})\\1-2g(w_2^Tx^{(i)}\\...\\1-2g(w_d^Tx^{(i)}\end{bmatrix}x^{(i)T} + (W^{-1})^T
+\end{aligned}\]</span></p>
+<p><strong>The updating rule</strong>:</p>
+<p><span class="math display">\[W:= W + \alpha \bigg( \begin{bmatrix}1-2g(w_1^Tx^{(i)})\\1-2g(w_2^Tx^{(i)}\\...\\1-2g(w_d^Tx^{(i)}\end{bmatrix}x^{(i)T} + (W^{-1})^T\bigg)\]</span></p>
+<p>Finally when converge, we take</p>
+<p><span class="math display">\[s^{(i)} = Wx^{(i)}\]</span></p>
+<p>to recover sources.</p>
 
     </div>
 
@@ -260,7 +323,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E7%9F%A9%E9%98%B5/" rel="tag"># 矩阵</a>
+              <a href="/tags/CS229/" rel="tag"># CS229</a>
           </div>
 
         
@@ -269,12 +332,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/10/26/CS229-Notes2-Generative-Learning-Algorithms/" rel="prev" title="CS229 Notes2 Generative Learning Algorithms">
-      <i class="fa fa-chevron-left"></i> CS229 Notes2 Generative Learning Algorithms
+    <a href="/2020/10/30/The-Matrix-Cookbook/" rel="prev" title="The Matrix Cookbook">
+      <i class="fa fa-chevron-left"></i> The Matrix Cookbook
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/10/30/CS229-Notes11-Independent-Components-Analysis/" rel="next" title="CS229 Notes11 Independent Components Analysis">
-      CS229 Notes11 Independent Components Analysis <i class="fa fa-chevron-right"></i>
+    <a href="/2020/11/01/CS229-ICA-Implementation/" rel="next" title="CS229 ICA-Implementation">
+      CS229 ICA-Implementation <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -334,6 +397,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#cocktail-party-problem"><span class="nav-number">1.</span> <span class="nav-text">Cocktail party problem:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ica-ambiguities"><span class="nav-number">2.</span> <span class="nav-text">ICA ambiguities</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#scale-of-a"><span class="nav-number">2.1.</span> <span class="nav-text">scale of A:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#non-gaussian"><span class="nav-number">2.2.</span> <span class="nav-text">Non-Gaussian</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#densities-and-linear-transforms"><span class="nav-number">3.</span> <span class="nav-text">Densities and linear transforms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ica-algorithm"><span class="nav-number">4.</span> <span class="nav-text">ICA Algorithm</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

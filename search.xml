@@ -5676,6 +5676,12 @@ a(\eta) &amp;= -\log(\phi_k)\\
     <content><![CDATA[<p>Gaussian discriminant analysis - lemon的文章 - 知乎 https://zhuanlan.zhihu.com/p/22940577</p>
 <p>Normal Equation如何实现一步求解最优参数及其对比梯度下降的特点是什么？ - 深度碎片的回答 - 知乎 https://www.zhihu.com/question/273799498/answer/370173526</p>
 ]]></content>
+      <categories>
+        <category>Machine Learning</category>
+      </categories>
+      <tags>
+        <tag>CS229</tag>
+      </tags>
   </entry>
   <entry>
     <title>The Matrix Cookbook</title>
@@ -5692,6 +5698,134 @@ a(\eta) &amp;= -\log(\phi_k)\\
       </categories>
       <tags>
         <tag>矩阵</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CS229 ICA-Implementation</title>
+    <url>/2020/11/01/CS229-ICA-Implementation/</url>
+    <content><![CDATA[<h1 id="implementation-of-independent">Implementation of Independent</h1>
+<h2 id="import-packages">Import packages</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">from</span> scipy <span class="keyword">import</span> signal</span><br><span class="line"><span class="keyword">from</span> tqdm.notebook <span class="keyword">import</span> tqdm</span><br></pre></td></tr></table></figure>
+<p>https://towardsdatascience.com/separating-mixed-signals-with-independent-component-analysis-38205188f2f4</p>
+<h2 id="generate-the-source-s">Generate the source <span class="math inline">\(S\)</span></h2>
+<p><span class="math inline">\(S\in R^d\)</span></p>
+<p>Here we choose 3 sources of signals: sine, sawtooth and noise.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">f = plt.figure(figsize = (<span class="number">10</span>,<span class="number">6</span>))</span><br><span class="line">ax = f.add_subplot(<span class="number">311</span>)</span><br><span class="line">ax2 = f.add_subplot(<span class="number">312</span>)</span><br><span class="line">ax3 = f.add_subplot(<span class="number">313</span>)</span><br><span class="line">t = np.linspace(<span class="number">0</span>, <span class="number">200</span> , <span class="number">1000</span>)</span><br><span class="line">sine = np.sin(t)</span><br><span class="line">sawtooth = signal.sawtooth(t*<span class="number">1.9</span>)</span><br><span class="line">noise = np.random.random(len(t))</span><br><span class="line"></span><br><span class="line">ax.plot(t, sine)</span><br><span class="line">ax2.plot(t, sawtooth, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">ax3.plot(t, noise, <span class="string">&#x27;g&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="/2020/11/01/CS229-ICA-Implementation/ICA_5_0.png" alt="" /><figcaption>png</figcaption>
+</figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">S = np.vstack((sine, sawtooth, noise))</span><br><span class="line">S.shape</span><br></pre></td></tr></table></figure>
+<pre><code>(3, 1000)</code></pre>
+<h2 id="mixture-matrix-a-x-as">Mixture Matrix A, <span class="math inline">\(x = As\)</span></h2>
+<p><span class="math inline">\(s_j^{(i)} = w_j^Tx^{(i)}\)</span></p>
+<p><span class="math inline">\(x^{(i)} = As^{(i)}\)</span></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">A = np.array([</span><br><span class="line">  [<span class="number">0.5</span>,<span class="number">1</span>,<span class="number">0.2</span>],</span><br><span class="line">  [<span class="number">1</span>,<span class="number">0.5</span>,<span class="number">0.4</span>],</span><br><span class="line">  [<span class="number">0.5</span>,<span class="number">0.8</span>,<span class="number">1</span>]</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">W = np.linalg.inv(A)</span><br><span class="line">W</span><br></pre></td></tr></table></figure>
+<pre><code>array([[-0.3       ,  1.4       , -0.5       ],
+       [ 1.33333333, -0.66666667,  0.        ],
+       [-0.91666667, -0.16666667,  1.25      ]])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X = np.dot(A.T, S)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">10</span>,<span class="number">3</span>))</span><br><span class="line">plt.plot(t[:<span class="number">100</span>], sine[:<span class="number">100</span>])</span><br><span class="line">plt.plot(t[:<span class="number">100</span>], sawtooth[:<span class="number">100</span>])</span><br><span class="line">plt.plot(t[:<span class="number">100</span>], noise[:<span class="number">100</span>])</span><br><span class="line">plt.legend(labels = [<span class="string">&quot;sine&quot;</span>, <span class="string">&quot;sawtooth&quot;</span>, <span class="string">&quot;noise&quot;</span>])</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="/2020/11/01/CS229-ICA-Implementation/ICA_12_0.png" alt="" /><figcaption>png</figcaption>
+</figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">f = plt.figure(figsize=(<span class="number">10</span>,<span class="number">6</span>))</span><br><span class="line">f.suptitle(<span class="string">&quot;Mixed Signals&quot;</span>)</span><br><span class="line">ax1 = f.add_subplot(<span class="number">311</span>)</span><br><span class="line">ax2 = f.add_subplot(<span class="number">312</span>)</span><br><span class="line">ax3 = f.add_subplot(<span class="number">313</span>)</span><br><span class="line"></span><br><span class="line">ax1.plot(t[:<span class="number">100</span>], X[<span class="number">0</span>][:<span class="number">100</span>])</span><br><span class="line">ax2.plot(t[:<span class="number">100</span>], X[<span class="number">1</span>][:<span class="number">100</span>])</span><br><span class="line">ax3.plot(t[:<span class="number">100</span>], X[<span class="number">2</span>][:<span class="number">100</span>])</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="/2020/11/01/CS229-ICA-Implementation/ICA_13_0.png" alt="" /><figcaption>png</figcaption>
+</figure>
+<h2 id="ica-algorithm">ICA Algorithm</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># https://towardsdatascience.com/separating-mixed-signals-with-independent-component-analysis-38205188f2f4</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">center</span>(<span class="params">x</span>):</span></span><br><span class="line">  <span class="keyword">return</span> x - np.mean(x, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>), np.mean(x, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">covariance</span>(<span class="params">x</span>):</span></span><br><span class="line">  mean = np.mean(x, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>)</span><br><span class="line">  n = np.shape(x)[<span class="number">1</span>] - <span class="number">1</span></span><br><span class="line">  m = x - mean</span><br><span class="line">  <span class="keyword">return</span> m.dot(m.T) / n</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># https://towardsdatascience.com/separating-mixed-signals-with-independent-component-analysis-38205188f2f4</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">whiten</span>(<span class="params">x</span>):</span></span><br><span class="line">  cov = covariance(x)</span><br><span class="line">  U,S,V = np.linalg.svd(cov)</span><br><span class="line">  d = np.diag(<span class="number">1</span> / np.sqrt(S))</span><br><span class="line">  whiteM = np.dot(U, np.dot(d, U.T))</span><br><span class="line">  Xw = np.dot(whiteM, X)</span><br><span class="line">  <span class="keyword">return</span> Xw, whiteM</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sigmoid</span>(<span class="params">x</span>):</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span> / (<span class="number">1</span> + np.exp(-x))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span>(<span class="params">W, xi, lr</span>):</span></span><br><span class="line">  <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">  Stochastic gradient ascent, one point xi</span></span><br><span class="line"><span class="string">  &quot;&quot;&quot;</span></span><br><span class="line">  gradient = np.dot((<span class="number">1</span> - <span class="number">2</span> * sigmoid(np.dot(W.T, xi))), xi.T) + np.linalg.inv(W.T)</span><br><span class="line">  diff = np.abs(gradient).sum()</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> W + lr*gradient, diff</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">optimize</span>(<span class="params">X, S, lr=<span class="number">0.1</span>, thresh=<span class="number">1e-2</span>, iterations=<span class="number">1000000</span></span>):</span></span><br><span class="line">  d, n = S.shape</span><br><span class="line">  W = np.random.random(size=(d,d))</span><br><span class="line">  <span class="keyword">for</span> c <span class="keyword">in</span> tqdm(range(iterations)):</span><br><span class="line">    xi = X[:,np.random.randint(<span class="number">0</span>,n<span class="number">-1</span>)]</span><br><span class="line">    W, diff = update(W, xi, lr)</span><br><span class="line">    <span class="keyword">if</span> (diff &lt; thresh):</span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">  <span class="keyword">return</span> W</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Xc, meanX = center(X)</span><br><span class="line">Xw, whiteM = whiten(Xc)</span><br><span class="line"></span><br><span class="line">W_ = optimize(Xw,S)</span><br><span class="line">unMixed = Xw.T.dot(W_.T)</span><br><span class="line">unMixed = (unMixed.T - meanX)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">10</span>,<span class="number">3</span>))</span><br><span class="line">plt.plot(t[:<span class="number">100</span>], unMixed[<span class="number">0</span>][:<span class="number">100</span>])</span><br><span class="line">plt.plot(t[:<span class="number">100</span>], unMixed[<span class="number">1</span>][:<span class="number">100</span>])</span><br><span class="line">plt.plot(t[:<span class="number">100</span>], unMixed[<span class="number">2</span>][:<span class="number">100</span>])</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="/2020/11/01/CS229-ICA-Implementation/ICA_21_0.png" alt="" /><figcaption>png</figcaption>
+</figure>
+<h2 id="remark">Remark</h2>
+<p>The ICA ambiguities tells us that <strong>there is no way to recover the scaling of the wi's</strong></p>
+]]></content>
+      <categories>
+        <category>Machine Learning</category>
+      </categories>
+      <tags>
+        <tag>CS229</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CS229 Notes11 Independent Components Analysis</title>
+    <url>/2020/10/30/CS229-Notes11-Independent-Components-Analysis/</url>
+    <content><![CDATA[<p>The goal of Components Analysis is to find a new basis to represent the data.</p>
+<h2 id="cocktail-party-problem">Cocktail party problem:</h2>
+<ul>
+<li>sources <span class="math inline">\(s\in R^d\)</span></li>
+<li>microphone recordings(receiver): <span class="math inline">\(x\in R^d\)</span></li>
+<li><strong>mixing matrix</strong> <span class="math inline">\(A\)</span>: <span class="math inline">\(x = As\)</span>, square matrix</li>
+<li>unmixing matrix: <span class="math inline">\(W = A^{-1}\)</span>, <span class="math inline">\(s^{(i)} = Wx^{(i)}\)</span>, the superscript means time i.</li>
+<li>j-th source at time i <span class="math inline">\(s_j^{(i)} = w_j^Tx^{(i)}\)</span>, <span class="math inline">\(W = [w_1^T, ...w_n^T]^T\)</span>, each row is a <span class="math inline">\(w_i^T\)</span></li>
+</ul>
+<h2 id="ica-ambiguities">ICA ambiguities</h2>
+<h3 id="scale-of-a">scale of A:</h3>
+<p><span class="math display">\[x = 2A(0.5s) = As\]</span></p>
+<p>Imagine the coupling of volume and distance.</p>
+<p><strong>There is no way to recover the correct scaling of the <span class="math inline">\(w_i\)</span>'s.</strong></p>
+<h3 id="non-gaussian">Non-Gaussian</h3>
+<p>Gaussian's <strong>Isotropy</strong> results in density rotationally symmetric.</p>
+<p>If <span class="math inline">\(s \sim N(0,I)\)</span></p>
+<p><span class="math display">\[E_s[x] = E[As] = AE[s] = 0\]</span></p>
+<p><span class="math display">\[\begin{aligned}Cov[x] 
+&amp; = E[xx^T] - (E[x])^2 \\
+&amp; = E[xx^T]\\
+&amp; = E[Ass^TA^T]\\
+&amp; = A\cdot Cov[s] \cdot A^T\\
+&amp; = AA^T
+\end{aligned}\]</span></p>
+<p>Basically, <span class="math display">\[A \sim N(0, AA^T)\]</span></p>
+<p>Let <span class="math inline">\(R\)</span> be an arbitrary orthogonal(e.g. rotation/reflection) matrix, <span class="math inline">\(A&#39; = AR\)</span>, then <span class="math inline">\(x&#39; = A&#39;s\)</span>,</p>
+<p>the distribution of <span class="math inline">\(x&#39;\)</span> is also gaussian <span class="math inline">\(x&#39;\sim N(0, AA^T)\)</span> because</p>
+<p><span class="math display">\[A&#39;A&#39;^T = ARR^TA^T = AA^T\]</span></p>
+<p>Then we could never figure out whether the mixing matrix is <span class="math inline">\(A\)</span> or <span class="math inline">\(A&#39;\)</span>.</p>
+<p>However, so long as <span class="math inline">\(s\)</span> is distributed anisotropically, we could recover the mixing matrix.(Imagine you have 4 rotation-symmetrical sources, the n rotating these sources simulatenously does not influence the volume)</p>
+<h2 id="densities-and-linear-transforms">Densities and linear transforms</h2>
+<p><span class="math display">\[p_x(x) = p_s(Wx)\cdot|W|\]</span></p>
+<p>E.g. uniform distribution.</p>
+<p>Remember <strong>determinant</strong> measures the <strong>volume</strong> of the span. (See this in linalg recap). Imagine the density dillutes in an enlarged hyperspace.</p>
+<h2 id="ica-algorithm">ICA Algorithm</h2>
+<p>Joint distribution of sources <span class="math inline">\(s\)</span> (with the assumption that sources are independent):</p>
+<p><span class="math display">\[p(s) = \prod_{j=1}^{d}{p_s(s_j)}\]</span></p>
+<p>then transit to <span class="math inline">\(x\)</span>, j-th source at time i <span class="math inline">\(s_j^{(i)} = w_j^Tx^{(i)}\)</span></p>
+<p><span class="math display">\[p(x) = \prod_{j=1}^{d}{p_s(w_j^Tx)\cdot |W|}\]</span></p>
+<p>We purposely choose <span class="math inline">\(p_s(s) = g&#39;(s)\)</span>, i.e. choose the sigmoid function as CDF.</p>
+<p>Given a training set, the log-likelihood</p>
+<p><span class="math display">\[l(w) = \sum_{i=1}^n \bigg(\sum_{j=1}^d{\log g&#39;(w_j^Tx^{(i)}) + \log|W|}\bigg)\]</span></p>
+<p><strong>Lemma</strong>:</p>
+<p><span class="math display">\[\nabla_W|W = |W|(W^{-1})^T\]</span></p>
+<p><span class="math display">\[g&#39;&#39; = \frac{\partial}{\partial x}g&#39; = \frac{\partial}{\partial x}\big(g(1-g)\big) = g&#39;(1-2g) \]</span></p>
+<p>Then compute the derivative of <span class="math inline">\(l(w)\)</span>,</p>
+<p><span class="math display">\[\begin{aligned}
+\therefore \frac{\partial}{\partial w} l(w) 
+&amp;= \sum_{i=1}^n \bigg(\sum_{j=1}^d{\frac{g&#39;&#39;(w_j^Tx^{(i)}) \cdot x^{(i)T}}{g&#39;(w_j^Tx^{(i)})} + (W^{-1})^T}\bigg) \\
+&amp;= \sum_{i=1}^n \bigg(\sum_{j=1}^d{(1-2g(w_j^Tx^{(i)}))x^{(i)T} + (W^{-1})^T}\bigg)
+\end{aligned}\]</span></p>
+<p>If we use stochastic gradient ascent,</p>
+<p><span class="math display">\[\begin{aligned}
+\frac{\partial}{\partial w} l(w) 
+&amp;= \sum_{j=1}^d{(1-2g(w_j^Tx^{(i)}))x^{(i)T} + (W^{-1})^T}\\
+&amp;= \begin{bmatrix}1-2g(w_1^Tx^{(i)})\\1-2g(w_2^Tx^{(i)}\\...\\1-2g(w_d^Tx^{(i)}\end{bmatrix}x^{(i)T} + (W^{-1})^T
+\end{aligned}\]</span></p>
+<p><strong>The updating rule</strong>:</p>
+<p><span class="math display">\[W:= W + \alpha \bigg( \begin{bmatrix}1-2g(w_1^Tx^{(i)})\\1-2g(w_2^Tx^{(i)}\\...\\1-2g(w_d^Tx^{(i)}\end{bmatrix}x^{(i)T} + (W^{-1})^T\bigg)\]</span></p>
+<p>Finally when converge, we take</p>
+<p><span class="math display">\[s^{(i)} = Wx^{(i)}\]</span></p>
+<p>to recover sources.</p>
+]]></content>
+      <categories>
+        <category>Machine Learning</category>
+      </categories>
+      <tags>
+        <tag>CS229</tag>
       </tags>
   </entry>
 </search>
