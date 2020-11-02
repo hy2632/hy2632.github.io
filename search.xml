@@ -5711,9 +5711,7 @@ a(\eta) &amp;= -\log(\phi_k)\\
 <p><span class="math inline">\(S\in R^d\)</span></p>
 <p>Here we choose 3 sources of signals: sine, sawtooth and noise.</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">f = plt.figure(figsize = (<span class="number">10</span>,<span class="number">6</span>))</span><br><span class="line">ax = f.add_subplot(<span class="number">311</span>)</span><br><span class="line">ax2 = f.add_subplot(<span class="number">312</span>)</span><br><span class="line">ax3 = f.add_subplot(<span class="number">313</span>)</span><br><span class="line">t = np.linspace(<span class="number">0</span>, <span class="number">200</span> , <span class="number">1000</span>)</span><br><span class="line">sine = np.sin(t)</span><br><span class="line">sawtooth = signal.sawtooth(t*<span class="number">1.9</span>)</span><br><span class="line">noise = np.random.random(len(t))</span><br><span class="line"></span><br><span class="line">ax.plot(t, sine)</span><br><span class="line">ax2.plot(t, sawtooth, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">ax3.plot(t, noise, <span class="string">&#x27;g&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<figure>
-<img src="/2020/11/01/CS229-ICA-Implementation/ICA_5_0.png" alt="" /><figcaption>png</figcaption>
-</figure>
+<p><img src="/2020/11/01/CS229-ICA-Implementation/ICA_5_0.png" /></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">S = np.vstack((sine, sawtooth, noise))</span><br><span class="line">S.shape</span><br></pre></td></tr></table></figure>
 <pre><code>(3, 1000)</code></pre>
 <h2 id="mixture-matrix-a-x-as">Mixture Matrix A, <span class="math inline">\(x = As\)</span></h2>
@@ -5726,13 +5724,9 @@ a(\eta) &amp;= -\log(\phi_k)\\
        [-0.91666667, -0.16666667,  1.25      ]])</code></pre>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X = np.dot(A.T, S)</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">10</span>,<span class="number">3</span>))</span><br><span class="line">plt.plot(t[:<span class="number">100</span>], sine[:<span class="number">100</span>])</span><br><span class="line">plt.plot(t[:<span class="number">100</span>], sawtooth[:<span class="number">100</span>])</span><br><span class="line">plt.plot(t[:<span class="number">100</span>], noise[:<span class="number">100</span>])</span><br><span class="line">plt.legend(labels = [<span class="string">&quot;sine&quot;</span>, <span class="string">&quot;sawtooth&quot;</span>, <span class="string">&quot;noise&quot;</span>])</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<figure>
-<img src="/2020/11/01/CS229-ICA-Implementation/ICA_12_0.png" alt="" /><figcaption>png</figcaption>
-</figure>
+<p><img src="/2020/11/01/CS229-ICA-Implementation/ICA_12_0.png" /></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">f = plt.figure(figsize=(<span class="number">10</span>,<span class="number">6</span>))</span><br><span class="line">f.suptitle(<span class="string">&quot;Mixed Signals&quot;</span>)</span><br><span class="line">ax1 = f.add_subplot(<span class="number">311</span>)</span><br><span class="line">ax2 = f.add_subplot(<span class="number">312</span>)</span><br><span class="line">ax3 = f.add_subplot(<span class="number">313</span>)</span><br><span class="line"></span><br><span class="line">ax1.plot(t[:<span class="number">100</span>], X[<span class="number">0</span>][:<span class="number">100</span>])</span><br><span class="line">ax2.plot(t[:<span class="number">100</span>], X[<span class="number">1</span>][:<span class="number">100</span>])</span><br><span class="line">ax3.plot(t[:<span class="number">100</span>], X[<span class="number">2</span>][:<span class="number">100</span>])</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<figure>
-<img src="/2020/11/01/CS229-ICA-Implementation/ICA_13_0.png" alt="" /><figcaption>png</figcaption>
-</figure>
+<p><img src="/2020/11/01/CS229-ICA-Implementation/ICA_13_0.png" /></p>
 <h2 id="ica-algorithm">ICA Algorithm</h2>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># https://towardsdatascience.com/separating-mixed-signals-with-independent-component-analysis-38205188f2f4</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">center</span>(<span class="params">x</span>):</span></span><br><span class="line">  <span class="keyword">return</span> x - np.mean(x, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>), np.mean(x, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">covariance</span>(<span class="params">x</span>):</span></span><br><span class="line">  mean = np.mean(x, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>)</span><br><span class="line">  n = np.shape(x)[<span class="number">1</span>] - <span class="number">1</span></span><br><span class="line">  m = x - mean</span><br><span class="line">  <span class="keyword">return</span> m.dot(m.T) / n</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># https://towardsdatascience.com/separating-mixed-signals-with-independent-component-analysis-38205188f2f4</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">whiten</span>(<span class="params">x</span>):</span></span><br><span class="line">  cov = covariance(x)</span><br><span class="line">  U,S,V = np.linalg.svd(cov)</span><br><span class="line">  d = np.diag(<span class="number">1</span> / np.sqrt(S))</span><br><span class="line">  whiteM = np.dot(U, np.dot(d, U.T))</span><br><span class="line">  Xw = np.dot(whiteM, X)</span><br><span class="line">  <span class="keyword">return</span> Xw, whiteM</span><br></pre></td></tr></table></figure>
@@ -5741,9 +5735,7 @@ a(\eta) &amp;= -\log(\phi_k)\\
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">optimize</span>(<span class="params">X, S, lr=<span class="number">0.1</span>, thresh=<span class="number">1e-2</span>, iterations=<span class="number">1000000</span></span>):</span></span><br><span class="line">  d, n = S.shape</span><br><span class="line">  W = np.random.random(size=(d,d))</span><br><span class="line">  <span class="keyword">for</span> c <span class="keyword">in</span> tqdm(range(iterations)):</span><br><span class="line">    xi = X[:,np.random.randint(<span class="number">0</span>,n<span class="number">-1</span>)]</span><br><span class="line">    W, diff = update(W, xi, lr)</span><br><span class="line">    <span class="keyword">if</span> (diff &lt; thresh):</span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">  <span class="keyword">return</span> W</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Xc, meanX = center(X)</span><br><span class="line">Xw, whiteM = whiten(Xc)</span><br><span class="line"></span><br><span class="line">W_ = optimize(Xw,S)</span><br><span class="line">unMixed = Xw.T.dot(W_.T)</span><br><span class="line">unMixed = (unMixed.T - meanX)</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">10</span>,<span class="number">3</span>))</span><br><span class="line">plt.plot(t[:<span class="number">100</span>], unMixed[<span class="number">0</span>][:<span class="number">100</span>])</span><br><span class="line">plt.plot(t[:<span class="number">100</span>], unMixed[<span class="number">1</span>][:<span class="number">100</span>])</span><br><span class="line">plt.plot(t[:<span class="number">100</span>], unMixed[<span class="number">2</span>][:<span class="number">100</span>])</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<figure>
-<img src="/2020/11/01/CS229-ICA-Implementation/ICA_21_0.png" alt="" /><figcaption>png</figcaption>
-</figure>
+<p><img src="/2020/11/01/CS229-ICA-Implementation/ICA_21_0.png" /></p>
 <h2 id="remark">Remark</h2>
 <p>The ICA ambiguities tells us that <strong>there is no way to recover the scaling of the wi's</strong></p>
 ]]></content>
@@ -5821,6 +5813,77 @@ a(\eta) &amp;= -\log(\phi_k)\\
 <p><span class="math display">\[s^{(i)} = Wx^{(i)}\]</span></p>
 <p>to recover sources.</p>
 <div class="pdfobject-container" data-target="./cs229-notes11.pdf" data-height="1000px"></div>
+]]></content>
+      <categories>
+        <category>Machine Learning</category>
+      </categories>
+      <tags>
+        <tag>CS229</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CS229 Notes10 Principal components analysis</title>
+    <url>/2020/11/01/CS229-Notes10-Principal-components-analysis/</url>
+    <content><![CDATA[<h2 id="import-packages">Import Packages</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">from</span> tqdm.notebook <span class="keyword">import</span> tqdm</span><br></pre></td></tr></table></figure>
+<p><strong><a href="https://scipy-lectures.org/packages/scikit-learn/auto_examples/plot_pca.html">Link: Plot PCA</a></strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line">iris = datasets.load_iris()</span><br><span class="line">X = iris.data</span><br><span class="line">y = iris.target</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X.shape, y.shape</span><br></pre></td></tr></table></figure>
+<pre><code>((150, 4), (150,))</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA</span><br><span class="line">pca = PCA(n_components=<span class="number">0.9</span>, whiten=<span class="literal">True</span>)</span><br><span class="line">pca.fit(X)</span><br></pre></td></tr></table></figure>
+<pre><code>PCA(copy=True, iterated_power=&#39;auto&#39;, n_components=0.9, random_state=None,
+    svd_solver=&#39;auto&#39;, tol=0.0, whiten=True)</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pca.explained_variance_ratio_</span><br></pre></td></tr></table></figure>
+<pre><code>array([0.92461872])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X_pca = pca.transform(X)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X_pca.shape</span><br></pre></td></tr></table></figure>
+<pre><code>(150, 1)</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">target_ids = range(len(iris.target_names))</span><br><span class="line">plt.figure(figsize=(<span class="number">6</span>,<span class="number">5</span>))</span><br><span class="line"><span class="keyword">for</span> i, c, label <span class="keyword">in</span> zip(target_ids, <span class="string">&#x27;rgbcmykw&#x27;</span>, iris.target_names):</span><br><span class="line">  plt.scatter(X_pca[y==i, <span class="number">0</span>], np.zeros(X_pca[y==i].shape), c=c, label=label)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/11/01/CS229-Notes10-Principal-components-analysis/CS229-Notes10-Principal-components-analysis_9_0.png" /></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pca = PCA(n_components=<span class="number">2</span>, whiten=<span class="literal">True</span>)</span><br><span class="line">pca.fit(X)</span><br><span class="line">X_pca = pca.transform(X)</span><br><span class="line">target_ids = range(len(iris.target_names))</span><br><span class="line">plt.figure(figsize=(<span class="number">6</span>,<span class="number">5</span>))</span><br><span class="line"><span class="keyword">for</span> i, c, label <span class="keyword">in</span> zip(target_ids, <span class="string">&#x27;rgbcmykw&#x27;</span>, iris.target_names):</span><br><span class="line">  plt.scatter(X_pca[y==i, <span class="number">0</span>], X_pca[y==i, <span class="number">1</span>], c=c, label=label)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/11/01/CS229-Notes10-Principal-components-analysis/CS229-Notes10-Principal-components-analysis_10_0.png" /></p>
+<h2 id="pca-implementation">PCA Implementation</h2>
+<!-- 
+### Playground
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">N, d = X.shape</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Sigma = np.mean([np.matmul(np.expand_dims(X[i], axis=1), np.expand_dims(X[i], axis=1).T) for i in range(N)], axis=0)</span></span><br><span class="line"><span class="comment"># Sigma</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Sigma = np.dot(X.T, X) / (N-1)</span></span><br><span class="line"><span class="comment"># Sigma</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X.mean(axis=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>array([5.84333333, 3.05733333, 3.758     , 1.19933333])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># X.std(axis=0)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># X_prime = (X - X.mean(axis=0)) / X.std(axis=0)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X_prime = X - X.mean(axis=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Sigma = np.dot(X_prime.T, X_prime) / (N<span class="number">-1</span>)</span><br><span class="line">Sigma</span><br></pre></td></tr></table></figure>
+<pre><code>array([[ 0.68569351, -0.042434  ,  1.27431544,  0.51627069],
+       [-0.042434  ,  0.18997942, -0.32965638, -0.12163937],
+       [ 1.27431544, -0.32965638,  3.11627785,  1.2956094 ],
+       [ 0.51627069, -0.12163937,  1.2956094 ,  0.58100626]])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">U, Lambda, V = np.linalg.svd(Sigma)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Lambda</span><br></pre></td></tr></table></figure>
+<pre><code>array([4.22824171, 0.24267075, 0.0782095 , 0.02383509])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Sigma_new = np.matmul(np.expand_dims(U[:,<span class="number">0</span>],axis=<span class="number">1</span>), np.expand_dims(V[<span class="number">0</span>],axis=<span class="number">1</span>).T) * Lambda[<span class="number">0</span>] + np.matmul(np.expand_dims(U[:,<span class="number">1</span>],axis=<span class="number">1</span>), np.expand_dims(V[<span class="number">1</span>],axis=<span class="number">1</span>).T) * Lambda[<span class="number">1</span>] </span><br><span class="line">Sigma_new</span><br></pre></td></tr></table></figure>
+<pre><code>array([[ 0.656827  , -0.01281273,  1.28139395,  0.53544983],
+       [-0.01281273,  0.15958324, -0.33687803, -0.14142037],
+       [ 1.28139395, -0.33687803,  3.11033538,  1.30097452],
+       [ 0.53544983, -0.14142037,  1.30097452,  0.54416683]])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># X_prime_new = np.dot(np.pad(U[:, :2], pad_width=[(0,0),(0,2)]), X_prime.T).T[:, :2]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">U[:,:2]</span><br></pre></td></tr></table></figure>
+<pre><code>array([[-0.36138659, -0.65658877],
+       [ 0.08452251, -0.73016143],
+       [-0.85667061,  0.17337266],
+       [-0.3582892 ,  0.07548102]])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X_prime_new = np.dot(U[:,:<span class="number">2</span>].T, X_prime.T).T</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X_new = X_prime_new+X.mean(axis=<span class="number">0</span>)[:<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">6</span>,<span class="number">5</span>))</span><br><span class="line"><span class="keyword">for</span> i, c, label <span class="keyword">in</span> zip(target_ids, <span class="string">&#x27;rgbcmykw&#x27;</span>, iris.target_names):</span><br><span class="line">  plt.scatter(X_new[y==i, <span class="number">0</span>], X_new[y==i, <span class="number">1</span>], c=c, label=label)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/11/01/CS229-Notes10-Principal-components-analysis/CS229-Notes10-Principal-components-analysis_28_0.png" /> --&gt;</p>
+<h3 id="construct-a-pca-function">Construct a PCA function</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myPCA</span>(<span class="params">X:np.ndarray, n_dimensions:int</span>):</span></span><br><span class="line">  N, d = X.shape</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Centering</span></span><br><span class="line">  X_centered = X - X.mean(axis=<span class="number">0</span>) </span><br><span class="line"></span><br><span class="line">  <span class="comment"># Covariance Matrix of d*d</span></span><br><span class="line">  Sigma = np.dot(X_centered.T, X_centered)</span><br><span class="line"></span><br><span class="line">  <span class="comment"># SVD</span></span><br><span class="line">  U, Lambda, V = np.linalg.svd(Sigma)</span><br><span class="line"></span><br><span class="line">  X_centered_PC = np.dot(U[:,:n_dimensions].T, X_centered.T).T</span><br><span class="line">  X_PC = X_centered_PC + X.mean(axis=<span class="number">0</span>)[:n_dimensions]</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Purposely rescale and add negative sign to mimic Scipy&#x27;s PCA</span></span><br><span class="line">  <span class="keyword">return</span> -(X_PC - X_PC.mean(axis=<span class="number">0</span>))/X_PC.std(axis=<span class="number">0</span>) </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X_PC2 = myPCA(X, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">plt.figure(figsize=(<span class="number">6</span>,<span class="number">5</span>))</span><br><span class="line"><span class="keyword">for</span> i, c, label <span class="keyword">in</span> zip(target_ids, <span class="string">&#x27;rgbcmykw&#x27;</span>, iris.target_names):</span><br><span class="line">  plt.scatter(X_PC2[y==i, <span class="number">0</span>], X_PC2[y==i, <span class="number">1</span>], c=c, label=label)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/11/01/CS229-Notes10-Principal-components-analysis/CS229-Notes10-Principal-components-analysis_31_0.png" /></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pca = PCA(n_components=<span class="number">2</span>, whiten=<span class="literal">True</span>)</span><br><span class="line">pca.fit(X)</span><br><span class="line">X_pca = pca.transform(X)</span><br><span class="line">target_ids = range(len(iris.target_names))</span><br><span class="line">plt.figure(figsize=(<span class="number">6</span>,<span class="number">5</span>))</span><br><span class="line"><span class="keyword">for</span> i, c, label <span class="keyword">in</span> zip(target_ids, <span class="string">&#x27;rgbcmykw&#x27;</span>, iris.target_names):</span><br><span class="line">  plt.scatter(X_pca[y==i, <span class="number">0</span>], X_pca[y==i, <span class="number">1</span>], c=c, label=label)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/11/01/CS229-Notes10-Principal-components-analysis/CS229-Notes10-Principal-components-analysis_32_0.png" /></p>
 ]]></content>
       <categories>
         <category>Machine Learning</category>
