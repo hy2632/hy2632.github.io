@@ -194,6 +194,84 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/11/05/XGBoost/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
+      <meta itemprop="name" content="姚华(Hua Yao)">
+      <meta itemprop="description" content="hy2632@columbia.edu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="豁蒙楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/05/XGBoost/" class="post-title-link" itemprop="url">XGBoost</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-11-05 13:05:12 / 修改时间：17:38:32" itemprop="dateCreated datePublished" datetime="2020-11-05T13:05:12-05:00">2020-11-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1603.02754.pdf?__hstc=133736337.1bb630f9cde2cb5f07430159d50a3c91.1513641600097.1513641600098.1513641600099.1&__hssc=133736337.1.1513641600100&__hsfp=528229161">XGBoost: A Scalable Tree Boosting System</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1si4y1G7Jb">贪心学院： XGBoost的技术剖析</a></p>
+<p>非常好的教学视频，在此将内容整理如下。</p>
+<h2 id="目标函数"><a href="#目标函数" class="headerlink" title="目标函数"></a>目标函数</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/05/XGBoost/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/11/03/CS229-Notes7a-The-k-means-clustering-algorithm/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -217,10 +295,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-11-03 16:39:37 / 修改时间：16:45:31" itemprop="dateCreated datePublished" datetime="2020-11-03T16:39:37-05:00">2020-11-03</time>
+              <time title="创建时间：2020-11-03 16:39:37" itemprop="dateCreated datePublished" datetime="2020-11-03T16:39:37-05:00">2020-11-03</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-11-04 17:01:15" itemprop="dateModified" datetime="2020-11-04T17:01:15-05:00">2020-11-04</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -246,7 +330,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">from</span> tqdm.notebook <span class="keyword">import</span> tqdm</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">iris = datasets.load_iris()</span><br><span class="line">iris.target_names</span><br><span class="line">X = iris.data</span><br><span class="line">y = iris.target</span><br><span class="line"><span class="comment"># K clusters</span></span><br><span class="line">k = <span class="number">3</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># PCA</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myPCA</span>(<span class="params">X:np.ndarray, n_dimensions:int</span>):</span></span><br><span class="line">  <span class="comment"># N, d = X.shape</span></span><br><span class="line">  <span class="comment"># Centering</span></span><br><span class="line">  X_centered = X - X.mean(axis=<span class="number">0</span>) </span><br><span class="line"></span><br><span class="line">  <span class="comment"># Covariance Matrix of d*d</span></span><br><span class="line">  Sigma = np.dot(X_centered.T, X_centered)</span><br><span class="line"></span><br><span class="line">  <span class="comment"># SVD</span></span><br><span class="line">  U, Lambda, V = np.linalg.svd(Sigma)</span><br><span class="line"></span><br><span class="line">  X_centered_PC = np.dot(U[:,:n_dimensions].T, X_centered.T).T</span><br><span class="line">  X_PC = X_centered_PC + X.mean(axis=<span class="number">0</span>)[:n_dimensions]</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Purposely rescale and add negative sign to mimic Sklearn&#x27;s PCA</span></span><br><span class="line">  <span class="keyword">return</span> -(X_PC - X_PC.mean(axis=<span class="number">0</span>))/X_PC.std(axis=<span class="number">0</span>) </span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myKMeans</span> (<span class="params">X: np.ndarray, k: int, iterations=<span class="number">100</span>, tol=<span class="number">0.001</span></span>):</span></span><br><span class="line">  N, d = X.shape</span><br><span class="line">  mu = X[np.random.choice(range(N), size=k)]</span><br><span class="line">  c = np.zeros(N)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> step <span class="keyword">in</span> tqdm(range(iterations)):</span><br><span class="line">    prev_mu = mu.copy()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):</span><br><span class="line">      c[i] = np.argmin(np.linalg.norm(X[i] - mu, axis=<span class="number">1</span>)**<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(k):</span><br><span class="line">      mu[j] = np.mean(X[np.arange(N)[c==j]], axis=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># print(mu)</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (np.sum(np.linalg.norm(prev_mu - mu,axis=<span class="number">1</span>)) &lt; <span class="number">0.001</span>):</span><br><span class="line">      <span class="comment"># print(np.sum(np.linalg.norm(prev_mu - mu,axis=1)))</span></span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">  distortion = np.sum([np.sum(np.linalg.norm(X[np.arange(N)[c==i]] - mu[i], axis=<span class="number">1</span>)**<span class="number">2</span>) <span class="keyword">for</span> i <span class="keyword">in</span> range(k)])</span><br><span class="line">  print(<span class="string">f&quot;distortion: <span class="subst">&#123;distortion&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> c, mu, distortion</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myKMeans</span> (<span class="params">X: np.ndarray, k: int, iterations=<span class="number">100</span>, tol=<span class="number">0.001</span></span>):</span></span><br><span class="line">  N, d = X.shape</span><br><span class="line">  mu = X[np.random.choice(range(N), size=k)]</span><br><span class="line">  c = np.zeros(N)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> step <span class="keyword">in</span> tqdm(range(iterations)):</span><br><span class="line">    prev_mu = mu.copy()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):</span><br><span class="line">      c[i] = np.argmin(np.linalg.norm(X[i] - mu, axis=<span class="number">1</span>)**<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(k):</span><br><span class="line">      mu[j] = np.mean(X[np.arange(N)[c==j]], axis=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (np.sum(np.linalg.norm(prev_mu - mu,axis=<span class="number">1</span>)) &lt; tol):</span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">  distortion = np.sum([np.sum(np.linalg.norm(X[np.arange(N)[c==i]] - mu[i], axis=<span class="number">1</span>)**<span class="number">2</span>) <span class="keyword">for</span> i <span class="keyword">in</span> range(k)])</span><br><span class="line">  print(<span class="string">f&quot;distortion: <span class="subst">&#123;distortion&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> c, mu, distortion</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/11/03/CS229-Notes7a-The-k-means-clustering-algorithm/#more" rel="contents">
@@ -389,7 +473,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-02 03:46:54" itemprop="dateModified" datetime="2020-11-02T03:46:54-05:00">2020-11-02</time>
+                <time title="修改时间：2020-11-03 22:15:48" itemprop="dateModified" datetime="2020-11-03T22:15:48-05:00">2020-11-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -412,13 +496,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="Import-Packages"><a href="#Import-Packages" class="headerlink" title="Import Packages"></a>Import Packages</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">from</span> tqdm.notebook <span class="keyword">import</span> tqdm</span><br></pre></td></tr></table></figure>
-
-<p><strong><a target="_blank" rel="noopener" href="https://scipy-lectures.org/packages/scikit-learn/auto_examples/plot_pca.html">Link: Plot PCA</a></strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line">iris = datasets.load_iris()</span><br><span class="line">X = iris.data</span><br><span class="line">y = iris.target</span><br></pre></td></tr></table></figure>
-
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X.shape, y.shape</span><br></pre></td></tr></table></figure>
+          <h2 id="remark">Remark</h2>
+<p>(11/3) PCA中的centering的目的是？ - 注意到我们对于协方差矩阵的表达式 <span class="math inline">\(\Sigma = XX^T, X\in \mathbb{R}^{N\times d}\)</span> - 实际上的协方差表达式 <span class="math inline">\(Cov(X) = E[XX^T] - E[X] (E[X])^T\)</span> - 所以需要centering各分量</p>
+<p>(11/3) PCA中特征值为什么对应方差贡献量？ - 对<span class="math inline">\(\Sigma\)</span> 这个半正定对称矩阵的分解可以看成 <span class="math inline">\(\Sigma = U\Lambda U^T\)</span>，即U和V相等。而U的每个列向量组成标准(norm=1)正交基。最终的<span class="math inline">\(\Sigma\)</span>是各个分量按特征值加权再组合。因而这里的特征值可以反映高维椭圆各正交轴的长短。又因为每个<span class="math inline">\(\lambda uu^T\)</span>的量纲是二次，所以<span class="math inline">\(\lambda\)</span>可以反映方差贡献量。 - SVD那张经典的示意图。正交阵的本质是换基（比如旋转变换），而<span class="math inline">\(\Lambda\)</span> 这种特征值对角矩阵就表示对各分量进行不同程度的伸缩。</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Singular-Value-Decomposition.svg/220px-Singular-Value-Decomposition.svg.png"></p>
+<h2 id="import-packages">Import Packages</h2>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/11/01/CS229-Notes10-Principal-components-analysis/#more" rel="contents">
@@ -1124,66 +1206,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/10/21/Data-Mining-Lec7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
-      <meta itemprop="name" content="姚华(Hua Yao)">
-      <meta itemprop="description" content="hy2632@columbia.edu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="豁蒙楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/21/Data-Mining-Lec7/" class="post-title-link" itemprop="url">Data-Mining-Lec7</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-10-21 19:11:41 / 修改时间：22:30:29" itemprop="dateCreated datePublished" datetime="2020-10-21T19:11:41-05:00">2020-10-21</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="Some-hints-on-Midterm"><a href="#Some-hints-on-Midterm" class="headerlink" title="Some hints on Midterm"></a>Some hints on Midterm</h2><p>Problem1: PSD: Random feature decomposition to prove</p>
-<p>Problem2: Find a random feature map of the product of two kernels,<br>    angular might be negative</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1255,7 +1277,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-count">44</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

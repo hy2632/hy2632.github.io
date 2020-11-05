@@ -20,17 +20,20 @@
     var CONFIG = {"hostname":"hy2632.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="hy2632@columbia.edu">
-<meta property="og:type" content="website">
-<meta property="og:title" content="豁蒙楼">
-<meta property="og:url" content="https://hy2632.github.io/categories/Java%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/index.html">
+  <meta name="description" content="参考资料XGBoost: A Scalable Tree Boosting System 贪心学院： XGBoost的技术剖析 非常好的教学视频，在此将内容整理如下。 目标函数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XGBoost">
+<meta property="og:url" content="https://hy2632.github.io/2020/11/05/XGBoost/index.html">
 <meta property="og:site_name" content="豁蒙楼">
-<meta property="og:description" content="hy2632@columbia.edu">
+<meta property="og:description" content="参考资料XGBoost: A Scalable Tree Boosting System 贪心学院： XGBoost的技术剖析 非常好的教学视频，在此将内容整理如下。 目标函数">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-05T18:05:12.000Z">
+<meta property="article:modified_time" content="2020-11-05T22:38:32.929Z">
 <meta property="article:author" content="姚华(Hua Yao)">
+<meta property="article:tag" content="CS229">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://hy2632.github.io/categories/Java%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">
+<link rel="canonical" href="https://hy2632.github.io/2020/11/05/XGBoost/">
 
 
 <script id="page-configurations">
@@ -38,12 +41,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>分类: Java数据结构与算法 | 豁蒙楼</title>
+  <title>XGBoost | 豁蒙楼</title>
   
 
 
@@ -188,191 +191,121 @@
         <div class="content-wrap">
           
 
-          <div class="content category">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">Java数据结构与算法
-          <small>分类</small>
-        </h2>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/11/05/XGBoost/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
+      <meta itemprop="name" content="姚华(Hua Yao)">
+      <meta itemprop="description" content="hy2632@columbia.edu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="豁蒙楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          XGBoost
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-11-05 13:05:12 / 修改时间：17:38:32" itemprop="dateCreated datePublished" datetime="2020-11-05T13:05:12-05:00">2020-11-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-10-23T00:26:43-05:00"
-              content="2020-10-23">
-          10-23
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/10/23/LC1541%E5%B9%B3%E8%A1%A1%E6%8B%AC%E5%8F%B7%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%9C%80%E5%B0%91%E6%8F%92%E5%85%A5%E6%AC%A1%E6%95%B0/" itemprop="url">
-            <span itemprop="name">LC1541平衡括号字符串的最少插入次数</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-09-25T00:06:20-05:00"
-              content="2020-09-25">
-          09-25
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/25/%E5%93%88%E5%B8%8C/" itemprop="url">
-            <span itemprop="name">哈希</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-09-18T16:56:12-05:00"
-              content="2020-09-18">
-          09-18
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/18/%E9%80%92%E5%BD%92/" itemprop="url">
-            <span itemprop="name">递归</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-09-08T00:28:55-05:00"
-              content="2020-09-08">
-          09-08
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/08/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" itemprop="url">
-            <span itemprop="name">动态规划</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-09-03T16:25:52-05:00"
-              content="2020-09-03">
-          09-03
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/03/%E5%88%86%E6%B2%BB/" itemprop="url">
-            <span itemprop="name">分治</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-09-02T17:03:31-05:00"
-              content="2020-09-02">
-          09-02
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/02/%E9%93%BE%E8%A1%A8%E9%A2%98-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" itemprop="url">
-            <span itemprop="name">链表题(持续更新)</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-09-02T16:51:01-05:00"
-              content="2020-09-02">
-          09-02
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/02/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" itemprop="url">
-            <span itemprop="name">二分查找</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-08-24T14:09:59-05:00"
-              content="2020-08-24">
-          08-24
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/08/24/%E6%8E%92%E5%BA%8F/" itemprop="url">
-            <span itemprop="name">十大排序算法</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
+        <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1603.02754.pdf?__hstc=133736337.1bb630f9cde2cb5f07430159d50a3c91.1513641600097.1513641600098.1513641600099.1&__hssc=133736337.1.1513641600100&__hsfp=528229161">XGBoost: A Scalable Tree Boosting System</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1si4y1G7Jb">贪心学院： XGBoost的技术剖析</a></p>
+<p>非常好的教学视频，在此将内容整理如下。</p>
+<h2 id="目标函数"><a href="#目标函数" class="headerlink" title="目标函数"></a>目标函数</h2><p>Boosting是多个弱分类器叠加，每一棵树拟合前面所有树加和与目标值的残差（递归定义）。假设共K棵树，$f_k \sim F$</p>
+<p>$$obj = \sum_{i=1}^{n}{l(y_i, \hat{y_i})} + \sum_{k=1}^{K}{\Omega(f_k)}$$</p>
+<p>后一项为树的复杂度，需要参数化；前一项为损失函数累积，损失函数的形式可以是指数或Squared error等等。</p>
+<p>假设已知树的形状，在训练第K棵树时，前面的 K-1 都已知。目标函数中去除掉先前累计的常量。</p>
+<p>$$\begin{aligned}<br>obj &amp;= \sum_{i=1}^{N}{l(y_i, \sum_{j=1}^{K-1}{f_{j}(x_i)}+f_{K}(x_i))} + \Omega(f_K) \<br>&amp;= \sum_{i=1}^{N}{l(y_i, \hat{y_i}^{(k-1)}+f_{K}(x_i))} + \Omega(f_K)<br>\end{aligned}$$</p>
+<p>其中 $\hat{y_i}^{(k-1)}$ 表示累计到前 K-1 棵树时的估计值。复杂度只计第 K 棵树。可以发现，损失函数中包含了前面的累积量，导致不能进一步简化。使用二阶泰勒展开。</p>
+<h2 id="泰勒近似"><a href="#泰勒近似" class="headerlink" title="泰勒近似"></a>泰勒近似</h2><p>$$f(x+\Delta x) \approx f(x) + f’(x) \Delta x + \frac{f’’(x)}{2} (\Delta x)^2$$</p>
+<p>将 $l(y_i, \hat{y_i}^{(k-1)}+f_{K}(x_i))$ 看作关于估计量 $\hat{y_i} ^{(k-1)}$ 的函数，最后一棵树提供的 $f_{K}(x_i)$ 看作增量， 则</p>
+<p>$$\begin{aligned}<br>l(y_i, \hat{y_i}^{(k-1)}+f_{K}(x_i)) &amp;\approx l(y_i, \hat{y_i}^{(k-1)}) + l’(y_i, \hat{y_i}^{(k-1)})f_{K}(x_i) + \frac{l’’(y_i, \hat{y_i}^{(k-1)})}{2}(f_{K}(x_i))^2 \</p>
+<p>&amp;=l(y_i, \hat{y_i}^{(k-1)}) + g_if_{K}(x_i)+ h_if_{K}^2(x_i)</p>
+<p>\end{aligned}$$</p>
+<p>其中 $g_i, h_i$ 分别是 $l(y_i, \hat{y_i}^{(k-1)})$ 对 $\hat{y_i}^{(k-1)}$ 的一阶二阶导，都是已知参数。</p>
+<p>再对目标函数做简化，去掉常数项</p>
+<p>$$\begin{aligned}<br>obj &amp;= \sum_{i=1}^{N}{l(y_i, \hat{y_i}^{(k-1)}+f_{K}(x_i))} + \Omega(f_K) \<br>&amp;= \sum_{i=1}^{N}{\bigg(l(y_i, \hat{y_i}^{(k-1)}) + g_if_{K}(x_i)+ \frac{h_i}2f_{K}^2(x_i)\bigg)} + \Omega(f_K) \<br>&amp;\to\ \sum_{i=1}^{N}{\bigg(g_if_{K}(x_i)+ \frac{h_i}2f_{K}^2(x_i)\bigg)} + \Omega(f_K)<br>\end{aligned}$$</p>
+<h2 id="树的参数化"><a href="#树的参数化" class="headerlink" title="树的参数化"></a>树的参数化</h2><p>目前为止对损失函数部分进行了简化，接下来需要对树的复杂度进行研究，需要将树参数化。</p>
+<p>这里树的复杂度用两个指标来量化，一个是叶节点的个数 $T$, 另一个是每个叶节点的值 $w_i$ 。</p>
+<p>定义函数 $q(x_i) = k$，表示样本所在叶节点的序号。</p>
+<p>定义函数 $I(j) = {i| q(x_i) = j}$, 表示第 j 个叶节点中所有样本的序号集合。</p>
+<p>则树的复杂度定义为</p>
+<p>$$\Omega(f_k) = \gamma T + \frac12 \lambda \sum_{j=1}^T{w_j^2}$$</p>
+<p>目标函数进一步表示为</p>
+<p>$$\begin{aligned}<br>obj &amp;= \sum_{i=1}^{N}{\bigg(g_if_{K}(x_i)+ \frac{h_i}2f_{K}^2(x_i)\bigg)} + \Omega(f_K) \<br>&amp;=\sum_{j=1}^{T}{\bigg((\sum_{i\in I(j)}{g_i})w_j+ (\sum_{i\in I(j)}{\frac{h_i}2})w_j^2\bigg)} + \gamma T + \frac12 \lambda \sum_{j=1}^T{w_j^2}\<br>&amp;=\sum_{j=1}^{T}{\bigg((\sum_{i\in I(j)}{g_i})w_j+ \frac 1  2(\lambda + \sum_{i\in I(j)}h_i)w_j^2 + \gamma   \bigg)}<br>\end{aligned}$$</p>
+<p>因而目标函数的每一项是关于叶节点值 $w_j$ 的二项式。整体目标函数优化问题就变成了<strong>对各叶节点的取值$w_j$的优化问题。</strong></p>
+<p>我们知道二项式的critical point $-\frac{b}{2a}$。</p>
+<p>$$w_j^* = -\frac{\sum_{i\in I(j)}{g_i}}{\lambda + \sum_{i\in I(j)}h_i} = -\frac{G_j}{H_j + \lambda}$$</p>
+<p>$$obj^* = -\frac12 \sum_{j=1}^{T}{\frac{G_j^2}{H_j + \lambda}} + \gamma T$$</p>
+<p>于是我们有了最优目标值的 closed-form solution。</p>
+<h2 id="树的结构"><a href="#树的结构" class="headerlink" title="树的结构"></a>树的结构</h2><p>先前求解目标函数的最优值，基于已知树的结构这么一个前提。在不知道树的结构时如何获得全局最优值？ </p>
+<p>暴力(brute force)解法是遍历各种树结构，求出各自的最优目标函数值，并取全局最优。但遍历树复杂度过高（二叉树的组合数：卡特兰数）。</p>
+<p>如果把 $obj^*$ 作为 Split 的 criterion (代替 Information Gain 或 Gini Impurity)，就可以<strong>贪心</strong>求解。每次分裂节点，比较新的 $obj^*$ 和 之前的 $obj^*$，最终选取的 split 使 $obj$ 下降最快。</p>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CS229/" rel="tag"># CS229</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/03/CS229-Notes7a-The-k-means-clustering-algorithm/" rel="prev" title="CS229 Notes7a The k-means clustering algorithm">
+      <i class="fa fa-chevron-left"></i> CS229 Notes7a The k-means clustering algorithm
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
 
@@ -425,6 +358,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">1.</span> <span class="nav-text">参考资料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">目标函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%B0%E5%8B%92%E8%BF%91%E4%BC%BC"><span class="nav-number">3.</span> <span class="nav-text">泰勒近似</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%91%E7%9A%84%E5%8F%82%E6%95%B0%E5%8C%96"><span class="nav-number">4.</span> <span class="nav-text">树的参数化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%91%E7%9A%84%E7%BB%93%E6%9E%84"><span class="nav-number">5.</span> <span class="nav-text">树的结构</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
