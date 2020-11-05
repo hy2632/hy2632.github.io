@@ -6046,39 +6046,52 @@ distortion: 46.44618205128205</code></pre>
   <entry>
     <title>XGBoost</title>
     <url>/2020/11/05/XGBoost/</url>
-    <content><![CDATA[<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://arxiv.org/pdf/1603.02754.pdf?__hstc=133736337.1bb630f9cde2cb5f07430159d50a3c91.1513641600097.1513641600098.1513641600099.1&__hssc=133736337.1.1513641600100&__hsfp=528229161">XGBoost: A Scalable Tree Boosting System</a></p>
+    <content><![CDATA[<h2 id="参考资料">参考资料</h2>
+<p><a href="https://arxiv.org/pdf/1603.02754.pdf?__hstc=133736337.1bb630f9cde2cb5f07430159d50a3c91.1513641600097.1513641600098.1513641600099.1&amp;__hssc=133736337.1.1513641600100&amp;__hsfp=528229161">XGBoost: A Scalable Tree Boosting System</a></p>
 <p><a href="https://www.bilibili.com/video/BV1si4y1G7Jb">贪心学院： XGBoost的技术剖析</a></p>
 <p>非常好的教学视频，在此将内容整理如下。</p>
-<h2 id="目标函数"><a href="#目标函数" class="headerlink" title="目标函数"></a>目标函数</h2><p>Boosting是多个弱分类器叠加，每一棵树拟合前面所有树加和与目标值的残差（递归定义）。假设共K棵树，$f_k \sim F$</p>
-<p>$$obj = \sum_{i=1}^{n}{l(y_i, \hat{y_i})} + \sum_{k=1}^{K}{\Omega(f_k)}$$</p>
+<h2 id="目标函数">目标函数</h2>
+<p>Boosting是多个弱分类器叠加，每一棵树拟合前面所有树加和与目标值的残差（递归定义）。假设共K棵树，<span class="math inline">\(f_k \sim F\)</span></p>
+<p><span class="math display">\[obj = \sum_{i=1}^{n}{l(y_i, \hat{y_i})} + \sum_{k=1}^{K}{\Omega(f_k)}\]</span></p>
 <p>后一项为树的复杂度，需要参数化；前一项为损失函数累积，损失函数的形式可以是指数或Squared error等等。</p>
 <p>假设已知树的形状，在训练第K棵树时，前面的 K-1 都已知。目标函数中去除掉先前累计的常量。</p>
-<p>$$\begin{aligned}<br>obj &amp;= \sum_{i=1}^{N}{l(y_i, \sum_{j=1}^{K-1}{f_{j}(x_i)}+f_{K}(x_i))} + \Omega(f_K) \<br>&amp;= \sum_{i=1}^{N}{l(y_i, \hat{y_i}^{(k-1)}+f_{K}(x_i))} + \Omega(f_K)<br>\end{aligned}$$</p>
-<p>其中 $\hat{y_i}^{(k-1)}$ 表示累计到前 K-1 棵树时的估计值。复杂度只计第 K 棵树。可以发现，损失函数中包含了前面的累积量，导致不能进一步简化。使用二阶泰勒展开。</p>
-<h2 id="泰勒近似"><a href="#泰勒近似" class="headerlink" title="泰勒近似"></a>泰勒近似</h2><p>$$f(x+\Delta x) \approx f(x) + f’(x) \Delta x + \frac{f’’(x)}{2} (\Delta x)^2$$</p>
-<p>将 $l(y_i, \hat{y_i}^{(k-1)}+f_{K}(x_i))$ 看作关于估计量 $\hat{y_i} ^{(k-1)}$ 的函数，最后一棵树提供的 $f_{K}(x_i)$ 看作增量， 则</p>
-<p>$$\begin{aligned}<br>l(y_i, \hat{y_i}^{(k-1)}+f_{K}(x_i)) &amp;\approx l(y_i, \hat{y_i}^{(k-1)}) + l’(y_i, \hat{y_i}^{(k-1)})f_{K}(x_i) + \frac{l’’(y_i, \hat{y_i}^{(k-1)})}{2}(f_{K}(x_i))^2 \</p>
-<p>&amp;=l(y_i, \hat{y_i}^{(k-1)}) + g_if_{K}(x_i)+ h_if_{K}^2(x_i)</p>
-<p>\end{aligned}$$</p>
-<p>其中 $g_i, h_i$ 分别是 $l(y_i, \hat{y_i}^{(k-1)})$ 对 $\hat{y_i}^{(k-1)}$ 的一阶二阶导，都是已知参数。</p>
+<p><span class="math display">\[\begin{aligned}obj &amp;= \sum_{i=1}^{N}{l(y_i, \sum_{j=1}^{K-1}{f_{j}(x_i)}+f_{K}(x_i))} + \Omega(f_K)\\
+&amp;= \sum_{i=1}^{N}{l(y_i, \hat{y_i}^{(k-1)}+f_{K}(x_i))} + \Omega(f_K)\end{aligned}\]</span></p>
+<p>其中 <span class="math inline">\(\hat{y_i}^{(k-1)}\)</span> 表示累计到前 K-1 棵树时的估计值。复杂度只计第 K 棵树。可以发现，损失函数中包含了前面的累积量，导致不能进一步简化。使用二阶泰勒展开。</p>
+<h2 id="泰勒近似">泰勒近似</h2>
+<p><span class="math display">\[f(x+\Delta x) \approx f(x) + f&#39;(x) \Delta x + \frac{f&#39;&#39;(x)}{2} (\Delta x)^2\]</span></p>
+<p>将 <span class="math inline">\(l(y_i, \hat{y_i}^{(k-1)}+f_{K}(x_i))\)</span> 看作关于估计量 <span class="math inline">\(\hat{y_i} ^{(k-1)}\)</span> 的函数，最后一棵树提供的 <span class="math inline">\(f_{K}(x_i)\)</span> 看作增量， 则</p>
+<p><span class="math display">\[\begin{aligned}l(y_i, \hat{y_i}^{(k-1)}+f_{K}(x_i)) &amp;\approx l(y_i, \hat{y_i}^{(k-1)}) + l&#39;(y_i, \hat{y_i}^{(k-1)})f_{K}(x_i) + \frac{l&#39;&#39;(y_i, \hat{y_i}^{(k-1)})}{2}(f_{K}(x_i))^2\\
+&amp;=l(y_i, \hat{y_i}^{(k-1)}) + g_if_{K}(x_i)+ h_if_{K}^2(x_i)\end{aligned}\]</span></p>
+<p>其中 <span class="math inline">\(g_i, h_i\)</span> 分别是 <span class="math inline">\(l(y_i, \hat{y_i}^{(k-1)})\)</span> 对 <span class="math inline">\(\hat{y_i}^{(k-1)}\)</span> 的一阶二阶导，都是已知参数。</p>
 <p>再对目标函数做简化，去掉常数项</p>
-<p>$$\begin{aligned}<br>obj &amp;= \sum_{i=1}^{N}{l(y_i, \hat{y_i}^{(k-1)}+f_{K}(x_i))} + \Omega(f_K) \<br>&amp;= \sum_{i=1}^{N}{\bigg(l(y_i, \hat{y_i}^{(k-1)}) + g_if_{K}(x_i)+ \frac{h_i}2f_{K}^2(x_i)\bigg)} + \Omega(f_K) \<br>&amp;\to\ \sum_{i=1}^{N}{\bigg(g_if_{K}(x_i)+ \frac{h_i}2f_{K}^2(x_i)\bigg)} + \Omega(f_K)<br>\end{aligned}$$</p>
-<h2 id="树的参数化"><a href="#树的参数化" class="headerlink" title="树的参数化"></a>树的参数化</h2><p>目前为止对损失函数部分进行了简化，接下来需要对树的复杂度进行研究，需要将树参数化。</p>
-<p>这里树的复杂度用两个指标来量化，一个是叶节点的个数 $T$, 另一个是每个叶节点的值 $w_i$ 。</p>
-<p>定义函数 $q(x_i) = k$，表示样本所在叶节点的序号。</p>
-<p>定义函数 $I(j) = {i| q(x_i) = j}$, 表示第 j 个叶节点中所有样本的序号集合。</p>
+<p><span class="math display">\[\begin{aligned}
+obj &amp;= \sum_{i=1}^{N}{l(y_i, \hat{y_i}^{(k-1)}+f_{K}(x_i))} + \Omega(f_K) \\
+&amp;= \sum_{i=1}^{N}{\bigg(l(y_i, \hat{y_i}^{(k-1)}) + g_if_{K}(x_i)+ \frac{h_i}2f_{K}^2(x_i)\bigg)} + \Omega(f_K) \\
+&amp;\to\ \sum_{i=1}^{N}{\bigg(g_if_{K}(x_i)+ \frac{h_i}2f_{K}^2(x_i)\bigg)} + \Omega(f_K)
+\end{aligned}\]</span></p>
+<h2 id="树的参数化">树的参数化</h2>
+<p>目前为止对损失函数部分进行了简化，接下来需要对树的复杂度进行研究，需要将树参数化。</p>
+<p>这里树的复杂度用两个指标来量化，一个是叶节点的个数 <span class="math inline">\(T\)</span>, 另一个是每个叶节点的值 <span class="math inline">\(w_i\)</span> 。</p>
+<p>定义函数 <span class="math inline">\(q(x_i) = k\)</span>，表示样本所在叶节点的序号。</p>
+<p>定义函数 <span class="math inline">\(I(j) = \{i| q(x_i) = j\}\)</span>, 表示第 j 个叶节点中所有样本的序号集合。</p>
 <p>则树的复杂度定义为</p>
-<p>$$\Omega(f_k) = \gamma T + \frac12 \lambda \sum_{j=1}^T{w_j^2}$$</p>
+<p><span class="math display">\[\Omega(f_k) = \gamma T + \frac12 \lambda \sum_{j=1}^T{w_j^2}\]</span></p>
 <p>目标函数进一步表示为</p>
-<p>$$\begin{aligned}<br>obj &amp;= \sum_{i=1}^{N}{\bigg(g_if_{K}(x_i)+ \frac{h_i}2f_{K}^2(x_i)\bigg)} + \Omega(f_K) \<br>&amp;=\sum_{j=1}^{T}{\bigg((\sum_{i\in I(j)}{g_i})w_j+ (\sum_{i\in I(j)}{\frac{h_i}2})w_j^2\bigg)} + \gamma T + \frac12 \lambda \sum_{j=1}^T{w_j^2}\<br>&amp;=\sum_{j=1}^{T}{\bigg((\sum_{i\in I(j)}{g_i})w_j+ \frac 1  2(\lambda + \sum_{i\in I(j)}h_i)w_j^2 + \gamma   \bigg)}<br>\end{aligned}$$</p>
-<p>因而目标函数的每一项是关于叶节点值 $w_j$ 的二项式。整体目标函数优化问题就变成了<strong>对各叶节点的取值$w_j$的优化问题。</strong></p>
-<p>我们知道二项式的critical point $-\frac{b}{2a}$。</p>
-<p>$$w_j^* = -\frac{\sum_{i\in I(j)}{g_i}}{\lambda + \sum_{i\in I(j)}h_i} = -\frac{G_j}{H_j + \lambda}$$</p>
-<p>$$obj^* = -\frac12 \sum_{j=1}^{T}{\frac{G_j^2}{H_j + \lambda}} + \gamma T$$</p>
+<p><span class="math display">\[\begin{aligned}
+obj &amp;= \sum_{i=1}^{N}{\bigg(g_if_{K}(x_i)+ \frac{h_i}2f_{K}^2(x_i)\bigg)} + \Omega(f_K) \\
+&amp;=\sum_{j=1}^{T}{\bigg((\sum_{i\in I(j)}{g_i})w_j+ (\sum_{i\in I(j)}{\frac{h_i}2})w_j^2\bigg)} + \gamma T + \frac12 \lambda \sum_{j=1}^T{w_j^2}\\
+&amp;=\sum_{j=1}^{T}{\bigg((\sum_{i\in I(j)}{g_i})w_j+ \frac 1  2(\lambda + \sum_{i\in I(j)}h_i)w_j^2 + \gamma   \bigg)}  
+\end{aligned}\]</span></p>
+<p>因而目标函数的每一项是关于叶节点值 <span class="math inline">\(w_j\)</span> 的二项式。整体目标函数优化问题就变成了<strong>对各叶节点的取值<span class="math inline">\(w_j\)</span>的优化问题。</strong></p>
+<p>我们知道二项式的critical point <span class="math inline">\(-\frac{b}{2a}\)</span>。</p>
+<p><span class="math display">\[w_j^* = -\frac{\sum_{i\in I(j)}{g_i}}{\lambda + \sum_{i\in I(j)}h_i} = -\frac{G_j}{H_j + \lambda}\]</span></p>
+<p><span class="math display">\[obj^* = -\frac12 \sum_{j=1}^{T}{\frac{G_j^2}{H_j + \lambda}} + \gamma T\]</span></p>
 <p>于是我们有了最优目标值的 closed-form solution。</p>
-<h2 id="树的结构"><a href="#树的结构" class="headerlink" title="树的结构"></a>树的结构</h2><p>先前求解目标函数的最优值，基于已知树的结构这么一个前提。在不知道树的结构时如何获得全局最优值？ </p>
+<h2 id="树的结构">树的结构</h2>
+<p>先前求解目标函数的最优值，基于已知树的结构这么一个前提。在不知道树的结构时如何获得全局最优值？</p>
 <p>暴力(brute force)解法是遍历各种树结构，求出各自的最优目标函数值，并取全局最优。但遍历树复杂度过高（二叉树的组合数：卡特兰数）。</p>
-<p>如果把 $obj^*$ 作为 Split 的 criterion (代替 Information Gain 或 Gini Impurity)，就可以<strong>贪心</strong>求解。每次分裂节点，比较新的 $obj^*$ 和 之前的 $obj^*$，最终选取的 split 使 $obj$ 下降最快。</p>
+<p>如果把 <span class="math inline">\(obj^*\)</span> 作为 Split 的 criterion (代替 Information Gain 或 Gini Impurity)，就可以<strong>贪心</strong>求解。每次分裂节点，比较新的 <span class="math inline">\(obj^*\)</span> 和 之前的 <span class="math inline">\(obj^*\)</span>，最终选取的 split 使 <span class="math inline">\(obj\)</span> 下降最快。</p>
 ]]></content>
       <categories>
         <category>Machine Learning</category>
