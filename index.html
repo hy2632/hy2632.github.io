@@ -194,6 +194,85 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/11/05/Kaggle-Titanic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
+      <meta itemprop="name" content="姚华(Hua Yao)">
+      <meta itemprop="description" content="hy2632@columbia.edu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="豁蒙楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/05/Kaggle-Titanic/" class="post-title-link" itemprop="url">Kaggle: Titanic</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-11-05 23:29:06 / 修改时间：23:33:21" itemprop="dateCreated datePublished" datetime="2020-11-05T23:29:06-05:00">2020-11-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="the-titanic"><a class="markdownIt-Anchor" href="#the-titanic"></a> The Titanic</h1>
+<p><strong><a target="_blank" rel="noopener" href="https://www.kaggle.com/c/titanic">Kaggle: Titanic</a></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Simple implementation with basic data cleaning, one-hot encoding and lightGBM classifier.</span><br><span class="line"></span><br><span class="line">Score: 0.76794</span><br><span class="line">Rank: 11846&#x2F;17593</span><br></pre></td></tr></table></figure>
+<h1 id="import-packages-load-dataset"><a class="markdownIt-Anchor" href="#import-packages-load-dataset"></a> Import Packages / Load Dataset</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%cd /content/drive/My Drive/Kaggle/titanic</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/05/Kaggle-Titanic/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/11/05/XGBoost/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -474,7 +553,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-03 22:15:48" itemprop="dateModified" datetime="2020-11-03T22:15:48-05:00">2020-11-03</time>
+                <time title="修改时间：2020-11-05 17:47:01" itemprop="dateModified" datetime="2020-11-05T17:47:01-05:00">2020-11-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -497,11 +576,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="remark">Remark</h2>
-<p>(11/3) PCA中的centering的目的是？ - 注意到我们对于协方差矩阵的表达式 <span class="math inline">\(\Sigma = XX^T, X\in \mathbb{R}^{N\times d}\)</span> - 实际上的协方差表达式 <span class="math inline">\(Cov(X) = E[XX^T] - E[X] (E[X])^T\)</span> - 所以需要centering各分量</p>
-<p>(11/3) PCA中特征值为什么对应方差贡献量？ - 对<span class="math inline">\(\Sigma\)</span> 这个半正定对称矩阵的分解可以看成 <span class="math inline">\(\Sigma = U\Lambda U^T\)</span>，即U和V相等。而U的每个列向量组成标准(norm=1)正交基。最终的<span class="math inline">\(\Sigma\)</span>是各个分量按特征值加权再组合。因而这里的特征值可以反映高维椭圆各正交轴的长短。又因为每个<span class="math inline">\(\lambda uu^T\)</span>的量纲是二次，所以<span class="math inline">\(\lambda\)</span>可以反映方差贡献量。 - SVD那张经典的示意图。正交阵的本质是换基（比如旋转变换），而<span class="math inline">\(\Lambda\)</span> 这种特征值对角矩阵就表示对各分量进行不同程度的伸缩。</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Singular-Value-Decomposition.svg/220px-Singular-Value-Decomposition.svg.png"></p>
-<h2 id="import-packages">Import Packages</h2>
+          <h2 id="remark"><a class="markdownIt-Anchor" href="#remark"></a> Remark</h2>
+<p>(11/3) PCA中的centering的目的是？</p>
+<ul>
+<li>注意到我们对于协方差矩阵的表达式 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">Σ</mi><mo>=</mo><mi>X</mi><msup><mi>X</mi><mi>T</mi></msup><mo separator="true">,</mo><mi>X</mi><mo>∈</mo><msup><mi mathvariant="double-struck">R</mi><mrow><mi>N</mi><mo>×</mo><mi>d</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\Sigma = XX^T, X\in \mathbb{R}^{N\times d}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">Σ</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.035771em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.07847em;">X</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.07847em;">X</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8491079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord mathbb">R</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span><span class="mbin mtight">×</span><span class="mord mathdefault mtight">d</span></span></span></span></span></span></span></span></span></span></span></span></li>
+<li>实际上的协方差表达式 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>C</mi><mi>o</mi><mi>v</mi><mo stretchy="false">(</mo><mi>X</mi><mo stretchy="false">)</mo><mo>=</mo><mi>E</mi><mo stretchy="false">[</mo><mi>X</mi><msup><mi>X</mi><mi>T</mi></msup><mo stretchy="false">]</mo><mo>−</mo><mi>E</mi><mo stretchy="false">[</mo><mi>X</mi><mo stretchy="false">]</mo><mo stretchy="false">(</mo><mi>E</mi><mo stretchy="false">[</mo><mi>X</mi><mo stretchy="false">]</mo><msup><mo stretchy="false">)</mo><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">Cov(X) = E[XX^T] - E[X] (E[X])^T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.07847em;">X</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.0913309999999998em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.07847em;">X</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.0913309999999998em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.07847em;">X</span><span class="mclose">]</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.07847em;">X</span><span class="mclose">]</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span></span></span></span></li>
+<li>所以需要centering各分量</li>
+</ul>
+<p>(11/3) PCA中特征值为什么对应方差贡献量？</p>
+<ul>
+<li>对<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">Σ</mi></mrow><annotation encoding="application/x-tex">\Sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">Σ</span></span></span></span> 这个半正定对称矩阵的分解可以看成 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">Σ</mi><mo>=</mo><mi>U</mi><mi mathvariant="normal">Λ</mi><msup><mi>U</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">\Sigma = U\Lambda U^T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">Σ</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8413309999999999em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">U</span><span class="mord">Λ</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">U</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span></span></span></span>，即U和V相等。而U的每个列向量组成标准(norm=1)正交基。最终的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">Σ</mi></mrow><annotation encoding="application/x-tex">\Sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">Σ</span></span></span></span>是各个分量按特征值加权再组合。因而这里的特征值可以反映高维椭圆各正交轴的长短。又因为每个<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>λ</mi><mi>u</mi><msup><mi>u</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">\lambda uu^T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8413309999999999em;vertical-align:0em;"></span><span class="mord mathdefault">λ</span><span class="mord mathdefault">u</span><span class="mord"><span class="mord mathdefault">u</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span></span></span></span>的量纲是二次，所以<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">λ</span></span></span></span>可以反映方差贡献量。</li>
+<li>SVD那张经典的示意图。正交阵的本质是换基（比如旋转变换），而<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">Λ</mi></mrow><annotation encoding="application/x-tex">\Lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">Λ</span></span></span></span> 这种特征值对角矩阵就表示对各分量进行不同程度的伸缩。</li>
+</ul>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/11/01/CS229-Notes10-Principal-components-analysis/#more" rel="contents">
@@ -1123,90 +1209,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/10/23/LC1541%E5%B9%B3%E8%A1%A1%E6%8B%AC%E5%8F%B7%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%9C%80%E5%B0%91%E6%8F%92%E5%85%A5%E6%AC%A1%E6%95%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
-      <meta itemprop="name" content="姚华(Hua Yao)">
-      <meta itemprop="description" content="hy2632@columbia.edu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="豁蒙楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/23/LC1541%E5%B9%B3%E8%A1%A1%E6%8B%AC%E5%8F%B7%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%9C%80%E5%B0%91%E6%8F%92%E5%85%A5%E6%AC%A1%E6%95%B0/" class="post-title-link" itemprop="url">LC1541平衡括号字符串的最少插入次数</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-10-23 00:26:43" itemprop="dateCreated datePublished" datetime="2020-10-23T00:26:43-05:00">2020-10-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-22 23:31:33" itemprop="dateModified" datetime="2020-10-22T23:31:33-05:00">2020-10-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">Java数据结构与算法</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-insertions-to-balance-a-parentheses-string/">题目描述</a></h2><p>给你一个括号字符串 s ，它只包含字符 ‘(‘ 和 ‘)’ 。一个括号字符串被称为平衡的当它满足：</p>
-<p>任何左括号 ‘(‘ 必须对应两个连续的右括号 ‘))’ 。<br>左括号 ‘(‘ 必须在对应的连续两个右括号 ‘))’ 之前。<br>比方说 “())”， “())(())))” 和 “(())())))” 都是平衡的， “)()”， “()))” 和 “(()))” 都是不平衡的。</p>
-<p>你可以在任意位置插入字符 ‘(‘ 和 ‘)’ 使字符串平衡。</p>
-<p>请你返回让 s 平衡的最少插入次数。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/10/23/LC1541%E5%B9%B3%E8%A1%A1%E6%8B%AC%E5%8F%B7%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%9C%80%E5%B0%91%E6%8F%92%E5%85%A5%E6%AC%A1%E6%95%B0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1278,7 +1280,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-count">45</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1291,7 +1293,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
