@@ -194,6 +194,134 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/11/16/CS229-Notes12-Reinforcement-Learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
+      <meta itemprop="name" content="姚华(Hua Yao)">
+      <meta itemprop="description" content="hy2632@columbia.edu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="豁蒙楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/16/CS229-Notes12-Reinforcement-Learning/" class="post-title-link" itemprop="url">CS229 Notes12 Reinforcement Learning</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-16 18:47:46" itemprop="dateCreated datePublished" datetime="2020-11-16T18:47:46-05:00">2020-11-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-11-17 11:04:22" itemprop="dateModified" datetime="2020-11-17T11:04:22-05:00">2020-11-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/11/16/CS229-Notes12-Reinforcement-Learning/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/16/CS229-Notes12-Reinforcement-Learning/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="markov-decision-process-mdp">1 Markov decision process (MDP)</h2>
+<ul>
+<li><p>MDP is a tuple of <span class="math inline">\((S, A, \{P_{sa} \}, \gamma, R)\)</span></p>
+<ul>
+<li><span class="math inline">\(S\)</span>: states space</li>
+<li><span class="math inline">\(A\)</span>: action space</li>
+<li><span class="math inline">\(P_{sa}\)</span>: state transition probabilities. Distribution over the state space: Given state <span class="math inline">\(s\)</span>, if we take action <span class="math inline">\(a\)</span>, then the distribution of <span class="math inline">\(s&#39;\)</span></li>
+<li><span class="math inline">\(\gamma\)</span> : discount factor, discount future rewards</li>
+<li><span class="math inline">\(R\)</span>: reward function, <span class="math inline">\(S\times A \to \mathbb{R}\)</span>. Sometimes it is a function of state only, then <span class="math inline">\(S \to \mathbb{R}\)</span></li>
+</ul></li>
+<li><p><strong>Goal of RL: maximize the expectation of discounted future rewards</strong> <span class="math display">\[E[R(s_0) + \gamma R(s_1) + \gamma^2 R(s_2)...]\]</span></p></li>
+<li><p><strong>Policy</strong> function: <span class="math inline">\(\pi : S \to A\)</span>, action given certain state. <span class="math display">\[a = \pi(s)\]</span></p></li>
+<li><p><strong>Value function</strong> for a policy function <span class="math inline">\(\pi\)</span>: <span class="math display">\[ V^\pi(s) = E[R(s_0) + \gamma R(s_1) + \gamma^2 R(s_2)... | s_0=s, \pi] \]</span></p></li>
+<li><p><strong>Bellman Equation</strong>: Discrete value case</p>
+<ul>
+<li>immediate Reward + the expected future sums <span class="math display">\[\begin{aligned}
+V^\pi(s) &amp;= E[R(s_0) + \gamma V^\pi(s&#39;) |s_0=s, \pi] \\
+&amp;= R(s) + \gamma E[V^\pi(s&#39;) |s_0=s, s_1=s&#39;, \pi] \\
+&amp;= R(s) + \gamma E_{s&#39;\sim P_{s\pi(s)}}[V^\pi(s&#39;)] \\
+&amp;= R(s) + \gamma\sum_{s&#39;} P_{s\pi(s)}(s&#39;)V^\pi(s&#39;) 
+\end{aligned}\]</span></li>
+<li>Finite-state MDP (<span class="math inline">\(|S| &lt; \infty\)</span>) has linear solution.</li>
+</ul></li>
+<li><p>Optimal value function <span class="math display">\[V^*(s) = \max_\pi V^\pi(s) \]</span></p>
+<p><span class="math display">\[V^*(s) = R(s) + \max_{a\in A} {\gamma\sum_{s&#39;} P_{sa(s)}(s&#39;)V^*(s&#39;)}\]</span></p>
+<ul>
+<li><p>equivalently optimize the discounted future rewards</p></li>
+<li><p>define the optimal policy <span class="math inline">\(\pi^*\)</span> <span class="math display">\[\pi^*(s) = \argmax_{a\in A}{\sum_{s&#39;} P_{sa(s)}(s&#39;)V^*(s&#39;)}\]</span></p></li>
+<li><p><span class="math inline">\(V^*(s) = V^{\pi^*}(s)\)</span>, the optimal value function is the value function under the optimal policy. Note that the optimal policy does not depend on the initial state.</p></li>
+</ul></li>
+</ul>
+<h2 id="value-iteration-and-policy-iteration">2 Value Iteration and Policy Iteration</h2>
+<p>For finding the optimal policy and the corresponding value.</p>
+<h3 id="value-iteration">Value Iteration</h3>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/16/CS229-Notes12-Reinforcement-Learning/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/11/14/MNIST-Recognition/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1259,99 +1387,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/10/26/CS229-Notes2-Generative-Learning-Algorithms/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
-      <meta itemprop="name" content="姚华(Hua Yao)">
-      <meta itemprop="description" content="hy2632@columbia.edu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="豁蒙楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/26/CS229-Notes2-Generative-Learning-Algorithms/" class="post-title-link" itemprop="url">CS229 Notes2 Generative Learning Algorithms</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-10-26 13:29:10" itemprop="dateCreated datePublished" datetime="2020-10-26T13:29:10-05:00">2020-10-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-30 21:48:03" itemprop="dateModified" datetime="2020-10-30T21:48:03-05:00">2020-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2020/10/26/CS229-Notes2-Generative-Learning-Algorithms/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/10/26/CS229-Notes2-Generative-Learning-Algorithms/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Gaussian discriminant analysis - lemon的文章 - 知乎 https://zhuanlan.zhihu.com/p/22940577</p>
-<p>Normal Equation如何实现一步求解最优参数及其对比梯度下降的特点是什么？ - 深度碎片的回答 - 知乎 https://www.zhihu.com/question/273799498/answer/370173526</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1419,7 +1458,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-count">49</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

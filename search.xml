@@ -6876,4 +6876,84 @@ Model Accuracy = 0.9619
         <category>Machine Learning</category>
       </categories>
   </entry>
+  <entry>
+    <title>CS229 Notes12 Reinforcement Learning</title>
+    <url>/2020/11/16/CS229-Notes12-Reinforcement-Learning/</url>
+    <content><![CDATA[<h2 id="markov-decision-process-mdp">1 Markov decision process (MDP)</h2>
+<ul>
+<li><p>MDP is a tuple of <span class="math inline">\((S, A, \{P_{sa} \}, \gamma, R)\)</span></p>
+<ul>
+<li><span class="math inline">\(S\)</span>: states space</li>
+<li><span class="math inline">\(A\)</span>: action space</li>
+<li><span class="math inline">\(P_{sa}\)</span>: state transition probabilities. Distribution over the state space: Given state <span class="math inline">\(s\)</span>, if we take action <span class="math inline">\(a\)</span>, then the distribution of <span class="math inline">\(s&#39;\)</span></li>
+<li><span class="math inline">\(\gamma\)</span> : discount factor, discount future rewards</li>
+<li><span class="math inline">\(R\)</span>: reward function, <span class="math inline">\(S\times A \to \mathbb{R}\)</span>. Sometimes it is a function of state only, then <span class="math inline">\(S \to \mathbb{R}\)</span></li>
+</ul></li>
+<li><p><strong>Goal of RL: maximize the expectation of discounted future rewards</strong> <span class="math display">\[E[R(s_0) + \gamma R(s_1) + \gamma^2 R(s_2)...]\]</span></p></li>
+<li><p><strong>Policy</strong> function: <span class="math inline">\(\pi : S \to A\)</span>, action given certain state. <span class="math display">\[a = \pi(s)\]</span></p></li>
+<li><p><strong>Value function</strong> for a policy function <span class="math inline">\(\pi\)</span>: <span class="math display">\[ V^\pi(s) = E[R(s_0) + \gamma R(s_1) + \gamma^2 R(s_2)... | s_0=s, \pi] \]</span></p></li>
+<li><p><strong>Bellman Equation</strong>: Discrete value case</p>
+<ul>
+<li>immediate Reward + the expected future sums <span class="math display">\[\begin{aligned}
+V^\pi(s) &amp;= E[R(s_0) + \gamma V^\pi(s&#39;) |s_0=s, \pi] \\
+&amp;= R(s) + \gamma E[V^\pi(s&#39;) |s_0=s, s_1=s&#39;, \pi] \\
+&amp;= R(s) + \gamma E_{s&#39;\sim P_{s\pi(s)}}[V^\pi(s&#39;)] \\
+&amp;= R(s) + \gamma\sum_{s&#39;} P_{s\pi(s)}(s&#39;)V^\pi(s&#39;) 
+\end{aligned}\]</span></li>
+<li>Finite-state MDP (<span class="math inline">\(|S| &lt; \infty\)</span>) has linear solution.</li>
+</ul></li>
+<li><p>Optimal value function <span class="math display">\[V^*(s) = \max_\pi V^\pi(s) \]</span></p>
+<p><span class="math display">\[V^*(s) = R(s) + \max_{a\in A} {\gamma\sum_{s&#39;} P_{sa(s)}(s&#39;)V^*(s&#39;)}\]</span></p>
+<ul>
+<li><p>equivalently optimize the discounted future rewards</p></li>
+<li><p>define the optimal policy <span class="math inline">\(\pi^*\)</span> <span class="math display">\[\pi^*(s) = \argmax_{a\in A}{\sum_{s&#39;} P_{sa(s)}(s&#39;)V^*(s&#39;)}\]</span></p></li>
+<li><p><span class="math inline">\(V^*(s) = V^{\pi^*}(s)\)</span>, the optimal value function is the value function under the optimal policy. Note that the optimal policy does not depend on the initial state.</p></li>
+</ul></li>
+</ul>
+<h2 id="value-iteration-and-policy-iteration">2 Value Iteration and Policy Iteration</h2>
+<p>For finding the optimal policy and the corresponding value.</p>
+<h3 id="value-iteration">Value Iteration</h3>
+<p>Consider finite <span class="math inline">\(S, A\)</span> MDPs. Assume that we know the <span class="math inline">\(P_{sa}\)</span> and the reward function <span class="math inline">\(R\)</span>:</p>
+<hr />
+<p>For each state <span class="math inline">\(s\)</span>, initialize <span class="math inline">\(V(s) = 0\)</span>;</p>
+<p>Until convergence, for every state, update <span class="math inline">\(V(s)\)</span> with optimal policy. <span class="math display">\[V(s) := R(s) + \max_{a\in A}{\gamma \sum_{s&#39;}{P_{sa}(s&#39;)V(s&#39;)}}\]</span> ___</p>
+<p>Synchronous update: each time map all states and then update;</p>
+<p>Asynchronous: ...</p>
+<p>Finally the value function would converge to optimal and so does the policy.</p>
+<h3 id="policy-iteration">Policy iteration</h3>
+<hr />
+<p>Initialize <span class="math inline">\(\pi\)</span> randomly,<br />
+for until convergence,</p>
+<p>update value function with policy <span class="math inline">\(\pi\)</span> (linear solution by Bellman equations)<br />
+for each state <span class="math inline">\(s\)</span>, greedily optimize the <span class="math inline">\(\pi(s)\)</span> ___</p>
+<h2 id="learning-a-model-for-an-mdp">3 Learning a model for an MDP</h2>
+<h3 id="estimate-p_sa-r">Estimate <span class="math inline">\(P_{sa}, R\)</span></h3>
+<p><span class="math inline">\(S, A, \gamma\)</span> are known, but <span class="math inline">\(P_{sa}, R\)</span> are unknown.</p>
+<p>We sample and estimate (MLE).</p>
+<p>The probability distribution of <span class="math inline">\(s&#39;\)</span>, <span class="math inline">\(P_{sa}(s&#39;)\)</span> is the average ratio of transition <span class="math inline">\(s\to s&#39;\)</span>, in the discrete and finite case.</p>
+<p>The immediate reward <span class="math inline">\(R(s)\)</span> is the average of samples.</p>
+<h3 id="algorithm-for-mdp-combining-value-iteration-and-p_sa-estimation">Algorithm for MDP: combining value iteration and <span class="math inline">\(P_{sa}\)</span> estimation</h3>
+<p>...</p>
+<p>The value function does not have to be initialized with 0 after updating the <span class="math inline">\(P_{sa}\)</span>.</p>
+<h2 id="continuous-state-mdps">4 Continuous state MDPs</h2>
+<p><span class="math inline">\(S = \mathbb{R}^d\)</span> can be infinite: high-dimensional real space.</p>
+<h3 id="discretization">Discretization</h3>
+<p>When the dimensionality is low, up to 4d or even 6d, discretize is feasible.</p>
+<p><strong>curse of dimensionality</strong>: complexity <span class="math inline">\(|S|^d\)</span>. Action space is usually lower-dimensional and can be discretized.</p>
+<h3 id="value-function-approximation">Value function approximation</h3>
+<p>If we get the expression of value function?</p>
+<h4 id="modelsimulator">Model/simulator</h4>
+<p>Assume we have a <strong>model/simulator</strong> for MDP. It maps <span class="math inline">\(s_t, a_t: s_{t+1}\)</span>. - It can be some <strong>physics simulation engine</strong>. - Or it can be learned through <strong>monte carlo simulation</strong>. <span class="math inline">\(s_{t+1} = f(s_t, a_t)\)</span> - <strong>Linear form</strong>: <span class="math inline">\(s_{t+1} = As_t + Ba_t\)</span> - Optimize the parameters by minimizing l2 loss - <span class="math inline">\(\argmin_{A,B} \sum_{i=1}^n\sum_{t=0}^{T-1} {\big|\big| s_{t+1}^{(i)} - \hat{s}_{t+1}^{(i)}\big|\big|^2 }\)</span> - Non-Linear form: use non-linear feature mappings <span class="math inline">\(\phi_s(s_t), \phi_a(a_t)\)</span></p>
+<h4 id="fitted-value-iteration">Fitted value iteration</h4>
+<p>Estimate: <span class="math inline">\(q(a) \sim R(s^{(i)} + \gamma E[V(s&#39;)])\)</span>, through averaging the results of k samples (k=1 is okay if the simulator is deterministic. single sample)</p>
+<p>set <span class="math inline">\(y^{(i)} = \max_aq(a)\)</span>, estimate of optimal value,</p>
+<p>Fit the value function, <span class="math inline">\(V(S^{(i)}) \sim y^{(i)}\)</span> using supervised learning. Update parameters.</p>
+]]></content>
+      <categories>
+        <category>Machine Learning</category>
+      </categories>
+      <tags>
+        <tag>CS229</tag>
+      </tags>
+  </entry>
 </search>
