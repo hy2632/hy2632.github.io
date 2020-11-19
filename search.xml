@@ -6887,81 +6887,224 @@ Model Accuracy = 0.9619
   <entry>
     <title>CS229 Notes12 Reinforcement Learning</title>
     <url>/2020/11/16/CS229-Notes12-Reinforcement-Learning/</url>
-    <content><![CDATA[<h2 id="markov-decision-process-mdp">1 Markov decision process (MDP)</h2>
+    <content><![CDATA[<h2 id="1-Markov-decision-process-MDP"><a href="#1-Markov-decision-process-MDP" class="headerlink" title="1 Markov decision process (MDP)"></a>1 Markov decision process (MDP)</h2><ul>
+<li><p>MDP is a tuple of $(S, A, {P_{sa} }, \gamma, R)$</p>
 <ul>
-<li><p>MDP is a tuple of <span class="math inline">\((S, A, \{P_{sa} \}, \gamma, R)\)</span></p>
-<ul>
-<li><span class="math inline">\(S\)</span>: states space</li>
-<li><span class="math inline">\(A\)</span>: action space</li>
-<li><span class="math inline">\(P_{sa}\)</span>: state transition probabilities. Distribution over the state space: Given state <span class="math inline">\(s\)</span>, if we take action <span class="math inline">\(a\)</span>, then the distribution of <span class="math inline">\(s&#39;\)</span></li>
-<li><span class="math inline">\(\gamma\)</span> : discount factor, discount future rewards</li>
-<li><span class="math inline">\(R\)</span>: reward function, <span class="math inline">\(S\times A \to \mathbb{R}\)</span>. Sometimes it is a function of state only, then <span class="math inline">\(S \to \mathbb{R}\)</span></li>
-</ul></li>
-<li><p><strong>Goal of RL: maximize the expectation of discounted future rewards</strong> <span class="math display">\[E[R(s_0) + \gamma R(s_1) + \gamma^2 R(s_2)...]\]</span></p></li>
-<li><p><strong>Policy</strong> function: <span class="math inline">\(\pi : S \to A\)</span>, action given certain state. <span class="math display">\[a = \pi(s)\]</span></p></li>
-<li><p><strong>Value function</strong> for a policy function <span class="math inline">\(\pi\)</span>: <span class="math display">\[ V^\pi(s) = E[R(s_0) + \gamma R(s_1) + \gamma^2 R(s_2)... | s_0=s, \pi] \]</span></p></li>
+<li>$S$: states space</li>
+<li>$A$: action space</li>
+<li>$P_{sa}$: state transition probabilities. Distribution over the state space: Given state $s$, if we take action $a$, then the distribution of $s’$</li>
+<li>$\gamma$ : discount factor, discount future rewards</li>
+<li>$R$: reward function, $S\times A \to \mathbb{R}$. Sometimes it is a function of state only, then $S \to \mathbb{R}$</li>
+</ul>
+</li>
+<li><p><strong>Goal of RL: maximize the expectation of discounted future rewards</strong><br>$$E[R(s_0) + \gamma R(s_1) + \gamma^2 R(s_2)…]$$</p>
+</li>
+<li><p><strong>Policy</strong> function: $\pi : S \to A$, action given certain state.<br>$$a = \pi(s)$$</p>
+</li>
+<li><p><strong>Value function</strong> for a policy function $\pi$:<br>$$ V^\pi(s) = E[R(s_0) + \gamma R(s_1) + \gamma^2 R(s_2)… | s_0=s, \pi] $$</p>
+</li>
 <li><p><strong>Bellman Equation</strong>: Discrete value case</p>
 <ul>
-<li>immediate Reward + the expected future sums <span class="math display">\[\begin{aligned}
-V^\pi(s) &amp;= E[R(s_0) + \gamma V^\pi(s&#39;) |s_0=s, \pi] \\
-&amp;= R(s) + \gamma E[V^\pi(s&#39;) |s_0=s, s_1=s&#39;, \pi] \\
-&amp;= R(s) + \gamma E_{s&#39;\sim P_{s\pi(s)}}[V^\pi(s&#39;)] \\
-&amp;= R(s) + \gamma\sum_{s&#39;} P_{s\pi(s)}(s&#39;)V^\pi(s&#39;) 
-\end{aligned}\]</span></li>
-<li>Finite-state MDP (<span class="math inline">\(|S| &lt; \infty\)</span>) has linear solution.</li>
-</ul></li>
-<li><p>Optimal value function <span class="math display">\[V^*(s) = \max_\pi V^\pi(s) \]</span></p>
-<p><span class="math display">\[V^*(s) = R(s) + \max_{a\in A} {\gamma\sum_{s&#39;} P_{sa(s)}(s&#39;)V^*(s&#39;)}\]</span></p>
-<ul>
-<li><p>equivalently optimize the discounted future rewards</p></li>
-<li><p>define the optimal policy <span class="math inline">\(\pi^*\)</span> <span class="math display">\[\pi^*(s) = \argmax_{a\in A}{\sum_{s&#39;} P_{sa(s)}(s&#39;)V^*(s&#39;)}\]</span></p></li>
-<li><p><span class="math inline">\(V^*(s) = V^{\pi^*}(s)\)</span>, the optimal value function is the value function under the optimal policy. Note that the optimal policy does not depend on the initial state.</p></li>
-</ul></li>
+<li>immediate Reward + the expected future sums<br>$$\begin{aligned}<br>V^\pi(s) &amp;= E[R(s_0) + \gamma V^\pi(s’) |s_0=s, \pi] \<br>&amp;= R(s) + \gamma E[V^\pi(s’) |s_0=s, s_1=s’, \pi] \<br>&amp;= R(s) + \gamma E_{s’\sim P_{s\pi(s)}}[V^\pi(s’)] \<br>&amp;= R(s) + \gamma\sum_{s’} P_{s\pi(s)}(s’)V^\pi(s’)<br>\end{aligned}$$</li>
+<li>Finite-state MDP ($|S| &lt; \infty$) has linear solution.</li>
 </ul>
-<h2 id="value-iteration-and-policy-iteration">2 Value Iteration and Policy Iteration</h2>
-<p>For finding the optimal policy and the corresponding value.</p>
-<h3 id="value-iteration">Value Iteration</h3>
-<p>Consider finite <span class="math inline">\(S, A\)</span> MDPs. Assume that we know the <span class="math inline">\(P_{sa}\)</span> and the reward function <span class="math inline">\(R\)</span>:</p>
-<hr />
-<p>For each state <span class="math inline">\(s\)</span>, initialize <span class="math inline">\(V(s) = 0\)</span>;</p>
-<p>Until convergence, for every state, update <span class="math inline">\(V(s)\)</span> with optimal policy. <span class="math display">\[V(s) := R(s) + \max_{a\in A}{\gamma \sum_{s&#39;}{P_{sa}(s&#39;)V(s&#39;)}}\]</span> ___</p>
+</li>
+<li><p>Optimal value function<br>  $$V^*(s) = \max_\pi V^\pi(s) $$</p>
+<p>  $$V^*(s) = R(s) + \max_{a\in A} {\gamma\sum_{s’} P_{sa(s)}(s’)V^*(s’)}$$</p>
+<ul>
+<li><p>equivalently optimize the discounted future rewards</p>
+</li>
+<li><p>define the optimal policy $\pi^*$<br>$$\pi^*(s) = \argmax_{a\in A}{\sum_{s’} P_{sa(s)}(s’)V^*(s’)}$$</p>
+</li>
+<li><p>$V^*(s) = V^{\pi^*}(s)$, the optimal value function is the value function under the optimal policy. Note that the optimal policy does not depend on the initial state.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-Value-Iteration-and-Policy-Iteration"><a href="#2-Value-Iteration-and-Policy-Iteration" class="headerlink" title="2 Value Iteration and Policy Iteration"></a>2 Value Iteration and Policy Iteration</h2><p>For finding the optimal policy and the corresponding value.</p>
+<h3 id="Value-Iteration"><a href="#Value-Iteration" class="headerlink" title="Value Iteration"></a>Value Iteration</h3><p>Consider finite $S, A$ MDPs. Assume that we know the $P_{sa}$ and the reward function $R$: </p>
+<p>For each state $s$, initialize $V(s) = 0$;</p>
+<p>Until convergence, for every state, update $V(s)$ with optimal policy.<br>$$V(s) := R(s) + \max_{a\in A}{\gamma \sum_{s’}{P_{sa}(s’)V(s’)}}$$</p>
 <p>Synchronous update: each time map all states and then update;</p>
-<p>Asynchronous: ...</p>
+<p>Asynchronous: …</p>
 <p>Finally the value function would converge to optimal and so does the policy.</p>
-<h3 id="policy-iteration">Policy iteration</h3>
-<hr />
-<p>Initialize <span class="math inline">\(\pi\)</span> randomly,<br />
-for until convergence,</p>
-<p>update value function with policy <span class="math inline">\(\pi\)</span> (linear solution by Bellman equations)<br />
-for each state <span class="math inline">\(s\)</span>, greedily optimize the <span class="math inline">\(\pi(s)\)</span> ___</p>
-<h2 id="learning-a-model-for-an-mdp">3 Learning a model for an MDP</h2>
-<h3 id="estimate-p_sa-r">Estimate <span class="math inline">\(P_{sa}, R\)</span></h3>
-<p><span class="math inline">\(S, A, \gamma\)</span> are known, but <span class="math inline">\(P_{sa}, R\)</span> are unknown.</p>
+<h3 id="Policy-iteration"><a href="#Policy-iteration" class="headerlink" title="Policy iteration"></a>Policy iteration</h3><p>Initialize $\pi$ randomly, <br>for until convergence, </p>
+<p>update value function with policy $\pi$ (linear solution by Bellman equations)<br>for each state $s$, greedily optimize the $\pi(s)$</p>
+<h2 id="3-Learning-a-model-for-an-MDP"><a href="#3-Learning-a-model-for-an-MDP" class="headerlink" title="3 Learning a model for an MDP"></a>3 Learning a model for an MDP</h2><h3 id="Estimate-P-sa-R"><a href="#Estimate-P-sa-R" class="headerlink" title="Estimate $P_{sa}, R$"></a>Estimate $P_{sa}, R$</h3><p>$S, A, \gamma$ are known, but $P_{sa}, R$ are unknown.</p>
 <p>We sample and estimate (MLE).</p>
-<p>The probability distribution of <span class="math inline">\(s&#39;\)</span>, <span class="math inline">\(P_{sa}(s&#39;)\)</span> is the average ratio of transition <span class="math inline">\(s\to s&#39;\)</span>, in the discrete and finite case.</p>
-<p>The immediate reward <span class="math inline">\(R(s)\)</span> is the average of samples.</p>
-<h3 id="algorithm-for-mdp-combining-value-iteration-and-p_sa-estimation">Algorithm for MDP: combining value iteration and <span class="math inline">\(P_{sa}\)</span> estimation</h3>
-<p>...</p>
-<p>The value function does not have to be initialized with 0 after updating the <span class="math inline">\(P_{sa}\)</span>.</p>
-<h2 id="continuous-state-mdps">4 Continuous state MDPs</h2>
-<p><span class="math inline">\(S = \mathbb{R}^d\)</span> can be infinite: high-dimensional real space.</p>
-<h3 id="discretization">Discretization</h3>
-<p>When the dimensionality is low, up to 4d or even 6d, discretize is feasible.</p>
-<p><strong>curse of dimensionality</strong>: complexity <span class="math inline">\(|S|^d\)</span>. Action space is usually lower-dimensional and can be discretized.</p>
-<h3 id="value-function-approximation">Value function approximation</h3>
-<p>If we get the expression of value function?</p>
-<h4 id="modelsimulator">Model/simulator</h4>
-<p>Assume we have a <strong>model/simulator</strong> for MDP. It maps <span class="math inline">\(s_t, a_t: s_{t+1}\)</span>. - It can be some <strong>physics simulation engine</strong>. - Or it can be learned through <strong>monte carlo simulation</strong>. <span class="math inline">\(s_{t+1} = f(s_t, a_t)\)</span> - <strong>Linear form</strong>: <span class="math inline">\(s_{t+1} = As_t + Ba_t\)</span> - Optimize the parameters by minimizing l2 loss - <span class="math inline">\(\argmin_{A,B} \sum_{i=1}^n\sum_{t=0}^{T-1} {\big|\big| s_{t+1}^{(i)} - \hat{s}_{t+1}^{(i)}\big|\big|^2 }\)</span> - Non-Linear form: use non-linear feature mappings <span class="math inline">\(\phi_s(s_t), \phi_a(a_t)\)</span></p>
-<h4 id="fitted-value-iteration">Fitted value iteration</h4>
-<p>Estimate: <span class="math inline">\(q(a) \sim R(s^{(i)} + \gamma E[V(s&#39;)])\)</span>, through averaging the results of k samples (k=1 is okay if the simulator is deterministic. single sample)</p>
-<p>set <span class="math inline">\(y^{(i)} = \max_aq(a)\)</span>, estimate of optimal value,</p>
-<p>Fit the value function, <span class="math inline">\(V(S^{(i)}) \sim y^{(i)}\)</span> using supervised learning. Update parameters.</p>
+<p>The probability distribution of $s’$, $P_{sa}(s’)$  is the average ratio of transition $s\to s’$, in the discrete and finite case.</p>
+<p>The immediate reward $R(s)$ is the average of samples.</p>
+<h3 id="Algorithm-for-MDP-combining-value-iteration-and-P-sa-estimation"><a href="#Algorithm-for-MDP-combining-value-iteration-and-P-sa-estimation" class="headerlink" title="Algorithm for MDP: combining value iteration and $P_{sa}$ estimation"></a>Algorithm for MDP: combining value iteration and $P_{sa}$ estimation</h3><p>…</p>
+<p>The value function does not have to be initialized with 0 after updating the $P_{sa}$.</p>
+<h2 id="4-Continuous-state-MDPs"><a href="#4-Continuous-state-MDPs" class="headerlink" title="4 Continuous state MDPs"></a>4 Continuous state MDPs</h2><p>$S = \mathbb{R}^d$ can be infinite: high-dimensional real space.</p>
+<h3 id="Discretization"><a href="#Discretization" class="headerlink" title="Discretization"></a>Discretization</h3><p>When the dimensionality is low, up to 4d or even 6d, discretize is feasible.</p>
+<p><strong>curse of dimensionality</strong>: complexity $|S|^d$. Action space is usually lower-dimensional and can be discretized.</p>
+<h3 id="Value-function-approximation"><a href="#Value-function-approximation" class="headerlink" title="Value function approximation"></a>Value function approximation</h3><p>If we get the expression of value function?</p>
+<h4 id="Model-simulator"><a href="#Model-simulator" class="headerlink" title="Model/simulator"></a>Model/simulator</h4><p>Assume we have a <strong>model/simulator</strong> for MDP. It maps $s_t, a_t: s_{t+1}$. </p>
+<ul>
+<li>It can be some <strong>physics simulation engine</strong>.</li>
+<li>Or it can be learned through <strong>monte carlo simulation</strong>. $s_{t+1} = f(s_t, a_t)$ <ul>
+<li><strong>Linear form</strong>: $s_{t+1} = As_t + Ba_t$<ul>
+<li>Optimize the parameters by minimizing l2 loss</li>
+<li>$\argmin_{A,B} \sum_{i=1}^n\sum_{t=0}^{T-1} {\big|\big| s_{t+1}^{(i)} - \hat{s}_{t+1}^{(i)}\big|\big|^2 }$</li>
+</ul>
+</li>
+<li>Non-Linear form: use non-linear feature mappings $\phi_s(s_t), \phi_a(a_t)$</li>
+</ul>
+</li>
+</ul>
+<h4 id="Fitted-value-iteration"><a href="#Fitted-value-iteration" class="headerlink" title="Fitted value iteration"></a>Fitted value iteration</h4><p>Estimate: $q(a) \sim R(s^{(i)} + \gamma E[V(s’)])$, through averaging the results of k samples (k=1 is okay if the simulator is deterministic. single sample)</p>
+<p>set $y^{(i)} = \max_aq(a)$, estimate of optimal value,</p>
+<p>Fit the value function, $V(S^{(i)}) \sim y^{(i)}$ using supervised learning. Update parameters.</p>
 ]]></content>
       <categories>
         <category>Machine Learning</category>
       </categories>
       <tags>
         <tag>CS229</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Data-Mining-Lec12</title>
+    <url>/2020/11/18/Data-Mining-Lec12/</url>
+    <content><![CDATA[<h2 id="Recap"><a href="#Recap" class="headerlink" title="Recap"></a>Recap</h2><p>KKT, Lagrangian</p>
+<p>$$L(w, b, \alpha, \beta) = f(w,b) + \sum_{i=1}^{N}{\alpha_ig_i(w,b)} + \sum_{i=1}^{N}{\beta_ih_i(w,b)}$$</p>
+<p>$$\theta(w,b) = \max_{\alpha, \beta} L(w, b, \alpha, \beta)  $$</p>
+<p>$$\theta(w,b) = \begin{cases} f(w,b) \text{: if feasible} \ \infty \text{: otherwise} \end{cases}$$</p>
+<p>$$\min_{w,b}\theta(w,b) = \min_{w,b}\max_{\alpha, \beta, \alpha_1 \geq 0} L(w, b, \alpha, \beta) $$</p>
+<p>if $f, g$  are convex, ?affine</p>
+<p>$$ \min_{w,b}\max_{\alpha, \beta, \alpha_1 \geq 0} L(w, b, \alpha, \beta) = \max_{w,b}\min_{\alpha, \beta, \alpha_i \geq 0} L(w, b, \alpha, \beta) $$</p>
+<hr>
+<p>Constraints, partial derivatives of $w, b, \beta_i, \alpha_i$ are all $0$.</p>
+<h2 id="SVM-primal"><a href="#SVM-primal" class="headerlink" title="SVM-primal"></a>SVM-primal</h2><p>$$\min_{w,b} \frac12 |w|^2 \<br>\text{s.t. \quad} l^i(w^Tx_i+b) \geq 1 \text{\quad for i=1, …N}$$</p>
+<p>$$g_i(w,b) = 1-l^i(w^Tx_i+b) \leq 0\<br>\to L(w, b, \alpha) = \frac12 |w|^2 - \sum_{i=1}^m{\alpha_i (l^i(w^Tx_i+b-1))}<br>$$</p>
+<p>$$\nabla_wL(w, b, \alpha) = w - \sum_{i=1}^{m}\alpha_il^ix^i=0 \<br>\to w = \sum_{i=1}^{m}\alpha_il^ix^i$$</p>
+<p>$$\nabla_bL(w, b, \alpha) = \sum_{i=1}^{m}\alpha_il^i = 0 $$</p>
+<p>Put back to lagrangian,</p>
+<p>$$ \begin{aligned}<br>L(w,b,\alpha) &amp;= \frac12 |\sum_{i=1}^{m}\alpha_il^ix^i|^2 - \sum_{i=1}^m{\alpha_i (l^i(w^Tx_i+b-1))} \<br>&amp;= -\frac12 |\sum_{i=1}^{m}\alpha_il^ix^i|^2  + \sum_{i=1}^m{\alpha_i}<br>\end{aligned}$$</p>
+<p>Then the goal is </p>
+<p>$$\max -\frac12 |\sum_{i=1}^{m}\alpha_il^ix^i|^2  + \sum_{i=1}^m{\alpha_i} \<br>\alpha_i \geq 0, \quad \sum_{i=1}^N{\alpha_il^i}=0$$</p>
+<p>Without loss of generality, let us assume that in the $i^{th}$ iteration of the optimization procedure for the DUAL-SVM, we optimize over: $\alpha_1, \alpha_2$</p>
+<p>$$\alpha_1l^1 + \alpha_2l^2 = -\sum_{i=3}^N{\alpha_il^i}$$</p>
+<p>$$\alpha_2 = \frac{-\sum_{i=3}^N{\alpha_il^i} - \alpha_1l^1 }{l^2} $$</p>
+<p>Each step freeze 2, optimize others. (Heuristic)</p>
+<p><img src="/2020/11/18/Data-Mining-Lec12/1.jpg"></p>
+<p><img src="/2020/11/18/Data-Mining-Lec12/2.jpg"></p>
+<h2 id="Kernel-Ridge-Regression"><a href="#Kernel-Ridge-Regression" class="headerlink" title="Kernel Ridge Regression"></a>Kernel Ridge Regression</h2><p>${x_i}, {y_i}$</p>
+<p>Cost function (linear)<br>$$ C(w) = \frac12 \sum_{i=1}^N{(y_i - w^Tx_i)^2} $$</p>
+<p>$$H: w^Tx + b = 0$$</p>
+<p>$x_i’ = x_i \text{: concating 1}$</p>
+<p>Optimization for standard linear regression is just minimize $C(w)$</p>
+<p>In ridge regression, </p>
+<p>$$\min_w C(w) = \frac12 \sum_{i=1}^N{(y_i - w^Tx_i)^2} + \frac12 \lambda |w|_2^2$$</p>
+<p>$$\nabla_{w^*}C(w^*) = 0$$</p>
+<p>$$w^* = \big(\lambda I + \sum_{i=1}^N{x_ix_i^T}\big) ^{-1}\big(\sum_{j=1}^N{y_jx_j^T}\big)$$</p>
+<ul>
+<li>Time complexity:<ul>
+<li>each $x_ix_i^T$ is a matrix in $\mathbb{R}^{d\times d}$,</li>
+<li>$\sum_N x_ix_i^T$ takes $Nd^2$</li>
+<li>$\big(\lambda I + \sum_{i=1}^N{x_ix_i^T}\big) ^{-1}$ takese $d^3$</li>
+</ul>
+</li>
+</ul>
+<p><strong>Approximate kernel Method</strong><br>$$x_i \to \phi(x_i)$$</p>
+<p>$$w = \big(\lambda I + \sum_{i=1}^N{\phi(x_i)\phi(x_i)^T}\big) ^{-1}\big(\sum_{j=1}^N{y_j\phi(x_j)^T}\big)$$</p>
+<hr>
+<h2 id="Matrix-Identity"><a href="#Matrix-Identity" class="headerlink" title="Matrix Identity"></a>Matrix Identity</h2><p>P, B, R</p>
+<p>$$(P^{-1} + B^TR^{-1}B)^{-1}B^TR^{-1} = PB^T(BPB^T+R)^{-1}$$</p>
+<p>$B\in\mathbb{R}^{r\times p}$</p>
+<p>$$B^TR^{-1} = (P^{-1} + B^TR^{-1}B)PB^T(BPB^T+R)^{-1}$$</p>
+<p>$$B^TR^{-1}(BPB^T+R) = (P^{-1}+B^TR^{-1}-B)PB^T$$</p>
+<p>$$w = (\lambda I +\phi\phi^{-1})\phi_y = \phi(\phi^T\phi + \lambda I)^{-1}y$$</p>
+<p>$$\phi(X)^T\phi(X) \in \mathbb{R}^{N\times N}$$</p>
+<h2 id="Predictions"><a href="#Predictions" class="headerlink" title="Predictions"></a>Predictions</h2><p>$$x\in\mathbb{R}^d, y=w^T\phi(x)$$</p>
+<p>number of random features<br>$$m = \theta(d\log d)$$</p>
+<p>G: Gaussian unstructured matrix $\in \mathbb{R}^{d\times d}$</p>
+<ul>
+<li>Get Gaussian Orthogonal Matrix<ul>
+<li>Gram-schmidt orthogonalization approach:<ul>
+<li>rows of l2-norm 1</li>
+<li>Apply sample scalars: s1, …, sd independently from $\chi(d)$ distribution and apply them to renormalize rows (Or simply $\sqrt{d}$, but biased)</li>
+</ul>
+</li>
+<li>random hadamard matrices<ul>
+<li>$\frac1{\sqrt{d}} HD_1 … \frac1{\sqrt{d}} HD_L$</li>
+<li>renormalize</li>
+</ul>
+</li>
+<li>Givens rotations<ul>
+<li>also renormalize</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Data Mining</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Data-Mining-HW2</title>
+    <url>/2020/11/18/Data-Mining-HW2/</url>
+    <content><![CDATA[<h1 id="HW2"><a href="#HW2" class="headerlink" title="HW2"></a>HW2</h1><p>Hua Yao, UNI:hy2632</p>
+<h2 id="Problem-1-Convolutional-Neural-Networks-20-points"><a href="#Problem-1-Convolutional-Neural-Networks-20-points" class="headerlink" title="Problem 1: Convolutional Neural Networks [20 points]"></a>Problem 1: Convolutional Neural Networks [20 points]</h2><p>The input RGB- image has 3 channels. Apply Conv2D to each channel to get 3 feature maps.</p>
+<p>When there’s no padding, the shape of 3 feature maps are $125\times125$.</p>
+<p>$$O = \frac{I-k}{s} + 1 = \frac{128-4}{1} +1 = 125$$</p>
+<p>The number of parameters in the convolution layer is $4^2 \times 3 = 48$</p>
+<p>The shape of 3 feature maps after max-pooling are $61\times61$<br>$$O = \frac{I-k}{s} + 1 = \frac{125-5}{2} + 1 = 61$$</p>
+<p>The number of parameters in maxpooling is $0$.</p>
+<p>After maxpooling, the fully connected layer maps $I: 61\times61\times3 \to O:256$, which takes $61\times61\times3\times256=2857728$ parameters.</p>
+<p>The output layer maps $I:256 \to O:10$ and then softmax. This step takes $256\times10=2560$ parameters.</p>
+<ul>
+<li>Answer: <ul>
+<li>Total number of parameters in the NN is $48+0+2857728+2560=2860336$.</li>
+<li>The shape of feature maps of Conv layer is $125\times125$, that of max-pooling is $61\times61$.</li>
+<li>The max-pooling layer consists of 3 feature maps (same number of channels as in the Conv layer, because max-pooling is channel-wise)</li>
+</ul>
+</li>
+</ul>
+<h2 id="Problem-2-Deep-Residual-Networks-40-points"><a href="#Problem-2-Deep-Residual-Networks-40-points" class="headerlink" title="Problem 2: Deep Residual Networks [40 points]"></a>Problem 2: Deep Residual Networks [40 points]</h2><h3 id="2-1-Form-of-partial-derivative"><a href="#2-1-Form-of-partial-derivative" class="headerlink" title="2.1 Form of partial derivative"></a>2.1 Form of partial derivative</h3><p>$$a_{i+1} = a_i + \frac1T\cdot|Wa_i|$$</p>
+<p>Assume that $W \in \mathbb{R}^{d\times d}, a_i \in \mathbb{R}^d$.</p>
+<p>$$\begin{aligned}\because|Wa_i| &amp;= \sqrt{(Wa_i)^TWa_i}\<br>&amp;=\sqrt{a_i^TW^TWa_i}\<br>&amp;=\sqrt{a_i^Ta_i}\<br>&amp;= |a_i|<br>\end{aligned}$$</p>
+<p>$$\begin{aligned}\frac{\partial|a_i|}{\partial a_i} &amp;= \frac{\partial}{\partial a_i} \sqrt{a_i^Ta_i}\<br>&amp;=\frac{2a_i}{2\sqrt{a_i^Ta_i}}\<br>&amp;= \frac{a_i}{|a_i|}<br>\end{aligned}$$</p>
+<p>$$\begin{aligned}\therefore \frac{\partial a_{i+1}}{\partial a_i}<br>&amp;= I + \frac1T\frac{a_i}{|a_i|}  \text{\quad (broadcasting to each column)}<br>\end{aligned}$$</p>
+<p>From chain rule, </p>
+<p>$$\frac{\partial L}{\partial a_t} = \frac{\partial L}{\partial a_T}\cdot \frac{\partial a_T}{\partial a_T-1}…\frac{\partial a_{t+1}}{\partial a_t}$$</p>
+<h3 id="2-2-Upper-bound"><a href="#2-2-Upper-bound" class="headerlink" title="2.2 Upper bound"></a>2.2 Upper bound</h3><p>Reference: <a href="https://www.cs.utexas.edu/users/flame/laff/alaff-beta/chapter01-norms-matrix-submultiplicative.html">https://www.cs.utexas.edu/users/flame/laff/alaff-beta/chapter01-norms-matrix-submultiplicative.html</a></p>
+<p>The 2-norm of matrix is defined by<br>$$||A||_2 = \sqrt{\lambda_1}$$<br>where $\lambda_1$ is the greatest eigenvalue of $A^TA$.</p>
+<p>The <strong>triangular inequality</strong> of matrix norm gives that</p>
+<p>$$||x+y|| \leq ||x|| + ||y||$$</p>
+<p>$$\begin{aligned}<br>\therefore \bigg|\bigg| \frac{\partial a_{i+1}}{\partial a_i}\bigg|\bigg|<br>&amp;= \bigg|\bigg| I + \frac1T\frac{a_i}{|a_i|}   \bigg|\bigg| \<br>&amp;\leq 1 + \frac1T \bigg|\bigg| \frac{a_i}{|a_i|} \bigg|\bigg| \<br>&amp;= 1 + \frac1T<br>\end{aligned}$$</p>
+<p>Note that the second term $\frac1T\frac{a_i}{|a_i|}$ should actually be broadcast to d columns to become a $d\times d$ matrix. But the norm of this matrix is the same as the norm of the vector before broadcasting.</p>
+<p>Submultiplicative property of 2-norm gives:<br>$$||AB|| \leq ||A||: ||B||$$</p>
+<p>Matrix 2-norm is subordinate to vector 2-norm:<br>$$| A x | \leq | A | | x |$$</p>
+<p>$$\begin{aligned}<br>\therefore \bigg|\bigg|\frac{\partial L}{\partial a_t}\bigg|\bigg| &amp;\leq \bigg|\bigg|\frac{\partial L}{\partial a_T} \bigg|\bigg| :  \bigg|\bigg|\frac{\partial a_T}{\partial a_T-1}\bigg|\bigg|…\bigg|\bigg|\frac{\partial a_{t+1}}{\partial a_t}\bigg|\bigg|\<br>&amp;\leq \bigg|\bigg|\frac{\partial L}{\partial a_T} \bigg|\bigg| \times (1+\frac1T)^{T-t}\<br>&amp;= \bigg|\bigg|\frac{\partial L}{\partial a_T}\bigg|\bigg| \times (1+\frac1T)^{T} \times (1+\frac1T)^{-t}\<br>&amp;\approx\bigg|\bigg|\frac{\partial L}{\partial a_T}\bigg|\bigg| \times e \times (1+\frac1T)^{-t} \text{\quad, T large enough}<br>\end{aligned}$$</p>
+<p>This gives an upper bound on the ratio<br>$$r = \frac{|\frac{\partial L}{\partial a_t}|}{|\frac{\partial L}{\partial a_T}|} \leq e\times (1+\frac1T)^{-t}$$</p>
+<h3 id="2-3-Lower-bound"><a href="#2-3-Lower-bound" class="headerlink" title="2.3 Lower bound"></a>2.3 Lower bound</h3><p>Reference: <a href="https://ccse.lbl.gov/Publications/sepp/matrixLowerBound/LBNL-50635.pdf">https://ccse.lbl.gov/Publications/sepp/matrixLowerBound/LBNL-50635.pdf</a></p>
+<p>The submultiplicative/subordinate property can be rewritten as</p>
+<p>$$|A||B^{-1}|^{-1} \leq |AB|$$</p>
+<p>Denote $B_i = I + \frac1T \frac{a_i}{|a_i|}$.</p>
+<p>Solve the inverse of $B_i$<br>$$\begin{aligned}<br>\because(I + \frac1T \frac{a_i}{|a_i|})(I - \frac1T \frac{a_i}{|a_i|})<br>&amp;= I - \frac1{T^2}I \<br>&amp;= \frac{T^2-1}{T^2}I<br>\end{aligned}$$</p>
+<p>$$\therefore B_i^{-1} = \frac{T^2}{T^2-1}(I - \frac1T \frac{a_i}{|a_i|})$$</p>
+<p>Use the triangular inequality of matrix norm $|x-y| \leq |x| + |-y| = |x| + |y|$</p>
+<p>$$\therefore |B_i^{-1}| \leq  \frac{T^2}{T^2-1}(1+\frac1T)=\frac T{T-1}$$</p>
+<p>$$\therefore |B_i^{-1}|^{-1} \geq 1 - \frac{1}{T}$$</p>
+<p>$$\begin{aligned}<br>\therefore r &amp;= \frac{|\frac{\partial L}{\partial a_t}|}{|\frac{\partial L}{\partial a_T}|} \<br>&amp;\geq (|B_{T-1}^{-1}|…|B_t^{-1}|)^{-1}\<br>&amp;\geq (1 - \frac{1}{T})^{T-t}\<br>&amp;\approx \frac1e \times (1-\frac{1}{T})^{-t}<br>\end{aligned}$$</p>
+<h3 id="2-4-Conclusion"><a href="#2-4-Conclusion" class="headerlink" title="2.4 Conclusion"></a>2.4 Conclusion</h3><p>From above we get </p>
+<p>$$(1+\frac1T)^{T-t} \leq r \leq (1 - \frac{1}{T})^{T-t}$$</p>
+<p>When $T$ is large,</p>
+<p>$$(1+\frac1T)^{T}\approx e $$<br>$$(1-\frac1T)^{T}\approx \frac1e $$</p>
+<p>$$\frac1e \times (1-\frac{1}{T})^{-t} \leq r \leq e\times (1+\frac1T)^{-t}$$</p>
+]]></content>
+      <categories>
+        <category>Data Mining</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
       </tags>
   </entry>
 </search>

@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"hy2632.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="1 Markov decision process (MDP)  MDP is a tuple of \((S, A, \{P_{sa} \}, \gamma, R)\)  \(S\): states space \(A\): action space \(P_{sa}\): state transition probabilities. Distribution over the state s">
+  <meta name="description" content="1 Markov decision process (MDP) MDP is a tuple of $(S, A, {P_{sa} }, \gamma, R)$  $S$: states space $A$: action space $P_{sa}$: state transition probabilities. Distribution over the state space: Given">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CS229 Notes12 Reinforcement Learning">
 <meta property="og:url" content="https://hy2632.github.io/2020/11/16/CS229-Notes12-Reinforcement-Learning/index.html">
 <meta property="og:site_name" content="豁蒙楼">
-<meta property="og:description" content="1 Markov decision process (MDP)  MDP is a tuple of \((S, A, \{P_{sa} \}, \gamma, R)\)  \(S\): states space \(A\): action space \(P_{sa}\): state transition probabilities. Distribution over the state s">
+<meta property="og:description" content="1 Markov decision process (MDP) MDP is a tuple of $(S, A, {P_{sa} }, \gamma, R)$  $S$: states space $A$: action space $P_{sa}$: state transition probabilities. Distribution over the state space: Given">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-16T23:47:46.000Z">
-<meta property="article:modified_time" content="2020-11-17T16:04:22.021Z">
+<meta property="article:modified_time" content="2020-11-18T00:05:29.914Z">
 <meta property="article:author" content="姚华(Hua Yao)">
 <meta property="article:tag" content="CS229">
 <meta name="twitter:card" content="summary">
@@ -228,7 +228,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-17 11:04:22" itemprop="dateModified" datetime="2020-11-17T11:04:22-05:00">2020-11-17</time>
+                <time title="修改时间：2020-11-17 19:05:29" itemprop="dateModified" datetime="2020-11-17T19:05:29-05:00">2020-11-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -265,75 +265,75 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="markov-decision-process-mdp">1 Markov decision process (MDP)</h2>
+        <h2 id="1-Markov-decision-process-MDP"><a href="#1-Markov-decision-process-MDP" class="headerlink" title="1 Markov decision process (MDP)"></a>1 Markov decision process (MDP)</h2><ul>
+<li><p>MDP is a tuple of $(S, A, {P_{sa} }, \gamma, R)$</p>
 <ul>
-<li><p>MDP is a tuple of <span class="math inline">\((S, A, \{P_{sa} \}, \gamma, R)\)</span></p>
-<ul>
-<li><span class="math inline">\(S\)</span>: states space</li>
-<li><span class="math inline">\(A\)</span>: action space</li>
-<li><span class="math inline">\(P_{sa}\)</span>: state transition probabilities. Distribution over the state space: Given state <span class="math inline">\(s\)</span>, if we take action <span class="math inline">\(a\)</span>, then the distribution of <span class="math inline">\(s&#39;\)</span></li>
-<li><span class="math inline">\(\gamma\)</span> : discount factor, discount future rewards</li>
-<li><span class="math inline">\(R\)</span>: reward function, <span class="math inline">\(S\times A \to \mathbb{R}\)</span>. Sometimes it is a function of state only, then <span class="math inline">\(S \to \mathbb{R}\)</span></li>
-</ul></li>
-<li><p><strong>Goal of RL: maximize the expectation of discounted future rewards</strong> <span class="math display">\[E[R(s_0) + \gamma R(s_1) + \gamma^2 R(s_2)...]\]</span></p></li>
-<li><p><strong>Policy</strong> function: <span class="math inline">\(\pi : S \to A\)</span>, action given certain state. <span class="math display">\[a = \pi(s)\]</span></p></li>
-<li><p><strong>Value function</strong> for a policy function <span class="math inline">\(\pi\)</span>: <span class="math display">\[ V^\pi(s) = E[R(s_0) + \gamma R(s_1) + \gamma^2 R(s_2)... | s_0=s, \pi] \]</span></p></li>
+<li>$S$: states space</li>
+<li>$A$: action space</li>
+<li>$P_{sa}$: state transition probabilities. Distribution over the state space: Given state $s$, if we take action $a$, then the distribution of $s’$</li>
+<li>$\gamma$ : discount factor, discount future rewards</li>
+<li>$R$: reward function, $S\times A \to \mathbb{R}$. Sometimes it is a function of state only, then $S \to \mathbb{R}$</li>
+</ul>
+</li>
+<li><p><strong>Goal of RL: maximize the expectation of discounted future rewards</strong><br>$$E[R(s_0) + \gamma R(s_1) + \gamma^2 R(s_2)…]$$</p>
+</li>
+<li><p><strong>Policy</strong> function: $\pi : S \to A$, action given certain state.<br>$$a = \pi(s)$$</p>
+</li>
+<li><p><strong>Value function</strong> for a policy function $\pi$:<br>$$ V^\pi(s) = E[R(s_0) + \gamma R(s_1) + \gamma^2 R(s_2)… | s_0=s, \pi] $$</p>
+</li>
 <li><p><strong>Bellman Equation</strong>: Discrete value case</p>
 <ul>
-<li>immediate Reward + the expected future sums <span class="math display">\[\begin{aligned}
-V^\pi(s) &amp;= E[R(s_0) + \gamma V^\pi(s&#39;) |s_0=s, \pi] \\
-&amp;= R(s) + \gamma E[V^\pi(s&#39;) |s_0=s, s_1=s&#39;, \pi] \\
-&amp;= R(s) + \gamma E_{s&#39;\sim P_{s\pi(s)}}[V^\pi(s&#39;)] \\
-&amp;= R(s) + \gamma\sum_{s&#39;} P_{s\pi(s)}(s&#39;)V^\pi(s&#39;) 
-\end{aligned}\]</span></li>
-<li>Finite-state MDP (<span class="math inline">\(|S| &lt; \infty\)</span>) has linear solution.</li>
-</ul></li>
-<li><p>Optimal value function <span class="math display">\[V^*(s) = \max_\pi V^\pi(s) \]</span></p>
-<p><span class="math display">\[V^*(s) = R(s) + \max_{a\in A} {\gamma\sum_{s&#39;} P_{sa(s)}(s&#39;)V^*(s&#39;)}\]</span></p>
-<ul>
-<li><p>equivalently optimize the discounted future rewards</p></li>
-<li><p>define the optimal policy <span class="math inline">\(\pi^*\)</span> <span class="math display">\[\pi^*(s) = \argmax_{a\in A}{\sum_{s&#39;} P_{sa(s)}(s&#39;)V^*(s&#39;)}\]</span></p></li>
-<li><p><span class="math inline">\(V^*(s) = V^{\pi^*}(s)\)</span>, the optimal value function is the value function under the optimal policy. Note that the optimal policy does not depend on the initial state.</p></li>
-</ul></li>
+<li>immediate Reward + the expected future sums<br>$$\begin{aligned}<br>V^\pi(s) &amp;= E[R(s_0) + \gamma V^\pi(s’) |s_0=s, \pi] \<br>&amp;= R(s) + \gamma E[V^\pi(s’) |s_0=s, s_1=s’, \pi] \<br>&amp;= R(s) + \gamma E_{s’\sim P_{s\pi(s)}}[V^\pi(s’)] \<br>&amp;= R(s) + \gamma\sum_{s’} P_{s\pi(s)}(s’)V^\pi(s’)<br>\end{aligned}$$</li>
+<li>Finite-state MDP ($|S| &lt; \infty$) has linear solution.</li>
 </ul>
-<h2 id="value-iteration-and-policy-iteration">2 Value Iteration and Policy Iteration</h2>
-<p>For finding the optimal policy and the corresponding value.</p>
-<h3 id="value-iteration">Value Iteration</h3>
-<p>Consider finite <span class="math inline">\(S, A\)</span> MDPs. Assume that we know the <span class="math inline">\(P_{sa}\)</span> and the reward function <span class="math inline">\(R\)</span>:</p>
-<hr />
-<p>For each state <span class="math inline">\(s\)</span>, initialize <span class="math inline">\(V(s) = 0\)</span>;</p>
-<p>Until convergence, for every state, update <span class="math inline">\(V(s)\)</span> with optimal policy. <span class="math display">\[V(s) := R(s) + \max_{a\in A}{\gamma \sum_{s&#39;}{P_{sa}(s&#39;)V(s&#39;)}}\]</span> ___</p>
+</li>
+<li><p>Optimal value function<br>  $$V^*(s) = \max_\pi V^\pi(s) $$</p>
+<p>  $$V^*(s) = R(s) + \max_{a\in A} {\gamma\sum_{s’} P_{sa(s)}(s’)V^*(s’)}$$</p>
+<ul>
+<li><p>equivalently optimize the discounted future rewards</p>
+</li>
+<li><p>define the optimal policy $\pi^*$<br>$$\pi^*(s) = \argmax_{a\in A}{\sum_{s’} P_{sa(s)}(s’)V^*(s’)}$$</p>
+</li>
+<li><p>$V^*(s) = V^{\pi^*}(s)$, the optimal value function is the value function under the optimal policy. Note that the optimal policy does not depend on the initial state.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-Value-Iteration-and-Policy-Iteration"><a href="#2-Value-Iteration-and-Policy-Iteration" class="headerlink" title="2 Value Iteration and Policy Iteration"></a>2 Value Iteration and Policy Iteration</h2><p>For finding the optimal policy and the corresponding value.</p>
+<h3 id="Value-Iteration"><a href="#Value-Iteration" class="headerlink" title="Value Iteration"></a>Value Iteration</h3><p>Consider finite $S, A$ MDPs. Assume that we know the $P_{sa}$ and the reward function $R$: </p>
+<p>For each state $s$, initialize $V(s) = 0$;</p>
+<p>Until convergence, for every state, update $V(s)$ with optimal policy.<br>$$V(s) := R(s) + \max_{a\in A}{\gamma \sum_{s’}{P_{sa}(s’)V(s’)}}$$</p>
 <p>Synchronous update: each time map all states and then update;</p>
-<p>Asynchronous: ...</p>
+<p>Asynchronous: …</p>
 <p>Finally the value function would converge to optimal and so does the policy.</p>
-<h3 id="policy-iteration">Policy iteration</h3>
-<hr />
-<p>Initialize <span class="math inline">\(\pi\)</span> randomly,<br />
-for until convergence,</p>
-<p>update value function with policy <span class="math inline">\(\pi\)</span> (linear solution by Bellman equations)<br />
-for each state <span class="math inline">\(s\)</span>, greedily optimize the <span class="math inline">\(\pi(s)\)</span> ___</p>
-<h2 id="learning-a-model-for-an-mdp">3 Learning a model for an MDP</h2>
-<h3 id="estimate-p_sa-r">Estimate <span class="math inline">\(P_{sa}, R\)</span></h3>
-<p><span class="math inline">\(S, A, \gamma\)</span> are known, but <span class="math inline">\(P_{sa}, R\)</span> are unknown.</p>
+<h3 id="Policy-iteration"><a href="#Policy-iteration" class="headerlink" title="Policy iteration"></a>Policy iteration</h3><p>Initialize $\pi$ randomly, <br>for until convergence, </p>
+<p>update value function with policy $\pi$ (linear solution by Bellman equations)<br>for each state $s$, greedily optimize the $\pi(s)$</p>
+<h2 id="3-Learning-a-model-for-an-MDP"><a href="#3-Learning-a-model-for-an-MDP" class="headerlink" title="3 Learning a model for an MDP"></a>3 Learning a model for an MDP</h2><h3 id="Estimate-P-sa-R"><a href="#Estimate-P-sa-R" class="headerlink" title="Estimate $P_{sa}, R$"></a>Estimate $P_{sa}, R$</h3><p>$S, A, \gamma$ are known, but $P_{sa}, R$ are unknown.</p>
 <p>We sample and estimate (MLE).</p>
-<p>The probability distribution of <span class="math inline">\(s&#39;\)</span>, <span class="math inline">\(P_{sa}(s&#39;)\)</span> is the average ratio of transition <span class="math inline">\(s\to s&#39;\)</span>, in the discrete and finite case.</p>
-<p>The immediate reward <span class="math inline">\(R(s)\)</span> is the average of samples.</p>
-<h3 id="algorithm-for-mdp-combining-value-iteration-and-p_sa-estimation">Algorithm for MDP: combining value iteration and <span class="math inline">\(P_{sa}\)</span> estimation</h3>
-<p>...</p>
-<p>The value function does not have to be initialized with 0 after updating the <span class="math inline">\(P_{sa}\)</span>.</p>
-<h2 id="continuous-state-mdps">4 Continuous state MDPs</h2>
-<p><span class="math inline">\(S = \mathbb{R}^d\)</span> can be infinite: high-dimensional real space.</p>
-<h3 id="discretization">Discretization</h3>
-<p>When the dimensionality is low, up to 4d or even 6d, discretize is feasible.</p>
-<p><strong>curse of dimensionality</strong>: complexity <span class="math inline">\(|S|^d\)</span>. Action space is usually lower-dimensional and can be discretized.</p>
-<h3 id="value-function-approximation">Value function approximation</h3>
-<p>If we get the expression of value function?</p>
-<h4 id="modelsimulator">Model/simulator</h4>
-<p>Assume we have a <strong>model/simulator</strong> for MDP. It maps <span class="math inline">\(s_t, a_t: s_{t+1}\)</span>. - It can be some <strong>physics simulation engine</strong>. - Or it can be learned through <strong>monte carlo simulation</strong>. <span class="math inline">\(s_{t+1} = f(s_t, a_t)\)</span> - <strong>Linear form</strong>: <span class="math inline">\(s_{t+1} = As_t + Ba_t\)</span> - Optimize the parameters by minimizing l2 loss - <span class="math inline">\(\argmin_{A,B} \sum_{i=1}^n\sum_{t=0}^{T-1} {\big|\big| s_{t+1}^{(i)} - \hat{s}_{t+1}^{(i)}\big|\big|^2 }\)</span> - Non-Linear form: use non-linear feature mappings <span class="math inline">\(\phi_s(s_t), \phi_a(a_t)\)</span></p>
-<h4 id="fitted-value-iteration">Fitted value iteration</h4>
-<p>Estimate: <span class="math inline">\(q(a) \sim R(s^{(i)} + \gamma E[V(s&#39;)])\)</span>, through averaging the results of k samples (k=1 is okay if the simulator is deterministic. single sample)</p>
-<p>set <span class="math inline">\(y^{(i)} = \max_aq(a)\)</span>, estimate of optimal value,</p>
-<p>Fit the value function, <span class="math inline">\(V(S^{(i)}) \sim y^{(i)}\)</span> using supervised learning. Update parameters.</p>
+<p>The probability distribution of $s’$, $P_{sa}(s’)$  is the average ratio of transition $s\to s’$, in the discrete and finite case.</p>
+<p>The immediate reward $R(s)$ is the average of samples.</p>
+<h3 id="Algorithm-for-MDP-combining-value-iteration-and-P-sa-estimation"><a href="#Algorithm-for-MDP-combining-value-iteration-and-P-sa-estimation" class="headerlink" title="Algorithm for MDP: combining value iteration and $P_{sa}$ estimation"></a>Algorithm for MDP: combining value iteration and $P_{sa}$ estimation</h3><p>…</p>
+<p>The value function does not have to be initialized with 0 after updating the $P_{sa}$.</p>
+<h2 id="4-Continuous-state-MDPs"><a href="#4-Continuous-state-MDPs" class="headerlink" title="4 Continuous state MDPs"></a>4 Continuous state MDPs</h2><p>$S = \mathbb{R}^d$ can be infinite: high-dimensional real space.</p>
+<h3 id="Discretization"><a href="#Discretization" class="headerlink" title="Discretization"></a>Discretization</h3><p>When the dimensionality is low, up to 4d or even 6d, discretize is feasible.</p>
+<p><strong>curse of dimensionality</strong>: complexity $|S|^d$. Action space is usually lower-dimensional and can be discretized.</p>
+<h3 id="Value-function-approximation"><a href="#Value-function-approximation" class="headerlink" title="Value function approximation"></a>Value function approximation</h3><p>If we get the expression of value function?</p>
+<h4 id="Model-simulator"><a href="#Model-simulator" class="headerlink" title="Model/simulator"></a>Model/simulator</h4><p>Assume we have a <strong>model/simulator</strong> for MDP. It maps $s_t, a_t: s_{t+1}$. </p>
+<ul>
+<li>It can be some <strong>physics simulation engine</strong>.</li>
+<li>Or it can be learned through <strong>monte carlo simulation</strong>. $s_{t+1} = f(s_t, a_t)$ <ul>
+<li><strong>Linear form</strong>: $s_{t+1} = As_t + Ba_t$<ul>
+<li>Optimize the parameters by minimizing l2 loss</li>
+<li>$\argmin_{A,B} \sum_{i=1}^n\sum_{t=0}^{T-1} {\big|\big| s_{t+1}^{(i)} - \hat{s}_{t+1}^{(i)}\big|\big|^2 }$</li>
+</ul>
+</li>
+<li>Non-Linear form: use non-linear feature mappings $\phi_s(s_t), \phi_a(a_t)$</li>
+</ul>
+</li>
+</ul>
+<h4 id="Fitted-value-iteration"><a href="#Fitted-value-iteration" class="headerlink" title="Fitted value iteration"></a>Fitted value iteration</h4><p>Estimate: $q(a) \sim R(s^{(i)} + \gamma E[V(s’)])$, through averaging the results of k samples (k=1 is okay if the simulator is deterministic. single sample)</p>
+<p>set $y^{(i)} = \max_aq(a)$, estimate of optimal value,</p>
+<p>Fit the value function, $V(S^{(i)}) \sim y^{(i)}$ using supervised learning. Update parameters.</p>
 
     </div>
 
@@ -424,7 +424,7 @@ for each state <span class="math inline">\(s\)</span>, greedily optimize the <sp
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#markov-decision-process-mdp"><span class="nav-number">1.</span> <span class="nav-text">1 Markov decision process (MDP)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#value-iteration-and-policy-iteration"><span class="nav-number">2.</span> <span class="nav-text">2 Value Iteration and Policy Iteration</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#value-iteration"><span class="nav-number">2.1.</span> <span class="nav-text">Value Iteration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#policy-iteration"><span class="nav-number">2.2.</span> <span class="nav-text">Policy iteration</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#learning-a-model-for-an-mdp"><span class="nav-number">3.</span> <span class="nav-text">3 Learning a model for an MDP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#estimate-p_sa-r"><span class="nav-number">3.1.</span> <span class="nav-text">Estimate \(P_{sa}, R\)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#algorithm-for-mdp-combining-value-iteration-and-p_sa-estimation"><span class="nav-number">3.2.</span> <span class="nav-text">Algorithm for MDP: combining value iteration and \(P_{sa}\) estimation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#continuous-state-mdps"><span class="nav-number">4.</span> <span class="nav-text">4 Continuous state MDPs</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#discretization"><span class="nav-number">4.1.</span> <span class="nav-text">Discretization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#value-function-approximation"><span class="nav-number">4.2.</span> <span class="nav-text">Value function approximation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#modelsimulator"><span class="nav-number">4.2.1.</span> <span class="nav-text">Model&#x2F;simulator</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fitted-value-iteration"><span class="nav-number">4.2.2.</span> <span class="nav-text">Fitted value iteration</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Markov-decision-process-MDP"><span class="nav-number">1.</span> <span class="nav-text">1 Markov decision process (MDP)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Value-Iteration-and-Policy-Iteration"><span class="nav-number">2.</span> <span class="nav-text">2 Value Iteration and Policy Iteration</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Value-Iteration"><span class="nav-number">2.1.</span> <span class="nav-text">Value Iteration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Policy-iteration"><span class="nav-number">2.2.</span> <span class="nav-text">Policy iteration</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Learning-a-model-for-an-MDP"><span class="nav-number">3.</span> <span class="nav-text">3 Learning a model for an MDP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Estimate-P-sa-R"><span class="nav-number">3.1.</span> <span class="nav-text">Estimate $P_{sa}, R$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Algorithm-for-MDP-combining-value-iteration-and-P-sa-estimation"><span class="nav-number">3.2.</span> <span class="nav-text">Algorithm for MDP: combining value iteration and $P_{sa}$ estimation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Continuous-state-MDPs"><span class="nav-number">4.</span> <span class="nav-text">4 Continuous state MDPs</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Discretization"><span class="nav-number">4.1.</span> <span class="nav-text">Discretization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Value-function-approximation"><span class="nav-number">4.2.</span> <span class="nav-text">Value function approximation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Model-simulator"><span class="nav-number">4.2.1.</span> <span class="nav-text">Model&#x2F;simulator</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Fitted-value-iteration"><span class="nav-number">4.2.2.</span> <span class="nav-text">Fitted value iteration</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -440,7 +440,7 @@ for each state <span class="math inline">\(s\)</span>, greedily optimize the <sp
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-count">51</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
