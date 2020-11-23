@@ -7107,4 +7107,88 @@ Model Accuracy = 0.9619
         <tag>笔记</tag>
       </tags>
   </entry>
+  <entry>
+    <title>CS229 Notes3 SVM 实现</title>
+    <url>/2020/11/23/CS229-Notes3-SVM-%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<h1 id="Import-Packages"><a href="#Import-Packages" class="headerlink" title="Import Packages"></a>Import Packages</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">%cd /content/drive/My Drive/<span class="number">20</span>FA/DataMining/HW3</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> scipy.optimize <span class="keyword">import</span> minimize</span><br><span class="line"><span class="keyword">from</span> scipy.optimize <span class="keyword">import</span> LinearConstraint</span><br><span class="line"><span class="keyword">from</span> tqdm.notebook <span class="keyword">import</span> tqdm</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> datasets, transforms</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">%matplotlib inline</span><br></pre></td></tr></table></figure>
+
+<h1 id="“0”-“9”-Data-Extraction"><a href="#“0”-“9”-Data-Extraction" class="headerlink" title="“0”/“9” Data Extraction"></a>“0”/“9” Data Extraction</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">transform = transforms.Compose([</span><br><span class="line">    transforms.ToTensor(),</span><br><span class="line">    transforms.Normalize((<span class="number">0.5</span>,),(<span class="number">0.5</span>)),</span><br><span class="line">])</span><br><span class="line">trainset = datasets.MNIST(<span class="string">&#x27;PATH_TO_STORE_TRAINSET&#x27;</span>, download=<span class="literal">True</span>, train=<span class="literal">True</span>, transform=transform)</span><br><span class="line">valset = datasets.MNIST(<span class="string">&#x27;PATH_TO_STORE_TESTSET&#x27;</span>, download=<span class="literal">True</span>, train=<span class="literal">False</span>, transform=transform)</span><br><span class="line"></span><br><span class="line">trainloader = torch.utils.data.DataLoader(trainset)</span><br><span class="line">valloader = torch.utils.data.DataLoader(valset)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ZeroNineTrain = [i <span class="keyword">for</span> i <span class="keyword">in</span> tqdm(trainset) <span class="keyword">if</span> (i[<span class="number">1</span>] == <span class="number">0</span>)|(i[<span class="number">1</span>] == <span class="number">9</span>)]</span><br><span class="line">X_train, y_train = zip(*ZeroNineTrain)</span><br><span class="line">X_train = torch.stack(X_train)</span><br><span class="line">y_train = torch.tensor(y_train)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ZeroNineVal = [i <span class="keyword">for</span> i <span class="keyword">in</span> tqdm(valset) <span class="keyword">if</span> (i[<span class="number">1</span>] == <span class="number">0</span>)|(i[<span class="number">1</span>] == <span class="number">9</span>)]</span><br><span class="line">X_val, y_val = zip(*ZeroNineVal)</span><br><span class="line">X_val = torch.stack(X_val)</span><br><span class="line">y_val = torch.tensor(y_val)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">plt.imshow(X_train[<span class="number">0</span>].squeeze(), cmap=<span class="string">&quot;gray_r&quot;</span>)</span><br><span class="line">plt.show()</span><br><span class="line">y_train[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="/2020/11/23/CS229-Notes3-SVM-%E5%AE%9E%E7%8E%B0/SVM_7_0.png"></p>
+<pre><code>tensor(0)</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.save(X_train, <span class="string">&quot;X_train.pt&quot;</span>)</span><br><span class="line">torch.save(y_train, <span class="string">&quot;y_train.pt&quot;</span>)</span><br><span class="line">torch.save(X_val, <span class="string">&quot;X_val.pt&quot;</span>)</span><br><span class="line">torch.save(y_val, <span class="string">&quot;y_val.pt&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h1 id="Class-SVM"><a href="#Class-SVM" class="headerlink" title="Class: SVM"></a>Class: SVM</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SVM</span>():</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot; </span></span><br><span class="line"><span class="string">    SVM binary classifier, optimizing with the dual lagrangian program, </span></span><br><span class="line"><span class="string">    trained on batch. Uses the SMO algorithm.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    [CS229 - Kernel Methods and SVM](http://cs229.stanford.edu/notes2020fall/notes2020fall/cs229-notes3.pdf)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    ## Input:</span></span><br><span class="line"><span class="string">        X: (N, d)</span></span><br><span class="line"><span class="string">        Y: (N,)</span></span><br><span class="line"><span class="string">        n = batch_size: int</span></span><br><span class="line"><span class="string">        C: l1 regularization term. alpha_i in [0, C]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    ## Intermediate parameters:</span></span><br><span class="line"><span class="string">        x: (n, d), random batch of X</span></span><br><span class="line"><span class="string">        y: (n)</span></span><br><span class="line"><span class="string">        M: (n, n), M[i,j] = y_iy_j&lt;x_i,x_j&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    ## Learned parameters:</span></span><br><span class="line"><span class="string">        alpha: (n,)</span></span><br><span class="line"><span class="string">        w: (d,)</span></span><br><span class="line"><span class="string">        b: int</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, X, Y, batch_size=<span class="number">64</span>, C=<span class="number">5</span></span>):</span></span><br><span class="line">        <span class="comment"># X: (N,d), Y: (N,), x: (n,d), y:(n,)</span></span><br><span class="line">        <span class="comment"># Fixed values</span></span><br><span class="line">        self.N, self.d = X.shape</span><br><span class="line">        self.n = batch_size</span><br><span class="line">        self.C = C</span><br><span class="line">        self.X = X</span><br><span class="line">        self.Y = Y</span><br><span class="line">        self.x = self.X[:self.n]</span><br><span class="line">        self.y = self.Y[:self.n]</span><br><span class="line">        self.M = np.outer(self.y,self.y) * np.dot(self.x, self.x.T)</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Learned parameters</span></span><br><span class="line">        self.alpha = np.ones(self.n)</span><br><span class="line">        self.w = np.zeros(self.d)</span><br><span class="line">        self.b = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">shuffle_batch</span>(<span class="params">self</span>):</span></span><br><span class="line">        batch_indices = np.random.choice(np.arange(self.N), self.n)</span><br><span class="line">        self.x = self.X[batch_indices]</span><br><span class="line">        self.y = self.Y[batch_indices]</span><br><span class="line">        self.M = np.outer(self.y,self.y) * np.dot(self.x, self.x.T)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update_alpha</span>(<span class="params">self, random_idx1, random_idx2</span>):</span></span><br><span class="line">        Zeta = -np.sum(self.alpha*self.y) + (self.alpha*self.y)[random_idx1] + (self.alpha*self.y)[random_idx2]</span><br><span class="line">        self.alpha[random_idx1] = (Zeta - self.alpha[random_idx2]*self.y[random_idx2])*self.y[random_idx1]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dual_obj</span>(<span class="params">self, alpha</span>):</span></span><br><span class="line">        <span class="keyword">return</span> np.sum(alpha) - np.sum(<span class="number">0.5</span> * self.M * np.outer(alpha,alpha))</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">optimize</span>(<span class="params">self, iterations = <span class="number">100000</span>, tol=<span class="number">1e-2</span></span>):</span></span><br><span class="line">        prev_val = self.dual_obj(self.alpha)</span><br><span class="line">        <span class="comment"># The first shuffling happens at time 0</span></span><br><span class="line">        shuffle_timepoint=<span class="number">0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> tqdm(range(iterations)):</span><br><span class="line">            self.w = np.dot(self.alpha*self.y, self.x)</span><br><span class="line">            self.b = (np.max(np.dot(self.x, self.w)[self.y==<span class="number">-1</span>]) + np.min(np.dot(self.x, self.w)[self.y==<span class="number">1</span>])) * <span class="number">-0.5</span></span><br><span class="line"></span><br><span class="line">            <span class="comment"># Select 2 alphas randomly</span></span><br><span class="line">            random_idx1, random_idx2 = np.random.choice(np.arange(<span class="number">0</span>, self.n), <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># The (quadratic w.r.t a2) function that scipy.optimize.minimize takes</span></span><br><span class="line">            <span class="function"><span class="keyword">def</span> <span class="title">optimizeWRTa2</span>(<span class="params">a2</span>):</span></span><br><span class="line">                self.alpha[random_idx2] = a2</span><br><span class="line">                self.update_alpha(random_idx1, random_idx2)</span><br><span class="line">                <span class="keyword">return</span> -self.dual_obj(self.alpha)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># Solve optimization w.r.t a2</span></span><br><span class="line">            a2 = self.alpha[random_idx2]</span><br><span class="line">            res = minimize(optimizeWRTa2, a2, bounds=[(<span class="number">0</span>,self.C)])</span><br><span class="line">            a2 = res.x</span><br><span class="line"></span><br><span class="line">            <span class="comment"># Update a2 in alpha</span></span><br><span class="line">            self.alpha[random_idx2] = a2</span><br><span class="line">            self.update_alpha(random_idx1, random_idx2)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># Check convergence</span></span><br><span class="line">            <span class="keyword">if</span> (i%<span class="number">100</span> == <span class="number">1</span>):</span><br><span class="line">                <span class="keyword">if</span> np.abs(self.dual_obj(self.alpha) - prev_val) &lt; tol:</span><br><span class="line">                    <span class="keyword">if</span> i - shuffle_timepoint &lt; <span class="number">200</span>:</span><br><span class="line">                        print(<span class="string">&quot;Converges quickly after shuffling. End early.&quot;</span>)</span><br><span class="line">                        <span class="keyword">return</span></span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        print(<span class="string">f&quot;Optimized on one batch: <span class="subst">&#123;self.dual_obj(self.alpha) - prev_val&#125;</span>, shuffling... \n&quot;</span>)</span><br><span class="line">                        self.shuffle_batch()</span><br><span class="line">                        <span class="comment"># Record the time of shuffling. If next shuffling appears soon,</span></span><br><span class="line">                        <span class="comment"># just end the training.</span></span><br><span class="line">                        shuffle_timepoint = i</span><br><span class="line">                        <span class="keyword">continue</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">if</span> (i%<span class="number">1000</span> == <span class="number">1</span>):</span><br><span class="line">                        print(self.dual_obj(self.alpha) - prev_val)</span><br><span class="line">                    prev_val = self.dual_obj(self.alpha)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="Train-amp-Val"><a href="#Train-amp-Val" class="headerlink" title="Train &amp; Val"></a>Train &amp; Val</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X_train = torch.load(<span class="string">&quot;X_train.pt&quot;</span>)</span><br><span class="line">y_train = torch.load(<span class="string">&quot;y_train.pt&quot;</span>)</span><br><span class="line">X_val = torch.load(<span class="string">&quot;X_val.pt&quot;</span>)</span><br><span class="line">y_val = torch.load(<span class="string">&quot;y_val.pt&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Criteria: Label0: +1, Label9: -1</span></span><br><span class="line">y_train = (y_train==<span class="number">0</span>)*<span class="number">2</span><span class="number">-1</span></span><br><span class="line">y_val = (y_val==<span class="number">0</span>)*<span class="number">2</span><span class="number">-1</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Sample data</span></span><br><span class="line">X = X_train.squeeze().view((X_train.shape[<span class="number">0</span>],<span class="number">-1</span>)).numpy()</span><br><span class="line">Y = y_train.numpy()</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">svm = SVM(X, Y)</span><br><span class="line">svm.optimize()</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>HBox(children=(FloatProgress(value=0.0, max=100000.0), HTML(value=&#39;&#39;)))
+
+
+14448.953491210938
+4635.551941284434
+2231.0210423407925
+112.68017049568653
+6.430136875566648
+0.34646705035092173
+-4.375698038744202
+9.577710763486996
+-5.988378290466628
+-1.2618465858068237
+0.7820677580347501
+0.4630845548694932
+0.03372922732873379
+-0.6528973292852496
+Optimized on one batch: 0.00878679842644127, shuffling... 
+
+0.02939665488951175
+...
+
+Optimized on one batch: -0.007385645890327919, shuffling... 
+
+Converges quickly after shuffling. End early.</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Y_ = np.sign(np.dot(X, svm.w) + svm.b)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.mean(Y == Y_)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>0.9143362533692723</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X_test = X_val.squeeze().view((X_val.shape[<span class="number">0</span>],<span class="number">-1</span>)).numpy()</span><br><span class="line">Y_test = y_val.numpy()</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.mean(Y_test == np.sign(np.dot(X_test, svm.w) + svm.b))</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>0.9235796882855707</code></pre>
+]]></content>
+      <categories>
+        <category>Machine Learning</category>
+      </categories>
+      <tags>
+        <tag>CS229</tag>
+      </tags>
+  </entry>
 </search>
