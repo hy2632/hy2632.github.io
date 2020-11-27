@@ -5702,7 +5702,7 @@ a(\eta) &amp;= -\log(\phi_k)\\
 <div class="pdfobject-container" data-target="./MatrixCookBook.pdf" data-height="1000px"></div>
 ]]></content>
       <categories>
-        <category>misc</category>
+        <category>Textbooks</category>
       </categories>
       <tags>
         <tag>矩阵</tag>
@@ -7158,5 +7158,18 @@ w^T(x^{(i)}-x^{(j)}) + y^{(j)} \leq -1, y^{(i)} = -1
 <h2 id="kernel-svm">Kernel SVM</h2>
 <p>有以下注意点： 1. 要对输入数据 X 一开始就做标准化。否则用 softmax 这种核函数量级直接爆炸。比如本数据中 <span class="math inline">\(\|x\| \approx27\)</span>， 想象一下<span class="math inline">\(e^{x^Ty}有多大\)</span> 2. 相当于把线性的所有<code>self.x</code>替换为<code>self.phi_x</code>。K的存在确实替代了 featuremap 的显示表达，然而 b 的表达式里仍然是 <span class="math inline">\(\phi(x)\)</span>，所以还是不得不给出 featuremap 的表达式。</p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>Machine Learning: A Probabilistic Perspective, Kevin P. Murphy</title>
+    <url>/2020/11/26/Machine-Learning-A-Probabilistic-Perspective-Kevin-P-Murphy/</url>
+    <content><![CDATA[<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Machine Learning</span><br><span class="line">A Probabilistic Perspective</span><br><span class="line"></span><br><span class="line">Kevin P. Murphy</span><br><span class="line"></span><br><span class="line">The MIT Press</span><br></pre></td></tr></table></figure>
+<div class="pdfobject-container" data-target="./Machine" data-height="Learning_"></div>
+]]></content>
+      <categories>
+        <category>Textbooks</category>
+      </categories>
+      <tags>
+        <tag>Machine Learning</tag>
+      </tags>
   </entry>
 </search>
