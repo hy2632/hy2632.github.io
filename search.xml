@@ -7158,6 +7158,12 @@ w^T(x^{(i)}-x^{(j)}) + y^{(j)} \leq -1, y^{(i)} = -1
 <h2 id="kernel-svm">Kernel SVM</h2>
 <p>有以下注意点： 1. 要对输入数据 X 一开始就做标准化。否则用 softmax 这种核函数量级直接爆炸。比如本数据中 <span class="math inline">\(\|x\| \approx27\)</span>， 想象一下<span class="math inline">\(e^{x^Ty}有多大\)</span> 2. 相当于把线性的所有<code>self.x</code>替换为<code>self.phi_x</code>。K的存在确实替代了 featuremap 的显示表达，然而 b 的表达式里仍然是 <span class="math inline">\(\phi(x)\)</span>，所以还是不得不给出 featuremap 的表达式。</p>
 ]]></content>
+      <categories>
+        <category>Machine Learning</category>
+      </categories>
+      <tags>
+        <tag>CS229</tag>
+      </tags>
   </entry>
   <entry>
     <title>Machine Learning: A Probabilistic Perspective, Kevin P. Murphy</title>
