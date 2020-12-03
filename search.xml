@@ -7290,4 +7290,47 @@ w^T(x^{(i)}-x^{(j)}) + y^{(j)} \leq -1, y^{(i)} = -1
         <tag>笔记</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Data-Mining-Lec13</title>
+    <url>/2020/12/02/Data-Mining-Lec13/</url>
+    <content><![CDATA[<h1 id="Evolutional-Strategy"><a href="#Evolutional-Strategy" class="headerlink" title="Evolutional Strategy"></a>Evolutional Strategy</h1><h2 id="RL-Policies-Optimization"><a href="#RL-Policies-Optimization" class="headerlink" title="RL Policies Optimization"></a>RL Policies Optimization</h2><p>State, Action</p>
+<p>Policy: Deterministic / Randomized</p>
+<p>Function $F: \mathbb{R}^d \to \mathbb{R}$, reward from vector to scalar.</p>
+<p>Transition is a blackbox: decided by the environment. Dense reward better than sparse reward. Simulators are used to get the transitions (Physics engine?). </p>
+<p>Now assume that the environment is blackbox. We get partial observation. Environment can be randomized. </p>
+<h2 id="RFD-Fancy-Finite-difference-replacing-backprop"><a href="#RFD-Fancy-Finite-difference-replacing-backprop" class="headerlink" title="RFD: Fancy Finite difference replacing backprop"></a>RFD: Fancy Finite difference replacing backprop</h2><p>Random finite difference</p>
+<p>$F: \mathbb{R}^d \to \mathbb{R}$</p>
+<p>Towards smooth relations</p>
+<p>$$\max_{\mu\in P(\mathbb{R}^d)} {\mathbb{E}_{\theta \sim \mu}{[F(\theta)]}}$$</p>
+<p>Gaussian smoothings</p>
+<p>$$\max_{\theta\in \mathbb{R}^d}{J(\theta)} =  \mathbb{E}_{\phi \sim N(\theta, \sigma^2I)}{[F(\phi)]}$$</p>
+<p>$$\nabla J(\theta) = \frac1\sigma \mathbb{E}_{\epsilon \sim N(0, I)}{[F(\theta+\sigma\epsilon)\epsilon]}$$</p>
+<p>Saliman(2017)</p>
+<h2 id="Gradient-sensing-as-a-MC-estimation"><a href="#Gradient-sensing-as-a-MC-estimation" class="headerlink" title="Gradient sensing as a MC estimation"></a>Gradient sensing as a MC estimation</h2><p>ES-style vanilla gradient estimator:<br>$$\hat{\nabla}_NJ(\theta) = \frac{1}{N\sigma}\sum{F(\theta+\sigma\epsilon_i)\epsilon_i}$$</p>
+<p>gradient estimator with <strong>antithetic pairs</strong></p>
+<p>$$\hat{\nabla}_NJ(\theta) =\frac{1}{2N\sigma}\sum{(F(\theta+\sigma\epsilon_i)\epsilon_i - F(\theta-\sigma\epsilon_i)\epsilon_i)}  $$</p>
+<p>FD style, randomized</p>
+<p>$$\hat{\nabla}_NJ(\theta) =\frac{1}{N\sigma}\sum{(F(\theta+\sigma\epsilon_i)\epsilon_i - F(\theta)\epsilon_i)}$$</p>
+<ul>
+<li>all 3 estimators are unbiased</li>
+<li>none dominates</li>
+</ul>
+<p>It can be proved that the orthogonal(structured) gradient estimator $\hat{\nabla}_N^{ort}J(\theta)$ is unbiased and yields lower MSE than the unstructured estimator.</p>
+<h2 id="Coupled-anithetic-pairs-for-MC-estimation"><a href="#Coupled-anithetic-pairs-for-MC-estimation" class="headerlink" title="Coupled anithetic pairs for MC estimation"></a>Coupled anithetic pairs for MC estimation</h2><p>$$\hat{\nabla}_NJ(\theta) =\frac{1}{2N\sigma}\sum{(F(\theta+\sigma\epsilon_i)\epsilon_i - F(\theta-\sigma\epsilon_i’)\epsilon_i’)}  $$</p>
+<p>$\epsilon_i’$ inverse length.</p>
+<p>Or more complex formulation.</p>
+<h2 id="RBO-Robust-Blackbox-Optimization"><a href="#RBO-Robust-Blackbox-Optimization" class="headerlink" title="RBO-Robust Blackbox Optimization"></a>RBO-Robust Blackbox Optimization</h2><p>$$\hat{\nabla}<em>{RBO}^{ort}J(\theta) = \text{arg} \min</em>{v\in R^d} \frac1{2N} |y-Zv|^p_p + \alpha  |v|^q_q$$</p>
+<p>re-used perturbations</p>
+<h2 id="Efficiency-of-the-orthogonal-exploration-for-gradient-sensing-structured-NNs"><a href="#Efficiency-of-the-orthogonal-exploration-for-gradient-sensing-structured-NNs" class="headerlink" title="Efficiency of the orthogonal exploration for gradient sensing - structured NNs."></a>Efficiency of the orthogonal exploration for gradient sensing - structured NNs.</h2><p>Structurized Matrices: Toeplitz, $n\times n$ with $2n-1$ parameters. constant diagonal values.</p>
+<p>$O(n\log n)$ complexity</p>
+<h2 id="RBO-amp-noisy-measurements"><a href="#RBO-amp-noisy-measurements" class="headerlink" title="RBO &amp; noisy measurements"></a>RBO &amp; noisy measurements</h2><p>under noise 0.4, the MC still manages to reach the same accuracy</p>
+<p>[Neuroevolution of self-interpretation]</p>
+]]></content>
+      <categories>
+        <category>Data Mining</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
 </search>
