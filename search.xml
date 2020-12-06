@@ -7342,7 +7342,7 @@ w^T(x^{(i)}-x^{(j)}) + y^{(j)} \leq -1, y^{(i)} = -1
 <h3 id="proposed-estimator">Proposed estimator</h3>
 <p>Here we propose an estimator using antithetic sampling for variance reduction.</p>
 <p><span class="math display">\[\hat{X&#39;} = \frac1{m} \sum_{i=1}^{m}{ \frac{f(g_i^\top z) + f(-g_i^\top z)}2} \]</span></p>
-<p>Still <span class="math inline">\(g_i \stackrel\text{iid}\sim \mathcal{N}(0, I_d)\)</span>.</p>
+<p>Still <span class="math inline">\(g_i \stackrel{\text{iid}}\sim \mathcal{N}(0, I_d)\)</span>.</p>
 <h3 id="proof-unbiased">Proof: Unbiased</h3>
 <p>The unbiasedness is evident.</p>
 <p><span class="math display">\[\begin{aligned}
@@ -7501,6 +7501,7 @@ E[\hat{X_i^2}] &amp;= \int_{-\infty}^{\infty}{f(\hat{X_i}) \hat{X_i^2} d\hat{X_i
 &amp;\leq | E\big[\hat{X_1^2}\big] - E\big[\hat{X_2^2}\big]| + |2X(\mu_2 - \mu_1) | \\
 &amp;\leq \frac{2F^4}{m^2} + \frac{2F^2}m\delta = \epsilon
 \end{aligned}\]</span></p>
+<h2 id="question-sheet">Question Sheet</h2>
 <div class="pdfobject-container" data-target="./final_exam.pdf" data-height="1000px"></div>
 ]]></content>
       <categories>
