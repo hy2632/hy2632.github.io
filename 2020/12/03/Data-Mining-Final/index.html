@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hy2632.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Data Mining Final Hua Yao, UNI:hy2632 Problem 1: Reducing the variance of the Monte Carlo estimators [50 points] Proposed estimator Here we propose an estimator using antithetic sampling for variance">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Data-Mining-Final">
+<meta property="og:url" content="https://hy2632.github.io/2020/12/03/Data-Mining-Final/index.html">
+<meta property="og:site_name" content="豁蒙楼">
+<meta property="og:description" content="Data Mining Final Hua Yao, UNI:hy2632 Problem 1: Reducing the variance of the Monte Carlo estimators [50 points] Proposed estimator Here we propose an estimator using antithetic sampling for variance">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-04T02:49:37.000Z">
+<meta property="article:modified_time" content="2020-12-06T00:08:25.407Z">
+<meta property="article:author" content="姚华(Hua Yao)">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://hy2632.github.io/2020/12/03/Data-Mining-Final/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Data-Mining-Final | 豁蒙楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">豁蒙楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/hy2632" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/12/03/Data-Mining-Final/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
+      <meta itemprop="name" content="姚华(Hua Yao)">
+      <meta itemprop="description" content="hy2632@columbia.edu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="豁蒙楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Data-Mining-Final
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-03 21:49:37" itemprop="dateCreated datePublished" datetime="2020-12-03T21:49:37-05:00">2020-12-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-05 19:08:25" itemprop="dateModified" datetime="2020-12-05T19:08:25-05:00">2020-12-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Data-Mining/" itemprop="url" rel="index"><span itemprop="name">Data Mining</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/12/03/Data-Mining-Final/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/12/03/Data-Mining-Final/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="data-mining-final">Data Mining Final</h1>
+<p>Hua Yao, UNI:hy2632</p>
+<h2 id="problem-1-reducing-the-variance-of-the-monte-carlo-estimators-50-points">Problem 1: Reducing the variance of the Monte Carlo estimators [50 points]</h2>
+<h3 id="proposed-estimator">Proposed estimator</h3>
+<p>Here we propose an estimator using antithetic sampling for variance reduction.</p>
+<p><span class="math display">\[\hat{X&#39;} = \frac1{m} \sum_{i=1}^{m}{ \frac{f(g_i^\top z) + f(-g_i^\top z)}2} \]</span></p>
+<p>Still <span class="math inline">\(g_i \stackrel\text{iid}\sim \mathcal{N}(0, I_d)\)</span>.</p>
+<h3 id="proof-unbiased">Proof: Unbiased</h3>
+<p>The unbiasedness is evident.</p>
+<p><span class="math display">\[\begin{aligned}
+E[\hat{X&#39;}] &amp;= E\bigg[\frac1{m} \sum_{i=1}^{m}{ \frac{f(g_i^\top z) + f(-g_i^\top z)}2} \bigg] \\
+&amp;=\frac12 \big(E_{g\sim \mathcal{N}(0, I_d)}[f(g^\top z) ]  + E_{g\sim \mathcal{N}(0, I_d)}[f(-g^\top z) ] \big) \\
+&amp;=\frac12 \big(E_{g\sim \mathcal{N}(0, I_d)}[f(g^\top z) ]  + E_{g\sim \mathcal{N}(0, I_d)}[f(g^\top z) ] \big)  \quad\quad\quad\quad\quad\quad \because -g\sim \mathcal{N}(0, I_d) \\
+&amp;= E_{g\sim \mathcal{N}(0, I_d)}[f(g^\top z) ] \\
+&amp;= E[X]
+\end{aligned}\]</span></p>
+<h3 id="proof-strictly-lower-variance">Proof: Strictly lower variance</h3>
+<p>Denote <span class="math inline">\(x = g^\top z \in \mathbb{R}\)</span>, <span class="math inline">\(X=f(x)\)</span>, <span class="math inline">\(x\)</span> has a normal distribution parameterized by <span class="math inline">\(z\)</span>, from the property of multivariate normal distribution.</p>
+<p><span class="math display">\[x\sim N(0, \sum_{i=1}^d{|z_i|})\]</span></p>
+<p>Then the expectation w.r.t <span class="math inline">\(g\)</span> can also be written as expectation w.r.t <span class="math inline">\(x\)</span>. For an arbitrary function <span class="math inline">\(F\)</span>,</p>
+<p><span class="math display">\[E_g[F(g^\top z)] = E_x[F(x)]\]</span></p>
+<p>The variance of estimators</p>
+<p><span class="math display">\[\begin{aligned}
+Var(\hat{X}) &amp;=  Var \bigg[  \frac1{m} \sum_{i=1}^{m}{ f(g_i^\top z) }  \bigg]\\
+&amp;= \frac1{m} Var \big[ f(x) \big]  \\
+\end{aligned}\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+Var(\hat{X&#39;}) &amp;= Var \bigg[  \frac1{m} \sum_{i=1}^{m}{ \frac{f(g_i^\top z) + f(-g_i^\top z)}2}  \bigg]\\
+&amp;= \frac1{m} Var \bigg[ \frac{f(x) + f(-x)}2 \bigg] \\
+&amp;= \frac1{4m} \bigg( Var\big[f(x)\big] + Var\big[f(-x)\big] + 2Cov\big[f(x), f(-x)\big]   \bigg)\\
+&amp;= \frac1{2m}\bigg(Var\big[f(x)\big] + Cov\big[f(x), f(-x)\big]   \bigg)
+\end{aligned}\]</span></p>
+<p>To prove that <span class="math inline">\(Var(\hat{X&#39;}) &lt; Var(\hat{X})\)</span>, we only need to prove that <span class="math inline">\(Cov\big[f(x), f(-x)\big] &lt; Var\big[f(x)\big]\)</span>.</p>
+<p><span class="math display">\[\begin{aligned}
+Cov\big[f(x), f(-x)\big] &amp;= E\big[f(x)f(-x)\big] - E\big[f(x)\big]E\big[f(-x)\big] \\
+&amp;= E\big[f(x)f(-x)\big] - E\big[f(x)\big]^2\\
+\end{aligned}\]</span></p>
+<p>Here,</p>
+<p><span class="math display">\[E\big[f(-x)\big] = E\big[f(x)\big]\]</span></p>
+<p>because from above, <span class="math inline">\(x\sim N(0, \sum_{i=1}^d{|z_i|})\)</span>, <span class="math inline">\(-x\)</span> has the same distribution with <span class="math inline">\(x\)</span>.</p>
+<p><span class="math display">\[Var\big[f(x)] = E\big[f^2(x)\big] - E\big[f(x)\big]^2\]</span> <span class="math display">\[\begin{aligned}
+Cov\big[f(x), f(-x)\big] - Var\big[f(x)] &amp;= E\big[f(x)f(-x)\big] - E\big[f^2(x)\big] \\
+&amp;=  E\big[f(x)f(-x) - f^2(x)\big]\\
+&amp;= \int_{-\infty}^{\infty}{p(x)f(x)[f(-x)-f(x)]dx}
+\end{aligned}\]</span></p>
+<p>We know that <span class="math inline">\(f\)</span>'s taylor expansion has positive coefficients. Then it can be denoted as the sum of even and odd parts <span class="math display">\[f(x) = o(x) + e(x)\]</span></p>
+<p><span class="math inline">\(p(x)\)</span> of normal distribution is even.</p>
+<p><span class="math display">\[\begin{aligned}
+\int_{-\infty}^{\infty}{p(x)f(x)[f(-x)-f(x)]dx} 
+&amp;= \int_{-\infty}^{\infty}{p(x)[o(x) + e(x)][-2o(x)]dx} \\
+&amp;= -2\int_{-\infty}^{\infty}{p(x)[o^2(x) + o(x)e(x)]dx} \\
+&amp;= -2\int_{-\infty}^{\infty}{p(x)o^2(x) dx} \qquad \text{drop the odd part in integration} \\
+&amp;&lt; 0 \qquad \text{strictly less than 0 because o(x) has positive coefficients} \\
+\end{aligned}\]</span></p>
+<p><span class="math display">\[\therefore Cov\big[f(x), f(-x)\big] &lt; Var\big[f(x)]\]</span> <span class="math display">\[\therefore Var(\hat{X&#39;})  &lt; Var(\hat{X}) \]</span></p>
+<h2 id="problem-2-svm-with-dynamically-changing-labels-30-points">Problem 2: SVM with dynamically changing labels [30 points]</h2>
+<h3 id="known-conditions">Known conditions</h3>
+<p>For given time <span class="math inline">\(t\)</span>, from the derivation in the lagrangian program, we get</p>
+<p><span class="math display">\[\begin{aligned}
+w_t &amp;= \sum_{i=1}^{n}\alpha_{t}^{(i)}y_t^{(i)}x^{(i)}\\
+&amp;= (\alpha_t * y_t) \cdot x
+\end{aligned}\]</span></p>
+<p><span class="math inline">\(w_t: (N,), \alpha_t : (N,), y_t: (N,), x: (N,d)\)</span></p>
+<p>And</p>
+<p><span class="math display">\[ \sum_{i=1}^{n}\alpha_{t}^{(i)}y_t^{(i)} = 0\]</span></p>
+<h3 id="sufficient-condition-for-the-statement-to-hold">Sufficient condition for the statement to hold</h3>
+<p>When <span class="math inline">\(t \in \{0,...N\}\)</span>, vectorized version</p>
+<p><span class="math display">\[\begin{aligned}
+\begin{bmatrix}w_1 \\...\\w_N \end{bmatrix}
+&amp;= \begin{bmatrix}\alpha_1*y_1 \\...\\\alpha_N*y_N \end{bmatrix}\cdot x \\
+&amp;=  \begin{bmatrix}\alpha_1^{(1)}y_1^{(1)}, ...,\alpha_1^{(N)}y_1^{(N)}  \\...\\\alpha_N^{(1)}y_N^{(1)}, ...,\alpha_N^{(N)}y_N^{(N)} \end{bmatrix}_{N\times N}\cdot \begin{bmatrix}x^{(1)} \\...\\x^{(N)} \end{bmatrix}
+\end{aligned}\]</span></p>
+<p>Denote the <span class="math inline">\(N\times N\)</span> matrix on the left as <span class="math inline">\(A\)</span>. Then</p>
+<p><span class="math display">\[w_t = A_t\cdot x\]</span></p>
+<p>where</p>
+<p><span class="math display">\[x = \begin{bmatrix}x^{(1)} \\...\\x^{(N)} \end{bmatrix}_{N\times d}\]</span></p>
+<p>if <span class="math inline">\(w_t\)</span> is the linear combination of all other <span class="math inline">\(w\)</span> vectors,</p>
+<p><span class="math display">\[w_t = \sum_{j\in \{1,...N\}/t}{c_jw_j}\]</span></p>
+<p><span class="math display">\[\Leftrightarrow A_tx = \sum_{j\in \{1,...N\}/t}{c_j A_jx}\]</span> <span class="math display">\[\Leftrightarrow (A_t-\sum_{j\in \{1,...N\}/t}{c_j A_j})x=0\]</span></p>
+<p><span class="math inline">\(\therefore\)</span>The <strong>sufficient condition</strong> that <span class="math inline">\(w_t\)</span> can be the linear combination of all other <span class="math inline">\(w\)</span> vectors is</p>
+<p><span class="math display">\[A_t = \sum_{j\in \{1,...N\}/t}{c_j A_j}\]</span></p>
+<p>This property is namely the linearly dependence of <span class="math inline">\(A\)</span>'s rows, i.e. <strong><span class="math inline">\(A\)</span> is rank-deficient</strong>.</p>
+<h3 id="proof-a-is-rank-deficient">Proof: <span class="math inline">\(A\)</span> is rank-deficient</h3>
+<p>Using the fact that <span class="math inline">\(\sum_{i=1}^{n}\alpha_{t}^{(i)}y_t^{(i)} = 0\)</span>, we can rewrite the rightmost entry of each row of <span class="math inline">\(A\)</span> as negative the sum of all other entries in the row.</p>
+<p><span class="math display">\[\begin{aligned}
+\begin{bmatrix}\alpha_1^{(1)}y_1^{(1)}, ...,\alpha_1^{(N-1)}y_1^{(N-1)}, -\sum_{i=1}^{N-1}{\alpha_1^{(i)}y_1^{(i)}}  \\...\\\alpha_N^{(1)}y_N^{(1)}, ...,\alpha_N^{(N-1)}y_N^{(N-1)} , -\sum_{i=1}^{N-1}{\alpha_N^{(i)}y_N^{(i)}} \end{bmatrix}
+\end{aligned}\]</span></p>
+<p>Obviously, the rightmost column of <span class="math inline">\(A\)</span> is a linear combination of other columns, and the coefficients are all <span class="math inline">\(-1\)</span>,</p>
+<p><span class="math display">\[A_{:, N} = -\sum_{j=1}^{N-1}{A_{:,j}}\]</span></p>
+<p>Then the column rank of <span class="math inline">\(A\)</span> is strictly less than <span class="math inline">\(N\)</span>, A is rank-deficient.</p>
+<p>Therefore, there exists <span class="math inline">\(w_t\)</span> which is a linear combination of all other vectors.</p>
+<h2 id="problem-3-gradient-explodingvanishing-problems-in-neural-network-training-20-points">Problem 3: Gradient exploding/vanishing problems in neural network training [20 points]</h2>
+<h3 id="explodingvanishing-gradients-and-why-it-affects-deep-nn">Exploding/vanishing gradients and why it affects deep NN</h3>
+<p>In the simplest case where there are only linear transformations (without bias), denote the weight matrix between <span class="math inline">\(t\)</span>-th and <span class="math inline">\((t+1)\)</span>-th as <span class="math inline">\(A\)</span>.</p>
+<p><span class="math display">\[\frac{\partial \ell}{\partial a_t} = A^T \frac{\partial \ell}{\partial a_{t+1}}\]</span></p>
+<p>Then from the chain rule, partial derivative of the k-th hidden state and that of the loss satisfy:</p>
+<p><span class="math display">\[\frac{\partial \ell}{\partial a_k} = \frac{\partial \ell}{\partial a_{L}} \cdot A_L^T A_{L-1}^T...A_K^T\]</span></p>
+<p>The product of matrices causes exploding/vanishing gradients. If the eigenvalues of these matrices are not restricted to be <span class="math inline">\(\plusmn 1\)</span>, the product of these matrices might have unbounded eigenvalues, especially when the number of <span class="math inline">\(A\)</span>s is large (which means the early layers suffer more from vanishing/exploding gradient problem).</p>
+<p>Then when we do backpropagation using the formula above, the gradient for updating the parameters could be 0 (vanishing gradient) or <span class="math inline">\(\infty\)</span> (exploding gradient). The NN actually loses track of the gradient information of the loss function and we cannot update the parameters effectively.</p>
+<h3 id="methods-for-handling-this-problem">Methods for handling this problem</h3>
+<h4 id="using-orthogonal-weight-matrices-in-linear-tranformations">Using orthogonal weight matrices in linear tranformations</h4>
+<p>The eigenvalues of orthogonal matrix are all <span class="math inline">\(\plusmn 1\)</span>. The product of orthogonal matrices is also orthogonal and has <span class="math inline">\(\plusmn 1\)</span> eigenvalues and thus avoids exploding/vanishing gradient problem.</p>
+<p>To parameterize the orthogonal matrix, we can use unrestricted parameterizations(<span class="math inline">\(|a_{ij}|\leq1\)</span>), Givens Rotations matrices, or Riemannion optimization.</p>
+<h4 id="using-residual-network">Using Residual Network</h4>
+<p>In many residual neural networks like ResNet, the shortcut skips some layers (especially linear layers). This help alleviate the problem of vanishing gradient.</p>
+<h4 id="choice-in-activation-function">Choice in activation function</h4>
+<p>Previously we mainly talked about the vanishing/exploding gradient problem in the setting of linear layers. In neural networks with activation functions, the chain rule formula also consists of the partial derivatives of these non-linear transformations.</p>
+<p>Some activation functions might cause vanishing gradient by itself. For example, the partial derivative of sigmoid function is less than 0.25. Then such activations would make gradient smaller.</p>
+<p>Therefore, ReLU and its variants (LeakyReLU, etc) is better in this respect.</p>
+<h2 id="problem-4-epsilon-close-estimators-of-kernels-40-points">Problem 4: <span class="math inline">\(\epsilon\)</span>-close estimators of kernels [40 points]</h2>
+<!-- From $F = \sup_{x\in\mathbb{R}}|f(x)| < \infty$, we know that $f(x): \mathbb{R} \to \mathbb{R}$ is a scalar function. The operation on a $\mathbb{R}^m$ vector is elementwise. -->
+<p>Denote the value of the kernel function <span class="math inline">\(K(v,w) = X\)</span>. We use two estimators <span class="math inline">\(\hat{X_1}, \hat{X_2}\)</span> to approximate the exact value <span class="math inline">\(X\)</span>.</p>
+<p>When <span class="math inline">\(v,w\)</span> fixed, denote the mean of two estimators <span class="math inline">\(\hat{X_1}, \hat{X_2}\)</span> as <span class="math inline">\(\mu_1, \mu_2\)</span>. Since this is one state in the whole set <span class="math inline">\(S\)</span>, we have</p>
+<p><span class="math display">\[\|\mu_1 - \mu_2\| \leq \delta\]</span></p>
+<p>Then,</p>
+<p><span class="math display">\[ \begin{aligned}
+MSE(\hat{X_1}) 
+&amp;= E\big[(\hat{X_1} - \mu_1)^2 + (\mu_1 - X)^2 \big]  \\
+&amp;= Var(\hat{X_1}) + bias(\hat{X_1}, X)^2 \\
+&amp;= E\big[\hat{X_1^2}\big] - \mu_1^2 + E\big[(\mu_1 - X)^2 \big] 
+\end{aligned}\]</span></p>
+<p><span class="math display">\[ \begin{aligned}
+MSE(\hat{X_1}) - MSE(\hat{X_2})
+&amp;= E\big[\hat{X_1^2}\big] - E\big[\hat{X_2^2}\big] - \mu_1^2 + \mu_2^2 + E\big[(\mu_1 - X)^2 \big] -E\big[(\mu_2 - X)^2 \big]  \\
+&amp;= E\big[\hat{X_1^2}\big] - E\big[\hat{X_2^2}\big] +2X(\mu_2 - \mu_1) 
+\end{aligned}\]</span></p>
+<p><span class="math display">\[ \begin{aligned}
+|MSE(\hat{X_1}) - MSE(\hat{X_2})| &amp;= | E\big[\hat{X_1^2}\big] - E\big[\hat{X_2^2}\big] +2X(\mu_2 - \mu_1) |\\
+&amp;\leq | E\big[\hat{X_1^2}\big] - E\big[\hat{X_2^2}\big]| + |2X(\mu_2 - \mu_1) | \\
+\end{aligned}\]</span></p>
+<p>Research the first part <span class="math inline">\(| E\big[\hat{X_1^2}\big] - E\big[\hat{X_2^2}\big]|\)</span>. Since <span class="math inline">\(f\)</span> is bounded by <span class="math inline">\(F\)</span>, <span class="math display">\[\begin{aligned}
+|\hat{X_i}| &amp;= |\frac1mf(G_{i}v)f(G_{i}w)|\\ 
+&amp;\leq \frac1m |f(G_{i}v)||f(G_{i}w)|\\
+&amp;\leq \frac{F^2}m \\
+\end{aligned}\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+\therefore 0 \leq \hat{X_i^2} \leq \frac{F^4}{m^2}
+\end{aligned}\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+E[\hat{X_i^2}] &amp;= \int_{-\infty}^{\infty}{f(\hat{X_i}) \hat{X_i^2} d\hat{X_i}} \\
+&amp;\leq \int_{-\infty}^{\infty}{f(\hat{X_i}) \frac{F^4}{m^2} d\hat{X_i}} \\
+&amp;= \frac{F^4}{m^2}\int_{-\infty}^{\infty}{f(\hat{X_i})  d\hat{X_i}} \\
+&amp;= \frac{F^4}{m^2}
+\end{aligned}\]</span></p>
+<p>And similarly,</p>
+<p><span class="math display">\[E[\hat{X_i^2}] \geq0\]</span></p>
+<p><span class="math display">\[\therefore |E\big[\hat{X_1^2}\big] - E\big[\hat{X_2^2}\big]| \leq \frac{2F^4}{m^2}\]</span></p>
+<p>Then look at the second part <span class="math inline">\(|2X(\mu_2 - \mu_1)|\)</span>.</p>
+<p><span class="math display">\[\begin{aligned}
+|2X(\mu_2 - \mu_1)| 
+&amp;\leq |2X||\mu_2 - \mu_1| \\
+&amp;\leq |2X|\delta
+\end{aligned}\]</span></p>
+<p>Here <span class="math inline">\(X\)</span> is the exact kernel value <span class="math inline">\(K(v, w)\)</span>. We already knew <span class="math inline">\(|\hat{X_i}|\)</span> is bounded by <span class="math inline">\(\frac{F^2}m\)</span>. It goes without saying that, <span class="math inline">\(|X|\)</span> should also be bounded by a value, which is even lower than <span class="math inline">\(\frac{F^2}m\)</span>. If not, <span class="math inline">\(E[\hat{X_i}]\)</span> cannot estimate <span class="math inline">\(X\)</span>.</p>
+<p><span class="math display">\[\therefore |X| \leq \frac{F^2}m\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+|2X(\mu_2 - \mu_1)| 
+&amp;\leq |2X|\delta \\
+&amp;\leq \frac{2F^2}m\delta
+\end{aligned}\]</span></p>
+<p>To sum up, <span class="math display">\[ \begin{aligned}
+|MSE(\hat{X_1}) - MSE(\hat{X_2})| &amp;= | E\big[\hat{X_1^2}\big] - E\big[\hat{X_2^2}\big] +2X(\mu_2 - \mu_1) |\\
+&amp;\leq | E\big[\hat{X_1^2}\big] - E\big[\hat{X_2^2}\big]| + |2X(\mu_2 - \mu_1) | \\
+&amp;\leq \frac{2F^4}{m^2} + \frac{2F^2}m\delta = \epsilon
+\end{aligned}\]</span></p>
+<div class="pdfobject-container" data-target="./final_exam.pdf" data-height="1000px"></div>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/02/Data-Mining-Lec13/" rel="prev" title="Data-Mining-Lec13">
+      <i class="fa fa-chevron-left"></i> Data-Mining-Lec13
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#data-mining-final"><span class="nav-number">1.</span> <span class="nav-text">Data Mining Final</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#problem-1-reducing-the-variance-of-the-monte-carlo-estimators-50-points"><span class="nav-number">1.1.</span> <span class="nav-text">Problem 1: Reducing the variance of the Monte Carlo estimators [50 points]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#proposed-estimator"><span class="nav-number">1.1.1.</span> <span class="nav-text">Proposed estimator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#proof-unbiased"><span class="nav-number">1.1.2.</span> <span class="nav-text">Proof: Unbiased</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#proof-strictly-lower-variance"><span class="nav-number">1.1.3.</span> <span class="nav-text">Proof: Strictly lower variance</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#problem-2-svm-with-dynamically-changing-labels-30-points"><span class="nav-number">1.2.</span> <span class="nav-text">Problem 2: SVM with dynamically changing labels [30 points]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#known-conditions"><span class="nav-number">1.2.1.</span> <span class="nav-text">Known conditions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sufficient-condition-for-the-statement-to-hold"><span class="nav-number">1.2.2.</span> <span class="nav-text">Sufficient condition for the statement to hold</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#proof-a-is-rank-deficient"><span class="nav-number">1.2.3.</span> <span class="nav-text">Proof: \(A\) is rank-deficient</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#problem-3-gradient-explodingvanishing-problems-in-neural-network-training-20-points"><span class="nav-number">1.3.</span> <span class="nav-text">Problem 3: Gradient exploding&#x2F;vanishing problems in neural network training [20 points]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#explodingvanishing-gradients-and-why-it-affects-deep-nn"><span class="nav-number">1.3.1.</span> <span class="nav-text">Exploding&#x2F;vanishing gradients and why it affects deep NN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#methods-for-handling-this-problem"><span class="nav-number">1.3.2.</span> <span class="nav-text">Methods for handling this problem</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#using-orthogonal-weight-matrices-in-linear-tranformations"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">Using orthogonal weight matrices in linear tranformations</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#using-residual-network"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">Using Residual Network</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#choice-in-activation-function"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">Choice in activation function</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#problem-4-epsilon-close-estimators-of-kernels-40-points"><span class="nav-number">1.4.</span> <span class="nav-text">Problem 4: \(\epsilon\)-close estimators of kernels [40 points]</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="姚华(Hua Yao)"
+      src="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
+  <p class="site-author-name" itemprop="name">姚华(Hua Yao)</p>
+  <div class="site-description" itemprop="description">hy2632@columbia.edu</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hy2632" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hy2632" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hy2632@columbia.edu" title="E-Mail → mailto:hy2632@columbia.edu" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.instagram.com/nocturnima1/" title="Instagram → https:&#x2F;&#x2F;www.instagram.com&#x2F;nocturnima1&#x2F;" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">姚华(Hua Yao)</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://huo-meng-lou.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://hy2632.github.io/2020/12/03/Data-Mining-Final/";
+    this.page.identifier = "2020/12/03/Data-Mining-Final/";
+    this.page.title = "Data-Mining-Final";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://huo-meng-lou.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
