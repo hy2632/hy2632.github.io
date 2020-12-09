@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hy2632.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="引用: 布朗运动、伊藤引理、BS 公式（前篇） - 石川的文章 - 知乎 Lec7 Brownian Motion - MIT advanced-stochastic-processes-fall-2013 P13, Understanding N(d1) and N(d2): Risk-Adjusted Probabilities in the Black-Scholes Model 布朗运动">
+<meta property="og:type" content="article">
+<meta property="og:title" content="布朗运动与伊藤引理">
+<meta property="og:url" content="https://hy2632.github.io/2020/12/06/%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8%E4%B8%8E%E4%BC%8A%E8%97%A4%E5%BC%95%E7%90%86/index.html">
+<meta property="og:site_name" content="豁蒙楼">
+<meta property="og:description" content="引用: 布朗运动、伊藤引理、BS 公式（前篇） - 石川的文章 - 知乎 Lec7 Brownian Motion - MIT advanced-stochastic-processes-fall-2013 P13, Understanding N(d1) and N(d2): Risk-Adjusted Probabilities in the Black-Scholes Model 布朗运动">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cbegin%7Barray%7D%7Brrll%7D+%26C%26%3D%26S%280%29N%28d_1%29-Ke%5E%7B-rT%7DN%28d_2%29%5C%5C%5C%5C+%26P%26%3D%26Ke%5E%7B-rT%7DN%28-d_2%29-S%280%29N%28-d_1%29%5C%5C%5C%5C+%5Cmbox%7Bwhere%7D%26d_1%26%3D%26%5Cdisplaystyle%5Cfrac%7B%5Cln%28S%280%29%2FK%29%2B%28r%2B%5Csigma%5E2%2F2%29T%7D%7B%5Csigma%5Csqrt+T%7D%5C%5C%5C%5C+%26d_2%26%3D%26%5Cdisplaystyle%5Cfrac%7B%5Cln%28S%280%29%2FK%29%2B%28r-%5Csigma%5E2%2F2%29T%7D%7B%5Csigma%5Csqrt+T%7D%3Dd_1-%5Csigma%5Csqrt+T%5C%5C%5C%5C+%26N%26%3A%26%5Cmbox%7Bcumulative+distribution+function+of+standard+Normal%7D+%5Cend%7Barray%7D">
+<meta property="article:published_time" content="2020-12-06T23:20:01.000Z">
+<meta property="article:modified_time" content="2020-12-09T07:37:18.057Z">
+<meta property="article:author" content="姚华(Hua Yao)">
+<meta property="article:tag" content="Financial Engineering">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.zhihu.com/equation?tex=%5Cbegin%7Barray%7D%7Brrll%7D+%26C%26%3D%26S%280%29N%28d_1%29-Ke%5E%7B-rT%7DN%28d_2%29%5C%5C%5C%5C+%26P%26%3D%26Ke%5E%7B-rT%7DN%28-d_2%29-S%280%29N%28-d_1%29%5C%5C%5C%5C+%5Cmbox%7Bwhere%7D%26d_1%26%3D%26%5Cdisplaystyle%5Cfrac%7B%5Cln%28S%280%29%2FK%29%2B%28r%2B%5Csigma%5E2%2F2%29T%7D%7B%5Csigma%5Csqrt+T%7D%5C%5C%5C%5C+%26d_2%26%3D%26%5Cdisplaystyle%5Cfrac%7B%5Cln%28S%280%29%2FK%29%2B%28r-%5Csigma%5E2%2F2%29T%7D%7B%5Csigma%5Csqrt+T%7D%3Dd_1-%5Csigma%5Csqrt+T%5C%5C%5C%5C+%26N%26%3A%26%5Cmbox%7Bcumulative+distribution+function+of+standard+Normal%7D+%5Cend%7Barray%7D">
+
+<link rel="canonical" href="https://hy2632.github.io/2020/12/06/%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8%E4%B8%8E%E4%BC%8A%E8%97%A4%E5%BC%95%E7%90%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>布朗运动与伊藤引理 | 豁蒙楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">豁蒙楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/hy2632" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/12/06/%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8%E4%B8%8E%E4%BC%8A%E8%97%A4%E5%BC%95%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
+      <meta itemprop="name" content="姚华(Hua Yao)">
+      <meta itemprop="description" content="hy2632@columbia.edu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="豁蒙楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          布朗运动与伊藤引理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-06 18:20:01" itemprop="dateCreated datePublished" datetime="2020-12-06T18:20:01-05:00">2020-12-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-09 02:37:18" itemprop="dateModified" datetime="2020-12-09T02:37:18-05:00">2020-12-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Finance/" itemprop="url" rel="index"><span itemprop="name">Finance</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/12/06/%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8%E4%B8%8E%E4%BC%8A%E8%97%A4%E5%BC%95%E7%90%86/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/12/06/布朗运动与伊藤引理/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="引用">引用:</h2>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/38293827">布朗运动、伊藤引理、BS 公式（前篇） - 石川的文章 - 知乎</a></p>
+<p><a target="_blank" rel="noopener" href="https://ocw.mit.edu/courses/sloan-school-of-management/15-070j-advanced-stochastic-processes-fall-2013/lecture-notes/MIT15_070JF13_Lec7.pdf">Lec7 Brownian Motion - MIT advanced-stochastic-processes-fall-2013</a></p>
+<p><a target="_blank" rel="noopener" href="https://financetrainingcourse.com/education/wp-content/uploads/2011/03/Understanding.pdf">P13, Understanding N(d1) and N(d2): Risk-Adjusted Probabilities in the Black-Scholes Model</a></p>
+<h2 id="布朗运动">布朗运动</h2>
+<p>定义布朗运动</p>
+<p><span class="math display">\[B(t+\Delta t) - B(t) \sim N(0, \Delta t)\]</span> <span class="math display">\[B(0) = 0\]</span></p>
+<!-- 布朗运动是一个 Markov Process，因为$B(t^+)$ 的值仅与 -->
+<p>定义到t时间点的最大值 <span class="math inline">\(M(t)\)</span>。该极值的分布有性质 <span class="math inline">\(P(M(t)\geq a) = 2P(B(t)\geq a)\)</span>.</p>
+<p>证明: (the reflection principle，反射性)</p>
+<p><span class="math display">\[\begin{aligned}
+P(B(t)\geq a) &amp;= P(B(t)\geq a, M(t)\geq a) + P(B(t)\geq a, M(t)&lt; a) \\
+&amp;= P(B(t)\geq a, M(t)\geq a) \\
+&amp;= P(B(t)\geq a| M(t)\geq a) P(M(t)\geq a)\\
+&amp;= P(B(t)\geq a| T_a \leq t) P(M(t)\geq a)\\
+&amp;= P(B(t) - B(T_a)\geq 0|T_a \leq t) P(M(t)\geq a)\\
+&amp;= \frac12 P(M(t)\geq a)
+\end{aligned}\]</span></p>
+<p><span class="math display">\[P(M(t)\geq a) = 2 - 2\Phi(\frac{a}{\sqrt{t}}) \]</span></p>
+<p>根据此性质我们可以量化极值的概率分布。</p>
+<h2 id="二次变分">二次变分</h2>
+<p>可微函数 <span class="math inline">\(f(x)\)</span> 在区间 <span class="math inline">\([0, T]\)</span> 和该区间的一个划分 <span class="math inline">\(\Pi\)</span> 上的二次变分定义为：</p>
+<p><span class="math display">\[\sum_{i=0}^{N-1}{ [f(t_{i+1}) - f(t_{i})]^2  }\]</span></p>
+<p>利用中值定理</p>
+<p><span class="math display">\[\begin{aligned}
+\sum_{i=0}^{N-1}{ [f(t_{i+1}) - f(t_{i})]^2  } &amp;\leq \sum_{i=0}^{N-1}{ f&#39;(s_i)^2(t_{i+1} - t_i)^2 } \\
+&amp;\leq  \max_{s\in [0,T]}{f&#39;(s)^2} \cdot T\cdot \max_i{(t_{i+1} - t_i)}
+\end{aligned}\]</span></p>
+<p>可见该二次变分可以随着划分的更细而趋于0。</p>
+<p>而布朗运动的二次变分在足够细的划分下则等于 <span class="math inline">\(T\)</span>:</p>
+<p><span class="math display">\[\begin{aligned}
+\lim_{|\Pi|\to 0}\sum_{i=0}^{N-1}{ [B(t_{i+1}) - B(t_{i})]^2  } &amp;= T\\
+\end{aligned}\]</span></p>
+<p>根据独立同分布的随机变量的大数定律可以证明。例如 <span class="math inline">\([0, t]\)</span> 区间上,</p>
+<p><span class="math display">\[\begin{aligned}
+E[B(t)^2] &amp;= E[B(t)]^2 + Var(B(t)) \\ 
+&amp;= 0 + t\\
+&amp;= t
+\end{aligned}\]</span></p>
+<p>由于布朗运动的波动性，任意细分的区间 <span class="math inline">\(T\)</span> 上的位移差平方量都不能为0，而是和这个区间长度相同的量。</p>
+<p>可以记为 <span class="math inline">\((dB)^2 = dt\)</span></p>
+<h2 id="几何布朗运动">几何布朗运动</h2>
+<p>在标准布朗运动的基础上增加漂移项(drift)和扩散(diffusion)系数，</p>
+<p><span class="math display">\[X(t) = \mu t + \sigma B(t)\]</span></p>
+<p><span class="math display">\[dX(t) = \mu dt + \sigma dB(t)\]</span></p>
+<p><span class="math inline">\(X(t)\)</span> 不宜直接描述股价，因为可能取到负值，但可以描述收益率。令股价变化率 <span class="math inline">\(\frac{dS(t）}{S(t)} = X(t)\)</span>,</p>
+<p><span class="math display">\[\frac{dS(t）}{S(t)}= \mu dt + \sigma dB(t)\]</span></p>
+<p><span class="math display">\[dS(t)= \mu S(t)dt + \sigma S(t)dB(t)\]</span></p>
+<p>满足该随机微分方程的股价 <span class="math inline">\(S(t)\)</span> 是一个 <strong>几何布朗运动</strong> 。其求解用到了 <strong>伊藤积分</strong>。</p>
+<p>注意到 <span class="math inline">\(E[X(t)] = \mu t\)</span>，长期漂移量主导。价值投资。</p>
+<h2 id="伊藤引理">伊藤引理</h2>
+<p><span class="math inline">\(f(B(t))\)</span> 的微分不能简单地写作</p>
+<p><span class="math display">\[df = \frac{df}{dB} \frac{dB}{dt} dt\]</span></p>
+<p>这是由于 <span class="math inline">\(B(t)\)</span> 不可微， <span class="math inline">\(\frac{dB}{dt}\)</span> 不存在。</p>
+<p>那么能否写为 <span class="math inline">\(df = \frac{df}{dB}dB\)</span> 呢？同样也不可以。该表达式来自于泰勒展开的一次项，对于一般可微函数二阶往上都是高阶小量可忽略，但是对于布朗运动并非如此。根据之前布朗运动二次变分的结论，第二阶 <span class="math inline">\((dB)^2 = dt\)</span>。</p>
+<p><span class="math display">\[df = \frac{df}{dB} dB + \frac12 \frac{d^2f}{dB^2}dt\]</span></p>
+<p>此为伊藤引理的<strong>基本形式</strong>。二阶之后仍然是更高阶的小量，可以忽略。</p>
+<p>带漂移项的布朗运动还是关于时间 <span class="math inline">\(t\)</span> 的函数，这种情况下</p>
+<p><span class="math display">\[df = \frac{df}{dB} dB + (\frac{df}{dt} + \frac12 \frac{d^2f}{dB^2})dt\]</span></p>
+<h2 id="伊藤引理-一般形式">伊藤引理-一般形式</h2>
+<p>带漂移和扩散的布朗运动</p>
+<p><span class="math display">\[dX(t) = \mu dt + \sigma dB(t)\]</span></p>
+<p>假设漂移和扩散参数也是关于随机过程 <span class="math inline">\(X(t)\)</span> 和 <span class="math inline">\(t\)</span> 的函数，满足以下 <strong>随机微分方程(SDE)</strong> 的随机过程为 <strong>伊藤漂移扩散过程 (Ito drift-diffusion process)</strong>， 简称伊藤过程。</p>
+<p><span class="math display">\[dX = a(X,t)dt + b(X,t)dB\]</span></p>
+<p>关于 <span class="math inline">\(X(t)\)</span> 和 <span class="math inline">\(t\)</span> 的二阶连续可导函数 <span class="math inline">\(f(X(t),t)\)</span> 由伊藤引理</p>
+<p><span class="math display">\[df = \frac{\partial f}{\partial X}dX + \frac{\partial f}{\partial t}dt + \frac12 \frac{\partial^2f}{\partial X^2}(dX)^2\]</span></p>
+<p>代入并略去高阶小量</p>
+<p><span class="math display">\[\begin{aligned}
+df &amp;= \frac{\partial f}{\partial X}(adt+bdB) + \frac{\partial f}{\partial t}dt + \frac12 \frac{\partial^2f}{\partial X^2}(b^2dt) \\
+&amp;= \bigg(\frac{\partial f}{\partial X}a + \frac{\partial f}{\partial t} + \frac12 \frac{\partial^2f}{\partial X^2}b^2 \bigg)dt + \frac{\partial f}{\partial X}bdB
+\end{aligned}\]</span></p>
+<p>可见 <span class="math inline">\(f(X(t), t)\)</span> 和 <span class="math inline">\(X(t)\)</span> 一样也是一个伊藤过程。且其布朗运动不变。</p>
+<h2 id="几何布朗运动的随机微分方程求解">几何布朗运动的随机微分方程求解</h2>
+<p><span class="math display">\[dS= \mu Sdt + \sigma SdB\]</span></p>
+<p><span class="math inline">\(S\)</span> 是一个伊藤过程， <span class="math inline">\(a=\mu S, b=\sigma S\)</span>。</p>
+<p>令 <span class="math inline">\(f = \ln{S}\)</span>, 应用伊藤引理的一般形式，</p>
+<p><span class="math display">\[\begin{aligned}
+df &amp;= \bigg(\frac{\partial f}{\partial S}\mu S + 0 + \frac12 \frac{\partial^2f}{\partial S^2}\sigma^2 S^2 \bigg)dt + \frac{\partial f}{\partial S}\sigma SdB \\
+&amp;= \bigg(\mu - \frac12 \sigma^2 \bigg)dt +\sigma dB 
+\end{aligned}\]</span></p>
+<p>则 <span class="math inline">\(f\)</span> 是一个带漂移项的布朗运动。其漂移系数为 <span class="math inline">\(\mu -\frac12 \sigma^2\)</span>，扩散系数为 <span class="math inline">\(\sigma\)</span>。</p>
+<p><span class="math display">\[\ln S(T) \sim N(\ln S(0) + (\mu -\frac12 \sigma^2)T, \sigma^2T)\]</span></p>
+<p>股价函数 <span class="math inline">\(S(T)\)</span> 满足对数正态分布，且通过积分，其表达式为</p>
+<p><span class="math display">\[S(T) = S(0) \exp \bigg( \bigg(\mu -\frac12 \sigma^2 \bigg)T + \sigma B(T)   \bigg)\]</span></p>
+<p>股价的 <strong>连续复利期望收益率</strong> 并非 <span class="math inline">\(\mu\)</span> 而是 <span class="math inline">\(\mu -\frac12 \sigma^2\)</span>。后者是几何平均，考虑了波动。连续复利收益率 <span class="math inline">\(x = \frac{\ln S(T) - \ln S(0)}{T}\)</span> 的分布是</p>
+<p><span class="math display">\[ x \sim N(\mu -\frac12 \sigma^2, \frac{\sigma^2}T)\]</span></p>
+<h2 id="black-scholes-微分方程">Black-Scholes 微分方程</h2>
+<p>前提： 欧式期权，股价 <span class="math inline">\(S\)</span> 是几何布朗运动 (股价满足对数正态分布), ...</p>
+<p><span class="math inline">\(C\)</span> : 欧式看涨期权的价格</p>
+<p><span class="math inline">\(S\)</span> : 股价，是一个伊藤过程</p>
+<p><span class="math inline">\(C\)</span> 是关于 <span class="math inline">\(S\)</span> 和 <span class="math inline">\(t\)</span> 的函数，记为 <span class="math inline">\(C(S, t)\)</span></p>
+<p>应用伊藤引理的,</p>
+<p><span class="math display">\[dC = \bigg(\frac{\partial C}{\partial S}\mu S + \frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} \sigma^2 S^2 \bigg)dt + \frac{\partial C}{\partial S} \sigma S dB\]</span></p>
+<p>离散化，取一个小区间 <span class="math inline">\(\Delta t\)</span></p>
+<p><span class="math display">\[\Delta C = \bigg(\frac{\partial C}{\partial S}\mu S + \frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} \sigma^2 S^2 \bigg)\Delta t + \frac{\partial C}{\partial S} \sigma S \Delta B\]</span></p>
+<p><span class="math display">\[\Delta S = \mu S \Delta t + \sigma S \Delta B\]</span></p>
+<p><strong>Delta-对冲</strong> :把布朗运动 <span class="math inline">\(\Delta B\)</span> 对冲掉, <span class="math inline">\(-1\)</span> 份的 call option 加上 <span class="math inline">\(\frac{\partial C}{\partial S}\)</span> 份的股票，得到一个无风险的投资组合。</p>
+<p><span class="math display">\[\Delta P = - \Delta C + \frac{\partial C}{\partial S} \Delta S = - \bigg(\frac{\partial C}{\partial S}\mu S + \frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} \sigma^2 S^2 - \frac{\partial C}{\partial S}\mu S \bigg)\Delta t \\
+= - \bigg(\frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} \sigma^2 S^2 \bigg)\Delta t \]</span></p>
+<p>不存在无风险套利的市场中，</p>
+<p><span class="math display">\[\Delta P = rP\Delta t\]</span></p>
+<p><span class="math display">\[\therefore - \bigg(\frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} \sigma^2 S^2 \bigg) = rP = r(-C + \frac{\partial C}{\partial S} S)\]</span></p>
+<p>于是得到 <strong>Black-Scholes 微分方程</strong>。非随机的微分方程。</p>
+<p><span class="math display">\[rC = \frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} \sigma^2 S^2 + r\frac{\partial C}{\partial S} S\]</span></p>
+<p>该微分方程存在边界条件</p>
+<p><span class="math display">\[C = \max {(S(T)-K, 0)}\]</span></p>
+<p>该方程的核心在于，<span class="math inline">\(C\)</span> 和 <span class="math inline">\(S\)</span> 的不确定性来自于同一个布朗运动 <span class="math inline">\(B\)</span>，因而可以对冲。</p>
+<h2 id="风险中性定价理论">风险中性定价理论</h2>
+<p>利用边界条件求解BS微分方程就可以给欧式看涨期权 <span class="math inline">\(C\)</span> 定价。另一种方法是 <strong>风险中性定价</strong>，可以不求解BS。</p>
+<p>在BS中，注意到漂移系数 <span class="math inline">\(\mu\)</span> 被约去。这个值和风险偏好有关，越 Risk-averse 该值越高。因为这个值不影响BS，计算 C 时可以假设所有投资者风险中性，所要求的回报率都是无风险利率 <span class="math inline">\(r\)</span>。于是可以用这个值贴现。</p>
+<h2 id="black-scholes-期权定价公式">Black-Scholes 期权定价公式</h2>
+<p>风险中性定价，</p>
+<p><span class="math display">\[C = e^{-rT}E[\max {(S(T)-K, 0)}]\]</span></p>
+<!-- BS微分方程，
+
+$$rC = \frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} \sigma^2 S^2 + r\frac{\partial C}{\partial S} S$$ -->
+<p>股价 <span class="math inline">\(S\)</span> 满足对数正态分布，</p>
+<p><span class="math display">\[\ln S(T) \sim N(\ln S(0) + (\mu -\frac12 \sigma^2)T, \sigma^2T)\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+E[\max{(S_T-K, 0)}] &amp;= E[S_T-K | S_T&gt;K] \\
+&amp;= E[S_T|S_T&gt;K] - KP(S_T&gt;K) \\
+\end{aligned}\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+P(S_T&gt;K) &amp;=  P(\ln{S_T} &gt; \ln{K}) \\
+&amp;= P(\frac{\ln{S_T} - \ln{S_0} - (\mu-\frac{\sigma^2}{2})T}{\sigma\sqrt{T}} &gt; \frac{\ln{K} - \ln{S_0} - (\mu-\frac{\sigma^2}{2})T}{\sigma\sqrt{T}}) \\
+&amp;= P(\frac{\ln{S_T} - \ln{S_0} - (\mu-\frac{\sigma^2}{2})T}{\sigma\sqrt{T}} &lt; \frac{\ln{S_0/K} + (\mu-\frac{\sigma^2}{2})T}{\sigma\sqrt{T}})\\
+&amp;= N(\frac{\ln{S_0/K} + (\mu-\frac{\sigma^2}{2})T}{\sigma\sqrt{T}}) \\
+&amp;= N(d_2)
+\end{aligned}\]</span></p>
+<p><span class="math inline">\(E[S_T|S_T&gt;K]\)</span> 的求解用到了该<a target="_blank" rel="noopener" href="https://financetrainingcourse.com/education/wp-content/uploads/2011/03/Understanding.pdf">引理：</a></p>
+<hr />
+<p>If <span class="math inline">\(\log S \sim N(\mu, \sigma^2)\)</span>, the expectation of truncated <span class="math inline">\(\hat{S}(K)\)</span> is</p>
+<p><span class="math display">\[E\hat{S} = \exp(\mu + \frac{\sigma^2}2) N(\sigma - D),\]</span></p>
+<p>where</p>
+<p><span class="math display">\[D = \frac{log{K}-\mu}{\sigma}\]</span></p>
+<p>Proof: Using integral...</p>
+<hr />
+<p>在本例中， <span class="math display">\[\begin{aligned}
+D  &amp;= \frac{\ln{K/S_0} - (\mu-\frac{\sigma^2}{2})T}{\sigma\sqrt{T}}\\
+\sigma-D &amp;=\frac{\ln{S_0/K} + (\mu-\frac{\sigma^2}{2})T + \sigma^2T}{\sigma\sqrt{T}} = \frac{\ln{S_0/K} + (\mu+\frac{\sigma^2}{2})T}{\sigma\sqrt{T}} \qquad \text{The } \sigma \text{ on both sides are different } \\
+\mu + \frac{\sigma^2}2 &amp;= \ln{S_0} + (\mu-\frac{\sigma^2}2)T + \frac{\sigma^2}{2}T = \ln{S_0} + \mu T \\
+E\hat{S} &amp;= S_0e^{\mu T}N(\frac{\ln{S_0/K} + (\mu+\frac{\sigma^2}{2})T}{\sigma\sqrt{T}}) = S_0e^{\mu T}N(d_1) = E[S_T|S_T&gt;K]
+\end{aligned}\]</span></p>
+<p>代入 C 的表达式, <span class="math inline">\(r=\mu\)</span></p>
+<p><span class="math display">\[\begin{aligned}
+C &amp;= e^{-rT}E[\max {(S(T)-K, 0)}] \\
+&amp;= e^{-rT}(E[S_T|S_T&gt;K] - KP(S_T&gt;K) ) \\
+&amp;= S_0N(d_1) - Ke^{-rT}N(d_2)
+\end{aligned}\]</span></p>
+<p>整理结果，Black-Scholes 公式：</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Barray%7D%7Brrll%7D+%26C%26%3D%26S%280%29N%28d_1%29-Ke%5E%7B-rT%7DN%28d_2%29%5C%5C%5C%5C+%26P%26%3D%26Ke%5E%7B-rT%7DN%28-d_2%29-S%280%29N%28-d_1%29%5C%5C%5C%5C+%5Cmbox%7Bwhere%7D%26d_1%26%3D%26%5Cdisplaystyle%5Cfrac%7B%5Cln%28S%280%29%2FK%29%2B%28r%2B%5Csigma%5E2%2F2%29T%7D%7B%5Csigma%5Csqrt+T%7D%5C%5C%5C%5C+%26d_2%26%3D%26%5Cdisplaystyle%5Cfrac%7B%5Cln%28S%280%29%2FK%29%2B%28r-%5Csigma%5E2%2F2%29T%7D%7B%5Csigma%5Csqrt+T%7D%3Dd_1-%5Csigma%5Csqrt+T%5C%5C%5C%5C+%26N%26%3A%26%5Cmbox%7Bcumulative+distribution+function+of+standard+Normal%7D+%5Cend%7Barray%7D" /></p>
+<p><span class="math inline">\(N(d_2)\)</span> 表示该期权被行权的概率。</p>
+<p><span class="math display">\[N(d_2) = P(S_T&gt;K)\]</span></p>
+<p><span class="math inline">\(N(d_1)\)</span>更为复杂，没有比较直观的表述</p>
+<p><span class="math display">\[N(d_1) = \frac{E[S_T|S_T&gt;K]}{e^{rT}S_0}\]</span></p>
+<p><span class="math display">\[N(d_1)S_0 = \frac{E[S_T|S_T&gt;K]}{e^{rT}}\]</span></p>
+<p>"Thus, N(d1) is the factor by which the present value of contingent receipt of the stock exceeds the current stock price."</p>
+<p><span class="math display">\[N(d_1) = \frac{\partial C}{\partial S_0}\]</span></p>
+<p>所以 <span class="math inline">\(N(d_1)\)</span> 衡量 call 和 stock 价格的敏感性。</p>
+<h2 id="类风险敞口">5类风险敞口</h2>
+<p><span class="math display">\[Vega = \frac{\partial C}{\partial S} = N(d_1)\]</span></p>
+<p><span class="math display">\[\gamma = \frac{\partial^2 C}{\partial S^2}\]</span></p>
+<p><span class="math display">\[\Delta = \frac{\Delta C}{\Delta S}\]</span></p>
+<p><span class="math display">\[\rho = \frac{\partial^2 C}{\partial r^2}\]</span></p>
+<p><span class="math display">\[\theta = \frac{\partial^2 C}{\partial T^2}\]</span></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Financial-Engineering/" rel="tag"># Financial Engineering</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/03/Data-Mining-Final/" rel="prev" title="Data-Mining-Final">
+      <i class="fa fa-chevron-left"></i> Data-Mining-Final
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">引用:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8"><span class="nav-number">2.</span> <span class="nav-text">布朗运动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E6%AC%A1%E5%8F%98%E5%88%86"><span class="nav-number">3.</span> <span class="nav-text">二次变分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%A0%E4%BD%95%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8"><span class="nav-number">4.</span> <span class="nav-text">几何布朗运动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%8A%E8%97%A4%E5%BC%95%E7%90%86"><span class="nav-number">5.</span> <span class="nav-text">伊藤引理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%8A%E8%97%A4%E5%BC%95%E7%90%86-%E4%B8%80%E8%88%AC%E5%BD%A2%E5%BC%8F"><span class="nav-number">6.</span> <span class="nav-text">伊藤引理-一般形式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%A0%E4%BD%95%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8%E7%9A%84%E9%9A%8F%E6%9C%BA%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E6%B1%82%E8%A7%A3"><span class="nav-number">7.</span> <span class="nav-text">几何布朗运动的随机微分方程求解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#black-scholes-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B"><span class="nav-number">8.</span> <span class="nav-text">Black-Scholes 微分方程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A3%8E%E9%99%A9%E4%B8%AD%E6%80%A7%E5%AE%9A%E4%BB%B7%E7%90%86%E8%AE%BA"><span class="nav-number">9.</span> <span class="nav-text">风险中性定价理论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#black-scholes-%E6%9C%9F%E6%9D%83%E5%AE%9A%E4%BB%B7%E5%85%AC%E5%BC%8F"><span class="nav-number">10.</span> <span class="nav-text">Black-Scholes 期权定价公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E9%A3%8E%E9%99%A9%E6%95%9E%E5%8F%A3"><span class="nav-number">11.</span> <span class="nav-text">5类风险敞口</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="姚华(Hua Yao)"
+      src="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
+  <p class="site-author-name" itemprop="name">姚华(Hua Yao)</p>
+  <div class="site-description" itemprop="description">hy2632@columbia.edu</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hy2632" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hy2632" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hy2632@columbia.edu" title="E-Mail → mailto:hy2632@columbia.edu" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.instagram.com/nocturnima1/" title="Instagram → https:&#x2F;&#x2F;www.instagram.com&#x2F;nocturnima1&#x2F;" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">姚华(Hua Yao)</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://huo-meng-lou.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://hy2632.github.io/2020/12/06/%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8%E4%B8%8E%E4%BC%8A%E8%97%A4%E5%BC%95%E7%90%86/";
+    this.page.identifier = "2020/12/06/布朗运动与伊藤引理/";
+    this.page.title = "布朗运动与伊藤引理";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://huo-meng-lou.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
