@@ -7775,59 +7775,49 @@ $$rC = \frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} 
   <entry>
     <title>Modern Portfolio Theory / Mean-variance analysis / Efficient Frontier</title>
     <url>/2021/02/02/Modern-Portfolio-Theory-Mean-variance-analysis-Efficient-Frontier/</url>
-    <content><![CDATA[<h1 id="code-repo">Code Repo</h1>
-<p>https://github.com/hy2632/Efficient-Frontier</p>
-<h2 id="references">References</h2>
-<ul>
-<li><p><a href="https://en.wikipedia.org/wiki/Modern_portfolio_theory">Wikipedia - Modern portfolio theory - Mathematical Model</a></p></li>
-<li><p><a href="https://mp.weixin.qq.com/s/0RlN0UTh3slFgErd8XRGhQ">马科维茨投资模型</a></p></li>
-<li><p><a href="http://www.columbia.edu/~mh2078/FoundationsFE.html#:~:text=It%20is%20a%20core%20course,and%20financial%20problems%20and%20products.">Foundations of Financial Engineering (Columbia University, Fall 2016)</a></p></li>
+    <content><![CDATA[<h1 id="Code-Repo"><a href="#Code-Repo" class="headerlink" title="Code Repo"></a>Code Repo</h1><p><a href="https://github.com/hy2632/Efficient-Frontier">https://github.com/hy2632/Efficient-Frontier</a></p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li><p><a href="https://en.wikipedia.org/wiki/Modern_portfolio_theory">Wikipedia - Modern portfolio theory - Mathematical Model</a></p>
+</li>
+<li><p><a href="https://mp.weixin.qq.com/s/0RlN0UTh3slFgErd8XRGhQ">马科维茨投资模型</a></p>
+</li>
+<li><p><a href="http://www.columbia.edu/~mh2078/FoundationsFE.html#:~:text=It%20is%20a%20core%20course,and%20financial%20problems%20and%20products.">Foundations of Financial Engineering (Columbia University, Fall 2016)</a></p>
+</li>
 </ul>
-<h2 id="brief">Brief</h2>
-<p>Analysis on the modern portfolio theory.</p>
+<h2 id="Brief"><a href="#Brief" class="headerlink" title="Brief"></a>Brief</h2><p>Analysis on the modern portfolio theory.</p>
 <ul>
 <li>Efficient frontier with / without risk free asset</li>
 <li>Optimal sharpe ratio / portfolio</li>
 </ul>
-<h2 id="example-of-usage">Example of usage</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">instance = EfficientFrontier(</span><br><span class="line">    symbols=[<span class="string">&quot;AAPL&quot;</span>, <span class="string">&quot;XOM&quot;</span>, <span class="string">&quot;PFE&quot;</span>, <span class="string">&quot;F&quot;</span>, <span class="string">&quot;WMT&quot;</span>, <span class="string">&quot;BA&quot;</span>, <span class="string">&quot;TSLA&quot;</span>, <span class="string">&quot;AMD&quot;</span>],</span><br><span class="line">    start_date=<span class="string">&quot;20200101&quot;</span>,</span><br><span class="line">    end_date=<span class="string">&quot;20210130&quot;</span>, </span><br><span class="line">    simulation_times=<span class="number">5000</span>, </span><br><span class="line">    solve_granularity=<span class="number">1000</span>, </span><br><span class="line">    analytical_solution=<span class="literal">True</span>,</span><br><span class="line">    use_optimizer=<span class="literal">True</span>,</span><br><span class="line">    tangency_line=<span class="literal">True</span>,</span><br><span class="line">)</span><br><span class="line">instance.plot((<span class="number">12</span>,<span class="number">8</span>))</span><br></pre></td></tr></table></figure>
-<p><img src="/2021/02/02/Modern-Portfolio-Theory-Mean-variance-analysis-Efficient-Frontier/figure.png" /></p>
-<h2 id="content">Content</h2>
-<ul>
+<h2 id="Example-of-usage"><a href="#Example-of-usage" class="headerlink" title="Example of usage"></a>Example of usage</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">instance = EfficientFrontier(</span><br><span class="line">    symbols=[<span class="string">&quot;AAPL&quot;</span>, <span class="string">&quot;XOM&quot;</span>, <span class="string">&quot;PFE&quot;</span>, <span class="string">&quot;F&quot;</span>, <span class="string">&quot;WMT&quot;</span>, <span class="string">&quot;BA&quot;</span>, <span class="string">&quot;TSLA&quot;</span>, <span class="string">&quot;AMD&quot;</span>],</span><br><span class="line">    start_date=<span class="string">&quot;20200101&quot;</span>,</span><br><span class="line">    end_date=<span class="string">&quot;20210130&quot;</span>, </span><br><span class="line">    simulation_times=<span class="number">5000</span>, </span><br><span class="line">    solve_granularity=<span class="number">1000</span>, </span><br><span class="line">    analytical_solution=<span class="literal">True</span>,</span><br><span class="line">    use_optimizer=<span class="literal">True</span>,</span><br><span class="line">    tangency_line=<span class="literal">True</span>,</span><br><span class="line">)</span><br><span class="line">instance.plot((<span class="number">12</span>,<span class="number">8</span>))</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/02/02/Modern-Portfolio-Theory-Mean-variance-analysis-Efficient-Frontier/figure.png"></p>
+<h2 id="Content"><a href="#Content" class="headerlink" title="Content"></a>Content</h2><ul>
 <li>Monte Carlo simulation of portfolios consisting of assets in the designated pool.</li>
-<li>Solve for the curve of the efficient frontier <strong>without risk-free asset</strong> analytically (a constrained optimization problem) using lagrange multiplier. This solution did not take into consideration the constraint that all weights are greater than 0, a.k.a. it allows short and leverage.
-<ul>
-<li><img src="Misc/img/render1.png" /></li>
-</ul></li>
+<li>Solve for the curve of the efficient frontier <strong>without risk-free asset</strong> analytically (a constrained optimization problem) using lagrange multiplier. This solution did not take into consideration the constraint that all weights are greater than 0, a.k.a. it allows short and leverage.</li>
 </ul>
 <!-- Rendering provided by http://www.sciweavers.org/free-online-latex-equation-editor -->
-<!-- $$
-\begin{bmatrix}2\Sigma &-R & -{\bf1}\\ R^T &0 & 0 \\ {\bf1}^T &0 &0 \end{bmatrix} 
-* \begin{bmatrix}w\\\lambda_1\\\lambda_2\end{bmatrix} 
-= \begin{bmatrix}0\\\mu \\ 1\end{bmatrix}
-$$ -->
+<p>$$<br>\begin{bmatrix}2\Sigma &amp;-R &amp; -{\bf1}\ R^T &amp;0 &amp; 0 \ {\bf1}^T &amp;0 &amp;0 \end{bmatrix} </p>
 <ul>
-<li><p>(2021/1/30 Update) <code>optimizerSolver()</code> to solve for the efficient frontier using scipy optimizer. Added the constraint of no short. Due to the limit of the optimizer, this solution performs bad for low <code>mu</code> part.</p></li>
-<li><p>(2021/2/1 Update) <code>tangencySolver()</code> which solves for the "with risk-free asset" case. The solution can be proved to be the tangency line of the efficient frontier curve in the "no risk-free asset" setting.</p></li>
-<li><p>Plotting the figure of all above.</p></li>
+<li>\begin{bmatrix}w\\lambda_1\\lambda_2\end{bmatrix}<br>= \begin{bmatrix}0\\mu \ 1\end{bmatrix}<br>$$</li>
 </ul>
-<h3 id="frontier-with-risk-free-asset-the-tangency-line">2021/2/1: Frontier with risk-free asset —— the tangency line</h3>
-<p>Consider the constrained problem that</p>
-<p><span class="math display">\[ \min{\frac12 w^T\Sigma w} 
-\\\text{s.t. } (1 - \sum_{i=1}^n{w_i})r_f + w^TR = \mu\\
-\]</span></p>
+<ul>
+<li><p>(2021/1/30 Update) <code>optimizerSolver()</code> to solve for the efficient frontier using scipy optimizer. Added the constraint of no short. Due to the limit of the optimizer, this solution performs bad for low <code>mu</code> part.</p>
+</li>
+<li><p>(2021/2/1 Update) <code>tangencySolver()</code> which solves for the “with risk-free asset” case. The solution can be proved to be the tangency line of the efficient frontier curve in the “no risk-free asset” setting.</p>
+</li>
+<li><p>Plotting the figure of all above.</p>
+</li>
+</ul>
+<h3 id="2021-2-1-Frontier-with-risk-free-asset-——-the-tangency-line"><a href="#2021-2-1-Frontier-with-risk-free-asset-——-the-tangency-line" class="headerlink" title="2021/2/1: Frontier with risk-free asset —— the tangency line"></a>2021/2/1: Frontier with risk-free asset —— the tangency line</h3><p>Consider the constrained problem that</p>
+<p>$$ \min{\frac12 w^T\Sigma w}<br>\\text{s.t. } (1 - \sum_{i=1}^n{w_i})r_f + w^TR = \mu\<br>$$</p>
 <p>Lagrange multiplier:</p>
-<p><img src="Misc/img/render3.png" /> <span class="math display">\[F = \frac12 w^T\Sigma w - \lambda[w^T(R - r_f {\bf1}) - (\mu - r_f)] \]</span></p>
-<p><img src="Misc/img/render4.png" /></p>
-<p><span class="math display">\[\frac{\partial F}{\partial w} = \Sigma w - \lambda(R - r_f {\bf1}) = 0 \\
-\to w = \lambda \Sigma^{-1} (R - r_f {\bf1})\]</span></p>
-<p><img src="Misc/img/render5.png" /></p>
-<p><span class="math display">\[ (1 - \sum_{i=1}^n{w_i})r_f + w^TR = \mu \\
-\to (R - r_f {\bf1})^T w = \mu - r_f \]</span></p>
+<p>$$F = \frac12 w^T\Sigma w - \lambda[w^T(R - r_f {\bf1}) - (\mu - r_f)] $$ </p>
+<p>$$\frac{\partial F}{\partial w} = \Sigma w - \lambda(R - r_f {\bf1}) = 0 \<br>\to w = \lambda \Sigma^{-1} (R - r_f {\bf1})$$</p>
+<p>$$ (1 - \sum_{i=1}^n{w_i})r_f + w^TR = \mu \<br>\to (R - r_f {\bf1})^T w = \mu - r_f $$</p>
 <p>Solution:</p>
-<p><img src="Misc/img/render6.png" /> <span class="math display">\[\therefore \lambda = \frac{\mu - r_f}{(R - r_f {\bf1})^T\Sigma^{-1}(R - r_f {\bf1})} \\
-w = \lambda\Sigma^{-1} (R - r_f {\bf1}) = \frac{(\mu - r_f)\Sigma^{-1} (R - r_f {\bf1})}{(R - r_f {\bf1})^T\Sigma^{-1}(R - r_f {\bf1})}\]</span></p>
-<p>It can be proved that for any combination of risk-free asset and any risky asset, <span class="math inline">\(\mu / \sigma \propto \alpha\)</span>. Therefore, if we got an optimal efficient risky portfolio without risk-free asset, the efficient frontier with risk-free asset should be the tangency line which crosses that point.</p>
+<p>$$\therefore \lambda = \frac{\mu - r_f}{(R - r_f {\bf1})^T\Sigma^{-1}(R - r_f {\bf1})} \<br>w = \lambda\Sigma^{-1} (R - r_f {\bf1}) = \frac{(\mu - r_f)\Sigma^{-1} (R - r_f {\bf1})}{(R - r_f {\bf1})^T\Sigma^{-1}(R - r_f {\bf1})}$$</p>
+<p>It can be proved that for any combination of risk-free asset and any risky asset, $\mu / \sigma \propto \alpha$. Therefore, if we got an optimal efficient risky portfolio without risk-free asset, the efficient frontier with risk-free asset should be the tangency line which crosses that point.</p>
 ]]></content>
   </entry>
 </search>
