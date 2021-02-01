@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hy2632.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Part I Linear Regression Try to train the hypothesis function \(h\). Letting \(x_0&#x3D;1\) gives the error term. \[h(x) &#x3D; \sum_{i&#x3D;0}^d{\theta_ix_i}&#x3D;\theta^T x\] Cost function w.r.t parameter \(\theta\): \">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS229 Notes1 Supervised Learning">
+<meta property="og:url" content="https://hy2632.github.io/2020/10/26/CS229-Notes1-Supervised-Learning/index.html">
+<meta property="og:site_name" content="豁蒙楼">
+<meta property="og:description" content="Part I Linear Regression Try to train the hypothesis function \(h\). Letting \(x_0&#x3D;1\) gives the error term. \[h(x) &#x3D; \sum_{i&#x3D;0}^d{\theta_ix_i}&#x3D;\theta^T x\] Cost function w.r.t parameter \(\theta\): \">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-26T02:01:04.000Z">
+<meta property="article:modified_time" content="2020-10-26T17:27:21.974Z">
+<meta property="article:author" content="姚华(Hua Yao)">
+<meta property="article:tag" content="CS229">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://hy2632.github.io/2020/10/26/CS229-Notes1-Supervised-Learning/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>CS229 Notes1 Supervised Learning | 豁蒙楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">豁蒙楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/hy2632" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2020/10/26/CS229-Notes1-Supervised-Learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
+      <meta itemprop="name" content="姚华(Hua Yao)">
+      <meta itemprop="description" content="hy2632@columbia.edu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="豁蒙楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CS229 Notes1 Supervised Learning
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-25 21:01:04" itemprop="dateCreated datePublished" datetime="2020-10-25T21:01:04-05:00">2020-10-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-26 12:27:21" itemprop="dateModified" datetime="2020-10-26T12:27:21-05:00">2020-10-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/10/26/CS229-Notes1-Supervised-Learning/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/10/26/CS229-Notes1-Supervised-Learning/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="part-i-linear-regression">Part I Linear Regression</h1>
+<p>Try to train the hypothesis function <span class="math inline">\(h\)</span>.</p>
+<p>Letting <span class="math inline">\(x_0=1\)</span> gives the error term. <span class="math display">\[h(x) = \sum_{i=0}^d{\theta_ix_i}=\theta^T x\]</span></p>
+<p>Cost function w.r.t parameter <span class="math inline">\(\theta\)</span>:</p>
+<p><span class="math display">\[J(\theta) = \frac12\sum_{i=1}^{n}{(h_\theta(x^{(i)}) - y^{(i)})^2}\]</span></p>
+<h2 id="lms-algorithm">LMS algorithm</h2>
+<p>Gradient descent: <span class="math display">\[\theta_j := \theta_j - \alpha \frac{\partial}{\partial\theta_j}J(\theta)\]</span></p>
+<p><span class="math inline">\(\alpha\)</span> is the learning rate.</p>
+<p>Here, <span class="math display">\[\frac{\partial}{\partial\theta_j}J(\theta) = (h_\theta(x) - y)x_j\]</span></p>
+<p>For <strong>a single training example</strong>, the learning rule is <strong>LMS</strong>(least squared error) a.k.a <strong>Widrow-Hoff</strong></p>
+<p><span class="math display">\[\theta_j := \theta_j + \alpha (y - h_\theta(x))x_j\]</span></p>
+<p>Into vector level,</p>
+<p><span class="math display">\[\theta := \theta + \alpha {(y^{(i)} - h_\theta(x^{(i)}))x^{(i)}}\]</span></p>
+<p>One sample each time, we call this <strong>SGD</strong>(strochastic gradient descent).</p>
+<p>About applying the rule to <strong>a training set</strong>, - SGD - <strong>batch gradient descent</strong></p>
+<p><span class="math display">\[\theta := \theta + \alpha \sum_{i=1}^{n}{(y^{(i)} - h_\theta(x^{(i)}))x^{(i)}}\]</span></p>
+<p>SGD vs BGD: Fast / Robust</p>
+<h2 id="the-normal-equations">The normal equations</h2>
+<h3 id="matrix-derivatives-elementwise">Matrix derivatives (elementwise)</h3>
+<p>... ### Least squares revisited (vectorized)</p>
+<p>The <strong>design matrix</strong> <span class="math inline">\(X\)</span></p>
+<p><span class="math display">\[X = \begin{bmatrix} (x^{(1)})^T\\ (x^{(2)})^T\\...\\(x^{(n)})^T\end{bmatrix} \in \mathbb{R}^{n\times(d+1)}\]</span></p>
+<p><span class="math display">\[y = \begin{bmatrix} y^{(1)}\\ y^{(2)}\\...\\y^{(n)}\end{bmatrix}\]</span></p>
+<p><span class="math display">\[X\theta - y = \begin{bmatrix} h_\theta(x^{(1)})-y^{(1)}\\ h_\theta(x^{(2)})-y^{(2)}\\...\\h_\theta(x^{(n)})-y^{(n)}\end{bmatrix}\]</span></p>
+<p><span class="math display">\[J(\theta) = \frac12(X\theta-y)^T(X\theta-y)\]</span></p>
+<p><span class="math display">\[\nabla_\theta J(\theta) = X^TX\theta - X^Ty\]</span></p>
+<p>To minimize <span class="math inline">\(J\)</span>, we set its derivatives to zero, and obtain <strong>normal equations</strong>:</p>
+<p><span class="math display">\[X^TX\theta = X^Ty\]</span></p>
+<p>Thus, the value of <span class="math inline">\(\theta\)</span> that minimizes the <span class="math inline">\(J(\theta)\)</span> is given in closed form by the equation</p>
+<p><span class="math display">\[\theta = (X^TX)^{-1}X^Ty\]</span></p>
+<h3 id="probablistic-interpretation">Probablistic interpretation</h3>
+<p>Assume</p>
+<p><span class="math display">\[y^{(i)} = \theta^Tx^{(i)} + \epsilon^{(i)}  \]</span></p>
+<p>Assume that the error term <span class="math inline">\(\epsilon \sim N(0, \sigma^2)\)</span></p>
+<p>The density function of $^{(i)} $ is given by</p>
+<p><span class="math display">\[p(\epsilon^{(i)}) = \frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(\epsilon^{(i)})^2}{2\sigma^2}}\]</span></p>
+<p>Substitute <span class="math inline">\(\epsilon^{(i)}\)</span> with <span class="math inline">\(\theta^Tx^{(i)} -y^{(i)}\)</span></p>
+<p><span class="math display">\[p(y^{(i)} | x^{(i)}; \theta) = \frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(\theta^Tx^{(i)} -y^{(i)})^2}{2\sigma^2}}\]</span></p>
+<p>Note that we are not conditioning on <span class="math inline">\(\theta\)</span>, because <span class="math inline">\(\theta\)</span> is not a random variable. The distribution of <span class="math inline">\(y^{(i)}\)</span> can also be written as <span class="math inline">\(y^{(i)}|x^{(i)}; \theta \sim N(0, \sigma^2)\)</span></p>
+<p>By seeing the conditional distribution as a function of <span class="math inline">\(\theta\)</span>, we define the <strong>likelihood function</strong>:</p>
+<p><span class="math display">\[L(\theta) = \prod_{i=1}^{n}{\frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(\theta^Tx^{(i)} -y^{(i)})^2}{2\sigma^2}}}\]</span></p>
+<p>How to best guess the parameter <span class="math inline">\(\theta\)</span>? <strong>Maximum likelihood</strong> --- to make the data as high-probability as possible.</p>
+<p><em>Comment: 频率学派(Frequentist), MLE, "Seeing is believing"</em></p>
+<p>Maximize the <strong>log likelihood</strong> or minimize the negative log likelihood (NLL).</p>
+<p><span class="math display">\[\begin{aligned}l(\theta) &amp;= \log{L(\theta)}\\
+&amp;= n\log{\frac1{\sqrt{2\pi}\sigma}} - \frac1{\sigma^2}\cdot \frac12\sum_{i=1}^{n}(\theta^Tx^{(i)} -y^{(i)})^2
+\end{aligned}\]</span></p>
+<p>Hence it gives the same answer as minimizing the cost function.</p>
+<p>Note that here the choice of <span class="math inline">\(\theta\)</span> does not rely on <span class="math inline">\(\sigma^2\)</span></p>
+<h3 id="locally-weighted-linear-regression-lwr">Locally weighted linear regression (LWR)</h3>
+<p>Instead of fitting <span class="math inline">\(\theta\)</span> to minimize <span class="math inline">\(\sum_i{(y^{(i)}-\theta^Tx^{(i)})^2}\)</span>, minimize</p>
+<p><span class="math display">\[\sum_iw^{(i)}{(y^{(i)}-\theta^Tx^{(i)})^2}\]</span></p>
+<p>The standard choice for the weights:</p>
+<p><span class="math display">\[w^{(i)} = \exp\bigg( -\frac{(x^{(i)}-x)^2}{2\tau^2} \bigg)\]</span></p>
+<p>Comment: part of pdf of <span class="math inline">\(N(x, \tau^2)\)</span>, but has nothing to do with gaussian. Just measures the distance, lower weights to distant data points. <span class="math inline">\(tau\)</span> is called the <strong>bandwidth</strong> parameter which controls how quickly the weight diminishes with distance increasing.</p>
+<p>LWR is <strong>non-parametric</strong> algorithm. It means the model relies on the training data and scales with bigger size of the training dataset.</p>
+<h1 id="part-ii-classification-and-logistic-regression">Part II Classification and logistic regression</h1>
+<p>Problem: binary classification Keywords: positive/negative class, label</p>
+<h2 id="logistic-regression">Logistic regression</h2>
+<p>To limit the predicted value of <span class="math inline">\(y\)</span> to <span class="math inline">\([0,1]\)</span>, use <strong>sigmoid/logitstic</strong> function</p>
+<p><span class="math display">\[h_\theta(x) = g(\theta^Tx) = \frac1{1 + e^{-\theta^Tx}}\]</span></p>
+<p>Sigmoid's derivative has such property</p>
+<p><span class="math display">\[g&#39;(z) = g(z)(1-g(z))\]</span></p>
+<p>Probablistic assumptions:</p>
+<p><span class="math display">\[P(y=1 | x;\theta) = h_\theta(x)\]</span></p>
+<p><span class="math display">\[P(y=0 | x;\theta) = 1-h_\theta(x)\]</span></p>
+<p>Or more compactly written:</p>
+<p><span class="math display">\[P(y| x;\theta) = (h_\theta(x))^y(1-h_\theta(x))^{1-y}\]</span></p>
+<p>Then we can build a likelihood function for <span class="math inline">\(n\)</span> training examples</p>
+<p><span class="math display">\[\begin{aligned}L(\theta) &amp;= p(y|X; \theta)\\
+&amp;= \prod_{i=1}^{n}{(h_\theta(x^{(i)}))^{y^{(i)}}(1-h_\theta(x^{(i)}))^{1-y^{(i)}}}
+\end{aligned}\]</span></p>
+<p><span class="math display">\[\begin{aligned}l(\theta) &amp;= \log{L(\theta)}\\
+&amp;= \sum_{i=1}^{n}{y^{(i)}\log h(x^{(i)})+({1-y^{(i)}})\log(1-h(x^{(i)}))}
+\end{aligned}\]</span></p>
+<p>Optimize the LL by Stochastic Gradient Ascent(maximizing):</p>
+<p><span class="math display">\[\begin{aligned}\frac{\partial}{\partial \theta_j}l(\theta) 
+&amp;= \bigg(y\frac1{g(\theta^Tx)} + (1-y)\frac1{1-g(\theta^Tx)}\bigg)\frac{\partial}{\partial \theta_j}g(\theta^Tx)\\
+&amp;= \bigg(y\frac1{g(\theta^Tx)} + (1-y)\frac1{1-g(\theta^Tx)}\bigg)g(\theta^Tx)(1-g(\theta^Tx))\frac{\partial}{\partial \theta_j}\theta^Tx\\
+&amp;= \big(y(1-g(\theta^Tx)) - (1-y)g(\theta^Tx)\big)x_j\\
+&amp;= (y-h_\theta(x))x_j
+\end{aligned}\]</span></p>
+<p>Update rule:</p>
+<p><span class="math display">\[\theta_j := \theta_j + \alpha(y - h_\theta(x))x_j\]</span></p>
+<p>This looks identical with LMS update rule but <span class="math inline">\(h_\theta(x)\)</span> here is different. This is actually general rule.</p>
+<h2 id="digression-perceptron-learning-algorithm">Digression: perceptron learning algorithm</h2>
+<p>change <span class="math inline">\(g(z)\)</span> to <span class="math inline">\(1\{z\geq 0\}\)</span>, still using the previous update rule.</p>
+<h2 id="newtons-method-for-maximizing-ltheta">Newton's method for maximizing <span class="math inline">\(l(\theta)\)</span></h2>
+<p>Newton's method for finding a zero of a function. <span class="math display">\[\theta := \theta - \frac{f(\theta)}{f&#39;(\theta)}\]</span></p>
+<p>To maximize, we want the derivative <span class="math inline">\(l&#39;(\theta) = 0\)</span>. So we set <span class="math inline">\(f(\theta) = l&#39;(\theta)\)</span> <span class="math display">\[\theta := \theta - \frac{l&#39;(\theta)}{l&#39;&#39;(\theta)}\]</span></p>
+<p>Generalize Newton's method to vector-valued/multidimensional setting (a.k.a Newton-Raphson Method):</p>
+<p><span class="math display">\[\theta := \theta - H^{-1}\nabla_\theta l(\theta)\]</span></p>
+<p>Complexity: <span class="math inline">\(O(N^2)\)</span> for inverting <span class="math inline">\(d\times d\)</span> Hessian. Faster than batch gradient descent.</p>
+<p>When maximizing logistic regression, called <strong>Fisher scoring</strong>.</p>
+<h1 id="part-iii-generalized-linear-modelsglms">Part III Generalized Linear Models(GLMs)</h1>
+<p>In the Classification part, the derivative of sigmoid function is kind of relevant to Bernoulli distribution.</p>
+<p>Both of Linear regression and calssification are special cases of a broader family of models in GLM family.</p>
+<h2 id="the-exponential-family">The exponential family</h2>
+<p><span class="math display">\[p(y; \eta) = b(y)\exp(\eta^TT(y) - a(\eta))\]</span></p>
+<p><span class="math inline">\(\eta\)</span>: natural/canonical parameter</p>
+<p><span class="math inline">\(T(y)\)</span>: sufficient statistic, often <span class="math inline">\(y\)</span></p>
+<p><span class="math inline">\(a(\eta)\)</span>: log partition function. <span class="math inline">\(\exp{a(\eta)}\)</span> used to normalize so the distributino integrates into 1.</p>
+<p><span class="math inline">\(T\)</span> and <span class="math inline">\(b\)</span> dedfines a <strong>family</strong> of distributions parametrized by <span class="math inline">\(\eta\)</span></p>
+<p><strong>Bernoulli</strong> and <strong>Gaussian</strong> distributions are examples of <strong>exponential family distributions</strong>.</p>
+<p><span class="math display">\[\begin{aligned}
+p(y;\phi) 
+&amp;= \phi^y (1-\phi)^{1-y}\\
+&amp;= \exp(y\log\phi + (1-y)\log(1-\phi))\\
+&amp;= \exp\bigg( \bigg( \log \bigg( \frac{\phi}{1-\phi} \bigg)y + \log(1-\phi) \bigg) \bigg)
+\end{aligned}\]</span></p>
+<p>Exponential family distribution notations:</p>
+<p><span class="math display">\[\begin{aligned} 
+\eta &amp;= \log(\phi/(1-\phi))\\
+\phi &amp;=  \frac{1}{1+e^{-\eta}}\\
+T(y) &amp;=  y \\
+a(\eta) &amp;=  -log(1-\phi)\\
+&amp;= \log (1+e^{\eta})\\
+b(y) &amp;= 1
+\end{aligned}\]</span></p>
+<p>Notice that <span class="math inline">\(\phi\)</span> is the sigmoid function.</p>
+<p>For Gaussian distribution with <span class="math inline">\(\sigma^2 = 1\)</span> <span class="math display">\[\begin{aligned}
+p(y;\mu) &amp;= \frac1{\sqrt{2\pi}}\exp\bigg(-\frac12(y-\mu)^2  \bigg)\\
+&amp;= \frac1{\sqrt{2\pi}}\exp\bigg(-\frac12y^2 + \mu y -\frac12\mu^2  \bigg) \\
+&amp;= \frac1{\sqrt{2\pi}}\exp\bigg(-\frac12y^2\bigg) \cdot \exp\bigg(\mu y -\frac12\mu^2\bigg)
+\end{aligned}\]</span></p>
+<p>Compare with the exponential distribution family form <span class="math display">\[p(y; \eta) = b(y)\exp(\eta^TT(y) - a(\eta))\]</span></p>
+<p>We get</p>
+<p><span class="math display">\[\begin{aligned} 
+b(y) &amp;= \frac1{\sqrt{2\pi}}\exp\bigg(-\frac12y^2\bigg)\\
+\eta &amp;= \mu\\
+T(y) &amp;=  y \\
+a(\eta) &amp;=  \mu^2/2\\
+\end{aligned}\]</span></p>
+<h2 id="constructing-glms">Constructing GLMs</h2>
+<p>"<strong>Poisson distribution</strong> usually gives a good model for numbers of visitors". (Counting Model)</p>
+<p>Poisson is an exponential family distribution.</p>
+<p>To derive a GLM, make the following <strong>3 assumptions</strong>, 1. <span class="math inline">\(y|x; \theta\)</span>~ExponentialFamily<span class="math inline">\((\eta)\)</span>. Given <span class="math inline">\(x\)</span> and <span class="math inline">\(\eta\)</span>, the distribution of <span class="math inline">\(y\)</span> follows some exponential family distribution with partameter <span class="math inline">\(\eta\)</span> 2. Given <span class="math inline">\(x\)</span>, our goal is to <strong>predict <span class="math inline">\(T(y)\)</span></strong>. In most cases <span class="math inline">\(T(y) = y\)</span>. We would like <span class="math inline">\(h_\theta(x) = E[T(y)|x;\theta]\)</span>. 3. Natural parameter <span class="math inline">\(\eta\)</span> is linearly related with the inputs <span class="math inline">\(x\)</span>: <span class="math inline">\(\eta = \theta^Tx\)</span>. This is a <strong>"design choice"</strong></p>
+<h2 id="ols-revisited-using-glm-construction">OLS revisited using GLM construction</h2>
+<p>target variable <span class="math inline">\(y\)</span> is also called <strong>reponse variable</strong> in GLM terminology.</p>
+<p><span class="math display">\[y\sim N(\mu, \sigma^2)\]</span> where <span class="math inline">\(\mu\)</span> relies on <span class="math inline">\(x\)</span>.</p>
+<p>Previously we have GLM for Gaussian, <span class="math inline">\(\mu = \eta\)</span></p>
+<p><span class="math display">\[\begin{aligned} 
+h_\theta(x) &amp;= E[y|x;\theta]\\
+&amp;= \mu \\
+&amp;= \eta \\
+&amp;= \theta^Tx
+\end{aligned}\]</span></p>
+<p>First equality from <strong>assumption 2</strong>. Third equality from <strong>assumption 1</strong>. Last from <strong>assumption 3</strong>.</p>
+<h2 id="softmax-regression">Softmax Regression</h2>
+<p>Problem set - <strong>Multinomial distribution</strong>: multiple classification, <span class="math inline">\(y\in \{1, ..., k\}\)</span></p>
+<p><span class="math inline">\(T(y)\)</span> is a <span class="math inline">\(d-1\)</span> vector with y-th entry 1.</p>
+<p><span class="math display">\[T(y)_i = 1\{y = i\}\]</span></p>
+<p><span class="math inline">\((T(y))_i\)</span> is the i-th element of <span class="math inline">\(T(y)\)</span></p>
+<p><span class="math display">\[E[(T(y))_i] = \phi_i\]</span></p>
+<p>The multinomial is a member of the exponential family, where</p>
+<p><span class="math display">\[\begin{aligned} 
+b(y) &amp;= 1\\
+a(\eta) &amp;= -\log(\phi_k)\\
+\eta &amp;= \begin{bmatrix}
+\log(\phi_1/\phi_k)\\ \log(\phi_2/\phi_k) \\...\\\log(\phi_{k-1}/\phi_k)
+\end{bmatrix}
+\end{aligned}\]</span></p>
+<p>The link function is given by <span class="math display">\[\eta_i = \log\frac{\phi_i}{\phi_k}\]</span></p>
+<p>Invert the link function</p>
+<p><span class="math display">\[e^{\eta_i} = \phi_i/\phi_k\]</span></p>
+<p><span class="math display">\[\phi_ke^{\eta_i} = \phi_i\]</span></p>
+<p><span class="math display">\[\phi_k\sum_{i=1}^k{e^{\eta_i}} = \sum_{i=1}^k{\phi_i}=1\]</span></p>
+<p><span class="math display">\[\therefore \phi_k = \frac1{\sum_{i=1}^k{e^{\eta_i}}}\]</span></p>
+<p><span class="math display">\[\therefore \phi_i = \frac{e^{\eta_i}}{\sum_{j=1}^k{e^{\eta_j}}}\]</span></p>
+<p>This function mapping from <span class="math inline">\(\eta\)</span> to <span class="math inline">\(\phi\)</span> is called <strong>softmax</strong>.</p>
+<p>From assumption 3, <span class="math inline">\(\eta_i = \theta_i^Tx\)</span>, and since we define <span class="math inline">\(\theta_k = 0\)</span>, <span class="math inline">\(\eta_k = 0\)</span></p>
+<p><span class="math display">\[\begin{aligned} p(y=i|x; \theta) 
+&amp;= \phi_i \\
+&amp;= \frac{e^{\eta_i}}{\sum_{j=1}^k{e^{\eta_j}}} \\
+&amp;= \frac{e^{\theta_i^Tx}}{\sum_{j=1}^k{e^{\theta_j^Tx}}}
+\end{aligned}\]</span></p>
+<p>This is the <strong>softmax regression</strong>. It's a generalization of logistic regression (binary classification).</p>
+<p><span class="math display">\[\begin{aligned} h_\theta(x)
+&amp;= E[T(y)|x; \theta] \\
+&amp;= [\phi_1 ,.. \phi_{k-1}]^T\\
+&amp;= \bigg[\frac{e^{\theta_1^Tx}}{\sum_{j=1}^k{e^{\theta_j^Tx}}}, ..., \frac{e^{\theta_{k-1}^Tx}}{\sum_{j=1}^k{e^{\theta_j^Tx}}}\bigg]^T\\
+\end{aligned}\]</span></p>
+<p>Comment: the output is the estimated probability for each class.</p>
+<p>For parameter fitting, maximize the log likelihood using gradient ascent or Newton's method.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CS229/" rel="tag"># CS229</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/25/CS229-ProbabilityTheory-Recap/" rel="prev" title="CS229-ProbabilityTheory Recap">
+      <i class="fa fa-chevron-left"></i> CS229-ProbabilityTheory Recap
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/10/27/CS229-Notes2-Generative-Learning-Algorithms/" rel="next" title="CS229 Notes2 Generative Learning Algorithms">
+      CS229 Notes2 Generative Learning Algorithms <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#part-i-linear-regression"><span class="nav-number">1.</span> <span class="nav-text">Part I Linear Regression</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#lms-algorithm"><span class="nav-number">1.1.</span> <span class="nav-text">LMS algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#the-normal-equations"><span class="nav-number">1.2.</span> <span class="nav-text">The normal equations</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#matrix-derivatives-elementwise"><span class="nav-number">1.2.1.</span> <span class="nav-text">Matrix derivatives (elementwise)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#probablistic-interpretation"><span class="nav-number">1.2.2.</span> <span class="nav-text">Probablistic interpretation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#locally-weighted-linear-regression-lwr"><span class="nav-number">1.2.3.</span> <span class="nav-text">Locally weighted linear regression (LWR)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#part-ii-classification-and-logistic-regression"><span class="nav-number">2.</span> <span class="nav-text">Part II Classification and logistic regression</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#logistic-regression"><span class="nav-number">2.1.</span> <span class="nav-text">Logistic regression</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#digression-perceptron-learning-algorithm"><span class="nav-number">2.2.</span> <span class="nav-text">Digression: perceptron learning algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#newtons-method-for-maximizing-ltheta"><span class="nav-number">2.3.</span> <span class="nav-text">Newton&#39;s method for maximizing \(l(\theta)\)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#part-iii-generalized-linear-modelsglms"><span class="nav-number">3.</span> <span class="nav-text">Part III Generalized Linear Models(GLMs)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#the-exponential-family"><span class="nav-number">3.1.</span> <span class="nav-text">The exponential family</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#constructing-glms"><span class="nav-number">3.2.</span> <span class="nav-text">Constructing GLMs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ols-revisited-using-glm-construction"><span class="nav-number">3.3.</span> <span class="nav-text">OLS revisited using GLM construction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#softmax-regression"><span class="nav-number">3.4.</span> <span class="nav-text">Softmax Regression</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="姚华(Hua Yao)"
+      src="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
+  <p class="site-author-name" itemprop="name">姚华(Hua Yao)</p>
+  <div class="site-description" itemprop="description">hy2632@columbia.edu</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hy2632" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hy2632" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hy2632@columbia.edu" title="E-Mail → mailto:hy2632@columbia.edu" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.instagram.com/nocturnima1/" title="Instagram → https:&#x2F;&#x2F;www.instagram.com&#x2F;nocturnima1&#x2F;" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">姚华(Hua Yao)</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://huo-meng-lou.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://hy2632.github.io/2020/10/26/CS229-Notes1-Supervised-Learning/";
+    this.page.identifier = "2020/10/26/CS229-Notes1-Supervised-Learning/";
+    this.page.title = "CS229 Notes1 Supervised Learning";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://huo-meng-lou.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

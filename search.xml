@@ -555,7 +555,7 @@
   </entry>
   <entry>
     <title>CS224N-Lec15</title>
-    <url>/2020/08/24/CS224N-Lec15/</url>
+    <url>/2020/08/25/CS224N-Lec15/</url>
     <content><![CDATA[<h1 id="natural-language-generation">Natural Language Generation</h1>
 <h2 id="nlg">NLG</h2>
 <ul>
@@ -764,7 +764,7 @@
   </entry>
   <entry>
     <title>十大排序算法</title>
-    <url>/2020/08/24/%E6%8E%92%E5%BA%8F/</url>
+    <url>/2020/08/25/%E6%8E%92%E5%BA%8F/</url>
     <content><![CDATA[<h1 id="链接">链接：</h1>
 <p><a href="https://mp.weixin.qq.com/s?__biz=MzUyNjQxNjYyMg==&amp;mid=2247484184&amp;idx=1&amp;sn=62965b401aa42107b3c17d1d8ea17454&amp;chksm=fa0e6c99cd79e58f298e9026f677f912bd8c8e55edb48fc509b2b5834f05e529a9b47d59d202&amp;scene=21#wechat_redirect">十大经典排序算法动画与解析，看我就够了！（配代码完全版）</a></p>
 <p><a href="https://zhuanlan.zhihu.com/p/52884590">视频 | 手撕九大经典排序算法，看我就够了！ - 力扣（LeetCode）的文章 - 知乎</a></p>
@@ -854,7 +854,7 @@
   </entry>
   <entry>
     <title>python股票分析</title>
-    <url>/2020/09/01/python%E8%82%A1%E7%A5%A8%E5%88%86%E6%9E%90/</url>
+    <url>/2020/09/02/python%E8%82%A1%E7%A5%A8%E5%88%86%E6%9E%90/</url>
     <content><![CDATA[<p><a href="https://www.bilibili.com/video/BV1NW411W7FK">【Python学习】股票分析系列（中文自制） by 大力牛肉粉</a></p>
 <p><a href="http://data.eastmoney.com/zjlx/detail.html">东方财富网资金流向</a></p>
 <p><a href="https://curl.trillworks.com/">Convert curl syntax to Python, Ansible URI, MATLAB, Node.js, R, PHP, Strest, Go, Dart, JSON, Elixir, Rust</a></p>
@@ -1597,7 +1597,7 @@ Date
   </entry>
   <entry>
     <title>二分查找</title>
-    <url>/2020/09/02/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/</url>
+    <url>/2020/09/03/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/</url>
     <content><![CDATA[<h2 id="链接">链接</h2>
 <p><a href="https://mp.weixin.qq.com/s?__biz=MzUyNjQxNjYyMg==&amp;mid=2247485570&amp;idx=2&amp;sn=7a4e2635aafcf1c9bd01642f6cedd409&amp;chksm=fa0e6703cd79ee15f692f31c488aac6787a08ffea2ffe457a037310df355c1e6a810919333e4&amp;scene=21#wechat_redirect">二分查找算法详解</a></p>
 <h2 id="代码">代码</h2>
@@ -1621,7 +1621,7 @@ Date
   </entry>
   <entry>
     <title>链表题(持续更新)</title>
-    <url>/2020/09/02/%E9%93%BE%E8%A1%A8%E9%A2%98-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/</url>
+    <url>/2020/09/03/%E9%93%BE%E8%A1%A8%E9%A2%98-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/</url>
     <content><![CDATA[<h2 id="链表类listnode定义"><a class="markdownIt-Anchor" href="#链表类listnode定义"></a> 链表类<code>ListNode</code>定义</h2>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line">    ListNode next;</span><br><span class="line">    ListNode(<span class="keyword">int</span> x) &#123;</span><br><span class="line">        val = x;</span><br><span class="line">        next = <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] toArray(ListNode head)&#123;</span><br><span class="line">        <span class="keyword">int</span>[] arr = &#123;&#125;;</span><br><span class="line">        <span class="keyword">while</span> (head != <span class="keyword">null</span>)&#123;</span><br><span class="line">            arr = Arrays.copyOf(arr, arr.length+<span class="number">1</span>);</span><br><span class="line">            arr[arr.length-<span class="number">1</span>] = head.val;</span><br><span class="line">            head = head.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ListNode <span class="title">fromArray</span><span class="params">(<span class="keyword">int</span>[] arr)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (arr.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        ListNode ll = <span class="keyword">new</span> ListNode(arr[<span class="number">0</span>]);</span><br><span class="line">        ListNode head = ll;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; arr.length; i++)&#123;</span><br><span class="line">            ll.next = <span class="keyword">new</span> ListNode(arr[i]);</span><br><span class="line">            ll = ll.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>提供了导入导出为数组的内置静态方法。</p>
@@ -1725,7 +1725,7 @@ Date
   </entry>
   <entry>
     <title>分治</title>
-    <url>/2020/09/03/%E5%88%86%E6%B2%BB/</url>
+    <url>/2020/09/04/%E5%88%86%E6%B2%BB/</url>
     <content><![CDATA[<p><a href="https://mp.weixin.qq.com/s?__biz=MzUyNjQxNjYyMg==&amp;mid=2247485228&amp;idx=1&amp;sn=9f48aee51dcb2b98b56b1827cc658439&amp;chksm=fa0e68adcd79e1bbcd0183ef30a79ede4e46c5835ce05ee6644169c3cc9454073019ccd85d3d&amp;scene=21#wechat_redirect">浅谈分治算法</a></p>
 <h2 id="使用场景">使用场景</h2>
 <p>可以分解为若干 MECE 的相同子问题，即具有最优子结构</p>
@@ -1796,7 +1796,7 @@ Date
   </entry>
   <entry>
     <title>09/06 论文笔记</title>
-    <url>/2020/09/06/09-06-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <url>/2020/09/07/09-06-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h2 id="deep-visual-semantic-alignments-for-generating-image-descriptions"><a href="https://cs.stanford.edu/people/karpathy/cvpr2015.pdf"><strong>Deep Visual-Semantic Alignments for Generating Image Descriptions</strong></a></h2>
 <p>摘要</p>
 <ul>
@@ -1817,7 +1817,7 @@ Date
   </entry>
   <entry>
     <title>动态规划</title>
-    <url>/2020/11/17/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/</url>
+    <url>/2020/11/18/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/</url>
     <content><![CDATA[<h2 id="题目">题目</h2>
 <h3 id="买卖股票的最佳时机">(0908)买卖股票的最佳时机</h3>
 <p>知识点：数组，动态规划</p>
@@ -1896,7 +1896,7 @@ Date
   </entry>
   <entry>
     <title>Data Mining Lec1</title>
-    <url>/2020/09/12/Data-Mining-Lec1/</url>
+    <url>/2020/09/13/Data-Mining-Lec1/</url>
     <content><![CDATA[<h3 id="课程信息-ieore4540">课程信息 IEORE4540</h3>
 <p>Lecturer: <a href="https://research.google/people/KrzysztofChoromanski/">Krzysztof Choromanski</a></p>
 <ul>
@@ -1968,14 +1968,14 @@ Date
   </entry>
   <entry>
     <title>Spark Tutorial -- Wordcount in Spark</title>
-    <url>/2020/09/15/Spark-Tutorial-Wordcount-in-Spark/</url>
+    <url>/2020/09/16/Spark-Tutorial-Wordcount-in-Spark/</url>
     <content><![CDATA[<h2 id="cs246---colab-1-wordcount-in-spark">CS246 - Colab 1 Wordcount in Spark</h2>
 <div class="pdfobject-container" data-target="./CS246Colab1.pdf" data-height="1000px"></div>
 ]]></content>
   </entry>
   <entry>
     <title>递归</title>
-    <url>/2020/09/18/%E9%80%92%E5%BD%92/</url>
+    <url>/2020/09/19/%E9%80%92%E5%BD%92/</url>
     <content><![CDATA[<h3 id="集合的所有子集">(0918) 集合的所有子集</h3>
 <p>题目描述</p>
 <p>现在有一个没有重复元素的整数集合S，求S的所有子集</p>
@@ -1994,7 +1994,7 @@ Date
   </entry>
   <entry>
     <title>Data-Mining-Lec2</title>
-    <url>/2020/09/16/Data-Mining-Lec2/</url>
+    <url>/2020/09/17/Data-Mining-Lec2/</url>
     <content><![CDATA[<h2 id="0920lemmas"><a class="markdownIt-Anchor" href="#0920lemmas"></a> (09/20)Lemmas</h2>
 <h3 id="eulers-formula-欧拉公式"><a class="markdownIt-Anchor" href="#eulers-formula-欧拉公式"></a> Euler’s formula 欧拉公式</h3>
 <p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>e</mi><mrow><mi>i</mi><mi>x</mi></mrow></msup><mo>=</mo><mi>cos</mi><mo>⁡</mo><mi>x</mi><mo>+</mo><mi>i</mi><mi>sin</mi><mo>⁡</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">e^{ix} = \cos{x} + i\sin{x} 
@@ -2163,7 +2163,7 @@ s-65,47,-65,47z M834 80H400000v40H845z'/></svg></span></span></span><span class=
   </entry>
   <entry>
     <title>0922</title>
-    <url>/2020/09/22/0922/</url>
+    <url>/2020/09/23/0922/</url>
     <content><![CDATA[<p>看到一篇讲SVM不错的文章 <a href="https://zhuanlan.zhihu.com/p/49331510">看了这篇文章你还不懂SVM你就来打我</a></p>
 <p>google SVM 的 scaling，又看到了该作者的个人站点 <a href="https://tangshusen.me/">TangShusen</a>，同样是基于Hexo的next主题，感觉很值得借鉴。</p>
 <p>看了下<a href="https://github.com/ShusenTang">GitHub</a>还有不少宝藏内容。关注了。</p>
@@ -2174,7 +2174,7 @@ s-65,47,-65,47z M834 80H400000v40H845z'/></svg></span></span></span><span class=
   </entry>
   <entry>
     <title>Data-Mining-Lec3</title>
-    <url>/2020/09/23/Data-Mining-Lec3/</url>
+    <url>/2020/09/24/Data-Mining-Lec3/</url>
     <content><![CDATA[<h2 id="general-scheme"><a class="markdownIt-Anchor" href="#general-scheme"></a> General scheme</h2>
 <p>Approximating the kernel <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>K</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo><mo>:</mo><msup><mi mathvariant="double-struck">R</mi><mi>d</mi></msup><mo>×</mo><msup><mi mathvariant="double-struck">R</mi><mi>d</mi></msup><mo>→</mo><mi mathvariant="double-struck">R</mi></mrow><annotation encoding="application/x-tex">K(x,y) : \mathbb{R}^d \times \mathbb{R}^d \to \mathbb{R}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.07153em;">K</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.932438em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord"><span class="mord mathbb">R</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">d</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.849108em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord mathbb">R</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">d</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68889em;vertical-align:0em;"></span><span class="mord"><span class="mord mathbb">R</span></span></span></span></span></p>
 <p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>ϕ</mi><mo>:</mo><msup><mi mathvariant="double-struck">R</mi><mi>d</mi></msup><mo>→</mo><msup><mi mathvariant="double-struck">R</mi><mi>m</mi></msup></mrow><annotation encoding="application/x-tex">\phi: \mathbb{R}^d \to \mathbb{R}^m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">ϕ</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.849108em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord mathbb">R</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">d</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68889em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord mathbb">R</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">m</span></span></span></span></span></span></span></span></span></span></span> randomized</p>
@@ -2384,7 +2384,7 @@ s-65,47,-65,47z M834 80H400000v40H845z'/></svg></span></span></span><span class=
   </entry>
   <entry>
     <title>Data-Mining-Lec4</title>
-    <url>/2020/09/30/Data-Mining-Lec4/</url>
+    <url>/2020/10/01/Data-Mining-Lec4/</url>
     <content><![CDATA[<h1 id="attention-mechanism">Attention Mechanism</h1>
 <p>Attention block: takes a sequence of vectors, <span class="math inline">\(x_1, ... x_L (\mathbb{R}^d)\)</span>, and output another series <span class="math inline">\(x_1, ... x_L (\mathbb{R}^d)\)</span></p>
 <p>Within the block, <span class="math inline">\(W_Q, W_K, W_V\)</span>, <span class="math inline">\(X = \begin{bmatrix}x_1\\x_2\\...\\x_L\end{bmatrix} \in \mathbb{R}^{L\times d}\)</span> <span class="math display">\[ \mathbb{R}^{L\times d}\begin{cases} Q = W_QX\\ K = W_KX\\V=W_VX\end{cases} \]</span> <span class="math display">\[ Q = \begin{bmatrix}q_1\\q_2\\...\\q_L\end{bmatrix} \]</span> all these weight matrices will be learned.</p>
@@ -2476,7 +2476,7 @@ s-65,47,-65,47z M834 80H400000v40H845z'/></svg></span></span></span><span class=
   </entry>
   <entry>
     <title>Data-Mining-施密特正交化</title>
-    <url>/2020/10/01/Data-Mining-%E6%96%BD%E5%AF%86%E7%89%B9%E6%AD%A3%E4%BA%A4%E5%8C%96/</url>
+    <url>/2020/10/02/Data-Mining-%E6%96%BD%E5%AF%86%E7%89%B9%E6%AD%A3%E4%BA%A4%E5%8C%96/</url>
     <content><![CDATA[<h1 id="最小二乘法与投影">最小二乘法与投影</h1>
 <p>"最小二乘法的本质是希尔伯特空间的投影。"</p>
 <p>Suppose we want to project some higher-dimensional vector to a lower-dimensional space(say plane).</p>
@@ -2846,7 +2846,7 @@ s-65,47,-65,47z M834 80H400000v40H845z'/></svg></span></span></span><span class=
   </entry>
   <entry>
     <title>LaTex 速查表</title>
-    <url>/2020/10/07/LaTex-%E9%80%9F%E6%9F%A5%E8%A1%A8/</url>
+    <url>/2020/10/08/LaTex-%E9%80%9F%E6%9F%A5%E8%A1%A8/</url>
     <content><![CDATA[<p>一些常用LaTex的命令。</p>
 <div class="pdfobject-container" data-target="./Latex.pdf" data-height="1000px"></div>]]></content>
       <categories>
@@ -2855,7 +2855,7 @@ s-65,47,-65,47z M834 80H400000v40H845z'/></svg></span></span></span><span class=
   </entry>
   <entry>
     <title>Data-Mining-HW1</title>
-    <url>/2020/10/05/Data-Mining-HW1/</url>
+    <url>/2020/10/06/Data-Mining-HW1/</url>
     <content><![CDATA[<h1 id="description">Description</h1>
 <h2 id="problem-1-softmax-kernel-approximators-50-points">1 Problem 1: Softmax-kernel approximators [50 points]</h2>
 <p>The goal of this task is to test different random feature map based estimators of the softmax-kernel. Choose two feature vectors <span class="math inline">\(x, y \in \mathbb{R}^{20}\)</span> of unit <span class="math inline">\(L_2\)</span>-norm and with angle <span class="math inline">\(\frac{π}{3}\)</span> between them. Consider three estimators of the value of the softmax-kernel in these points: the regular one using independent sin/cos-random features (leveraging random feature maps for the Gaussian kernel) and its two modifications: the one using Givens random rotations and the one applying random Hadamard matrices (with three <strong>HD</strong>-blocks). Describe in detail each estimator. Then for the number of random projections <span class="math inline">\(m = 5, 10, 20, 30, 50, 100\)</span> and each estimator, compute its value as an average over <span class="math inline">\(s = 10\)</span> independent trials. Propose how to use those trials to compute empirical mean squared error for each estimator. Prepare plots where on <span class="math inline">\(x\)</span>-axis you put the number of random projections m used and on the <span class="math inline">\(y\)</span>-axis the average value of the estimator. Show also computed mean squared error in the form of the error-bars. Remark: If <span class="math inline">\(m &gt; d\)</span> the orthogonal trick can be still applied by constructing independent ensembles of samples such that within each ensemble samples are exactly orthogonal.</p>
@@ -3270,7 +3270,7 @@ Hadamard
   </entry>
   <entry>
     <title>Data-Mining-Lec5</title>
-    <url>/2020/10/07/Data-Mining-Lec5/</url>
+    <url>/2020/10/08/Data-Mining-Lec5/</url>
     <content><![CDATA[<h2 id="transformers"><a class="markdownIt-Anchor" href="#transformers"></a> Transformers</h2>
 <p><strong>&quot;Attention is all you need&quot;</strong></p>
 <h3 id="attention-block"><a class="markdownIt-Anchor" href="#attention-block"></a> Attention Block</h3>
@@ -4963,7 +4963,7 @@ sum
   </entry>
   <entry>
     <title>Data-Mining-Lec6</title>
-    <url>/2020/10/14/Data-Mining-Lec6/</url>
+    <url>/2020/10/15/Data-Mining-Lec6/</url>
     <content><![CDATA[<p><a href="https://syncedreview.com/2020/10/02/google-cambridge-deepmind-alan-turing-institutes-performer-transformer-slashes-compute-costs/#comments">Performers: variant of transformer</a></p>
 <p>Random feature for different kernels Softmax: triangnometric, positive Orthogonal features construction: different ways(Givens, Hadamard, regular(GM), or even more), different renormalizations</p>
 <p>concentration, <strong>computing variance</strong> of certain feature map, Cherbychev, concentration results</p>
@@ -4985,7 +4985,7 @@ sum
   </entry>
   <entry>
     <title>Data-Mining-Midterm</title>
-    <url>/2020/10/18/Data-Mining-Midterm/</url>
+    <url>/2020/10/19/Data-Mining-Midterm/</url>
     <content><![CDATA[<h1 id="data-mining-midterm">Data Mining Midterm</h1>
 <p><strong>Hua Yao(UNI: hy2632)</strong></p>
 <h2 id="problem-1-anisotropic-gaussian-kernels-50-points">Problem 1: Anisotropic Gaussian Kernels (50 points)</h2>
@@ -5181,7 +5181,7 @@ E[\phi_m^{+}(x)\phi_m^{+}(y)^T] &amp;= E\big[e^{-||x||^2}e^{-||y||^2}\frac{1}{m}
   </entry>
   <entry>
     <title>Data-Mining-Recitation2</title>
-    <url>/2020/10/10/Data-Mining-Recitation2/</url>
+    <url>/2020/10/11/Data-Mining-Recitation2/</url>
     <content><![CDATA[<h2 id="monte-carlo-approximation-techniques">Monte Carlo Approximation techniques</h2>
 <h2 id="evolutionary-strategies-策略梯度">Evolutionary Strategies, 策略梯度</h2>
 <p>Policy optimization can be done through gradient ascend:</p>
@@ -5224,7 +5224,7 @@ $$ --> <a href="https://arxiv.org/pdf/1703.03864.pdf">Evolution Strategies as a 
   </entry>
   <entry>
     <title>Data-Mining-Lec7</title>
-    <url>/2020/10/21/Data-Mining-Lec7/</url>
+    <url>/2020/10/22/Data-Mining-Lec7/</url>
     <content><![CDATA[<h2 id="Some-hints-on-Midterm"><a href="#Some-hints-on-Midterm" class="headerlink" title="Some hints on Midterm"></a>Some hints on Midterm</h2><p>Problem1: PSD: Random feature decomposition to prove</p>
 <p>Problem2: Find a random feature map of the product of two kernels,<br>    angular might be negative</p>
 ]]></content>
@@ -5445,7 +5445,7 @@ $$ --> <a href="https://arxiv.org/pdf/1703.03864.pdf">Evolution Strategies as a 
   </entry>
   <entry>
     <title>CS229-ProbabilityTheory Recap</title>
-    <url>/2020/10/24/CS229-ProbabilityTheory-Recap/</url>
+    <url>/2020/10/25/CS229-ProbabilityTheory-Recap/</url>
     <content><![CDATA[<h3 id="some-common-random-variables">Some common random variables</h3>
 <ul>
 <li>Discrete random variables
@@ -5485,7 +5485,7 @@ $$ --> <a href="https://arxiv.org/pdf/1703.03864.pdf">Evolution Strategies as a 
   </entry>
   <entry>
     <title>CS229 Notes1 Supervised Learning</title>
-    <url>/2020/10/25/CS229-Notes1-Supervised-Learning/</url>
+    <url>/2020/10/26/CS229-Notes1-Supervised-Learning/</url>
     <content><![CDATA[<h1 id="part-i-linear-regression">Part I Linear Regression</h1>
 <p>Try to train the hypothesis function <span class="math inline">\(h\)</span>.</p>
 <p>Letting <span class="math inline">\(x_0=1\)</span> gives the error term. <span class="math display">\[h(x) = \sum_{i=0}^d{\theta_ix_i}=\theta^T x\]</span></p>
@@ -5680,7 +5680,7 @@ a(\eta) &amp;= -\log(\phi_k)\\
   </entry>
   <entry>
     <title>CS229 Notes2 Generative Learning Algorithms</title>
-    <url>/2020/10/26/CS229-Notes2-Generative-Learning-Algorithms/</url>
+    <url>/2020/10/27/CS229-Notes2-Generative-Learning-Algorithms/</url>
     <content><![CDATA[<p>Gaussian discriminant analysis - lemon的文章 - 知乎 https://zhuanlan.zhihu.com/p/22940577</p>
 <p>Normal Equation如何实现一步求解最优参数及其对比梯度下降的特点是什么？ - 深度碎片的回答 - 知乎 https://www.zhihu.com/question/273799498/answer/370173526</p>
 ]]></content>
@@ -5693,7 +5693,7 @@ a(\eta) &amp;= -\log(\phi_k)\\
   </entry>
   <entry>
     <title>The Matrix Cookbook</title>
-    <url>/2020/10/30/The-Matrix-Cookbook/</url>
+    <url>/2020/10/31/The-Matrix-Cookbook/</url>
     <content><![CDATA[<p>在学习cs229-notes11 时遇到了这样一个等式</p>
 <p><span class="math display">\[\nabla_W|W| = |W|(W^{-1})^T \]</span></p>
 <p>于是找到了这个 UCI 的“矩阵菜谱”。其中列举了与矩阵有关的公式，在此上传供以后查阅。</p>
@@ -5758,7 +5758,7 @@ a(\eta) &amp;= -\log(\phi_k)\\
   </entry>
   <entry>
     <title>CS229 Notes11 Independent Components Analysis</title>
-    <url>/2020/10/30/CS229-Notes11-Independent-Components-Analysis/</url>
+    <url>/2020/10/31/CS229-Notes11-Independent-Components-Analysis/</url>
     <content><![CDATA[<p>The goal of Components Analysis is to find a new basis to represent the data.</p>
 <h2 id="cocktail-party-problem"><a class="markdownIt-Anchor" href="#cocktail-party-problem"></a> Cocktail party problem:</h2>
 <ul>
@@ -5845,7 +5845,7 @@ a(\eta) &amp;= -\log(\phi_k)\\
   </entry>
   <entry>
     <title>CS229 Notes10 Principal components analysis</title>
-    <url>/2020/11/01/CS229-Notes10-Principal-components-analysis/</url>
+    <url>/2020/11/02/CS229-Notes10-Principal-components-analysis/</url>
     <content><![CDATA[<h2 id="remark"><a class="markdownIt-Anchor" href="#remark"></a> Remark</h2>
 <p>(11/3) PCA中的centering的目的是？</p>
 <ul>
@@ -5899,7 +5899,7 @@ a(\eta) &amp;= -\log(\phi_k)\\
   </entry>
   <entry>
     <title>CS229 Notes9 Lagrange Multipliers and Factor Analysis</title>
-    <url>/2020/11/02/CS229-Notes9-Lagrange-Multipliers-and-Factor-Analysis/</url>
+    <url>/2020/11/03/CS229-Notes9-Lagrange-Multipliers-and-Factor-Analysis/</url>
     <content><![CDATA[<h1 id="lagrange-multiplier"><a class="markdownIt-Anchor" href="#lagrange-multiplier"></a> Lagrange Multiplier</h1>
 <p>说明拉格朗日乘数函数的关键点同时也是原函数的关键点</p>
 <p>Consider maximize a function with constraints <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><mi>s</mi><mi mathvariant="normal">.</mi><mi>t</mi><mi mathvariant="normal">.</mi><mi>A</mi><mi>x</mi><mo>=</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">f(x), s.t.  Ax=b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">s</span><span class="mord">.</span><span class="mord mathdefault">t</span><span class="mord">.</span><span class="mord mathdefault">A</span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">b</span></span></span></span></p>
@@ -6030,7 +6030,7 @@ c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></spa
   </entry>
   <entry>
     <title>CS229 Notes7a The k-means clustering algorithm</title>
-    <url>/2020/11/03/CS229-Notes7a-The-k-means-clustering-algorithm/</url>
+    <url>/2020/11/04/CS229-Notes7a-The-k-means-clustering-algorithm/</url>
     <content><![CDATA[<h1 id="implement-k-means">Implement k-means</h1>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">from</span> tqdm.notebook <span class="keyword">import</span> tqdm</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">iris = datasets.load_iris()</span><br><span class="line">iris.target_names</span><br><span class="line">X = iris.data</span><br><span class="line">y = iris.target</span><br><span class="line"><span class="comment"># K clusters</span></span><br><span class="line">k = <span class="number">3</span></span><br></pre></td></tr></table></figure>
@@ -6066,7 +6066,7 @@ distortion: 46.44618205128205</code></pre>
   </entry>
   <entry>
     <title>XGBoost</title>
-    <url>/2020/11/05/XGBoost/</url>
+    <url>/2020/11/06/XGBoost/</url>
     <content><![CDATA[<h2 id="参考资料">参考资料</h2>
 <p><a href="https://arxiv.org/pdf/1603.02754.pdf?__hstc=133736337.1bb630f9cde2cb5f07430159d50a3c91.1513641600097.1513641600098.1513641600099.1&amp;__hssc=133736337.1.1513641600100&amp;__hsfp=528229161">XGBoost: A Scalable Tree Boosting System</a></p>
 <p><a href="https://www.bilibili.com/video/BV1si4y1G7Jb">贪心学院： XGBoost的技术剖析</a></p>
@@ -6123,7 +6123,7 @@ obj &amp;= \sum_{i=1}^{N}{\bigg(g_if_{K}(x_i)+ \frac{h_i}2f_{K}^2(x_i)\bigg)} + 
   </entry>
   <entry>
     <title>Kaggle: Titanic</title>
-    <url>/2020/11/05/Kaggle-Titanic/</url>
+    <url>/2020/11/06/Kaggle-Titanic/</url>
     <content><![CDATA[<h1 id="the-titanic"><a class="markdownIt-Anchor" href="#the-titanic"></a> The Titanic</h1>
 <p><strong><a href="https://www.kaggle.com/c/titanic">Kaggle: Titanic</a></strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Simple implementation with basic data cleaning, one-hot encoding and lightGBM classifier.</span><br><span class="line"></span><br><span class="line">Score: 0.76794</span><br><span class="line">Rank: 11846&#x2F;17593</span><br></pre></td></tr></table></figure>
@@ -6645,7 +6645,7 @@ Name: Embarked, dtype: int64
   </entry>
   <entry>
     <title>CS229 Notes7b GMM Implementation</title>
-    <url>/2020/11/06/CS229-Notes7b-GMM-Implementation/</url>
+    <url>/2020/11/07/CS229-Notes7b-GMM-Implementation/</url>
     <content><![CDATA[<h1 id="import-packages-mypca-mykmeans-and-iris-dataset.">Import packages + MyPCA + MyKMeans and Iris dataset.</h1>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">from</span> tqdm.notebook <span class="keyword">import</span> tqdm</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">import</span> scipy.stats <span class="keyword">as</span> spst</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_spd_matrix</span><br><span class="line"><span class="keyword">from</span> scipy.special <span class="keyword">import</span> softmax</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">os.getcwd()</span><br></pre></td></tr></table></figure>
@@ -6686,7 +6686,7 @@ distortion: 78.85144142614601</code></pre>
   </entry>
   <entry>
     <title>Data-Mining-Lec11</title>
-    <url>/2020/11/11/Data-Mining-Lec11/</url>
+    <url>/2020/11/12/Data-Mining-Lec11/</url>
     <content><![CDATA[<h1 id="vanishingexploding-gradients"><a class="markdownIt-Anchor" href="#vanishingexploding-gradients"></a> Vanishing/Exploding gradients</h1>
 <p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">ℓ</mi><mo>=</mo><mi mathvariant="normal">ℓ</mi><mo stretchy="false">(</mo><msub><mi>α</mi><mi>L</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\ell = \ell(\alpha_L)
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord">ℓ</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">ℓ</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.0037em;">α</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.0037em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
@@ -6785,7 +6785,7 @@ find a hyperplane H such that separtates points of label +1 from points of label
   </entry>
   <entry>
     <title>MNIST Recognition</title>
-    <url>/2020/11/14/MNIST-Recognition/</url>
+    <url>/2020/11/15/MNIST-Recognition/</url>
     <content><![CDATA[<h2 id="reference"><a class="markdownIt-Anchor" href="#reference"></a> Reference</h2>
 <p><a href="https://towardsdatascience.com/handwritten-digit-mnist-pytorch-977b5338e627">https://towardsdatascience.com/handwritten-digit-mnist-pytorch-977b5338e627</a></p>
 <h1 id="import"><a class="markdownIt-Anchor" href="#import"></a> Import</h1>
@@ -6886,7 +6886,7 @@ Model Accuracy = 0.9619
   </entry>
   <entry>
     <title>CS229 Notes12 Reinforcement Learning</title>
-    <url>/2020/11/16/CS229-Notes12-Reinforcement-Learning/</url>
+    <url>/2020/11/17/CS229-Notes12-Reinforcement-Learning/</url>
     <content><![CDATA[<h2 id="1-Markov-decision-process-MDP"><a href="#1-Markov-decision-process-MDP" class="headerlink" title="1 Markov decision process (MDP)"></a>1 Markov decision process (MDP)</h2><ul>
 <li><p>MDP is a tuple of $(S, A, {P_{sa} }, \gamma, R)$</p>
 <ul>
@@ -6966,7 +6966,7 @@ Model Accuracy = 0.9619
   </entry>
   <entry>
     <title>Data-Mining-Lec12</title>
-    <url>/2020/11/18/Data-Mining-Lec12/</url>
+    <url>/2020/11/19/Data-Mining-Lec12/</url>
     <content><![CDATA[<h2 id="Recap"><a href="#Recap" class="headerlink" title="Recap"></a>Recap</h2><p>KKT, Lagrangian</p>
 <p>$$L(w, b, \alpha, \beta) = f(w,b) + \sum_{i=1}^{N}{\alpha_ig_i(w,b)} + \sum_{i=1}^{N}{\beta_ih_i(w,b)}$$</p>
 <p>$$\theta(w,b) = \max_{\alpha, \beta} L(w, b, \alpha, \beta)  $$</p>
@@ -7126,7 +7126,7 @@ Model Accuracy = 0.9619
   </entry>
   <entry>
     <title>CS229 Notes3 SVM 笔记</title>
-    <url>/2020/11/24/CS229-Notes3-SVM-%E7%AC%94%E8%AE%B0/</url>
+    <url>/2020/11/25/CS229-Notes3-SVM-%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h2 id="functionalgeometric-margin">Functional/Geometric Margin</h2>
 <p>两者区别在于 <span class="math inline">\(w\)</span> 是否被标准化。效用边际会受到参数scale的影响。如果标准化了则两者等效。</p>
 <h2 id="optimal-margin-classifier-primal">Optimal Margin Classifier (Primal)</h2>
@@ -7167,7 +7167,7 @@ w^T(x^{(i)}-x^{(j)}) + y^{(j)} \leq -1, y^{(i)} = -1
   </entry>
   <entry>
     <title>Machine Learning: A Probabilistic Perspective, Kevin P. Murphy</title>
-    <url>/2020/11/26/Machine-Learning-A-Probabilistic-Perspective-Kevin-P-Murphy/</url>
+    <url>/2020/11/27/Machine-Learning-A-Probabilistic-Perspective-Kevin-P-Murphy/</url>
     <content><![CDATA[<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Machine Learning</span><br><span class="line">A Probabilistic Perspective</span><br><span class="line"></span><br><span class="line">Kevin P. Murphy</span><br><span class="line"></span><br><span class="line">The MIT Press</span><br></pre></td></tr></table></figure>
 <div class="pdfobject-container" data-target="./Machine_Learning_A_Probabilistic_Perspective.pdf" data-height="1000px"></div> 
 ]]></content>
@@ -7180,7 +7180,7 @@ w^T(x^{(i)}-x^{(j)}) + y^{(j)} \leq -1, y^{(i)} = -1
   </entry>
   <entry>
     <title>Data-Mining-HW3</title>
-    <url>/2020/11/27/Data-Mining-HW3/</url>
+    <url>/2020/11/28/Data-Mining-HW3/</url>
     <content><![CDATA[<h1 id="HW3"><a href="#HW3" class="headerlink" title="HW3"></a>HW3</h1><p>Hua Yao, UNI:hy2632</p>
 <h2 id="Problem-1-SVM-algorithm-in-action-50-points"><a href="#Problem-1-SVM-algorithm-in-action-50-points" class="headerlink" title="Problem 1: SVM algorithm in action [50 points]"></a>Problem 1: SVM algorithm in action [50 points]</h2><h3 id="Description-of-the-algorithm"><a href="#Description-of-the-algorithm" class="headerlink" title="Description of the algorithm:"></a>Description of the algorithm:</h3><ol>
 <li><p>Used dual SVM </p>
@@ -7292,7 +7292,7 @@ w^T(x^{(i)}-x^{(j)}) + y^{(j)} \leq -1, y^{(i)} = -1
   </entry>
   <entry>
     <title>Data-Mining-Lec13</title>
-    <url>/2020/12/02/Data-Mining-Lec13/</url>
+    <url>/2020/12/03/Data-Mining-Lec13/</url>
     <content><![CDATA[<h1 id="Evolutional-Strategy"><a href="#Evolutional-Strategy" class="headerlink" title="Evolutional Strategy"></a>Evolutional Strategy</h1><h2 id="RL-Policies-Optimization"><a href="#RL-Policies-Optimization" class="headerlink" title="RL Policies Optimization"></a>RL Policies Optimization</h2><p>State, Action</p>
 <p>Policy: Deterministic / Randomized</p>
 <p>Function $F: \mathbb{R}^d \to \mathbb{R}$, reward from vector to scalar.</p>
@@ -7335,7 +7335,7 @@ w^T(x^{(i)}-x^{(j)}) + y^{(j)} \leq -1, y^{(i)} = -1
   </entry>
   <entry>
     <title>Data-Mining-Final</title>
-    <url>/2020/12/03/Data-Mining-Final/</url>
+    <url>/2020/12/04/Data-Mining-Final/</url>
     <content><![CDATA[<h1 id="data-mining-final">Data Mining Final</h1>
 <p>Hua Yao, UNI:hy2632</p>
 <h2 id="problem-1-reducing-the-variance-of-the-monte-carlo-estimators-50-points">Problem 1: Reducing the variance of the Monte Carlo estimators [50 points]</h2>
@@ -7513,7 +7513,7 @@ E[\hat{X_i^2}] &amp;= \int_{-\infty}^{\infty}{f(\hat{X_i}) \hat{X_i^2} d\hat{X_i
   </entry>
   <entry>
     <title>布朗运动与伊藤引理</title>
-    <url>/2020/12/06/%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8%E4%B8%8E%E4%BC%8A%E8%97%A4%E5%BC%95%E7%90%86/</url>
+    <url>/2020/12/07/%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8%E4%B8%8E%E4%BC%8A%E8%97%A4%E5%BC%95%E7%90%86/</url>
     <content><![CDATA[<h2 id="引用"><a href="#引用" class="headerlink" title="引用:"></a>引用:</h2><p><a href="https://zhuanlan.zhihu.com/p/38293827">布朗运动、伊藤引理、BS 公式（前篇） - 石川的文章 - 知乎</a></p>
 <p><a href="https://ocw.mit.edu/courses/sloan-school-of-management/15-070j-advanced-stochastic-processes-fall-2013/lecture-notes/MIT15_070JF13_Lec7.pdf">Lec7 Brownian Motion - MIT advanced-stochastic-processes-fall-2013 </a></p>
 <p><a href="https://financetrainingcourse.com/education/wp-content/uploads/2011/03/Understanding.pdf">P13, Understanding N(d1) and N(d2): Risk-Adjusted Probabilities in the Black-Scholes Model</a></p>
@@ -7640,7 +7640,7 @@ $$rC = \frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} 
   </entry>
   <entry>
     <title>Systematic Trading: Early Profit/Loss Taker?</title>
-    <url>/2020/12/25/Systematic-Trading-Early-Profit-Loss-Taker/</url>
+    <url>/2020/12/26/Systematic-Trading-Early-Profit-Loss-Taker/</url>
     <content><![CDATA[<h2 id="preface"><a class="markdownIt-Anchor" href="#preface"></a> Preface</h2>
 <p>In Robert Carver’s book “Systematic Trading”, he compared the two mindsets of trading: “Early Profit Taker” and “Early Loss Taker”. The previous one is our mankind’s “flawed instinction” and the latter one is believed to outperform the previous one.</p>
 <p>This notebook implements the argument and verifies it through different examples.</p>
@@ -7747,7 +7747,7 @@ $$rC = \frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} 
   </entry>
   <entry>
     <title>跨式Straddle</title>
-    <url>/2020/12/31/%E8%B7%A8%E5%BC%8FStraddle/</url>
+    <url>/2021/01/01/%E8%B7%A8%E5%BC%8FStraddle/</url>
     <content><![CDATA[<h2 id="跨式期权straddle简述"><a class="markdownIt-Anchor" href="#跨式期权straddle简述"></a> 跨式期权(Straddle)简述</h2>
 <p>Systematic Trading P41 提及，做空 <strong>跨式期权(Straddle)</strong> 是一种负偏的交易策略。</p>
 <p>Barings 的 Nick Leeson 在1995年 short straddle 损失 $1B。<br />
