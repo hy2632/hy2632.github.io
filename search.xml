@@ -7823,4 +7823,70 @@ w = \lambda\Sigma^{-1} (R - r_f {\bf1}) = \frac{(\mu - r_f)\Sigma^{-1} (R - r_f 
 <p>It can be proved that for any combination of risk-free asset and any risky asset, <span class="math inline">\(\mu / \sigma \propto \alpha\)</span>. Therefore, if we got an optimal efficient risky portfolio without risk-free asset, the efficient frontier with risk-free asset should be the tangency line which crosses that point.</p>
 ]]></content>
   </entry>
+  <entry>
+    <title>IEOR E4706 01: Deterministic Cash-Flows</title>
+    <url>/2021/02/04/IEOR-E4706-01-Deterministic-Cash-Flows/</url>
+    <content><![CDATA[<h2 id="利率理论"><a href="#利率理论" class="headerlink" title="利率理论"></a>利率理论</h2><ul>
+<li><p>复利 compounded interest<br>$$\lim_{n\to \infty} A(1+r/n)^{mn} = Ae^{rm}$$</p>
+</li>
+<li><p>“七二定律”：<br>$$e^{rm} = 2 \<br>rm = \ln2 \<br>m = \frac{\ln2}{r} = \frac{0.72}{r}$$</p>
+</li>
+<li><p>有效利率 effective interest rate，实际复合年利率</p>
+</li>
+<li><p><strong>Gordon Growth Model</strong><br>$$V_0 = \frac{D_1}{r-g}$$</p>
+</li>
+</ul>
+<p>公司估值；成长股价格估计。缺点是假设现金流固定。</p>
+<h2 id="固收证券"><a href="#固收证券" class="headerlink" title="固收证券"></a>固收证券</h2><p>如息票债券。受利率影响较大。可转股债券兼具固收和非固收的特征。</p>
+<h3 id="年金，永续年金和摊销"><a href="#年金，永续年金和摊销" class="headerlink" title="年金，永续年金和摊销"></a>年金，永续年金和摊销</h3><p>$n$ 期年金，每期支付 $A$ 的现价<br>$$P = \frac Ar \bigg(1-\frac1{(1+r)^n}\bigg)$$</p>
+<h3 id="YTM-到期收益率"><a href="#YTM-到期收益率" class="headerlink" title="YTM 到期收益率"></a>YTM 到期收益率</h3><p>到期收益率使债券未来现金流的现值等于现价，即IRR。</p>
+<h3 id="Macauley-Duration-麦考利久期"><a href="#Macauley-Duration-麦考利久期" class="headerlink" title="Macauley Duration 麦考利久期"></a>Macauley Duration 麦考利久期</h3><p>按现金流量折现值加权的支付日期。</p>
+<p>$$D = \frac{\sum_{k=1}^{n}{(k/m)c_k/[1+(\lambda / m)]^k}}{P}$$</p>
+<p>修正久期$D_M$是P关于YTM的一阶导 / P:<br>$$D_M = \frac1P \frac{dP}{d\lambda}$$</p>
+<p>麦考利久期 $D$ 与修正久期 $D_M$ 的关系是</p>
+<p>$$D_M = \frac D {1+ \lambda/m}$$</p>
+<h3 id="Convexity-凸性"><a href="#Convexity-凸性" class="headerlink" title="Convexity 凸性"></a>Convexity 凸性</h3><p>凸性与YTM二阶导有关。</p>
+<p>$$C = \frac1P \frac{d^2P}{d\lambda^2}$$</p>
+<h3 id="Immunization-久期免疫"><a href="#Immunization-久期免疫" class="headerlink" title="Immunization 久期免疫"></a>Immunization 久期免疫</h3><p>$$\begin{aligned}<br>P(\lambda+\Delta \lambda) &amp;\approx P(\lambda) + \Delta \lambda \frac{dP}{d\lambda}(\lambda) + \frac{(\Delta \lambda)^2}{2}\frac{d^2P}{d\lambda^2}(\lambda) \<br>&amp;= P(\lambda) - D_M P(\lambda) \Delta \lambda + \frac{P(\lambda)C}{2} (\Delta \lambda)^2<br>\end{aligned}$$</p>
+<p>这个二阶泰勒展开告诉我们当YTM有细微变化时，可以通过增加债券到投资组合实现现价不变。</p>
+<p>考虑一系列债券的投资组合，其现价、久期、凸性满足</p>
+<p>$$\begin{aligned}<br>P_p &amp;= \sum{P_k} \<br>D_p &amp;= \sum{\frac{P_k}{P_p}D_k}\<br>C_p &amp;= \sum{\frac{P_k}{P_p}C_k}<br>\end{aligned}$$</p>
+<p>这是一个包含三个等式的线性方程组。投资组合中只需要3种债券即可满足方程组有解。</p>
+<p>$$\begin{bmatrix}P_o\D_o\C_o\end{bmatrix} =<br>\begin{bmatrix}1 &amp;1 &amp;1\\frac{D_1}{P_o} &amp;\frac{D_2}{P_o} &amp;\frac{D_3}{P_o}\\frac{C_1}{P_o} &amp;\frac{C_2}{P_o} &amp;\frac{C_3}{P_o}\end{bmatrix}<br>\begin{bmatrix}P_1\P_2\P_3\end{bmatrix}<br>$$</p>
+<p>然而以上结论基于的假设是 YTM “flat”， 并且 “only parallel shifts in interest rates” 即不同的债券的利率变化相同。</p>
+<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><h4 id="Callable-Bond"><a href="#Callable-Bond" class="headerlink" title="Callable Bond"></a>Callable Bond</h4><p>20年可赎回债券，coupon 10%，发行时ytm 10%，5年后决定按1.05赎回，说明5-20的ytm $\lambda &lt; 9.366%$ 。案例说明 ytm 会变化。</p>
+<h4 id="久期免疫的可套利性"><a href="#久期免疫的可套利性" class="headerlink" title="久期免疫的可套利性"></a>久期免疫的可套利性</h4><p>假设原先有一个obligation，生成一个immunization的组合，</p>
+<p>$$P(0) = 0$$<br>$$P’(0) = 0 \<br>P’(0) (1+r)^2 = 0$$</p>
+<p>通过叠加以上两式并加以构造，可以证明</p>
+<p>$$P’’(0)(1+r)^2 \geq 0$$<br>则 $P(0)$ 为 local minimum，无论 $\lambda$ 如何变动该久期免疫的组合都盈利。那么在假设利率 parallet shift的情境下就可以套利。所以该理论需要改进。</p>
+<h2 id="Term-Structure-of-Interest-Rates-利率期限结构"><a href="#Term-Structure-of-Interest-Rates-利率期限结构" class="headerlink" title="Term Structure of Interest Rates 利率期限结构"></a>Term Structure of Interest Rates 利率期限结构</h2><p>即期利率 spot rate</p>
+<p>远期利率 forward rate</p>
+<h3 id="zero-coupon-bond-构造无息债券"><a href="#zero-coupon-bond-构造无息债券" class="headerlink" title="zero coupon bond 构造无息债券"></a>zero coupon bond 构造无息债券</h3><p>假设两组债券，通过组合使 coupon rate 为0，得出终值和现价，从而计算出该年限下的即期利率。</p>
+<h3 id="利率期限结构理论与缺点"><a href="#利率期限结构理论与缺点" class="headerlink" title="利率期限结构理论与缺点"></a>利率期限结构理论与缺点</h3><ol>
+<li>预期假说 Expectation Hypothesis：$f_{i,j} = s_{j-i}$ that prevails at time i。如此收益率曲线应该平坦。</li>
+<li>市场分隔假说 market segmentation： 购买长期债券和短期债券的人群本质上不同。解释性不强。</li>
+<li>流动性假说 liquidity preference：长期债券需要对风险做出补偿。</li>
+</ol>
+<h3 id="利率期限结构理论下的久期与免疫"><a href="#利率期限结构理论下的久期与免疫" class="headerlink" title="利率期限结构理论下的久期与免疫"></a>利率期限结构理论下的久期与免疫</h3><p>从YTM到利率期限结构，久期和凸性仍有定义，并可以免疫<strong>利率期限结构整体的平行移动</strong>。</p>
+<h3 id="案例和应用"><a href="#案例和应用" class="headerlink" title="案例和应用"></a>案例和应用</h3><h4 id="浮动利率债券"><a href="#浮动利率债券" class="headerlink" title="浮动利率债券"></a>浮动利率债券</h4><p>coupon rate 总等于当期的即期利率，则任意时间价值等同于面值。可以通过从最后一期开始递归来理解。</p>
+<h4 id="抵押-Mortgage-Mathematics"><a href="#抵押-Mortgage-Mathematics" class="headerlink" title="抵押 Mortgage Mathematics"></a>抵押 Mortgage Mathematics</h4><p>已知 $M(0) = M$，每期付款 $B$，$M(t)$ 表示 $t$ 时刻剩余总额。</p>
+<p>$$M(k) = (1+r) M(k-1) - B \<br>M(k) - \frac Br = (1+r) [M(k-1) - \frac Br] \<br>M(k) = (1+r)^kM + \frac Br[1-(1+r)^k] \<br>M(n) = (1+r)^nM + \frac Br[1-(1+r)^n] = 0\<br>\therefore B = \frac{(1+r)^nMr}{(1+r)^n-1}$$</p>
+<p>$$M(k) = M\frac{(1+r)^n - (1+r)^k}{(1+r)^n - 1}$$</p>
+<p>本金的付款现金流和利息的付款现金流现值的表达式<br>$V$ 和 $W$: …</p>
+<p>本金 payment stream 的久期长于利息。</p>
+<p><img src="https://i.stack.imgur.com/dLnok.jpg" alt="Interest vs Principal"></p>
+<h4 id="动态规划-DP-在-lattice-中的应用"><a href="#动态规划-DP-在-lattice-中的应用" class="headerlink" title="动态规划 DP 在 lattice 中的应用"></a>动态规划 DP 在 lattice 中的应用</h4><p>一个二叉树的定价</p>
+<h4 id="Yield-Static-Option-Adjusted-Spreads-收益率-静态-期权调整后的价差"><a href="#Yield-Static-Option-Adjusted-Spreads-收益率-静态-期权调整后的价差" class="headerlink" title="Yield/Static/Option-Adjusted Spreads 收益率/静态/期权调整后的价差"></a>Yield/Static/Option-Adjusted Spreads 收益率/静态/期权调整后的价差</h4><h4 id="收益率价差"><a href="#收益率价差" class="headerlink" title="收益率价差"></a>收益率价差</h4><p>公司债和国债的 YTM 做差。不能反映利率的期限结构。</p>
+<h4 id="静态价差"><a href="#静态价差" class="headerlink" title="静态价差"></a>静态价差</h4><p>也叫 Zero-volatility spread / Z-spread 或有效价差。 假定公司债的利率期限结构是国债的利率期限结构整体平移 s 。根据定价和现金流反算出 s。</p>
+<p><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3FuyqB7_uvfW5JjDvP7TQ_BXzeeinqZzSRg&usqp=CAU"></p>
+<h4 id="利率调整价差-OAS"><a href="#利率调整价差-OAS" class="headerlink" title="利率调整价差 OAS"></a>利率调整价差 OAS</h4><p>callable / putable 的债含有期权。可以使用 the lattice model 定价，在 lattice 的每个节点加上 OAS。</p>
+<h4 id="有效久期和有效凸性"><a href="#有效久期和有效凸性" class="headerlink" title="有效久期和有效凸性"></a>有效久期和有效凸性</h4><p>债券含有期权性质(e.g. MBS)，当利率变化时现金流亦有可能变化。</p>
+<h2 id="讲义"><a href="#讲义" class="headerlink" title="讲义"></a>讲义</h2><div class="pdfobject-container" data-target="./0DeterministicCashFlows.pdf" data-height="1000px"></div> ]]></content>
+      <categories>
+        <category>Finance</category>
+      </categories>
+      <tags>
+        <tag>Financial Engineering</tag>
+      </tags>
+  </entry>
 </search>
