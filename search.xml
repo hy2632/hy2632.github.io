@@ -7852,7 +7852,7 @@ w = \lambda\Sigma^{-1} (R - r_f {\bf1}) = \frac{(\mu - r_f)\Sigma^{-1} (R - r_f 
 <p>考虑一系列债券的投资组合，其现价、久期、凸性满足</p>
 <p>$$\begin{aligned}<br>P_p &amp;= \sum{P_k} \<br>D_p &amp;= \sum{\frac{P_k}{P_p}D_k}\<br>C_p &amp;= \sum{\frac{P_k}{P_p}C_k}<br>\end{aligned}$$</p>
 <p>这是一个包含三个等式的线性方程组。投资组合中只需要3种债券即可满足方程组有解。</p>
-<p>$$\begin{bmatrix}P_o\D_o\C_o\end{bmatrix} =<br>\begin{bmatrix}1 &amp;1 &amp;1\\frac{D_1}{P_o} &amp;\frac{D_2}{P_o} &amp;\frac{D_3}{P_o}\\frac{C_1}{P_o} &amp;\frac{C_2}{P_o} &amp;\frac{C_3}{P_o}\end{bmatrix}<br>\begin{bmatrix}P_1\P_2\P_3\end{bmatrix}<br>$$</p>
+<p>$$\begin{bmatrix}P_o \ D_o \ C_o\end{bmatrix} = \begin{bmatrix}1 &amp;1 &amp;1\\frac{D_1}{P_o} &amp; \frac{D_2}{P_o} &amp; \frac{D_3}{P_o} \ \frac{C_1}{P_o} &amp; \frac{C_2}{P_o} &amp; \frac{C_3}{P_o} \end{bmatrix} \begin{bmatrix}P_1 \P_2 \ P_3 \end{bmatrix}$$</p>
 <p>然而以上结论基于的假设是 YTM “flat”， 并且 “only parallel shifts in interest rates” 即不同的债券的利率变化相同。</p>
 <h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><h4 id="Callable-Bond"><a href="#Callable-Bond" class="headerlink" title="Callable Bond"></a>Callable Bond</h4><p>20年可赎回债券，coupon 10%，发行时ytm 10%，5年后决定按1.05赎回，说明5-20的ytm $\lambda &lt; 9.366%$ 。案例说明 ytm 会变化。</p>
 <h4 id="久期免疫的可套利性"><a href="#久期免疫的可套利性" class="headerlink" title="久期免疫的可套利性"></a>久期免疫的可套利性</h4><p>假设原先有一个obligation，生成一个immunization的组合，</p>
