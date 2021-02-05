@@ -219,7 +219,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-02-04 00:43:55 / 修改时间：12:40:26" itemprop="dateCreated datePublished" datetime="2021-02-04T00:43:55-05:00">2021-02-04</time>
+              <time title="创建时间：2021-02-04 00:43:55 / 修改时间：13:17:18" itemprop="dateCreated datePublished" datetime="2021-02-04T00:43:55-05:00">2021-02-04</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -256,18 +256,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="利率理论"><a href="#利率理论" class="headerlink" title="利率理论"></a>利率理论</h2><ul>
-<li><p>复利 compounded interest<br>$$\lim_{n\to \infty} A(1+r/n)^{mn} = Ae^{rm}$$</p>
-</li>
-<li><p>“七二定律”：<br>$$e^{rm} = 2 \<br>rm = \ln2 \<br>m = \frac{\ln2}{r} = \frac{0.72}{r}$$</p>
-</li>
-<li><p>有效利率 effective interest rate，实际复合年利率</p>
-</li>
-<li><p><strong>Gordon Growth Model</strong><br>$$V_0 = \frac{D_1}{r-g}$$</p>
-</li>
+          <h2 id="利率理论">利率理论</h2>
+<ul>
+<li><p>复利 compounded interest <span class="math display">\[\lim_{n\to \infty} A(1+r/n)^{mn} = Ae^{rm}\]</span></p></li>
+<li><p>“七二定律”： <span class="math display">\[e^{rm} = 2 \\
+rm = \ln2 \\
+m = \frac{\ln2}{r} = \frac{0.72}{r}\]</span></p></li>
+<li><p>有效利率 effective interest rate，实际复合年利率</p></li>
+<li><p><strong>Gordon Growth Model</strong> <span class="math display">\[V_0 = \frac{D_1}{r-g}\]</span></p></li>
 </ul>
 <p>公司估值；成长股价格估计。缺点是假设现金流固定。</p>
-<h2 id="固收证券"><a href="#固收证券" class="headerlink" title="固收证券"></a>固收证券</h2><p>如息票债券。受利率影响较大。可转股债券兼具固收和非固收的特征。</p>
+<h2 id="固收证券">固收证券</h2>
+<p>如息票债券。受利率影响较大。可转股债券兼具固收和非固收的特征。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/02/04/IEOR-E4706-01-Deterministic-Cash-Flows/#more" rel="contents">
@@ -444,12 +444,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="跨式期权straddle简述"><a class="markdownIt-Anchor" href="#跨式期权straddle简述"></a> 跨式期权(Straddle)简述</h2>
+          <h2 id="跨式期权straddle简述">跨式期权(Straddle)简述</h2>
 <p>Systematic Trading P41 提及，做空 <strong>跨式期权(Straddle)</strong> 是一种负偏的交易策略。</p>
-<p>Barings 的 Nick Leeson 在1995年 short straddle 损失 $1B。<br>
-<a target="_blank" rel="noopener" href="https://www.investopedia.com/ask/answers/08/nick-leeson-barings-bank.asp">How Did Nick Leeson Contribute To The Fall of Barings Bank?</a></p>
+<p>Barings 的 Nick Leeson 在1995年 short straddle 损失 $1B。 <a target="_blank" rel="noopener" href="https://www.investopedia.com/ask/answers/08/nick-leeson-barings-bank.asp">How Did Nick Leeson Contribute To The Fall of Barings Bank?</a></p>
 <p>使用场景：预测股价有大幅波动，但不知道方向。当价格波动大时获利。但也要考虑到在出现可能的价格波动时期权价格也会上升。</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/en/5/57/Longstraddle.png" alt></p>
+<p><img src="https://upload.wikimedia.org/wikipedia/en/5/57/Longstraddle.png"></p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/01/01/%E8%B7%A8%E5%BC%8FStraddle/#more" rel="contents">
@@ -538,11 +537,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="preface"><a class="markdownIt-Anchor" href="#preface"></a> Preface</h2>
-<p>In Robert Carver’s book “Systematic Trading”, he compared the two mindsets of trading: “Early Profit Taker” and “Early Loss Taker”. The previous one is our mankind’s “flawed instinction” and the latter one is believed to outperform the previous one.</p>
+          <h2 id="preface">Preface</h2>
+<p>In Robert Carver's book "Systematic Trading", he compared the two mindsets of trading: "Early Profit Taker" and "Early Loss Taker". The previous one is our mankind's "flawed instinction" and the latter one is believed to outperform the previous one.</p>
 <p>This notebook implements the argument and verifies it through different examples.</p>
-<p>Some of the parameters in the method is at your own discretion. Stocks and futures might take values to different orders of magnitude w.r.t. the “tolerance_lo”, let alone the fact that everyone has his own extent of tolerance.</p>
-<h2 id="import-packages-and-load-datasets"><a class="markdownIt-Anchor" href="#import-packages-and-load-datasets"></a> Import packages and load datasets</h2>
+<p>Some of the parameters in the method is at your own discretion. Stocks and futures might take values to different orders of magnitude w.r.t. the "tolerance_lo", let alone the fact that everyone has his own extent of tolerance.</p>
+<h2 id="import-packages-and-load-datasets">Import packages and load datasets</h2>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/12/26/Systematic-Trading-Early-Profit-Loss-Taker/#more" rel="contents">
@@ -600,7 +599,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-09 02:44:39" itemprop="dateModified" datetime="2020-12-09T02:44:39-05:00">2020-12-09</time>
+                <time title="修改时间：2021-02-05 07:52:42" itemprop="dateModified" datetime="2021-02-05T07:52:42-05:00">2021-02-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -698,7 +697,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-05 19:15:34" itemprop="dateModified" datetime="2020-12-05T19:15:34-05:00">2020-12-05</time>
+                <time title="修改时间：2020-12-06 20:44:41" itemprop="dateModified" datetime="2020-12-06T20:44:41-05:00">2020-12-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -828,9 +827,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Evolutional-Strategy"><a href="#Evolutional-Strategy" class="headerlink" title="Evolutional Strategy"></a>Evolutional Strategy</h1><h2 id="RL-Policies-Optimization"><a href="#RL-Policies-Optimization" class="headerlink" title="RL Policies Optimization"></a>RL Policies Optimization</h2><p>State, Action</p>
+          <h1 id="evolutional-strategy">Evolutional Strategy</h1>
+<h2 id="rl-policies-optimization">RL Policies Optimization</h2>
+<p>State, Action</p>
 <p>Policy: Deterministic / Randomized</p>
-<p>Function $F: \mathbb{R}^d \to \mathbb{R}$, reward from vector to scalar.</p>
+<p>Function <span class="math inline">\(F: \mathbb{R}^d \to \mathbb{R}\)</span>, reward from vector to scalar.</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/12/03/Data-Mining-Lec13/#more" rel="contents">
@@ -919,27 +920,24 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="HW3"><a href="#HW3" class="headerlink" title="HW3"></a>HW3</h1><p>Hua Yao, UNI:hy2632</p>
-<h2 id="Problem-1-SVM-algorithm-in-action-50-points"><a href="#Problem-1-SVM-algorithm-in-action-50-points" class="headerlink" title="Problem 1: SVM algorithm in action [50 points]"></a>Problem 1: SVM algorithm in action [50 points]</h2><h3 id="Description-of-the-algorithm"><a href="#Description-of-the-algorithm" class="headerlink" title="Description of the algorithm:"></a>Description of the algorithm:</h3><ol>
-<li><p>Used dual SVM </p>
-</li>
-<li><p>Did not consider regularization, a.k.a. set $C=\infty$, because this problem (binary classification between 0/9) should be separable, and the representation of $b$ becomes nasty with regularization.</p>
-</li>
-<li><p>Used the SMO (sequential minimal optimization) algorithm. During optimization, within each iteration, randomly select $\alpha_1, \alpha_2$, optimize the QP w.r.t. $\alpha_2$ and update $\alpha_1$ accordingly. Added constraint $\alpha_2 \geq 0$ to the $\alpha_2$ optimizer. This does not constrain $\alpha_1\geq 0$ directly. However, with the randomization within each iteration, $\alpha_i \geq 0$ is satisfied when the whole optimzation over $\alpha$ finally converges.</p>
-</li>
+          <h1 id="hw3">HW3</h1>
+<p>Hua Yao, UNI:hy2632</p>
+<h2 id="problem-1-svm-algorithm-in-action-50-points">Problem 1: SVM algorithm in action [50 points]</h2>
+<h3 id="description-of-the-algorithm">Description of the algorithm:</h3>
+<ol type="1">
+<li><p>Used dual SVM</p></li>
+<li><p>Did not consider regularization, a.k.a. set <span class="math inline">\(C=\infty\)</span>, because this problem (binary classification between 0/9) should be separable, and the representation of <span class="math inline">\(b\)</span> becomes nasty with regularization.</p></li>
+<li><p>Used the SMO (sequential minimal optimization) algorithm. During optimization, within each iteration, randomly select <span class="math inline">\(\alpha_1, \alpha_2\)</span>, optimize the QP w.r.t. <span class="math inline">\(\alpha_2\)</span> and update <span class="math inline">\(\alpha_1\)</span> accordingly. Added constraint <span class="math inline">\(\alpha_2 \geq 0\)</span> to the <span class="math inline">\(\alpha_2\)</span> optimizer. This does not constrain <span class="math inline">\(\alpha_1\geq 0\)</span> directly. However, with the randomization within each iteration, <span class="math inline">\(\alpha_i \geq 0\)</span> is satisfied when the whole optimzation over <span class="math inline">\(\alpha\)</span> finally converges.</p></li>
 <li><p>Provide 2 options: Linear Kernel (baseline SVM) or Softmax kernel</p>
-<p> $$K_{SM}(x, y) = \exp{x^\top y}$$ </p>
-<p> To avoid explosion on scale, normalized the input $x$. </p>
-<p> Included the trigonometric feature map $\phi(x)$ of the softmax kernel for calculating $b$, (not for $w$ because when making prediction, we use kernel function instead of $w^\top \phi$).</p>
-<p> Use exact kernel instead of approximating kernel with random feature map, because softmax’s dimensionality is infinite. Directly compute the exponential in numpy is more efficient. </p>
-<p> The prediction comes like this (vectorized version):</p>
-<p> $$y_{new} = K(X_{new}, X)\cdot (\alpha * y) + b$$</p>
-<p> Note that b is broadcasted to $n’$ new data points. $K(X_{new}, X)$ is $n’<br> \times n$ kernel matrix. $\alpha*y$ means the elementwise product of two vectors. </p>
-</li>
-<li><p>SVM is expensive when $n$ is large. Here in practice, we trained on a small batch (default=64). The randomness here influences the performance. </p>
-</li>
-<li><p>Have a few trial runs to get the model with best prediction on the training data. Then it should give good prediction on the validation data. You might also need to tune the hyperparameters a little bit, like <code>batch_size</code> and <code>tol</code>.</p>
-</li>
+<p><span class="math display">\[K_{SM}(x, y) = \exp{x^\top y}\]</span></p>
+<p>To avoid explosion on scale, normalized the input <span class="math inline">\(x\)</span>.</p>
+<p>Included the trigonometric feature map <span class="math inline">\(\phi(x)\)</span> of the softmax kernel for calculating <span class="math inline">\(b\)</span>, (not for <span class="math inline">\(w\)</span> because when making prediction, we use kernel function instead of <span class="math inline">\(w^\top \phi\)</span>).</p>
+<p>Use exact kernel instead of approximating kernel with random feature map, because softmax's dimensionality is infinite. Directly compute the exponential in numpy is more efficient.</p>
+<p>The prediction comes like this (vectorized version):</p>
+<p><span class="math display">\[y_{new} = K(X_{new}, X)\cdot (\alpha * y) + b\]</span></p>
+<p>Note that b is broadcasted to <span class="math inline">\(n&#39;\)</span> new data points. <span class="math inline">\(K(X_{new}, X)\)</span> is <span class="math inline">\(n&#39;  \times n\)</span> kernel matrix. <span class="math inline">\(\alpha*y\)</span> means the elementwise product of two vectors.</p></li>
+<li><p>SVM is expensive when <span class="math inline">\(n\)</span> is large. Here in practice, we trained on a small batch (default=64). The randomness here influences the performance.</p></li>
+<li><p>Have a few trial runs to get the model with best prediction on the training data. Then it should give good prediction on the validation data. You might also need to tune the hyperparameters a little bit, like <code>batch_size</code> and <code>tol</code>.</p></li>
 </ol>
           <!--noindex-->
             <div class="post-button">
@@ -992,7 +990,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-11-26 23:36:16 / 修改时间：23:42:16" itemprop="dateCreated datePublished" datetime="2020-11-26T23:36:16-05:00">2020-11-26</time>
+              <time title="创建时间：2020-11-26 23:36:16 / 修改时间：23:55:57" itemprop="dateCreated datePublished" datetime="2020-11-26T23:36:16-05:00">2020-11-26</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1030,7 +1028,7 @@
 
       
           <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Machine Learning</span><br><span class="line">A Probabilistic Perspective</span><br><span class="line"></span><br><span class="line">Kevin P. Murphy</span><br><span class="line"></span><br><span class="line">The MIT Press</span><br></pre></td></tr></table></figure>
-<div class="pdfobject-container" data-target="./Machine_Learning_A_Probabilistic_Perspective.pdf" data-height="1000px"></div> 
+<div class="pdfobject-container" data-target="./Machine_Learning_A_Probabilistic_Perspective.pdf" data-height="1000px"></div>
 
       
     </div>
@@ -1180,7 +1178,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-26 02:07:58" itemprop="dateModified" datetime="2020-11-26T02:07:58-05:00">2020-11-26</time>
+                <time title="修改时间：2020-11-26 02:09:20" itemprop="dateModified" datetime="2020-11-26T02:09:20-05:00">2020-11-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1271,10 +1269,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-11-18 19:19:08 / 修改时间：21:27:07" itemprop="dateCreated datePublished" datetime="2020-11-18T19:19:08-05:00">2020-11-18</time>
+              <time title="创建时间：2020-11-18 19:19:08" itemprop="dateCreated datePublished" datetime="2020-11-18T19:19:08-05:00">2020-11-18</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-02 20:10:51" itemprop="dateModified" datetime="2020-12-02T20:10:51-05:00">2020-12-02</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -1310,10 +1314,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="Recap"><a href="#Recap" class="headerlink" title="Recap"></a>Recap</h2><p>KKT, Lagrangian</p>
-<p>$$L(w, b, \alpha, \beta) = f(w,b) + \sum_{i=1}^{N}{\alpha_ig_i(w,b)} + \sum_{i=1}^{N}{\beta_ih_i(w,b)}$$</p>
-<p>$$\theta(w,b) = \max_{\alpha, \beta} L(w, b, \alpha, \beta)  $$</p>
-<p>$$\theta(w,b) = \begin{cases} f(w,b) \text{: if feasible} \ \infty \text{: otherwise} \end{cases}$$</p>
+          <h2 id="recap">Recap</h2>
+<p>KKT, Lagrangian</p>
+<p><span class="math display">\[L(w, b, \alpha, \beta) = f(w,b) + \sum_{i=1}^{N}{\alpha_ig_i(w,b)} + \sum_{i=1}^{N}{\beta_ih_i(w,b)}\]</span></p>
+<p><span class="math display">\[\theta(w,b) = \max_{\alpha, \beta} L(w, b, \alpha, \beta)  \]</span></p>
+<p><span class="math display">\[\theta(w,b) = \begin{cases} f(w,b) \text{\: if feasible} \\ \infty \text{\: otherwise} \end{cases}\]</span></p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/11/19/Data-Mining-Lec12/#more" rel="contents">

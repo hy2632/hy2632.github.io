@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"hy2632.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="HW2Hua Yao, UNI:hy2632 Problem 1: Convolutional Neural Networks [20 points]The input RGB- image has 3 channels. Apply Conv2D to each channel to get 3 feature maps. When there’s no padding, the shape o">
+  <meta name="description" content="HW2 Hua Yao, UNI:hy2632 Problem 1: Convolutional Neural Networks [20 points] The input RGB- image has 3 channels. Apply Conv2D to each channel to get 3 feature maps. When there&#39;s no padding, the shape">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Data-Mining-HW2">
 <meta property="og:url" content="https://hy2632.github.io/2020/11/18/Data-Mining-HW2/index.html">
 <meta property="og:site_name" content="豁蒙楼">
-<meta property="og:description" content="HW2Hua Yao, UNI:hy2632 Problem 1: Convolutional Neural Networks [20 points]The input RGB- image has 3 channels. Apply Conv2D to each channel to get 3 feature maps. When there’s no padding, the shape o">
+<meta property="og:description" content="HW2 Hua Yao, UNI:hy2632 Problem 1: Convolutional Neural Networks [20 points] The input RGB- image has 3 channels. Apply Conv2D to each channel to get 3 feature maps. When there&#39;s no padding, the shape">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-18T15:09:46.000Z">
 <meta property="article:modified_time" content="2020-11-19T08:26:34.479Z">
@@ -265,55 +265,90 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="HW2"><a href="#HW2" class="headerlink" title="HW2"></a>HW2</h1><p>Hua Yao, UNI:hy2632</p>
-<h2 id="Problem-1-Convolutional-Neural-Networks-20-points"><a href="#Problem-1-Convolutional-Neural-Networks-20-points" class="headerlink" title="Problem 1: Convolutional Neural Networks [20 points]"></a>Problem 1: Convolutional Neural Networks [20 points]</h2><p>The input RGB- image has 3 channels. Apply Conv2D to each channel to get 3 feature maps.</p>
-<p>When there’s no padding, the shape of 3 feature maps are $125\times125$.</p>
-<p>$$O = \frac{I-k}{s} + 1 = \frac{128-4}{1} +1 = 125$$</p>
-<p>The number of parameters in the convolution layer is $4^2 \times 3 = 48$</p>
-<p>The shape of 3 feature maps after max-pooling are $61\times61$<br>$$O = \frac{I-k}{s} + 1 = \frac{125-5}{2} + 1 = 61$$</p>
-<p>The number of parameters in maxpooling is $0$.</p>
-<p>After maxpooling, the fully connected layer maps $I: 61\times61\times3 \to O:256$, which takes $61\times61\times3\times256=2857728$ parameters.</p>
-<p>The output layer maps $I:256 \to O:10$ and then softmax. This step takes $256\times10=2560$ parameters.</p>
+        <h1 id="hw2">HW2</h1>
+<p>Hua Yao, UNI:hy2632</p>
+<h2 id="problem-1-convolutional-neural-networks-20-points">Problem 1: Convolutional Neural Networks [20 points]</h2>
+<p>The input RGB- image has 3 channels. Apply Conv2D to each channel to get 3 feature maps.</p>
+<p>When there's no padding, the shape of 3 feature maps are <span class="math inline">\(125\times125\)</span>.</p>
+<p><span class="math display">\[O = \frac{I-k}{s} + 1 = \frac{128-4}{1} +1 = 125\]</span></p>
+<p>The number of parameters in the convolution layer is <span class="math inline">\(4^2 \times 3 = 48\)</span></p>
+<p>The shape of 3 feature maps after max-pooling are <span class="math inline">\(61\times61\)</span> <span class="math display">\[O = \frac{I-k}{s} + 1 = \frac{125-5}{2} + 1 = 61\]</span></p>
+<p>The number of parameters in maxpooling is <span class="math inline">\(0\)</span>.</p>
+<p>After maxpooling, the fully connected layer maps <span class="math inline">\(I: 61\times61\times3 \to O:256\)</span>, which takes <span class="math inline">\(61\times61\times3\times256=2857728\)</span> parameters.</p>
+<p>The output layer maps <span class="math inline">\(I:256 \to O:10\)</span> and then softmax. This step takes <span class="math inline">\(256\times10=2560\)</span> parameters.</p>
 <ul>
-<li>Answer: <ul>
-<li>Total number of parameters in the NN is $48+0+2857728+2560=2860336$.</li>
-<li>The shape of feature maps of Conv layer is $125\times125$, that of max-pooling is $61\times61$.</li>
+<li>Answer:
+<ul>
+<li>Total number of parameters in the NN is <span class="math inline">\(48+0+2857728+2560=2860336\)</span>.</li>
+<li>The shape of feature maps of Conv layer is <span class="math inline">\(125\times125\)</span>, that of max-pooling is <span class="math inline">\(61\times61\)</span>.</li>
 <li>The max-pooling layer consists of 3 feature maps (same number of channels as in the Conv layer, because max-pooling is channel-wise)</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h2 id="Problem-2-Deep-Residual-Networks-40-points"><a href="#Problem-2-Deep-Residual-Networks-40-points" class="headerlink" title="Problem 2: Deep Residual Networks [40 points]"></a>Problem 2: Deep Residual Networks [40 points]</h2><h3 id="2-1-Form-of-partial-derivative"><a href="#2-1-Form-of-partial-derivative" class="headerlink" title="2.1 Form of partial derivative"></a>2.1 Form of partial derivative</h3><p>$$a_{i+1} = a_i + \frac1T\cdot|Wa_i|$$</p>
-<p>Assume that $W \in \mathbb{R}^{d\times d}, a_i \in \mathbb{R}^d$.</p>
-<p>$$\begin{aligned}\because|Wa_i| &amp;= \sqrt{(Wa_i)^TWa_i}\<br>&amp;=\sqrt{a_i^TW^TWa_i}\<br>&amp;=\sqrt{a_i^Ta_i}\<br>&amp;= |a_i|<br>\end{aligned}$$</p>
-<p>$$\begin{aligned}\frac{\partial|a_i|}{\partial a_i} &amp;= \frac{\partial}{\partial a_i} \sqrt{a_i^Ta_i}\<br>&amp;=\frac{2a_i}{2\sqrt{a_i^Ta_i}}\<br>&amp;= \frac{a_i}{|a_i|}<br>\end{aligned}$$</p>
-<p>$$\begin{aligned}\therefore \frac{\partial a_{i+1}}{\partial a_i}<br>&amp;= I + \frac1T\frac{a_i}{|a_i|}  \text{\quad (broadcasting to each column)}<br>\end{aligned}$$</p>
-<p>From chain rule, </p>
-<p>$$\frac{\partial L}{\partial a_t} = \frac{\partial L}{\partial a_T}\cdot \frac{\partial a_T}{\partial a_T-1}…\frac{\partial a_{t+1}}{\partial a_t}$$</p>
-<h3 id="2-2-Upper-bound"><a href="#2-2-Upper-bound" class="headerlink" title="2.2 Upper bound"></a>2.2 Upper bound</h3><p>Reference: <a target="_blank" rel="noopener" href="https://www.cs.utexas.edu/users/flame/laff/alaff-beta/chapter01-norms-matrix-submultiplicative.html">https://www.cs.utexas.edu/users/flame/laff/alaff-beta/chapter01-norms-matrix-submultiplicative.html</a></p>
-<p>The 2-norm of matrix is defined by<br>$$||A||_2 = \sqrt{\lambda_1}$$<br>where $\lambda_1$ is the greatest eigenvalue of $A^TA$.</p>
+<h2 id="problem-2-deep-residual-networks-40-points">Problem 2: Deep Residual Networks [40 points]</h2>
+<h3 id="form-of-partial-derivative">2.1 Form of partial derivative</h3>
+<p><span class="math display">\[a_{i+1} = a_i + \frac1T\cdot|Wa_i|\]</span></p>
+<p>Assume that <span class="math inline">\(W \in \mathbb{R}^{d\times d}, a_i \in \mathbb{R}^d\)</span>.</p>
+<p><span class="math display">\[\begin{aligned}\because|Wa_i| &amp;= \sqrt{(Wa_i)^TWa_i}\\
+&amp;=\sqrt{a_i^TW^TWa_i}\\
+&amp;=\sqrt{a_i^Ta_i}\\
+&amp;= |a_i|
+\end{aligned}\]</span></p>
+<p><span class="math display">\[\begin{aligned}\frac{\partial|a_i|}{\partial a_i} &amp;= \frac{\partial}{\partial a_i} \sqrt{a_i^Ta_i}\\
+&amp;=\frac{2a_i}{2\sqrt{a_i^Ta_i}}\\
+&amp;= \frac{a_i}{|a_i|}
+\end{aligned}\]</span></p>
+<p><span class="math display">\[\begin{aligned}\therefore \frac{\partial a_{i+1}}{\partial a_i} 
+&amp;= I + \frac1T\frac{a_i}{|a_i|}  \text{\quad (broadcasting to each column)}
+\end{aligned}\]</span></p>
+<p>From chain rule,</p>
+<p><span class="math display">\[\frac{\partial L}{\partial a_t} = \frac{\partial L}{\partial a_T}\cdot \frac{\partial a_T}{\partial a_T-1}...\frac{\partial a_{t+1}}{\partial a_t}\]</span></p>
+<h3 id="upper-bound">2.2 Upper bound</h3>
+<p>Reference: https://www.cs.utexas.edu/users/flame/laff/alaff-beta/chapter01-norms-matrix-submultiplicative.html</p>
+<p>The 2-norm of matrix is defined by <span class="math display">\[||A||_2 = \sqrt{\lambda_1}\]</span> where <span class="math inline">\(\lambda_1\)</span> is the greatest eigenvalue of <span class="math inline">\(A^TA\)</span>.</p>
 <p>The <strong>triangular inequality</strong> of matrix norm gives that</p>
-<p>$$||x+y|| \leq ||x|| + ||y||$$</p>
-<p>$$\begin{aligned}<br>\therefore \bigg|\bigg| \frac{\partial a_{i+1}}{\partial a_i}\bigg|\bigg|<br>&amp;= \bigg|\bigg| I + \frac1T\frac{a_i}{|a_i|}   \bigg|\bigg| \<br>&amp;\leq 1 + \frac1T \bigg|\bigg| \frac{a_i}{|a_i|} \bigg|\bigg| \<br>&amp;= 1 + \frac1T<br>\end{aligned}$$</p>
-<p>Note that the second term $\frac1T\frac{a_i}{|a_i|}$ should actually be broadcast to d columns to become a $d\times d$ matrix. But the norm of this matrix is the same as the norm of the vector before broadcasting.</p>
-<p>Submultiplicative property of 2-norm gives:<br>$$||AB|| \leq ||A||: ||B||$$</p>
-<p>Matrix 2-norm is subordinate to vector 2-norm:<br>$$| A x | \leq | A | | x |$$</p>
-<p>$$\begin{aligned}<br>\therefore \bigg|\bigg|\frac{\partial L}{\partial a_t}\bigg|\bigg| &amp;\leq \bigg|\bigg|\frac{\partial L}{\partial a_T} \bigg|\bigg| :  \bigg|\bigg|\frac{\partial a_T}{\partial a_T-1}\bigg|\bigg|…\bigg|\bigg|\frac{\partial a_{t+1}}{\partial a_t}\bigg|\bigg|\<br>&amp;\leq \bigg|\bigg|\frac{\partial L}{\partial a_T} \bigg|\bigg| \times (1+\frac1T)^{T-t}\<br>&amp;= \bigg|\bigg|\frac{\partial L}{\partial a_T}\bigg|\bigg| \times (1+\frac1T)^{T} \times (1+\frac1T)^{-t}\<br>&amp;\approx\bigg|\bigg|\frac{\partial L}{\partial a_T}\bigg|\bigg| \times e \times (1+\frac1T)^{-t} \text{\quad, T large enough}<br>\end{aligned}$$</p>
-<p>This gives an upper bound on the ratio<br>$$r = \frac{|\frac{\partial L}{\partial a_t}|}{|\frac{\partial L}{\partial a_T}|} \leq e\times (1+\frac1T)^{-t}$$</p>
-<h3 id="2-3-Lower-bound"><a href="#2-3-Lower-bound" class="headerlink" title="2.3 Lower bound"></a>2.3 Lower bound</h3><p>Reference: <a target="_blank" rel="noopener" href="https://ccse.lbl.gov/Publications/sepp/matrixLowerBound/LBNL-50635.pdf">https://ccse.lbl.gov/Publications/sepp/matrixLowerBound/LBNL-50635.pdf</a></p>
+<p><span class="math display">\[||x+y|| \leq ||x|| + ||y||\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+\therefore \bigg|\bigg| \frac{\partial a_{i+1}}{\partial a_i}\bigg|\bigg| 
+&amp;= \bigg|\bigg| I + \frac1T\frac{a_i}{|a_i|}   \bigg|\bigg| \\
+&amp;\leq 1 + \frac1T \bigg|\bigg| \frac{a_i}{|a_i|} \bigg|\bigg| \\
+&amp;= 1 + \frac1T
+\end{aligned}\]</span></p>
+<p>Note that the second term <span class="math inline">\(\frac1T\frac{a_i}{|a_i|}\)</span> should actually be broadcast to d columns to become a <span class="math inline">\(d\times d\)</span> matrix. But the norm of this matrix is the same as the norm of the vector before broadcasting.</p>
+<p>Submultiplicative property of 2-norm gives: <span class="math display">\[||AB|| \leq ||A||\: ||B||\]</span></p>
+<p>Matrix 2-norm is subordinate to vector 2-norm: <span class="math display">\[\| A x \| \leq \| A \| \| x \|\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+\therefore \bigg|\bigg|\frac{\partial L}{\partial a_t}\bigg|\bigg| &amp;\leq \bigg|\bigg|\frac{\partial L}{\partial a_T} \bigg|\bigg| \:  \bigg|\bigg|\frac{\partial a_T}{\partial a_T-1}\bigg|\bigg|...\bigg|\bigg|\frac{\partial a_{t+1}}{\partial a_t}\bigg|\bigg|\\
+&amp;\leq \bigg|\bigg|\frac{\partial L}{\partial a_T} \bigg|\bigg| \times (1+\frac1T)^{T-t}\\
+&amp;= \bigg|\bigg|\frac{\partial L}{\partial a_T}\bigg|\bigg| \times (1+\frac1T)^{T} \times (1+\frac1T)^{-t}\\
+&amp;\approx\bigg|\bigg|\frac{\partial L}{\partial a_T}\bigg|\bigg| \times e \times (1+\frac1T)^{-t} \text{\quad, T large enough}
+\end{aligned}\]</span></p>
+<p>This gives an upper bound on the ratio <span class="math display">\[r = \frac{\|\frac{\partial L}{\partial a_t}\|}{\|\frac{\partial L}{\partial a_T}\|} \leq e\times (1+\frac1T)^{-t}\]</span></p>
+<h3 id="lower-bound">2.3 Lower bound</h3>
+<p>Reference: https://ccse.lbl.gov/Publications/sepp/matrixLowerBound/LBNL-50635.pdf</p>
 <p>The submultiplicative/subordinate property can be rewritten as</p>
-<p>$$|A||B^{-1}|^{-1} \leq |AB|$$</p>
-<p>Denote $B_i = I + \frac1T \frac{a_i}{|a_i|}$.</p>
-<p>Solve the inverse of $B_i$<br>$$\begin{aligned}<br>\because(I + \frac1T \frac{a_i}{|a_i|})(I - \frac1T \frac{a_i}{|a_i|})<br>&amp;= I - \frac1{T^2}I \<br>&amp;= \frac{T^2-1}{T^2}I<br>\end{aligned}$$</p>
-<p>$$\therefore B_i^{-1} = \frac{T^2}{T^2-1}(I - \frac1T \frac{a_i}{|a_i|})$$</p>
-<p>Use the triangular inequality of matrix norm $|x-y| \leq |x| + |-y| = |x| + |y|$</p>
-<p>$$\therefore |B_i^{-1}| \leq  \frac{T^2}{T^2-1}(1+\frac1T)=\frac T{T-1}$$</p>
-<p>$$\therefore |B_i^{-1}|^{-1} \geq 1 - \frac{1}{T}$$</p>
-<p>$$\begin{aligned}<br>\therefore r &amp;= \frac{|\frac{\partial L}{\partial a_t}|}{|\frac{\partial L}{\partial a_T}|} \<br>&amp;\geq (|B_{T-1}^{-1}|…|B_t^{-1}|)^{-1}\<br>&amp;\geq (1 - \frac{1}{T})^{T-t}\<br>&amp;\approx \frac1e \times (1-\frac{1}{T})^{-t}<br>\end{aligned}$$</p>
-<h3 id="2-4-Conclusion"><a href="#2-4-Conclusion" class="headerlink" title="2.4 Conclusion"></a>2.4 Conclusion</h3><p>From above we get </p>
-<p>$$(1+\frac1T)^{T-t} \leq r \leq (1 - \frac{1}{T})^{T-t}$$</p>
-<p>When $T$ is large,</p>
-<p>$$(1+\frac1T)^{T}\approx e $$<br>$$(1-\frac1T)^{T}\approx \frac1e $$</p>
-<p>$$\frac1e \times (1-\frac{1}{T})^{-t} \leq r \leq e\times (1+\frac1T)^{-t}$$</p>
+<p><span class="math display">\[\|A\|\|B^{-1}\|^{-1} \leq \|AB\|\]</span></p>
+<p>Denote <span class="math inline">\(B_i = I + \frac1T \frac{a_i}{\|a_i\|}\)</span>.</p>
+<p>Solve the inverse of <span class="math inline">\(B_i\)</span> <span class="math display">\[\begin{aligned}
+\because(I + \frac1T \frac{a_i}{\|a_i\|})(I - \frac1T \frac{a_i}{\|a_i\|}) 
+&amp;= I - \frac1{T^2}I \\
+&amp;= \frac{T^2-1}{T^2}I
+\end{aligned}\]</span></p>
+<p><span class="math display">\[\therefore B_i^{-1} = \frac{T^2}{T^2-1}(I - \frac1T \frac{a_i}{\|a_i\|})\]</span></p>
+<p>Use the triangular inequality of matrix norm <span class="math inline">\(\|x-y\| \leq \|x\| + \|-y\| = \|x\| + \|y\|\)</span></p>
+<p><span class="math display">\[\therefore \|B_i^{-1}\| \leq  \frac{T^2}{T^2-1}(1+\frac1T)=\frac T{T-1}\]</span></p>
+<p><span class="math display">\[\therefore \|B_i^{-1}\|^{-1} \geq 1 - \frac{1}{T}\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+\therefore r &amp;= \frac{\|\frac{\partial L}{\partial a_t}\|}{\|\frac{\partial L}{\partial a_T}\|} \\
+&amp;\geq (\|B_{T-1}^{-1}\|...\|B_t^{-1}\|)^{-1}\\
+&amp;\geq (1 - \frac{1}{T})^{T-t}\\
+&amp;\approx \frac1e \times (1-\frac{1}{T})^{-t}
+\end{aligned}\]</span></p>
+<h3 id="conclusion">2.4 Conclusion</h3>
+<p>From above we get</p>
+<p><span class="math display">\[(1+\frac1T)^{T-t} \leq r \leq (1 - \frac{1}{T})^{T-t}\]</span></p>
+<p>When <span class="math inline">\(T\)</span> is large,</p>
+<p><span class="math display">\[(1+\frac1T)^{T}\approx e \]</span> <span class="math display">\[(1-\frac1T)^{T}\approx \frac1e \]</span></p>
+<p><span class="math display">\[\frac1e \times (1-\frac{1}{T})^{-t} \leq r \leq e\times (1+\frac1T)^{-t}\]</span></p>
 
     </div>
 
@@ -404,7 +439,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HW2"><span class="nav-number">1.</span> <span class="nav-text">HW2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Problem-1-Convolutional-Neural-Networks-20-points"><span class="nav-number">1.1.</span> <span class="nav-text">Problem 1: Convolutional Neural Networks [20 points]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Problem-2-Deep-Residual-Networks-40-points"><span class="nav-number">1.2.</span> <span class="nav-text">Problem 2: Deep Residual Networks [40 points]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Form-of-partial-derivative"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 Form of partial derivative</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Upper-bound"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2 Upper bound</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-Lower-bound"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3 Lower bound</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-Conclusion"><span class="nav-number">1.2.4.</span> <span class="nav-text">2.4 Conclusion</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#hw2"><span class="nav-number">1.</span> <span class="nav-text">HW2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#problem-1-convolutional-neural-networks-20-points"><span class="nav-number">1.1.</span> <span class="nav-text">Problem 1: Convolutional Neural Networks [20 points]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#problem-2-deep-residual-networks-40-points"><span class="nav-number">1.2.</span> <span class="nav-text">Problem 2: Deep Residual Networks [40 points]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#form-of-partial-derivative"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 Form of partial derivative</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#upper-bound"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2 Upper bound</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lower-bound"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3 Lower bound</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#conclusion"><span class="nav-number">1.2.4.</span> <span class="nav-text">2.4 Conclusion</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

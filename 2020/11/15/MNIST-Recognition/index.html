@@ -20,22 +20,22 @@
     var CONFIG = {"hostname":"hy2632.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Reference https:&#x2F;&#x2F;towardsdatascience.com&#x2F;handwritten-digit-mnist-pytorch-977b5338e627  Import 12345678import numpy as npimport torchimport torchvisionimport matplotlib.pyplot as pltfrom time import t">
+  <meta name="description" content="Reference https:&#x2F;&#x2F;towardsdatascience.com&#x2F;handwritten-digit-mnist-pytorch-977b5338e627 Import 12345678import numpy as npimport torchimport torchvisionimport matplotlib.pyplot as pltfrom time import tim">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MNIST Recognition">
 <meta property="og:url" content="https://hy2632.github.io/2020/11/15/MNIST-Recognition/index.html">
 <meta property="og:site_name" content="豁蒙楼">
-<meta property="og:description" content="Reference https:&#x2F;&#x2F;towardsdatascience.com&#x2F;handwritten-digit-mnist-pytorch-977b5338e627  Import 12345678import numpy as npimport torchimport torchvisionimport matplotlib.pyplot as pltfrom time import t">
+<meta property="og:description" content="Reference https:&#x2F;&#x2F;towardsdatascience.com&#x2F;handwritten-digit-mnist-pytorch-977b5338e627 Import 12345678import numpy as npimport torchimport torchvisionimport matplotlib.pyplot as pltfrom time import tim">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://hy2632.github.io/2020/11/14/MNIST-Recognition/mnist_7_0.png">
-<meta property="og:image" content="https://hy2632.github.io/2020/11/14/MNIST-Recognition/mnist_8_0.png">
-<meta property="og:image" content="https://hy2632.github.io/2020/11/14/MNIST-Recognition/mnist_16_2.png">
-<meta property="og:image" content="https://hy2632.github.io/2020/11/14/MNIST-Recognition/mnist_23_2.png">
+<meta property="og:image" content="https://hy2632.github.io/2020/11/15/MNIST-Recognition/mnist_7_0.png">
+<meta property="og:image" content="https://hy2632.github.io/2020/11/15/MNIST-Recognition/mnist_8_0.png">
+<meta property="og:image" content="https://hy2632.github.io/2020/11/15/MNIST-Recognition/mnist_16_2.png">
+<meta property="og:image" content="https://hy2632.github.io/2020/11/15/MNIST-Recognition/mnist_23_2.png">
 <meta property="article:published_time" content="2020-11-15T03:23:04.000Z">
-<meta property="article:modified_time" content="2020-11-15T03:27:39.076Z">
+<meta property="article:modified_time" content="2020-11-15T03:33:56.972Z">
 <meta property="article:author" content="姚华(Hua Yao)">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://hy2632.github.io/2020/11/14/MNIST-Recognition/mnist_7_0.png">
+<meta name="twitter:image" content="https://hy2632.github.io/2020/11/15/MNIST-Recognition/mnist_7_0.png">
 
 <link rel="canonical" href="https://hy2632.github.io/2020/11/15/MNIST-Recognition/">
 
@@ -226,7 +226,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-11-14 22:23:04 / 修改时间：22:27:39" itemprop="dateCreated datePublished" datetime="2020-11-14T22:23:04-05:00">2020-11-14</time>
+              <time title="创建时间：2020-11-14 22:23:04 / 修改时间：22:33:56" itemprop="dateCreated datePublished" datetime="2020-11-14T22:23:04-05:00">2020-11-14</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -263,24 +263,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="reference"><a class="markdownIt-Anchor" href="#reference"></a> Reference</h2>
-<p><a target="_blank" rel="noopener" href="https://towardsdatascience.com/handwritten-digit-mnist-pytorch-977b5338e627">https://towardsdatascience.com/handwritten-digit-mnist-pytorch-977b5338e627</a></p>
-<h1 id="import"><a class="markdownIt-Anchor" href="#import"></a> Import</h1>
+        <h2 id="reference">Reference</h2>
+<p>https://towardsdatascience.com/handwritten-digit-mnist-pytorch-977b5338e627</p>
+<h1 id="import">Import</h1>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torchvision</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> datasets, transforms</span><br><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn, optim</span><br><span class="line"><span class="keyword">from</span> tqdm.notebook <span class="keyword">import</span> tqdm</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%cd /content/drive/My Drive/<span class="number">20</span>FA/DataMining/DigitRecog</span><br></pre></td></tr></table></figure>
-<pre><code>/content/drive/.shortcut-targets-by-id/107/20FA/DataMining/DigitRecog
-</code></pre>
+<pre><code>/content/drive/.shortcut-targets-by-id/107/20FA/DataMining/DigitRecog</code></pre>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">transform = transforms.Compose([</span><br><span class="line">    transforms.ToTensor(),</span><br><span class="line">    transforms.Normalize((<span class="number">0.5</span>,),(<span class="number">0.5</span>)),</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">trainset = datasets.MNIST(<span class="string">&#x27;PATH_TO_STORE_TRAINSET&#x27;</span>, download=<span class="literal">True</span>, train=<span class="literal">True</span>, transform=transform)</span><br><span class="line">valset = datasets.MNIST(<span class="string">&#x27;PATH_TO_STORE_TESTSET&#x27;</span>, download=<span class="literal">True</span>, train=<span class="literal">False</span>, transform=transform)</span><br><span class="line"></span><br><span class="line">trainloader = torch.utils.data.DataLoader(trainset, batch_size=<span class="number">64</span>, shuffle=<span class="literal">True</span>)</span><br><span class="line">valloader = torch.utils.data.DataLoader(valset, batch_size=<span class="number">64</span>, shuffle=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dataiter = iter(trainloader)</span><br><span class="line">images, labels = dataiter.next()</span><br><span class="line"></span><br><span class="line">print(images.shape)</span><br><span class="line">print(labels.shape)</span><br></pre></td></tr></table></figure>
 <pre><code>torch.Size([64, 1, 28, 28])
-torch.Size([64])
-</code></pre>
+torch.Size([64])</code></pre>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">plt.imshow(images[<span class="number">0</span>].squeeze(), cmap=<span class="string">&quot;gray_r&quot;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/11/14/MNIST-Recognition/mnist_7_0.png" alt="" /></p>
+<p><img src="/2020/11/15/MNIST-Recognition/mnist_7_0.png" /></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">figure = plt.figure()</span><br><span class="line"><span class="keyword">for</span> index <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">61</span>):</span><br><span class="line">    plt.subplot(<span class="number">6</span>, <span class="number">10</span>, index)</span><br><span class="line">    plt.axis(<span class="string">&#x27;off&#x27;</span>)</span><br><span class="line">    plt.imshow(images[index].squeeze(), cmap=<span class="string">&#x27;gray_r&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/11/14/MNIST-Recognition/mnist_8_0.png" alt="" /></p>
-<h1 id="neural-network-1"><a class="markdownIt-Anchor" href="#neural-network-1"></a> Neural Network 1</h1>
+<p><img src="/2020/11/15/MNIST-Recognition/mnist_8_0.png" /></p>
+<h1 id="neural-network-1">Neural Network 1</h1>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 2 CNN layers</span></span><br><span class="line">model = nn.Sequential(</span><br><span class="line">    nn.Conv2d(</span><br><span class="line">        in_channels=<span class="number">1</span>, </span><br><span class="line">        out_channels=<span class="number">1</span>,</span><br><span class="line">        kernel_size=(<span class="number">3</span>,<span class="number">3</span>),</span><br><span class="line">        stride=<span class="number">1</span>,</span><br><span class="line">        padding=<span class="number">1</span>,</span><br><span class="line">    ),</span><br><span class="line">    nn.ReLU(),</span><br><span class="line">    nn.Conv2d(</span><br><span class="line">        in_channels=<span class="number">1</span>, </span><br><span class="line">        out_channels=<span class="number">1</span>,</span><br><span class="line">        kernel_size=(<span class="number">3</span>,<span class="number">3</span>),</span><br><span class="line">        stride=<span class="number">2</span>,</span><br><span class="line">        padding=<span class="number">1</span>,</span><br><span class="line">    ),</span><br><span class="line">    nn.ReLU(),</span><br><span class="line">    nn.Flatten(<span class="number">1</span>, <span class="number">-1</span>),</span><br><span class="line">    nn.Linear(in_features=<span class="number">196</span>, out_features=<span class="number">10</span>),</span><br><span class="line">    nn.LogSoftmax(dim=<span class="number">1</span>),</span><br><span class="line">)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">criterion = nn.NLLLoss()</span><br><span class="line">images, labels = next(iter(trainloader))</span><br><span class="line"></span><br><span class="line">logps=model(images)</span><br><span class="line">loss=criterion(logps, labels)</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">&#x27;Before backward pass: \n&#x27;</span>, model[<span class="number">0</span>].weight.grad)</span><br><span class="line">loss.backward()</span><br><span class="line">print(<span class="string">&#x27;After backward pass: \n&#x27;</span>, model[<span class="number">0</span>].weight.grad)</span><br></pre></td></tr></table></figure>
@@ -289,11 +287,10 @@ torch.Size([64])
 After backward pass: 
  tensor([[[[ 0.0013, -0.0030, -0.0132],
           [-0.0029, -0.0017, -0.0082],
-          [ 0.0073,  0.0069, -0.0052]]]])
-</code></pre>
-<h2 id="training"><a class="markdownIt-Anchor" href="#training"></a> Training</h2>
+          [ 0.0073,  0.0069, -0.0052]]]])</code></pre>
+<h2 id="training">Training</h2>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Put the parameters of model into optimizer</span></span><br><span class="line">optimizer = optim.SGD(model.parameters(), lr=<span class="number">0.001</span>, momentum=<span class="number">0.9</span>)</span><br><span class="line">time0 = time()</span><br><span class="line">epochs = <span class="number">15</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> e <span class="keyword">in</span> tqdm(range(epochs)):</span><br><span class="line">    running_loss = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> images, labels <span class="keyword">in</span> trainloader:</span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line"></span><br><span class="line">        output = model(images)</span><br><span class="line">        loss = criterion(output, labels)</span><br><span class="line"></span><br><span class="line">        loss.backward()</span><br><span class="line"></span><br><span class="line">        optimizer.step()</span><br><span class="line"></span><br><span class="line">        running_loss += loss.item()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">&quot;Epoch &#123;&#125; - Training loss: &#123;&#125;&quot;</span>.format(e, running_loss/len(trainloader)))</span><br><span class="line"></span><br><span class="line">print(<span class="string">&quot;\nTraining Time (in minutes) =&quot;</span>,(time()-time0)/<span class="number">60</span>)</span><br></pre></td></tr></table></figure>
-<pre><code>HBox(children=(FloatProgress(value=0.0, max=15.0), HTML(value='')))
+<pre><code>HBox(children=(FloatProgress(value=0.0, max=15.0), HTML(value=&#39;&#39;)))
 
 
 Epoch 0 - Training loss: 0.397744912908339
@@ -313,49 +310,43 @@ Epoch 13 - Training loss: 0.2819290509594402
 Epoch 14 - Training loss: 0.27882546477957065
 
 
-Training Time (in minutes) = 4.208930110931396
-</code></pre>
-<h2 id="validation"><a class="markdownIt-Anchor" href="#validation"></a> Validation</h2>
+Training Time (in minutes) = 4.208930110931396</code></pre>
+<h2 id="validation">Validation</h2>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">images, labels = next(iter(valloader))</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line">    logps = model(images)</span><br><span class="line"></span><br><span class="line">ps = torch.exp(logps)</span><br><span class="line">probab = list(ps.numpy()[<span class="number">0</span>])</span><br><span class="line">print(<span class="string">&quot;Predicted Digit =&quot;</span>, probab.index(max(probab)))</span><br><span class="line"></span><br><span class="line">plt.imshow(images[<span class="number">0</span>].squeeze(dim=<span class="number">0</span>), cmap=<span class="string">&#x27;gray_r&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <pre><code>Predicted Digit = 2
 
-&lt;matplotlib.image.AxesImage at 0x7f0f21a086a0&gt;
-</code></pre>
-<p><img src="/2020/11/14/MNIST-Recognition/mnist_16_2.png" alt="" /></p>
+&lt;matplotlib.image.AxesImage at 0x7f0f21a086a0&gt;</code></pre>
+<p><img src="/2020/11/15/MNIST-Recognition/mnist_16_2.png" /></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">correct_count, all_count = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> images,labels <span class="keyword">in</span> tqdm(valloader):</span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        logps = model(images)</span><br><span class="line"></span><br><span class="line">    pred_label = logps.argmax(dim=<span class="number">1</span>)</span><br><span class="line">    true_label = labels</span><br><span class="line">    correct_count += torch.sum(pred_label == true_label).item()</span><br><span class="line">    all_count += len(labels)</span><br><span class="line"></span><br><span class="line">print(<span class="string">&quot;Number Of Images Tested =&quot;</span>, all_count)</span><br><span class="line">print(<span class="string">&quot;\nModel Accuracy =&quot;</span>, (correct_count/all_count))</span><br></pre></td></tr></table></figure>
-<pre><code>HBox(children=(FloatProgress(value=0.0, max=157.0), HTML(value='')))
+<pre><code>HBox(children=(FloatProgress(value=0.0, max=157.0), HTML(value=&#39;&#39;)))
 
 
 
 Number Of Images Tested = 10000
 
-Model Accuracy = 0.9232
-</code></pre>
-<h1 id="neural-network-2"><a class="markdownIt-Anchor" href="#neural-network-2"></a> Neural Network 2</h1>
+Model Accuracy = 0.9232</code></pre>
+<h1 id="neural-network-2">Neural Network 2</h1>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Baseline: 3 Linears</span></span><br><span class="line">input_size = <span class="number">784</span></span><br><span class="line">hidden_sizes = [<span class="number">128</span>, <span class="number">64</span>]</span><br><span class="line">output_size = <span class="number">10</span></span><br><span class="line">model = nn.Sequential(</span><br><span class="line">    nn.Flatten(<span class="number">1</span>, <span class="number">-1</span>),</span><br><span class="line">    nn.Linear(input_size, hidden_sizes[<span class="number">0</span>]),</span><br><span class="line">    nn.ReLU(),</span><br><span class="line">    nn.Linear(hidden_sizes[<span class="number">0</span>], hidden_sizes[<span class="number">1</span>]),</span><br><span class="line">    nn.ReLU(),</span><br><span class="line">    nn.Linear(hidden_sizes[<span class="number">1</span>], output_size),</span><br><span class="line">    nn.LogSoftmax(dim=<span class="number">1</span>)</span><br><span class="line">)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="training-2"><a class="markdownIt-Anchor" href="#training-2"></a> Training</h2>
+<h2 id="training-1">Training</h2>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Put the parameters of model into optimizer</span></span><br><span class="line">optimizer = optim.SGD(model.parameters(), lr=<span class="number">0.001</span>, momentum=<span class="number">0.9</span>)</span><br><span class="line">time0 = time()</span><br><span class="line">epochs = <span class="number">15</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> e <span class="keyword">in</span> tqdm(range(epochs)):</span><br><span class="line">    running_loss = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> images, labels <span class="keyword">in</span> tqdm(trainloader):</span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line"></span><br><span class="line">        output = model(images)</span><br><span class="line">        loss = criterion(output, labels)</span><br><span class="line"></span><br><span class="line">        loss.backward()</span><br><span class="line"></span><br><span class="line">        optimizer.step()</span><br><span class="line"></span><br><span class="line">        running_loss += loss.item()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">&quot;Epoch &#123;&#125; - Training loss: &#123;&#125;&quot;</span>.format(e, running_loss/len(trainloader)))</span><br><span class="line"></span><br><span class="line">print(<span class="string">&quot;\nTraining Time (in minutes) =&quot;</span>,(time()-time0)/<span class="number">60</span>)</span><br></pre></td></tr></table></figure>
 <pre><code>Epoch 14 - Training loss: 0.11990390112822148
 
 
-Training Time (in minutes) = 3.121389027436574
-</code></pre>
-<h2 id="validation-2"><a class="markdownIt-Anchor" href="#validation-2"></a> Validation</h2>
+Training Time (in minutes) = 3.121389027436574</code></pre>
+<h2 id="validation-1">Validation</h2>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">images, labels = next(iter(valloader))</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line">    logps = model(images)</span><br><span class="line"></span><br><span class="line">ps = torch.exp(logps)</span><br><span class="line">probab = list(ps.numpy()[<span class="number">0</span>])</span><br><span class="line">print(<span class="string">&quot;Predicted Digit =&quot;</span>, probab.index(max(probab)))</span><br><span class="line"></span><br><span class="line">plt.imshow(images[<span class="number">0</span>].squeeze(dim=<span class="number">0</span>), cmap=<span class="string">&#x27;gray_r&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <pre><code>Predicted Digit = 9
 
-&lt;matplotlib.image.AxesImage at 0x7f0f212fa198&gt;
-</code></pre>
-<p><img src="/2020/11/14/MNIST-Recognition/mnist_23_2.png" alt="" /></p>
+&lt;matplotlib.image.AxesImage at 0x7f0f212fa198&gt;</code></pre>
+<p><img src="/2020/11/15/MNIST-Recognition/mnist_23_2.png" /></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">correct_count, all_count = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> images,labels <span class="keyword">in</span> tqdm(valloader):</span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        logps = model(images)</span><br><span class="line"></span><br><span class="line">    pred_label = logps.argmax(dim=<span class="number">1</span>)</span><br><span class="line">    true_label = labels</span><br><span class="line">    correct_count += torch.sum(pred_label == true_label).item()</span><br><span class="line">    all_count += len(labels)</span><br><span class="line"></span><br><span class="line">print(<span class="string">&quot;Number Of Images Tested =&quot;</span>, all_count)</span><br><span class="line">print(<span class="string">&quot;\nModel Accuracy =&quot;</span>, (correct_count/all_count))</span><br></pre></td></tr></table></figure>
-<pre><code>HBox(children=(FloatProgress(value=0.0, max=157.0), HTML(value='')))
+<pre><code>HBox(children=(FloatProgress(value=0.0, max=157.0), HTML(value=&#39;&#39;)))
 
 
 
 Number Of Images Tested = 10000
 
-Model Accuracy = 0.9619
-</code></pre>
+Model Accuracy = 0.9619</code></pre>
 
     </div>
 
@@ -443,7 +434,7 @@ Model Accuracy = 0.9619
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-number">1.</span> <span class="nav-text"> Reference</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#import"><span class="nav-number"></span> <span class="nav-text"> Import</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#neural-network-1"><span class="nav-number"></span> <span class="nav-text"> Neural Network 1</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#training"><span class="nav-number">1.</span> <span class="nav-text"> Training</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#validation"><span class="nav-number">2.</span> <span class="nav-text"> Validation</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#neural-network-2"><span class="nav-number"></span> <span class="nav-text"> Neural Network 2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#training-2"><span class="nav-number">1.</span> <span class="nav-text"> Training</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#validation-2"><span class="nav-number">2.</span> <span class="nav-text"> Validation</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-number">1.</span> <span class="nav-text">Reference</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#import"><span class="nav-number"></span> <span class="nav-text">Import</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#neural-network-1"><span class="nav-number"></span> <span class="nav-text">Neural Network 1</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#training"><span class="nav-number">1.</span> <span class="nav-text">Training</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#validation"><span class="nav-number">2.</span> <span class="nav-text">Validation</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#neural-network-2"><span class="nav-number"></span> <span class="nav-text">Neural Network 2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#training-1"><span class="nav-number">1.</span> <span class="nav-text">Training</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#validation-1"><span class="nav-number">2.</span> <span class="nav-text">Validation</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

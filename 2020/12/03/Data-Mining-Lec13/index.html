@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"hy2632.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Evolutional StrategyRL Policies OptimizationState, Action Policy: Deterministic &#x2F; Randomized Function $F: \mathbb{R}^d \to \mathbb{R}$, reward from vector to scalar.">
+  <meta name="description" content="Evolutional Strategy RL Policies Optimization State, Action Policy: Deterministic &#x2F; Randomized Function \(F: \mathbb{R}^d \to \mathbb{R}\), reward from vector to scalar.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Data-Mining-Lec13">
 <meta property="og:url" content="https://hy2632.github.io/2020/12/03/Data-Mining-Lec13/index.html">
 <meta property="og:site_name" content="豁蒙楼">
-<meta property="og:description" content="Evolutional StrategyRL Policies OptimizationState, Action Policy: Deterministic &#x2F; Randomized Function $F: \mathbb{R}^d \to \mathbb{R}$, reward from vector to scalar.">
+<meta property="og:description" content="Evolutional Strategy RL Policies Optimization State, Action Policy: Deterministic &#x2F; Randomized Function \(F: \mathbb{R}^d \to \mathbb{R}\), reward from vector to scalar.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-03T00:21:01.000Z">
 <meta property="article:modified_time" content="2020-12-03T02:37:08.311Z">
@@ -259,37 +259,45 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Evolutional-Strategy"><a href="#Evolutional-Strategy" class="headerlink" title="Evolutional Strategy"></a>Evolutional Strategy</h1><h2 id="RL-Policies-Optimization"><a href="#RL-Policies-Optimization" class="headerlink" title="RL Policies Optimization"></a>RL Policies Optimization</h2><p>State, Action</p>
+        <h1 id="evolutional-strategy">Evolutional Strategy</h1>
+<h2 id="rl-policies-optimization">RL Policies Optimization</h2>
+<p>State, Action</p>
 <p>Policy: Deterministic / Randomized</p>
-<p>Function $F: \mathbb{R}^d \to \mathbb{R}$, reward from vector to scalar.</p>
-<p>Transition is a blackbox: decided by the environment. Dense reward better than sparse reward. Simulators are used to get the transitions (Physics engine?). </p>
-<p>Now assume that the environment is blackbox. We get partial observation. Environment can be randomized. </p>
-<h2 id="RFD-Fancy-Finite-difference-replacing-backprop"><a href="#RFD-Fancy-Finite-difference-replacing-backprop" class="headerlink" title="RFD: Fancy Finite difference replacing backprop"></a>RFD: Fancy Finite difference replacing backprop</h2><p>Random finite difference</p>
-<p>$F: \mathbb{R}^d \to \mathbb{R}$</p>
+<p>Function <span class="math inline">\(F: \mathbb{R}^d \to \mathbb{R}\)</span>, reward from vector to scalar.</p>
+<p>Transition is a blackbox: decided by the environment. Dense reward better than sparse reward. Simulators are used to get the transitions (Physics engine?).</p>
+<p>Now assume that the environment is blackbox. We get partial observation. Environment can be randomized.</p>
+<h2 id="rfd-fancy-finite-difference-replacing-backprop">RFD: Fancy Finite difference replacing backprop</h2>
+<p>Random finite difference</p>
+<p><span class="math inline">\(F: \mathbb{R}^d \to \mathbb{R}\)</span></p>
 <p>Towards smooth relations</p>
-<p>$$\max_{\mu\in P(\mathbb{R}^d)} {\mathbb{E}_{\theta \sim \mu}{[F(\theta)]}}$$</p>
+<p><span class="math display">\[\max_{\mu\in P(\mathbb{R}^d)} {\mathbb{E}_{\theta \sim \mu}{[F(\theta)]}}\]</span></p>
 <p>Gaussian smoothings</p>
-<p>$$\max_{\theta\in \mathbb{R}^d}{J(\theta)} =  \mathbb{E}_{\phi \sim N(\theta, \sigma^2I)}{[F(\phi)]}$$</p>
-<p>$$\nabla J(\theta) = \frac1\sigma \mathbb{E}_{\epsilon \sim N(0, I)}{[F(\theta+\sigma\epsilon)\epsilon]}$$</p>
+<p><span class="math display">\[\max_{\theta\in \mathbb{R}^d}{J(\theta)} =  \mathbb{E}_{\phi \sim N(\theta, \sigma^2I)}{[F(\phi)]}\]</span></p>
+<p><span class="math display">\[\nabla J(\theta) = \frac1\sigma \mathbb{E}_{\epsilon \sim N(0, I)}{[F(\theta+\sigma\epsilon)\epsilon]}\]</span></p>
 <p>Saliman(2017)</p>
-<h2 id="Gradient-sensing-as-a-MC-estimation"><a href="#Gradient-sensing-as-a-MC-estimation" class="headerlink" title="Gradient sensing as a MC estimation"></a>Gradient sensing as a MC estimation</h2><p>ES-style vanilla gradient estimator:<br>$$\hat{\nabla}_NJ(\theta) = \frac{1}{N\sigma}\sum{F(\theta+\sigma\epsilon_i)\epsilon_i}$$</p>
+<h2 id="gradient-sensing-as-a-mc-estimation">Gradient sensing as a MC estimation</h2>
+<p>ES-style vanilla gradient estimator: <span class="math display">\[\hat{\nabla}_NJ(\theta) = \frac{1}{N\sigma}\sum{F(\theta+\sigma\epsilon_i)\epsilon_i}\]</span></p>
 <p>gradient estimator with <strong>antithetic pairs</strong></p>
-<p>$$\hat{\nabla}_NJ(\theta) =\frac{1}{2N\sigma}\sum{(F(\theta+\sigma\epsilon_i)\epsilon_i - F(\theta-\sigma\epsilon_i)\epsilon_i)}  $$</p>
+<p><span class="math display">\[\hat{\nabla}_NJ(\theta) =\frac{1}{2N\sigma}\sum{(F(\theta+\sigma\epsilon_i)\epsilon_i - F(\theta-\sigma\epsilon_i)\epsilon_i)}  \]</span></p>
 <p>FD style, randomized</p>
-<p>$$\hat{\nabla}_NJ(\theta) =\frac{1}{N\sigma}\sum{(F(\theta+\sigma\epsilon_i)\epsilon_i - F(\theta)\epsilon_i)}$$</p>
+<p><span class="math display">\[\hat{\nabla}_NJ(\theta) =\frac{1}{N\sigma}\sum{(F(\theta+\sigma\epsilon_i)\epsilon_i - F(\theta)\epsilon_i)}\]</span></p>
 <ul>
 <li>all 3 estimators are unbiased</li>
 <li>none dominates</li>
 </ul>
-<p>It can be proved that the orthogonal(structured) gradient estimator $\hat{\nabla}_N^{ort}J(\theta)$ is unbiased and yields lower MSE than the unstructured estimator.</p>
-<h2 id="Coupled-anithetic-pairs-for-MC-estimation"><a href="#Coupled-anithetic-pairs-for-MC-estimation" class="headerlink" title="Coupled anithetic pairs for MC estimation"></a>Coupled anithetic pairs for MC estimation</h2><p>$$\hat{\nabla}_NJ(\theta) =\frac{1}{2N\sigma}\sum{(F(\theta+\sigma\epsilon_i)\epsilon_i - F(\theta-\sigma\epsilon_i’)\epsilon_i’)}  $$</p>
-<p>$\epsilon_i’$ inverse length.</p>
+<p>It can be proved that the orthogonal(structured) gradient estimator <span class="math inline">\(\hat{\nabla}_N^{ort}J(\theta)\)</span> is unbiased and yields lower MSE than the unstructured estimator.</p>
+<h2 id="coupled-anithetic-pairs-for-mc-estimation">Coupled anithetic pairs for MC estimation</h2>
+<p><span class="math display">\[\hat{\nabla}_NJ(\theta) =\frac{1}{2N\sigma}\sum{(F(\theta+\sigma\epsilon_i)\epsilon_i - F(\theta-\sigma\epsilon_i&#39;)\epsilon_i&#39;)}  \]</span></p>
+<p><span class="math inline">\(\epsilon_i&#39;\)</span> inverse length.</p>
 <p>Or more complex formulation.</p>
-<h2 id="RBO-Robust-Blackbox-Optimization"><a href="#RBO-Robust-Blackbox-Optimization" class="headerlink" title="RBO-Robust Blackbox Optimization"></a>RBO-Robust Blackbox Optimization</h2><p>$$\hat{\nabla}<em>{RBO}^{ort}J(\theta) = \text{arg} \min</em>{v\in R^d} \frac1{2N} |y-Zv|^p_p + \alpha  |v|^q_q$$</p>
+<h2 id="rbo-robust-blackbox-optimization">RBO-Robust Blackbox Optimization</h2>
+<p><span class="math display">\[\hat{\nabla}_{RBO}^{ort}J(\theta) = \text{arg} \min_{v\in R^d} \frac1{2N} \|y-Zv\|^p_p + \alpha  \|v\|^q_q\]</span></p>
 <p>re-used perturbations</p>
-<h2 id="Efficiency-of-the-orthogonal-exploration-for-gradient-sensing-structured-NNs"><a href="#Efficiency-of-the-orthogonal-exploration-for-gradient-sensing-structured-NNs" class="headerlink" title="Efficiency of the orthogonal exploration for gradient sensing - structured NNs."></a>Efficiency of the orthogonal exploration for gradient sensing - structured NNs.</h2><p>Structurized Matrices: Toeplitz, $n\times n$ with $2n-1$ parameters. constant diagonal values.</p>
-<p>$O(n\log n)$ complexity</p>
-<h2 id="RBO-amp-noisy-measurements"><a href="#RBO-amp-noisy-measurements" class="headerlink" title="RBO &amp; noisy measurements"></a>RBO &amp; noisy measurements</h2><p>under noise 0.4, the MC still manages to reach the same accuracy</p>
+<h2 id="efficiency-of-the-orthogonal-exploration-for-gradient-sensing---structured-nns.">Efficiency of the orthogonal exploration for gradient sensing - structured NNs.</h2>
+<p>Structurized Matrices: Toeplitz, <span class="math inline">\(n\times n\)</span> with <span class="math inline">\(2n-1\)</span> parameters. constant diagonal values.</p>
+<p><span class="math inline">\(O(n\log n)\)</span> complexity</p>
+<h2 id="rbo-noisy-measurements">RBO &amp; noisy measurements</h2>
+<p>under noise 0.4, the MC still manages to reach the same accuracy</p>
 <p>[Neuroevolution of self-interpretation]</p>
 
     </div>
@@ -381,7 +389,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Evolutional-Strategy"><span class="nav-number">1.</span> <span class="nav-text">Evolutional Strategy</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RL-Policies-Optimization"><span class="nav-number">1.1.</span> <span class="nav-text">RL Policies Optimization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RFD-Fancy-Finite-difference-replacing-backprop"><span class="nav-number">1.2.</span> <span class="nav-text">RFD: Fancy Finite difference replacing backprop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradient-sensing-as-a-MC-estimation"><span class="nav-number">1.3.</span> <span class="nav-text">Gradient sensing as a MC estimation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Coupled-anithetic-pairs-for-MC-estimation"><span class="nav-number">1.4.</span> <span class="nav-text">Coupled anithetic pairs for MC estimation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RBO-Robust-Blackbox-Optimization"><span class="nav-number">1.5.</span> <span class="nav-text">RBO-Robust Blackbox Optimization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Efficiency-of-the-orthogonal-exploration-for-gradient-sensing-structured-NNs"><span class="nav-number">1.6.</span> <span class="nav-text">Efficiency of the orthogonal exploration for gradient sensing - structured NNs.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RBO-amp-noisy-measurements"><span class="nav-number">1.7.</span> <span class="nav-text">RBO &amp; noisy measurements</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#evolutional-strategy"><span class="nav-number">1.</span> <span class="nav-text">Evolutional Strategy</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#rl-policies-optimization"><span class="nav-number">1.1.</span> <span class="nav-text">RL Policies Optimization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rfd-fancy-finite-difference-replacing-backprop"><span class="nav-number">1.2.</span> <span class="nav-text">RFD: Fancy Finite difference replacing backprop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gradient-sensing-as-a-mc-estimation"><span class="nav-number">1.3.</span> <span class="nav-text">Gradient sensing as a MC estimation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#coupled-anithetic-pairs-for-mc-estimation"><span class="nav-number">1.4.</span> <span class="nav-text">Coupled anithetic pairs for MC estimation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rbo-robust-blackbox-optimization"><span class="nav-number">1.5.</span> <span class="nav-text">RBO-Robust Blackbox Optimization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#efficiency-of-the-orthogonal-exploration-for-gradient-sensing---structured-nns."><span class="nav-number">1.6.</span> <span class="nav-text">Efficiency of the orthogonal exploration for gradient sensing - structured NNs.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rbo-noisy-measurements"><span class="nav-number">1.7.</span> <span class="nav-text">RBO &amp; noisy measurements</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
