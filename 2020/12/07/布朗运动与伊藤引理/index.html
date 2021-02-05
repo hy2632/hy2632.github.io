@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"hy2632.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="引用:布朗运动、伊藤引理、BS 公式（前篇） - 石川的文章 - 知乎 Lec7 Brownian Motion - MIT advanced-stochastic-processes-fall-2013  P13, Understanding N(d1) and N(d2): Risk-Adjusted Probabilities in the Black-Scholes Model 布朗运动">
+  <meta name="description" content="引用: 布朗运动、伊藤引理、BS 公式（前篇） - 石川的文章 - 知乎 Lec7 Brownian Motion - MIT advanced-stochastic-processes-fall-2013 P13, Understanding N(d1) and N(d2): Risk-Adjusted Probabilities in the Black-Scholes Model 布朗运动">
 <meta property="og:type" content="article">
 <meta property="og:title" content="布朗运动与伊藤引理">
 <meta property="og:url" content="https://hy2632.github.io/2020/12/07/%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8%E4%B8%8E%E4%BC%8A%E8%97%A4%E5%BC%95%E7%90%86/index.html">
 <meta property="og:site_name" content="豁蒙楼">
-<meta property="og:description" content="引用:布朗运动、伊藤引理、BS 公式（前篇） - 石川的文章 - 知乎 Lec7 Brownian Motion - MIT advanced-stochastic-processes-fall-2013  P13, Understanding N(d1) and N(d2): Risk-Adjusted Probabilities in the Black-Scholes Model 布朗运动">
+<meta property="og:description" content="引用: 布朗运动、伊藤引理、BS 公式（前篇） - 石川的文章 - 知乎 Lec7 Brownian Motion - MIT advanced-stochastic-processes-fall-2013 P13, Understanding N(d1) and N(d2): Risk-Adjusted Probabilities in the Black-Scholes Model 布朗运动">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cbegin%7Barray%7D%7Brrll%7D+&C&=&S(0)N(d_1)-Ke%5E%7B-rT%7DN(d_2)%5C%5C%5C%5C+&P&=&Ke%5E%7B-rT%7DN(-d_2)-S(0)N(-d_1)%5C%5C%5C%5C+%5Cmbox%7Bwhere%7D&d_1&=&%5Cdisplaystyle%5Cfrac%7B%5Cln(S(0)/K)+(r+%5Csigma%5E2/2)T%7D%7B%5Csigma%5Csqrt+T%7D%5C%5C%5C%5C+&d_2&=&%5Cdisplaystyle%5Cfrac%7B%5Cln(S(0)/K)+(r-%5Csigma%5E2/2)T%7D%7B%5Csigma%5Csqrt+T%7D=d_1-%5Csigma%5Csqrt+T%5C%5C%5C%5C+&N&:&%5Cmbox%7Bcumulative+distribution+function+of+standard+Normal%7D+%5Cend%7Barray%7D">
+<meta property="og:image" content="https://hy2632.github.io/2020/12/07/%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8%E4%B8%8E%E4%BC%8A%E8%97%A4%E5%BC%95%E7%90%86/布朗运动与伊藤引理/equation.jpg">
 <meta property="article:published_time" content="2020-12-06T23:20:01.000Z">
-<meta property="article:modified_time" content="2021-02-05T12:52:42.102Z">
+<meta property="article:modified_time" content="2021-02-05T13:06:24.551Z">
 <meta property="article:author" content="姚华(Hua Yao)">
 <meta property="article:tag" content="Financial Engineering">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.zhihu.com/equation?tex=%5Cbegin%7Barray%7D%7Brrll%7D+&C&=&S(0)N(d_1)-Ke%5E%7B-rT%7DN(d_2)%5C%5C%5C%5C+&P&=&Ke%5E%7B-rT%7DN(-d_2)-S(0)N(-d_1)%5C%5C%5C%5C+%5Cmbox%7Bwhere%7D&d_1&=&%5Cdisplaystyle%5Cfrac%7B%5Cln(S(0)/K)+(r+%5Csigma%5E2/2)T%7D%7B%5Csigma%5Csqrt+T%7D%5C%5C%5C%5C+&d_2&=&%5Cdisplaystyle%5Cfrac%7B%5Cln(S(0)/K)+(r-%5Csigma%5E2/2)T%7D%7B%5Csigma%5Csqrt+T%7D=d_1-%5Csigma%5Csqrt+T%5C%5C%5C%5C+&N&:&%5Cmbox%7Bcumulative+distribution+function+of+standard+Normal%7D+%5Cend%7Barray%7D">
+<meta name="twitter:image" content="https://hy2632.github.io/2020/12/07/%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8%E4%B8%8E%E4%BC%8A%E8%97%A4%E5%BC%95%E7%90%86/布朗运动与伊藤引理/equation.jpg">
 
 <link rel="canonical" href="https://hy2632.github.io/2020/12/07/%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8%E4%B8%8E%E4%BC%8A%E8%97%A4%E5%BC%95%E7%90%86/">
 
@@ -230,7 +230,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-05 07:52:42" itemprop="dateModified" datetime="2021-02-05T07:52:42-05:00">2021-02-05</time>
+                <time title="修改时间：2021-02-05 08:06:24" itemprop="dateModified" datetime="2021-02-05T08:06:24-05:00">2021-02-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -267,123 +267,174 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="引用"><a href="#引用" class="headerlink" title="引用:"></a>引用:</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/38293827">布朗运动、伊藤引理、BS 公式（前篇） - 石川的文章 - 知乎</a></p>
-<p><a target="_blank" rel="noopener" href="https://ocw.mit.edu/courses/sloan-school-of-management/15-070j-advanced-stochastic-processes-fall-2013/lecture-notes/MIT15_070JF13_Lec7.pdf">Lec7 Brownian Motion - MIT advanced-stochastic-processes-fall-2013 </a></p>
+        <h2 id="引用">引用:</h2>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/38293827">布朗运动、伊藤引理、BS 公式（前篇） - 石川的文章 - 知乎</a></p>
+<p><a target="_blank" rel="noopener" href="https://ocw.mit.edu/courses/sloan-school-of-management/15-070j-advanced-stochastic-processes-fall-2013/lecture-notes/MIT15_070JF13_Lec7.pdf">Lec7 Brownian Motion - MIT advanced-stochastic-processes-fall-2013</a></p>
 <p><a target="_blank" rel="noopener" href="https://financetrainingcourse.com/education/wp-content/uploads/2011/03/Understanding.pdf">P13, Understanding N(d1) and N(d2): Risk-Adjusted Probabilities in the Black-Scholes Model</a></p>
-<h2 id="布朗运动"><a href="#布朗运动" class="headerlink" title="布朗运动"></a>布朗运动</h2><p>定义布朗运动</p>
-<p>$$B(t+\Delta t) - B(t) \sim N(0, \Delta t)$$<br>$$B(0) = 0$$</p>
+<h2 id="布朗运动">布朗运动</h2>
+<p>定义布朗运动</p>
+<p><span class="math display">\[B(t+\Delta t) - B(t) \sim N(0, \Delta t)\]</span> <span class="math display">\[B(0) = 0\]</span></p>
 <!-- 布朗运动是一个 Markov Process，因为$B(t^+)$ 的值仅与 -->
-
-<p>定义到t时间点的最大值 $M(t)$。该极值的分布有性质 $P(M(t)\geq a) = 2P(B(t)\geq a)$.</p>
+<p>定义到t时间点的最大值 <span class="math inline">\(M(t)\)</span>。该极值的分布有性质 <span class="math inline">\(P(M(t)\geq a) = 2P(B(t)\geq a)\)</span>.</p>
 <p>证明: (the reflection principle，反射性)</p>
-<p>$$\begin{aligned}<br>P(B(t)\geq a) &amp;= P(B(t)\geq a, M(t)\geq a) + P(B(t)\geq a, M(t)&lt; a) \<br>&amp;= P(B(t)\geq a, M(t)\geq a) \<br>&amp;= P(B(t)\geq a| M(t)\geq a) P(M(t)\geq a)\<br>&amp;= P(B(t)\geq a| T_a \leq t) P(M(t)\geq a)\<br>&amp;= P(B(t) - B(T_a)\geq 0|T_a \leq t) P(M(t)\geq a)\<br>&amp;= \frac12 P(M(t)\geq a)<br>\end{aligned}$$</p>
-<p>$$P(M(t)\geq a) = 2 - 2\Phi(\frac{a}{\sqrt{t}}) $$</p>
+<p><span class="math display">\[\begin{aligned}
+P(B(t)\geq a) &amp;= P(B(t)\geq a, M(t)\geq a) + P(B(t)\geq a, M(t)&lt; a) \\
+&amp;= P(B(t)\geq a, M(t)\geq a) \\
+&amp;= P(B(t)\geq a| M(t)\geq a) P(M(t)\geq a)\\
+&amp;= P(B(t)\geq a| T_a \leq t) P(M(t)\geq a)\\
+&amp;= P(B(t) - B(T_a)\geq 0|T_a \leq t) P(M(t)\geq a)\\
+&amp;= \frac12 P(M(t)\geq a)
+\end{aligned}\]</span></p>
+<p><span class="math display">\[P(M(t)\geq a) = 2 - 2\Phi(\frac{a}{\sqrt{t}}) \]</span></p>
 <p>根据此性质我们可以量化极值的概率分布。</p>
-<h2 id="二次变分"><a href="#二次变分" class="headerlink" title="二次变分"></a>二次变分</h2><p>可微函数 $f(x)$ 在区间 $[0, T]$ 和该区间的一个划分 $\Pi$ 上的二次变分定义为：</p>
-<p>$$\sum_{i=0}^{N-1}{ [f(t_{i+1}) - f(t_{i})]^2  }$$</p>
+<h2 id="二次变分">二次变分</h2>
+<p>可微函数 <span class="math inline">\(f(x)\)</span> 在区间 <span class="math inline">\([0, T]\)</span> 和该区间的一个划分 <span class="math inline">\(\Pi\)</span> 上的二次变分定义为：</p>
+<p><span class="math display">\[\sum_{i=0}^{N-1}{ [f(t_{i+1}) - f(t_{i})]^2  }\]</span></p>
 <p>利用中值定理</p>
-<p>$$\begin{aligned}<br>\sum_{i=0}^{N-1}{ [f(t_{i+1}) - f(t_{i})]^2  } &amp;\leq \sum_{i=0}^{N-1}{ f’(s_i)^2(t_{i+1} - t_i)^2 } \<br>&amp;\leq  \max_{s\in [0,T]}{f’(s)^2} \cdot T\cdot \max_i{(t_{i+1} - t_i)}<br>\end{aligned}$$</p>
+<p><span class="math display">\[\begin{aligned}
+\sum_{i=0}^{N-1}{ [f(t_{i+1}) - f(t_{i})]^2  } &amp;\leq \sum_{i=0}^{N-1}{ f&#39;(s_i)^2(t_{i+1} - t_i)^2 } \\
+&amp;\leq  \max_{s\in [0,T]}{f&#39;(s)^2} \cdot T\cdot \max_i{(t_{i+1} - t_i)}
+\end{aligned}\]</span></p>
 <p>可见该二次变分可以随着划分的更细而趋于0。</p>
-<p>而布朗运动的二次变分在足够细的划分下则等于 $T$:</p>
-<p>$$\begin{aligned}<br>\lim_{|\Pi|\to 0}\sum_{i=0}^{N-1}{ [B(t_{i+1}) - B(t_{i})]^2  } &amp;= T\<br>\end{aligned}$$</p>
-<p>根据独立同分布的随机变量的大数定律可以证明。例如 $[0, t]$ 区间上,</p>
-<p>$$\begin{aligned}<br>E[B(t)^2] &amp;= E[B(t)]^2 + Var(B(t)) \<br>&amp;= 0 + t\<br>&amp;= t<br>\end{aligned}$$</p>
-<p>由于布朗运动的波动性，任意细分的区间 $T$ 上的位移差平方量都不能为0，而是和这个区间长度相同的量。</p>
-<p>可以记为 $(dB)^2 = dt$</p>
-<h2 id="几何布朗运动"><a href="#几何布朗运动" class="headerlink" title="几何布朗运动"></a>几何布朗运动</h2><p>在标准布朗运动的基础上增加漂移项(drift)和扩散(diffusion)系数，</p>
-<p>$$X(t) = \mu t + \sigma B(t)$$</p>
-<p>$$dX(t) = \mu dt + \sigma dB(t)$$</p>
-<p>$X(t)$ 不宜直接描述股价，因为可能取到负值，但可以描述收益率。令股价变化率 $\frac{dS(t）}{S(t)} = X(t)$,</p>
-<p>$$\frac{dS(t）}{S(t)}= \mu dt + \sigma dB(t)$$</p>
-<p>$$dS(t)= \mu S(t)dt + \sigma S(t)dB(t)$$</p>
-<p>满足该随机微分方程的股价 $S(t)$ 是一个 <strong>几何布朗运动</strong> 。其求解用到了 <strong>伊藤积分</strong>。</p>
-<p>注意到 $E[X(t)] = \mu t$，长期漂移量主导。价值投资。</p>
-<h2 id="伊藤引理"><a href="#伊藤引理" class="headerlink" title="伊藤引理"></a>伊藤引理</h2><p>$f(B(t))$ 的微分不能简单地写作</p>
-<p>$$df = \frac{df}{dB} \frac{dB}{dt} dt$$</p>
-<p>这是由于 $B(t)$ 不可微， $\frac{dB}{dt}$ 不存在。</p>
-<p>那么能否写为 $df =  \frac{df}{dB}dB$ 呢？同样也不可以。该表达式来自于泰勒展开的一次项，对于一般可微函数二阶往上都是高阶小量可忽略，但是对于布朗运动并非如此。根据之前布朗运动二次变分的结论，第二阶 $(dB)^2 = dt$。</p>
-<p>$$df = \frac{df}{dB} dB + \frac12 \frac{d^2f}{dB^2}dt$$</p>
+<p>而布朗运动的二次变分在足够细的划分下则等于 <span class="math inline">\(T\)</span>:</p>
+<p><span class="math display">\[\begin{aligned}
+\lim_{|\Pi|\to 0}\sum_{i=0}^{N-1}{ [B(t_{i+1}) - B(t_{i})]^2  } &amp;= T\\
+\end{aligned}\]</span></p>
+<p>根据独立同分布的随机变量的大数定律可以证明。例如 <span class="math inline">\([0, t]\)</span> 区间上,</p>
+<p><span class="math display">\[\begin{aligned}
+E[B(t)^2] &amp;= E[B(t)]^2 + Var(B(t)) \\ 
+&amp;= 0 + t\\
+&amp;= t
+\end{aligned}\]</span></p>
+<p>由于布朗运动的波动性，任意细分的区间 <span class="math inline">\(T\)</span> 上的位移差平方量都不能为0，而是和这个区间长度相同的量。</p>
+<p>可以记为 <span class="math inline">\((dB)^2 = dt\)</span></p>
+<h2 id="几何布朗运动">几何布朗运动</h2>
+<p>在标准布朗运动的基础上增加漂移项(drift)和扩散(diffusion)系数，</p>
+<p><span class="math display">\[X(t) = \mu t + \sigma B(t)\]</span></p>
+<p><span class="math display">\[dX(t) = \mu dt + \sigma dB(t)\]</span></p>
+<p><span class="math inline">\(X(t)\)</span> 不宜直接描述股价，因为可能取到负值，但可以描述收益率。令股价变化率 <span class="math inline">\(\frac{dS(t）}{S(t)} = X(t)\)</span>,</p>
+<p><span class="math display">\[\frac{dS(t）}{S(t)}= \mu dt + \sigma dB(t)\]</span></p>
+<p><span class="math display">\[dS(t)= \mu S(t)dt + \sigma S(t)dB(t)\]</span></p>
+<p>满足该随机微分方程的股价 <span class="math inline">\(S(t)\)</span> 是一个 <strong>几何布朗运动</strong> 。其求解用到了 <strong>伊藤积分</strong>。</p>
+<p>注意到 <span class="math inline">\(E[X(t)] = \mu t\)</span>，长期漂移量主导。价值投资。</p>
+<h2 id="伊藤引理">伊藤引理</h2>
+<p><span class="math inline">\(f(B(t))\)</span> 的微分不能简单地写作</p>
+<p><span class="math display">\[df = \frac{df}{dB} \frac{dB}{dt} dt\]</span></p>
+<p>这是由于 <span class="math inline">\(B(t)\)</span> 不可微， <span class="math inline">\(\frac{dB}{dt}\)</span> 不存在。</p>
+<p>那么能否写为 <span class="math inline">\(df = \frac{df}{dB}dB\)</span> 呢？同样也不可以。该表达式来自于泰勒展开的一次项，对于一般可微函数二阶往上都是高阶小量可忽略，但是对于布朗运动并非如此。根据之前布朗运动二次变分的结论，第二阶 <span class="math inline">\((dB)^2 = dt\)</span>。</p>
+<p><span class="math display">\[df = \frac{df}{dB} dB + \frac12 \frac{d^2f}{dB^2}dt\]</span></p>
 <p>此为伊藤引理的<strong>基本形式</strong>。二阶之后仍然是更高阶的小量，可以忽略。</p>
-<p>带漂移项的布朗运动还是关于时间 $t$ 的函数，这种情况下</p>
-<p>$$df = \frac{df}{dB} dB + (\frac{df}{dt} + \frac12 \frac{d^2f}{dB^2})dt$$</p>
-<h2 id="伊藤引理-一般形式"><a href="#伊藤引理-一般形式" class="headerlink" title="伊藤引理-一般形式"></a>伊藤引理-一般形式</h2><p>带漂移和扩散的布朗运动</p>
-<p>$$dX(t) = \mu dt + \sigma dB(t)$$</p>
-<p>假设漂移和扩散参数也是关于随机过程 $X(t)$ 和 $t$ 的函数，满足以下 <strong>随机微分方程(SDE)</strong> 的随机过程为 **伊藤漂移扩散过程 (Ito drift-diffusion process)**， 简称伊藤过程。</p>
-<p>$$dX = a(X,t)dt + b(X,t)dB$$</p>
-<p>关于 $X(t)$ 和 $t$ 的二阶连续可导函数 $f(X(t),t)$ 由伊藤引理</p>
-<p>$$df = \frac{\partial f}{\partial X}dX + \frac{\partial f}{\partial t}dt + \frac12 \frac{\partial^2f}{\partial X^2}(dX)^2$$</p>
+<p>带漂移项的布朗运动还是关于时间 <span class="math inline">\(t\)</span> 的函数，这种情况下</p>
+<p><span class="math display">\[df = \frac{df}{dB} dB + (\frac{df}{dt} + \frac12 \frac{d^2f}{dB^2})dt\]</span></p>
+<h2 id="伊藤引理-一般形式">伊藤引理-一般形式</h2>
+<p>带漂移和扩散的布朗运动</p>
+<p><span class="math display">\[dX(t) = \mu dt + \sigma dB(t)\]</span></p>
+<p>假设漂移和扩散参数也是关于随机过程 <span class="math inline">\(X(t)\)</span> 和 <span class="math inline">\(t\)</span> 的函数，满足以下 <strong>随机微分方程(SDE)</strong> 的随机过程为 <strong>伊藤漂移扩散过程 (Ito drift-diffusion process)</strong>， 简称伊藤过程。</p>
+<p><span class="math display">\[dX = a(X,t)dt + b(X,t)dB\]</span></p>
+<p>关于 <span class="math inline">\(X(t)\)</span> 和 <span class="math inline">\(t\)</span> 的二阶连续可导函数 <span class="math inline">\(f(X(t),t)\)</span> 由伊藤引理</p>
+<p><span class="math display">\[df = \frac{\partial f}{\partial X}dX + \frac{\partial f}{\partial t}dt + \frac12 \frac{\partial^2f}{\partial X^2}(dX)^2\]</span></p>
 <p>代入并略去高阶小量</p>
-<p>$$\begin{aligned}<br>df &amp;= \frac{\partial f}{\partial X}(adt+bdB) + \frac{\partial f}{\partial t}dt + \frac12 \frac{\partial^2f}{\partial X^2}(b^2dt) \<br>&amp;= \bigg(\frac{\partial f}{\partial X}a + \frac{\partial f}{\partial t} + \frac12 \frac{\partial^2f}{\partial X^2}b^2 \bigg)dt + \frac{\partial f}{\partial X}bdB<br>\end{aligned}$$</p>
-<p>可见 $f(X(t), t)$ 和 $X(t)$ 一样也是一个伊藤过程。且其布朗运动不变。</p>
-<h2 id="几何布朗运动的随机微分方程求解"><a href="#几何布朗运动的随机微分方程求解" class="headerlink" title="几何布朗运动的随机微分方程求解"></a>几何布朗运动的随机微分方程求解</h2><p>$$dS= \mu Sdt + \sigma SdB$$</p>
-<p>$S$ 是一个伊藤过程， $a=\mu S, b=\sigma S$。</p>
-<p>令 $f = \ln{S}$, 应用伊藤引理的一般形式，</p>
-<p>$$\begin{aligned}<br>df &amp;= \bigg(\frac{\partial f}{\partial S}\mu S + 0 + \frac12 \frac{\partial^2f}{\partial S^2}\sigma^2 S^2 \bigg)dt + \frac{\partial f}{\partial S}\sigma SdB \<br>&amp;= \bigg(\mu - \frac12 \sigma^2 \bigg)dt +\sigma dB<br>\end{aligned}$$</p>
-<p>则 $f$ 是一个带漂移项的布朗运动。其漂移系数为 $\mu -\frac12 \sigma^2$，扩散系数为 $\sigma$。</p>
-<p>$$\ln S(T) \sim N(\ln S(0) + (\mu -\frac12 \sigma^2)T, \sigma^2T)$$</p>
-<p>股价函数 $S(T)$ 满足对数正态分布，且通过积分，其表达式为</p>
-<p>$$S(T) = S(0) \exp \bigg( \bigg(\mu -\frac12 \sigma^2 \bigg)T + \sigma B(T)   \bigg)$$</p>
-<p>股价的 <strong>连续复利期望收益率</strong> 并非 $\mu$ 而是 $\mu -\frac12 \sigma^2$。后者是几何平均，考虑了波动。连续复利收益率 $x = \frac{\ln S(T) - \ln S(0)}{T}$ 的分布是</p>
-<p>$$ x \sim N(\mu -\frac12 \sigma^2, \frac{\sigma^2}T)$$</p>
-<h2 id="Black-Scholes-微分方程"><a href="#Black-Scholes-微分方程" class="headerlink" title="Black-Scholes 微分方程"></a>Black-Scholes 微分方程</h2><p>前提： 欧式期权，股价 $S$ 是几何布朗运动 (股价满足对数正态分布), …</p>
-<p>$C$ : 欧式看涨期权的价格</p>
-<p>$S$ : 股价，是一个伊藤过程</p>
-<p>$C$ 是关于 $S$ 和 $t$ 的函数，记为 $C(S, t)$</p>
-<p>应用伊藤引理的, </p>
-<p>$$dC = \bigg(\frac{\partial C}{\partial S}\mu S + \frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} \sigma^2 S^2 \bigg)dt + \frac{\partial C}{\partial S} \sigma S dB$$</p>
-<p>离散化，取一个小区间 $\Delta t$</p>
-<p>$$\Delta C = \bigg(\frac{\partial C}{\partial S}\mu S + \frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} \sigma^2 S^2 \bigg)\Delta t + \frac{\partial C}{\partial S} \sigma S \Delta B$$</p>
-<p>$$\Delta S = \mu S \Delta t + \sigma S \Delta B$$</p>
-<p><strong>Delta-对冲</strong> :把布朗运动 $\Delta B$ 对冲掉, $-1$ 份的 call option 加上 $\frac{\partial C}{\partial S}$ 份的股票，得到一个无风险的投资组合。</p>
-<p>$$\Delta P = - \Delta C + \frac{\partial C}{\partial S} \Delta S = - \bigg(\frac{\partial C}{\partial S}\mu S + \frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} \sigma^2 S^2 - \frac{\partial C}{\partial S}\mu S \bigg)\Delta t \<br>= - \bigg(\frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} \sigma^2 S^2 \bigg)\Delta t $$</p>
+<p><span class="math display">\[\begin{aligned}
+df &amp;= \frac{\partial f}{\partial X}(adt+bdB) + \frac{\partial f}{\partial t}dt + \frac12 \frac{\partial^2f}{\partial X^2}(b^2dt) \\
+&amp;= \bigg(\frac{\partial f}{\partial X}a + \frac{\partial f}{\partial t} + \frac12 \frac{\partial^2f}{\partial X^2}b^2 \bigg)dt + \frac{\partial f}{\partial X}bdB
+\end{aligned}\]</span></p>
+<p>可见 <span class="math inline">\(f(X(t), t)\)</span> 和 <span class="math inline">\(X(t)\)</span> 一样也是一个伊藤过程。且其布朗运动不变。</p>
+<h2 id="几何布朗运动的随机微分方程求解">几何布朗运动的随机微分方程求解</h2>
+<p><span class="math display">\[dS= \mu Sdt + \sigma SdB\]</span></p>
+<p><span class="math inline">\(S\)</span> 是一个伊藤过程， <span class="math inline">\(a=\mu S, b=\sigma S\)</span>。</p>
+<p>令 <span class="math inline">\(f = \ln{S}\)</span>, 应用伊藤引理的一般形式，</p>
+<p><span class="math display">\[\begin{aligned}
+df &amp;= \bigg(\frac{\partial f}{\partial S}\mu S + 0 + \frac12 \frac{\partial^2f}{\partial S^2}\sigma^2 S^2 \bigg)dt + \frac{\partial f}{\partial S}\sigma SdB \\
+&amp;= \bigg(\mu - \frac12 \sigma^2 \bigg)dt +\sigma dB 
+\end{aligned}\]</span></p>
+<p>则 <span class="math inline">\(f\)</span> 是一个带漂移项的布朗运动。其漂移系数为 <span class="math inline">\(\mu -\frac12 \sigma^2\)</span>，扩散系数为 <span class="math inline">\(\sigma\)</span>。</p>
+<p><span class="math display">\[\ln S(T) \sim N(\ln S(0) + (\mu -\frac12 \sigma^2)T, \sigma^2T)\]</span></p>
+<p>股价函数 <span class="math inline">\(S(T)\)</span> 满足对数正态分布，且通过积分，其表达式为</p>
+<p><span class="math display">\[S(T) = S(0) \exp \bigg( \bigg(\mu -\frac12 \sigma^2 \bigg)T + \sigma B(T)   \bigg)\]</span></p>
+<p>股价的 <strong>连续复利期望收益率</strong> 并非 <span class="math inline">\(\mu\)</span> 而是 <span class="math inline">\(\mu -\frac12 \sigma^2\)</span>。后者是几何平均，考虑了波动。连续复利收益率 <span class="math inline">\(x = \frac{\ln S(T) - \ln S(0)}{T}\)</span> 的分布是</p>
+<p><span class="math display">\[ x \sim N(\mu -\frac12 \sigma^2, \frac{\sigma^2}T)\]</span></p>
+<h2 id="black-scholes-微分方程">Black-Scholes 微分方程</h2>
+<p>前提： 欧式期权，股价 <span class="math inline">\(S\)</span> 是几何布朗运动 (股价满足对数正态分布), ...</p>
+<p><span class="math inline">\(C\)</span> : 欧式看涨期权的价格</p>
+<p><span class="math inline">\(S\)</span> : 股价，是一个伊藤过程</p>
+<p><span class="math inline">\(C\)</span> 是关于 <span class="math inline">\(S\)</span> 和 <span class="math inline">\(t\)</span> 的函数，记为 <span class="math inline">\(C(S, t)\)</span></p>
+<p>应用伊藤引理的,</p>
+<p><span class="math display">\[dC = \bigg(\frac{\partial C}{\partial S}\mu S + \frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} \sigma^2 S^2 \bigg)dt + \frac{\partial C}{\partial S} \sigma S dB\]</span></p>
+<p>离散化，取一个小区间 <span class="math inline">\(\Delta t\)</span></p>
+<p><span class="math display">\[\Delta C = \bigg(\frac{\partial C}{\partial S}\mu S + \frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} \sigma^2 S^2 \bigg)\Delta t + \frac{\partial C}{\partial S} \sigma S \Delta B\]</span></p>
+<p><span class="math display">\[\Delta S = \mu S \Delta t + \sigma S \Delta B\]</span></p>
+<p><strong>Delta-对冲</strong> :把布朗运动 <span class="math inline">\(\Delta B\)</span> 对冲掉, <span class="math inline">\(-1\)</span> 份的 call option 加上 <span class="math inline">\(\frac{\partial C}{\partial S}\)</span> 份的股票，得到一个无风险的投资组合。</p>
+<p><span class="math display">\[\Delta P = - \Delta C + \frac{\partial C}{\partial S} \Delta S = - \bigg(\frac{\partial C}{\partial S}\mu S + \frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} \sigma^2 S^2 - \frac{\partial C}{\partial S}\mu S \bigg)\Delta t \\
+= - \bigg(\frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} \sigma^2 S^2 \bigg)\Delta t \]</span></p>
 <p>不存在无风险套利的市场中，</p>
-<p>$$\Delta P = rP\Delta t$$</p>
-<p>$$\therefore - \bigg(\frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} \sigma^2 S^2 \bigg) = rP = r(-C + \frac{\partial C}{\partial S} S)$$</p>
+<p><span class="math display">\[\Delta P = rP\Delta t\]</span></p>
+<p><span class="math display">\[\therefore - \bigg(\frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} \sigma^2 S^2 \bigg) = rP = r(-C + \frac{\partial C}{\partial S} S)\]</span></p>
 <p>于是得到 <strong>Black-Scholes 微分方程</strong>。非随机的微分方程。</p>
-<p>$$rC = \frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} \sigma^2 S^2 + r\frac{\partial C}{\partial S} S$$</p>
+<p><span class="math display">\[rC = \frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} \sigma^2 S^2 + r\frac{\partial C}{\partial S} S\]</span></p>
 <p>该微分方程存在边界条件</p>
-<p>$$C = \max {(S(T)-K, 0)}$$</p>
-<p>该方程的核心在于，$C$ 和 $S$ 的不确定性来自于同一个布朗运动 $B$，因而可以对冲。</p>
-<h2 id="风险中性定价理论"><a href="#风险中性定价理论" class="headerlink" title="风险中性定价理论"></a>风险中性定价理论</h2><p>利用边界条件求解BS微分方程就可以给欧式看涨期权 $C$ 定价。另一种方法是 <strong>风险中性定价</strong>，可以不求解BS。</p>
-<p>在BS中，注意到漂移系数 $\mu$ 被约去。这个值和风险偏好有关，越 Risk-averse 该值越高。因为这个值不影响BS，计算 C 时可以假设所有投资者风险中性，所要求的回报率都是无风险利率 $r$。于是可以用这个值贴现。</p>
-<h2 id="Black-Scholes-期权定价公式"><a href="#Black-Scholes-期权定价公式" class="headerlink" title="Black-Scholes 期权定价公式"></a>Black-Scholes 期权定价公式</h2><p>风险中性定价，</p>
-<p>$$C = e^{-rT}E[\max {(S(T)-K, 0)}]$$</p>
+<p><span class="math display">\[C = \max {(S(T)-K, 0)}\]</span></p>
+<p>该方程的核心在于，<span class="math inline">\(C\)</span> 和 <span class="math inline">\(S\)</span> 的不确定性来自于同一个布朗运动 <span class="math inline">\(B\)</span>，因而可以对冲。</p>
+<h2 id="风险中性定价理论">风险中性定价理论</h2>
+<p>利用边界条件求解BS微分方程就可以给欧式看涨期权 <span class="math inline">\(C\)</span> 定价。另一种方法是 <strong>风险中性定价</strong>，可以不求解BS。</p>
+<p>在BS中，注意到漂移系数 <span class="math inline">\(\mu\)</span> 被约去。这个值和风险偏好有关，越 Risk-averse 该值越高。因为这个值不影响BS，计算 C 时可以假设所有投资者风险中性，所要求的回报率都是无风险利率 <span class="math inline">\(r\)</span>。于是可以用这个值贴现。</p>
+<h2 id="black-scholes-期权定价公式">Black-Scholes 期权定价公式</h2>
+<p>风险中性定价，</p>
+<p><span class="math display">\[C = e^{-rT}E[\max {(S(T)-K, 0)}]\]</span></p>
 <!-- BS微分方程，
 
 $$rC = \frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} \sigma^2 S^2 + r\frac{\partial C}{\partial S} S$$ -->
-
-<p>股价 $S$ 满足对数正态分布，</p>
-<p>$$\ln S(T) \sim N(\ln S(0) + (\mu -\frac12 \sigma^2)T, \sigma^2T)$$</p>
-<p>$$\begin{aligned}<br>E[\max{(S_T-K, 0)}] &amp;= E[S_T-K | S_T&gt;K] \<br>&amp;= E[S_T|S_T&gt;K] - KP(S_T&gt;K) \<br>\end{aligned}$$</p>
-<p>$$\begin{aligned}<br>P(S_T&gt;K) &amp;=  P(\ln{S_T} &gt; \ln{K}) \<br>&amp;= P(\frac{\ln{S_T} - \ln{S_0} - (\mu-\frac{\sigma^2}{2})T}{\sigma\sqrt{T}} &gt; \frac{\ln{K} - \ln{S_0} - (\mu-\frac{\sigma^2}{2})T}{\sigma\sqrt{T}}) \<br>&amp;= P(\frac{\ln{S_T} - \ln{S_0} - (\mu-\frac{\sigma^2}{2})T}{\sigma\sqrt{T}} &lt; \frac{\ln{S_0/K} + (\mu-\frac{\sigma^2}{2})T}{\sigma\sqrt{T}})\<br>&amp;= N(\frac{\ln{S_0/K} + (\mu-\frac{\sigma^2}{2})T}{\sigma\sqrt{T}}) \<br>&amp;= N(d_2)<br>\end{aligned}$$</p>
-<p>$E[S_T|S_T&gt;K]$ 的求解用到了该<a target="_blank" rel="noopener" href="https://financetrainingcourse.com/education/wp-content/uploads/2011/03/Understanding.pdf">引理：</a></p>
-<hr>
-<p>If $\log S \sim N(\mu, \sigma^2)$, the expectation of truncated $\hat{S}(K)$ is </p>
-<p>$$E\hat{S} = \exp(\mu + \frac{\sigma^2}2) N(\sigma - D),$$</p>
+<p>股价 <span class="math inline">\(S\)</span> 满足对数正态分布，</p>
+<p><span class="math display">\[\ln S(T) \sim N(\ln S(0) + (\mu -\frac12 \sigma^2)T, \sigma^2T)\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+E[\max{(S_T-K, 0)}] &amp;= E[S_T-K | S_T&gt;K] \\
+&amp;= E[S_T|S_T&gt;K] - KP(S_T&gt;K) \\
+\end{aligned}\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+P(S_T&gt;K) &amp;=  P(\ln{S_T} &gt; \ln{K}) \\
+&amp;= P(\frac{\ln{S_T} - \ln{S_0} - (\mu-\frac{\sigma^2}{2})T}{\sigma\sqrt{T}} &gt; \frac{\ln{K} - \ln{S_0} - (\mu-\frac{\sigma^2}{2})T}{\sigma\sqrt{T}}) \\
+&amp;= P(\frac{\ln{S_T} - \ln{S_0} - (\mu-\frac{\sigma^2}{2})T}{\sigma\sqrt{T}} &lt; \frac{\ln{S_0/K} + (\mu-\frac{\sigma^2}{2})T}{\sigma\sqrt{T}})\\
+&amp;= N(\frac{\ln{S_0/K} + (\mu-\frac{\sigma^2}{2})T}{\sigma\sqrt{T}}) \\
+&amp;= N(d_2)
+\end{aligned}\]</span></p>
+<p><span class="math inline">\(E[S_T|S_T&gt;K]\)</span> 的求解用到了该<a target="_blank" rel="noopener" href="https://financetrainingcourse.com/education/wp-content/uploads/2011/03/Understanding.pdf">引理：</a></p>
+<hr />
+<p>If <span class="math inline">\(\log S \sim N(\mu, \sigma^2)\)</span>, the expectation of truncated <span class="math inline">\(\hat{S}(K)\)</span> is</p>
+<p><span class="math display">\[E\hat{S} = \exp(\mu + \frac{\sigma^2}2) N(\sigma - D),\]</span></p>
 <p>where</p>
-<p>$$D = \frac{log{K}-\mu}{\sigma}$$</p>
-<p>Proof: Using integral…</p>
-<hr>
-<p>在本例中，<br>$$\begin{aligned}<br>D  &amp;= \frac{\ln{K/S_0} - (\mu-\frac{\sigma^2}{2})T}{\sigma\sqrt{T}}\<br>\sigma-D &amp;=\frac{\ln{S_0/K} + (\mu-\frac{\sigma^2}{2})T + \sigma^2T}{\sigma\sqrt{T}} = \frac{\ln{S_0/K} + (\mu+\frac{\sigma^2}{2})T}{\sigma\sqrt{T}} \qquad \text{The } \sigma \text{ on both sides are different } \<br>\mu + \frac{\sigma^2}2 &amp;= \ln{S_0} + (\mu-\frac{\sigma^2}2)T + \frac{\sigma^2}{2}T = \ln{S_0} + \mu T \<br>E\hat{S} &amp;= S_0e^{\mu T}N(\frac{\ln{S_0/K} + (\mu+\frac{\sigma^2}{2})T}{\sigma\sqrt{T}}) = S_0e^{\mu T}N(d_1) = E[S_T|S_T&gt;K]<br>\end{aligned}$$</p>
-<p>代入 C 的表达式, $r=\mu$</p>
-<p>$$\begin{aligned}<br>C &amp;= e^{-rT}E[\max {(S(T)-K, 0)}] \<br>&amp;= e^{-rT}(E[S_T|S_T&gt;K] - KP(S_T&gt;K) ) \<br>&amp;= S_0N(d_1) - Ke^{-rT}N(d_2)<br>\end{aligned}$$</p>
+<p><span class="math display">\[D = \frac{log{K}-\mu}{\sigma}\]</span></p>
+<p>Proof: Using integral...</p>
+<hr />
+<p>在本例中， <span class="math display">\[\begin{aligned}
+D  &amp;= \frac{\ln{K/S_0} - (\mu-\frac{\sigma^2}{2})T}{\sigma\sqrt{T}}\\
+\sigma-D &amp;=\frac{\ln{S_0/K} + (\mu-\frac{\sigma^2}{2})T + \sigma^2T}{\sigma\sqrt{T}} = \frac{\ln{S_0/K} + (\mu+\frac{\sigma^2}{2})T}{\sigma\sqrt{T}} \text{ The sigma on both sides are different } \\
+\mu + \frac{\sigma^2}2 &amp;= \ln{S_0} + (\mu-\frac{\sigma^2}2)T + \frac{\sigma^2}{2}T = \ln{S_0} + \mu T \\
+E\hat{S} &amp;= S_0e^{\mu T}N(\frac{\ln{S_0/K} + (\mu+\frac{\sigma^2}{2})T}{\sigma\sqrt{T}}) = S_0e^{\mu T}N(d_1) = E[S_T|S_T&gt;K] \end{aligned}\]</span></p>
+<p>代入 C 的表达式, <span class="math inline">\(r=\mu\)</span></p>
+<p><span class="math display">\[\begin{aligned}
+C &amp;= e^{-rT}E[\max {(S(T)-K, 0)}] \\
+&amp;= e^{-rT}(E[S_T|S_T&gt;K] - KP(S_T&gt;K) ) \\
+&amp;= S_0N(d_1) - Ke^{-rT}N(d_2) \end{aligned}\]</span></p>
 <p>整理结果，Black-Scholes 公式：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Barray%7D%7Brrll%7D+&C&=&S(0)N(d_1)-Ke%5E%7B-rT%7DN(d_2)%5C%5C%5C%5C+&P&=&Ke%5E%7B-rT%7DN(-d_2)-S(0)N(-d_1)%5C%5C%5C%5C+%5Cmbox%7Bwhere%7D&d_1&=&%5Cdisplaystyle%5Cfrac%7B%5Cln(S(0)/K)+(r+%5Csigma%5E2/2)T%7D%7B%5Csigma%5Csqrt+T%7D%5C%5C%5C%5C+&d_2&=&%5Cdisplaystyle%5Cfrac%7B%5Cln(S(0)/K)+(r-%5Csigma%5E2/2)T%7D%7B%5Csigma%5Csqrt+T%7D=d_1-%5Csigma%5Csqrt+T%5C%5C%5C%5C+&N&:&%5Cmbox%7Bcumulative+distribution+function+of+standard+Normal%7D+%5Cend%7Barray%7D"></p>
-<p>$N(d_2)$ 表示该期权被行权的概率。 </p>
-<p>$$N(d_2) = P(S_T&gt;K)$$</p>
-<p>$N(d_1)$更为复杂，没有比较直观的表述</p>
-<p>$$N(d_1) = \frac{E[S_T|S_T&gt;K]}{e^{rT}S_0}$$</p>
-<p>$$N(d_1)S_0 = \frac{E[S_T|S_T&gt;K]}{e^{rT}}$$</p>
-<p>“Thus, N(d1) is the factor by which the present value of contingent receipt of the stock exceeds the current stock price.”</p>
-<p>$$N(d_1) = \frac{\partial C}{\partial S_0}$$</p>
-<p>所以 $N(d_1)$ 衡量 call 和 stock 价格的敏感性。</p>
-<h2 id="5类风险敞口"><a href="#5类风险敞口" class="headerlink" title="5类风险敞口"></a>5类风险敞口</h2><p>$$Vega = \frac{\partial C}{\partial S} = N(d_1)$$</p>
-<p>$$\gamma = \frac{\partial^2 C}{\partial S^2}$$</p>
-<p>$$\Delta = \frac{\Delta C}{\Delta S}$$</p>
-<p>$$\rho = \frac{\partial^2 C}{\partial r^2}$$</p>
-<p>$$\theta = \frac{\partial^2 C}{\partial T^2}$$</p>
-<h2 id="其他期权定价"><a href="#其他期权定价" class="headerlink" title="其他期权定价"></a>其他期权定价</h2><p>欧式看跌 european put 直接使用期权平价公式 put-call parity.</p>
-<h2 id="Understanding-N-d1-and-N-d2-Risk-Adjusted-Probabilities-in-the-Black-Scholes-Model"><a href="#Understanding-N-d1-and-N-d2-Risk-Adjusted-Probabilities-in-the-Black-Scholes-Model" class="headerlink" title="Understanding N(d1) and N(d2): Risk-Adjusted Probabilities in the Black-Scholes Model"></a>Understanding N(d1) and N(d2): Risk-Adjusted Probabilities in the Black-Scholes Model</h2><div class="pdfobject-container" data-target="./Understanding_N(d1)_and_N(d2).pdf" data-height="1000px"></div> 
+<p><img src="布朗运动与伊藤引理\equation.jpg" /></p>
+<p><span class="math inline">\(N(d_2)\)</span> 表示该期权被行权的概率。</p>
+<p><span class="math display">\[N(d_2) = P(S_T&gt;K)\]</span></p>
+<p><span class="math inline">\(N(d_1)\)</span>更为复杂，没有比较直观的表述</p>
+<p><span class="math display">\[N(d_1) = \frac{E[S_T|S_T&gt;K]}{e^{rT}S_0}\]</span></p>
+<p><span class="math display">\[N(d_1)S_0 = \frac{E[S_T|S_T&gt;K]}{e^{rT}}\]</span></p>
+<p>"Thus, N(d1) is the factor by which the present value of contingent receipt of the stock exceeds the current stock price."</p>
+<p><span class="math display">\[N(d_1) = \frac{\partial C}{\partial S_0}\]</span></p>
+<p>所以 <span class="math inline">\(N(d_1)\)</span> 衡量 call 和 stock 价格的敏感性。</p>
+<h2 id="类风险敞口">5类风险敞口</h2>
+<p><span class="math display">\[Vega = \frac{\partial C}{\partial S} = N(d_1)\]</span></p>
+<p><span class="math display">\[\gamma = \frac{\partial^2 C}{\partial S^2}\]</span></p>
+<p><span class="math display">\[\Delta = \frac{\Delta C}{\Delta S}\]</span></p>
+<p><span class="math display">\[\rho = \frac{\partial^2 C}{\partial r^2}\]</span></p>
+<p><span class="math display">\[\theta = \frac{\partial^2 C}{\partial T^2}\]</span></p>
+<h2 id="其他期权定价">其他期权定价</h2>
+<p>欧式看跌 european put 直接使用期权平价公式 put-call parity.</p>
+<h2 id="understanding-nd1-and-nd2-risk-adjusted-probabilities-in-the-black-scholes-model">Understanding N(d1) and N(d2): Risk-Adjusted Probabilities in the Black-Scholes Model</h2>
+<div class="pdfobject-container" data-target="./Understanding_N(d1)_and_N(d2).pdf" data-height="1000px"></div>
+
     </div>
 
     
@@ -473,7 +524,7 @@ $$rC = \frac{\partial C}{\partial t} + \frac12 \frac{\partial^2C}{\partial S^2} 
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">引用:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8"><span class="nav-number">2.</span> <span class="nav-text">布朗运动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E6%AC%A1%E5%8F%98%E5%88%86"><span class="nav-number">3.</span> <span class="nav-text">二次变分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%A0%E4%BD%95%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8"><span class="nav-number">4.</span> <span class="nav-text">几何布朗运动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%8A%E8%97%A4%E5%BC%95%E7%90%86"><span class="nav-number">5.</span> <span class="nav-text">伊藤引理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%8A%E8%97%A4%E5%BC%95%E7%90%86-%E4%B8%80%E8%88%AC%E5%BD%A2%E5%BC%8F"><span class="nav-number">6.</span> <span class="nav-text">伊藤引理-一般形式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%A0%E4%BD%95%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8%E7%9A%84%E9%9A%8F%E6%9C%BA%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E6%B1%82%E8%A7%A3"><span class="nav-number">7.</span> <span class="nav-text">几何布朗运动的随机微分方程求解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Black-Scholes-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B"><span class="nav-number">8.</span> <span class="nav-text">Black-Scholes 微分方程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A3%8E%E9%99%A9%E4%B8%AD%E6%80%A7%E5%AE%9A%E4%BB%B7%E7%90%86%E8%AE%BA"><span class="nav-number">9.</span> <span class="nav-text">风险中性定价理论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Black-Scholes-%E6%9C%9F%E6%9D%83%E5%AE%9A%E4%BB%B7%E5%85%AC%E5%BC%8F"><span class="nav-number">10.</span> <span class="nav-text">Black-Scholes 期权定价公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%E7%B1%BB%E9%A3%8E%E9%99%A9%E6%95%9E%E5%8F%A3"><span class="nav-number">11.</span> <span class="nav-text">5类风险敞口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%9C%9F%E6%9D%83%E5%AE%9A%E4%BB%B7"><span class="nav-number">12.</span> <span class="nav-text">其他期权定价</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Understanding-N-d1-and-N-d2-Risk-Adjusted-Probabilities-in-the-Black-Scholes-Model"><span class="nav-number">13.</span> <span class="nav-text">Understanding N(d1) and N(d2): Risk-Adjusted Probabilities in the Black-Scholes Model</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">引用:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8"><span class="nav-number">2.</span> <span class="nav-text">布朗运动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E6%AC%A1%E5%8F%98%E5%88%86"><span class="nav-number">3.</span> <span class="nav-text">二次变分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%A0%E4%BD%95%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8"><span class="nav-number">4.</span> <span class="nav-text">几何布朗运动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%8A%E8%97%A4%E5%BC%95%E7%90%86"><span class="nav-number">5.</span> <span class="nav-text">伊藤引理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%8A%E8%97%A4%E5%BC%95%E7%90%86-%E4%B8%80%E8%88%AC%E5%BD%A2%E5%BC%8F"><span class="nav-number">6.</span> <span class="nav-text">伊藤引理-一般形式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%A0%E4%BD%95%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8%E7%9A%84%E9%9A%8F%E6%9C%BA%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E6%B1%82%E8%A7%A3"><span class="nav-number">7.</span> <span class="nav-text">几何布朗运动的随机微分方程求解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#black-scholes-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B"><span class="nav-number">8.</span> <span class="nav-text">Black-Scholes 微分方程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A3%8E%E9%99%A9%E4%B8%AD%E6%80%A7%E5%AE%9A%E4%BB%B7%E7%90%86%E8%AE%BA"><span class="nav-number">9.</span> <span class="nav-text">风险中性定价理论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#black-scholes-%E6%9C%9F%E6%9D%83%E5%AE%9A%E4%BB%B7%E5%85%AC%E5%BC%8F"><span class="nav-number">10.</span> <span class="nav-text">Black-Scholes 期权定价公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E9%A3%8E%E9%99%A9%E6%95%9E%E5%8F%A3"><span class="nav-number">11.</span> <span class="nav-text">5类风险敞口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%9C%9F%E6%9D%83%E5%AE%9A%E4%BB%B7"><span class="nav-number">12.</span> <span class="nav-text">其他期权定价</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#understanding-nd1-and-nd2-risk-adjusted-probabilities-in-the-black-scholes-model"><span class="nav-number">13.</span> <span class="nav-text">Understanding N(d1) and N(d2): Risk-Adjusted Probabilities in the Black-Scholes Model</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
