@@ -12,7 +12,7 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"hy2632.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Brief Before studying martingale pricing, Put-call parity of european options Replication portfolio for pricing the European call binomial tree for pricing the American put">
+  <meta name="description" content="简要 学习 鞅定价 (margingale pricing) 之前， Put-call parity of european options 欧式期权平价。 Replication portfolio for pricing the European call 复制组合 + 无套利是推导欧式期权定价的方法。 binomial tree for pricing the American put 二叉">
 <meta property="og:type" content="article">
 <meta property="og:title" content="IEOR E4706: Forwards, Swaps, Futures and Options">
 <meta property="og:url" content="https://hy2632.github.io/2021/02/09/IEOR-E4706-Forwards-Swaps-Futures-and-Options/index.html">
 <meta property="og:site_name" content="豁蒙楼">
-<meta property="og:description" content="Brief Before studying martingale pricing, Put-call parity of european options Replication portfolio for pricing the European call binomial tree for pricing the American put">
+<meta property="og:description" content="简要 学习 鞅定价 (margingale pricing) 之前， Put-call parity of european options 欧式期权平价。 Replication portfolio for pricing the European call 复制组合 + 无套利是推导欧式期权定价的方法。 binomial tree for pricing the American put 二叉">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-02-08T18:50:32.000Z">
-<meta property="article:modified_time" content="2021-02-08T17:03:31.444Z">
+<meta property="article:modified_time" content="2021-02-10T15:50:23.429Z">
 <meta property="article:author" content="姚华(Hua Yao)">
 <meta property="article:tag" content="Financial Engineering">
 <meta name="twitter:card" content="summary">
@@ -220,10 +220,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-02-08 13:50:32 / 修改时间：12:03:31" itemprop="dateCreated datePublished" datetime="2021-02-08T13:50:32-05:00">2021-02-08</time>
+              <time title="创建时间：2021-02-08 13:50:32" itemprop="dateCreated datePublished" datetime="2021-02-08T13:50:32-05:00">2021-02-08</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-10 10:50:23" itemprop="dateModified" datetime="2021-02-10T10:50:23-05:00">2021-02-10</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -259,12 +265,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="brief">Brief</h2>
-<p>Before studying <strong>martingale pricing</strong>,</p>
-<p>Put-call parity of european options</p>
-<p>Replication portfolio for pricing the European call</p>
-<p>binomial tree for pricing the American put</p>
-<p>Black-Scholes formula</p>
+        <h2 id="简要">简要</h2>
+<p>学习 <strong>鞅定价</strong> (margingale pricing) 之前，</p>
+<p>Put-call parity of european options 欧式期权平价。</p>
+<p>Replication portfolio for pricing the European call 复制组合 + 无套利是推导欧式期权定价的方法。</p>
+<p>binomial tree for pricing the American put 二叉树方法定价期权，美式看跌期权可以提前行权。</p>
+<p>Black-Scholes formula BS 公式。</p>
+<hr />
 <h2 id="forwards-远期">Forwards 远期</h2>
 <p>参数：<span class="math inline">\(t, T, F, S_T, f_T\)</span></p>
 <p>远期价值 <strong>value</strong>:</p>
@@ -287,6 +294,7 @@
 <p><span class="math display">\[F \leq \frac{S}{d(0,M)} + \sum_{j=0}^{M-1} {\frac{c_j}{d(j, M)}}\]</span></p>
 <p>convenience yield: 对于持有商品者是一个 negative cost</p>
 <p><span class="math display">\[F = \frac{S}{d(0,M)} + \sum_{j=0}^{M-1} {\frac{c_j - y}{d(j, M)}}\]</span></p>
+<hr />
 <h2 id="swaps-互换">Swaps 互换</h2>
 <p>最常见的是利率和货币互换。</p>
 <p>去除随机性, floating -&gt; fixed.</p>
@@ -310,6 +318,7 @@
 <p><span class="math display">\[ C = P \times (0, r_0 - r_f, r_1 - r_f, ..., r_{M-1} - r_f)\]</span></p>
 <p>浮动利率的部分恰好是面值为 <span class="math inline">\(P\)</span> 的浮动利率债券的派息，所以其贴现值为 <span class="math inline">\(P \left[1-d(0,M) \right]\)</span></p>
 <p><span class="math display">\[V = P \left[1-d(0,M) - r_f\sum_{i=1}^{M}{d(0,i)}\right]\]</span></p>
+<hr />
 <h2 id="期货-futures">期货 Futures</h2>
 <p>交易所，标准化合约，相比远期，减少了对手方风险 (counter-party risk)</p>
 <p>underlying asset 可以为任意变量，如板球比分。</p>
@@ -329,7 +338,102 @@
 <p>销售大宗商品 - 防止价格下跌，提前锁定价格 - 卖出 (sell short) 期货。</p>
 <p>完全对冲常常不存在: * 整数手数 * 标的资产存在差别 * 到期日不完全符合 * 期货价格 <span class="math inline">\(P_T\)</span> 和标的资产价格不线性。</p>
 <h4 id="最小方差对冲">最小方差对冲</h4>
-<p>创建一个投资组合</p>
+<p>创建一个投资组合，考虑 terminal day 需要对冲的现金流为 <span class="math inline">\(Z_T\)</span> ，买入 <span class="math inline">\(h\)</span> 手的期货进行对冲，<span class="math inline">\(t\)</span> 时刻的期货价格记为 <span class="math inline">\(F_t\)</span></p>
+<p><span class="math display">\[ Y_T  = Z_T + h(F_T - F_0)\]</span></p>
+<p>最小化方差</p>
+<p><span class="math display">\[ Var(Y_T) = Var(Z_T) + h^2Var(F_T) + 2hCov(Z_T, F_T)\]</span></p>
+<p><span class="math display">\[h^* = -\frac{Cov(Z_T, F_T)}{Var(F_T)}\]</span></p>
+<p><span class="math display">\[Var(Y_T^*) = Var(Z_T) - \frac{Cov(Z_T, F_T)^2}{Var(F_T)}\]</span></p>
+<p>可以看出完全对冲需要满足的条件是：期货价格与标的资产价格完全线性相关，即没有非线性项。实际上这一条件不成立，所以不存在完全对冲。</p>
+<p><span class="math display">\[Var(Z_T)Var(F_T) = Cov(Z_T, F_T)^2\]</span></p>
+<p><span class="math display">\[corr(Z_T, F_T) = \pm 1\]</span></p>
+<p>另一个结论是只要 <span class="math inline">\(E[F_T] \neq F_0\)</span>, <span class="math inline">\(E[Z_T] \neq E[Y_T^*]\)</span>，对冲就有作用。</p>
+<h4 id="例子">例子</h4>
+<p>假设 <span class="math inline">\(y = S_T W + (F_T - F_0)h\)</span>。 符号表示 <span class="math inline">\(\sigma_S^2 = Var(S_T), \sigma_F^2 = Var(F_T), \sigma_{ST} = Cov(S_T, F_T)\)</span>。 <span class="math inline">\(k\)</span> 是标的资产总价与期货每手价格的比值， <span class="math inline">\(h = -kw\)</span></p>
+<p><span class="math display">\[\sigma_y = W\sigma_S \sqrt{1+\left(\frac{S_0\sigma_F}{F_0\sigma_S}\right)^2-2\frac{S_0\sigma_{S,F}}{F_0\sigma_S^2}}\]</span></p>
+<p>当 <span class="math inline">\(S_T, F_T\)</span> 完全正相关，</p>
+<p><span class="math display">\[\sigma_y = W\sigma_S(1-\frac{S_0\sigma_{F}}{F_0\sigma_S})\]</span></p>
+<p>通常 <span class="math inline">\(\sigma_y\)</span> 仍然不是0。但在比例合适的情况下有可能实现完全对冲。</p>
+<h4 id="例子对冲盈利">例子：对冲盈利</h4>
+<p>假设现金流是两个产品利润之和，产品价格中的宏观经济项有几何布朗运动形式，经推导</p>
+<p><span class="math display">\[h^* = -Cov(R,S_2)/Var(S_2)\]</span></p>
+<h4 id="动态对冲策略-dynamic-hedging-strategy">动态对冲策略 dynamic hedging strategy</h4>
+<p>随着时间更新的动态的对冲策略。<span class="math inline">\(h_2\)</span> 是基于 <span class="math inline">\(t_1\)</span> 已有信息的函数。</p>
+<h3 id="备注">备注</h3>
+<p>常见的期货市场包括 利率期货 和 股指期货 (equity index futures)。指数期货而非指数本身被用于对冲指数期权。</p>
+<p>Roll the hedge forward: 期货到期日比合同日期更前。这样做的风险在于，假设目前市场上的期货合约到期日为 <span class="math inline">\(T_1 &lt; T_2\)</span>，在 0 时刻卖出一份这样的期货并在 <span class="math inline">\(T_1\)</span> 时刻平仓，然后在 <span class="math inline">\(T_1\)</span> 时刻卖出一份 <span class="math inline">\(T_2\)</span> 到期的期货，在 <span class="math inline">\(T_2\)</span> 平仓，那么 <span class="math inline">\(T_2\)</span> 净现金流为:</p>
+<p><span class="math display">\[Y_2 = F_1 - S_2\]</span></p>
+<p><span class="math inline">\(F_1\)</span>的风险仍然是未知的。</p>
+<p>关于期货价格 <span class="math inline">\(F_t\)</span> 的定价在鞅定价部分讨论。</p>
+<hr />
+<h2 id="intro-期权和二叉树模型">Intro: 期权和二叉树模型</h2>
+<p>定义：欧（美）式看涨（跌）期权...</p>
+<p>european-call 在 <span class="math inline">\(t &lt; T\)</span> 的内在价值是 <span class="math inline">\(\max{\{S_t-K, 0\}}\)</span>. european-put 反号。</p>
+<h3 id="期权定价的约束边界-无模型">期权定价的约束边界 (无模型)</h3>
+<p>标的资产价格 <span class="math inline">\(S_t\)</span> 是一个随机过程；期权的回报是关于标的资产价格的非线性函数；</p>
+<p>因而期权的定价需要建模。但无需模型也能得到一些必要条件。</p>
+<p>符号表示： <span class="math inline">\(C_E(t;K,T)\)</span> 表示欧式看涨在 <span class="math inline">\(t\)</span> 时刻的价格，行权价<span class="math inline">\(K\)</span>，到期日<span class="math inline">\(T\)</span>。</p>
+<p>美式期权的价格应不低于欧式期权，因其有更高的自由度。</p>
+<h4 id="期权平价欧式-put-call-parity">期权平价(欧式) put-call parity</h4>
+<p><span class="math display">\[p_E(t;K,T) + S_t = c_E(t;K,T) + Kd(t,T)\]</span></p>
+<blockquote>
+<p>Wiki: 一份由买入欧式看涨期权和卖出欧式看跌期权组合成的投资组合，其价格等于一份与它们有相同标的资产、行使价与到期日的远期合约的价格。这是因为在到期日，如果资产价格高于行使价，则会执行欧式看涨期权，反之则执行欧式看跌期权。在任一种情况下，都等于用行使价买入一单位标的资产。因此这个投资组合等价于在到期日用行使价买入一单位标的资产的远期合约。在无套利原则下，两者在初始的价格应当等同，此即买卖权平价关系。</p>
+</blockquote>
+<p>分析： - <span class="math inline">\(C-P\)</span> 在到期日必然执行其一： - 若 <span class="math inline">\(S_T &gt; K\)</span>，则主动执行 call， <span class="math inline">\(S_T - K\)</span>，盈利 - 若 <span class="math inline">\(S_T &lt; K\)</span>，则 put 被执行，<span class="math inline">\(S_T - K\)</span>，损失 - 无论哪一种都等同于成交价为 <span class="math inline">\(K\)</span> 的远期合约 - 价值等同于 <span class="math inline">\(S_t - Kd(t,T)\)</span></p>
+<p>对于该证券派息的情况，</p>
+<p><span class="math display">\[p_E(t;K,T) + S_t - D = c_E(t;K,T) + Kd(t,T)\]</span></p>
+<p><span class="math inline">\(D\)</span> 是所有股利的现值。</p>
+<p>假设无派息、<span class="math inline">\(S_T &gt; K\)</span> 和 <span class="math inline">\(S_T &lt; K\)</span> 都有正概率 （否则无风险套利）。于是 put 和 call 都有正价格。</p>
+<p><span class="math display">\[c_E(t;K,T) = S_t + p_E(t;K,T) - Kd(t,T) &gt; S_t - Kd(t,T)\]</span></p>
+<p>美式期权价格高于欧式</p>
+<p><span class="math display">\[c_A(t;K,T) \geq c_E(t;K,T) &gt; \max \{S_t - Kd(t,T),0\} \geq \max\{ S_t - K,0 \}\]</span></p>
+<p>上式表明</p>
+<ul>
+<li>当<span class="math inline">\(S_T &gt;/&lt; K\)</span> 都有正的概率 ，<strong>无派息股票的 American call 的价格总是严格大于其内在价值</strong>。</li>
+<li><strong>American call 提前行权总是不划算的</strong>。
+<ul>
+<li>call 是付 <span class="math inline">\(K\)</span> 得 <span class="math inline">\(S\)</span>。考虑 <span class="math inline">\(K\)</span> 的时间价值，晚支付更好。</li>
+</ul></li>
+</ul>
+<h3 id="一阶段二叉树模型-定价">一阶段二叉树模型 （定价）</h3>
+<p>一些参数：</p>
+<ul>
+<li><span class="math inline">\(R\)</span>：每阶段无风险增长比率。</li>
+<li><span class="math inline">\(u, p\)</span>：增长 / 减少比率。</li>
+<li><span class="math inline">\(S_0\)</span>：0时刻标的资产价格</li>
+</ul>
+<p>无套利要求</p>
+<p><span class="math display">\[d&lt;R&lt;u\]</span></p>
+<h4 id="复制组合定价">复制组合定价</h4>
+<p>假设买入x份 <span class="math inline">\(c_E\)</span> 和持有y份现金，<span class="math inline">\(T\)</span>时刻对应有两种实际收益 <span class="math inline">\(C_u, C_d\)</span>。</p>
+<p><span class="math display">\[uS_0x + Ry = C_u\]</span> <span class="math display">\[dS_0x + Ry = C_d\]</span></p>
+<p><span class="math display">\[\begin{bmatrix}u &amp;R \\d &amp;R\end{bmatrix} \begin{bmatrix}S_0x \\y\end{bmatrix} = \begin{bmatrix}C_u \\C_d\end{bmatrix}\]</span></p>
+<p><span class="math inline">\(0\)</span> 时刻复制组合的定价，也就是该看涨期权的定价</p>
+<p><span class="math display">\[\begin{aligned} S_0x + y &amp;=  \begin{bmatrix}1 &amp;1\end{bmatrix} \begin{bmatrix}S_0x \\y\end{bmatrix}\\
+&amp;= \begin{bmatrix}1 &amp;1\end{bmatrix} \begin{bmatrix}u &amp;R \\d &amp;R\end{bmatrix}^{-1}\begin{bmatrix}C_u \\C_d\end{bmatrix} \\
+&amp;= \begin{bmatrix}1 &amp;1\end{bmatrix} \begin{bmatrix}\frac{1}{u-d} &amp;-\frac{1}{(u-d)} \\-\frac{d}{R(u-d)} &amp;\frac{u}{R(u-d)} \end{bmatrix}\begin{bmatrix}C_u \\C_d\end{bmatrix} \\
+&amp;= C_u\frac{R-d}{R(u-d)} + C_d\frac{u-R}{R(u-d)} \\
+&amp;= \frac1R \left[ C_u \frac{R-d}{u-d} + C_d \frac{u-R}{u-d}  \right] \\
+&amp;= \frac1R \left[ qC_u + (1-q)C_d \right] \\
+&amp;= \frac1R E_0^Q[C1]
+\end{aligned}\]</span></p>
+<p>定义</p>
+<p><span class="math display">\[q = C_u \frac{R-d}{u-d}\]</span></p>
+<p>以上称为<strong>风险中性定价</strong> risk-neutral pricing，<span class="math inline">\(q, (1-q)\)</span> 称为<strong>风险中性概率</strong>。</p>
+<p>可以看出给期权定价用到的<strong>风险中性概率</strong>是由 <span class="math inline">\(u,d,R\)</span> 决定的，而不是由二叉树本身的概率分布 <span class="math inline">\(p\)</span> 决定。</p>
+<h3 id="多阶段二叉树模型">多阶段二叉树模型</h3>
+<p>多阶段不过是一阶段的多次叠加。最终结果的概率分布是二项分布（binomial distribution）。</p>
+<h4 id="c_e-的定价"><span class="math inline">\(c_E\)</span> 的定价</h4>
+<p>借助公式</p>
+<p><span class="math display">\[C_0 = \frac1{R^3}E_0^Q[\max{S_T-K, 0}]\]</span></p>
+<p>可以略去二叉树中间节点的繁琐计算。</p>
+<h4 id="p_a-的定价"><span class="math inline">\(p_A\)</span> 的定价</h4>
+<p><span class="math inline">\(c_A\)</span> 不提前行权，等同于 <span class="math inline">\(c_E\)</span></p>
+<p>美式的二叉树从最末端出发，每个节点处定价取 风险中性定价 和 内在价值的较大值</p>
+<p><span class="math display">\[ V_t(S) = \max{\left[K-S， \frac1RE_t^Q[V_{t+1}(S_{t+1})] \right] }\]</span></p>
+<hr />
+<h2 id="几何布朗运动校正后的二叉树模型">几何布朗运动校正后的二叉树模型</h2>
+<p>具体解释了为什么风险中性概率 <span class="math inline">\(q\)</span> 与上升概率 <span class="math inline">\(p\)</span> 无关，而仅与 <span class="math inline">\(u,d,R\)</span> 有关。</p>
 
     </div>
 
@@ -417,7 +521,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#brief"><span class="nav-number">1.</span> <span class="nav-text">Brief</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#forwards-%E8%BF%9C%E6%9C%9F"><span class="nav-number">2.</span> <span class="nav-text">Forwards 远期</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E8%BF%9C%E6%9C%9F%E7%9A%84%E4%BB%B7%E6%A0%BC-f"><span class="nav-number">2.1.</span> <span class="nav-text">计算远期的价格 \(F\)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9B%B6%E6%88%90%E6%9C%AC%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">2.1.1.</span> <span class="nav-text">零成本的情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%9E%E9%9B%B6%E6%88%90%E6%9C%AC%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">2.1.2.</span> <span class="nav-text">非零成本的情况</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E8%BF%9C%E6%9C%9F%E7%9A%84%E4%BB%B7%E5%80%BC-f_t-%E5%BD%93-t0"><span class="nav-number">2.2.</span> <span class="nav-text">计算远期的价值 \(f_t\)， 当 \(t&gt;0\)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tight-markets"><span class="nav-number">2.3.</span> <span class="nav-text">Tight Markets</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#swaps-%E4%BA%92%E6%8D%A2"><span class="nav-number">3.</span> <span class="nav-text">Swaps 互换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%8E%87%E4%BA%92%E6%8D%A2"><span class="nav-number">3.1.</span> <span class="nav-text">利率互换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%A7%E5%B8%81%E4%BA%92%E6%8D%A2"><span class="nav-number">3.2.</span> <span class="nav-text">货币互换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%92%E6%8D%A2%E7%9A%84%E5%AE%9A%E4%BB%B7"><span class="nav-number">3.3.</span> <span class="nav-text">互换的定价</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%8B%E5%95%86%E5%93%81%E4%BA%92%E6%8D%A2%E7%9A%84%E5%AE%9A%E4%BB%B7"><span class="nav-number">3.3.1.</span> <span class="nav-text">例：商品互换的定价</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%8B%E5%88%A9%E7%8E%87%E4%BA%92%E6%8D%A2%E7%9A%84%E5%AE%9A%E4%BB%B7"><span class="nav-number">3.3.2.</span> <span class="nav-text">例：利率互换的定价</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%9F%E8%B4%A7-futures"><span class="nav-number">4.</span> <span class="nav-text">期货 Futures</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8A%A3"><span class="nav-number">4.1.</span> <span class="nav-text">优劣</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%9F%E8%B4%A7%E4%BB%B7%E6%A0%BC-%E8%BF%9C%E6%9C%9F%E4%BB%B7%E6%A0%BC-%E5%8D%B3%E6%9C%9F%E4%BB%B7%E6%A0%BC-%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">4.2.</span> <span class="nav-text">期货价格 &#x2F; 远期价格 &#x2F; 即期价格 的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%9C%9F%E8%B4%A7%E5%AF%B9%E5%86%B2%E5%AE%8C%E5%85%A8%E5%AF%B9%E5%86%B2%E5%92%8C%E6%9C%80%E5%B0%8F%E6%96%B9%E5%B7%AE%E5%AF%B9%E5%86%B2-minimum-variance-hedges"><span class="nav-number">4.3.</span> <span class="nav-text">用期货对冲：完全对冲和最小方差对冲 Minimum-Variance Hedges</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%8C%E5%85%A8%E5%AF%B9%E5%86%B2"><span class="nav-number">4.3.1.</span> <span class="nav-text">完全对冲</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E6%96%B9%E5%B7%AE%E5%AF%B9%E5%86%B2"><span class="nav-number">4.3.2.</span> <span class="nav-text">最小方差对冲</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">简要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#forwards-%E8%BF%9C%E6%9C%9F"><span class="nav-number">2.</span> <span class="nav-text">Forwards 远期</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E8%BF%9C%E6%9C%9F%E7%9A%84%E4%BB%B7%E6%A0%BC-f"><span class="nav-number">2.1.</span> <span class="nav-text">计算远期的价格 \(F\)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9B%B6%E6%88%90%E6%9C%AC%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">2.1.1.</span> <span class="nav-text">零成本的情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%9E%E9%9B%B6%E6%88%90%E6%9C%AC%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">2.1.2.</span> <span class="nav-text">非零成本的情况</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E8%BF%9C%E6%9C%9F%E7%9A%84%E4%BB%B7%E5%80%BC-f_t-%E5%BD%93-t0"><span class="nav-number">2.2.</span> <span class="nav-text">计算远期的价值 \(f_t\)， 当 \(t&gt;0\)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tight-markets"><span class="nav-number">2.3.</span> <span class="nav-text">Tight Markets</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#swaps-%E4%BA%92%E6%8D%A2"><span class="nav-number">3.</span> <span class="nav-text">Swaps 互换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%8E%87%E4%BA%92%E6%8D%A2"><span class="nav-number">3.1.</span> <span class="nav-text">利率互换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%A7%E5%B8%81%E4%BA%92%E6%8D%A2"><span class="nav-number">3.2.</span> <span class="nav-text">货币互换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%92%E6%8D%A2%E7%9A%84%E5%AE%9A%E4%BB%B7"><span class="nav-number">3.3.</span> <span class="nav-text">互换的定价</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%8B%E5%95%86%E5%93%81%E4%BA%92%E6%8D%A2%E7%9A%84%E5%AE%9A%E4%BB%B7"><span class="nav-number">3.3.1.</span> <span class="nav-text">例：商品互换的定价</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%8B%E5%88%A9%E7%8E%87%E4%BA%92%E6%8D%A2%E7%9A%84%E5%AE%9A%E4%BB%B7"><span class="nav-number">3.3.2.</span> <span class="nav-text">例：利率互换的定价</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%9F%E8%B4%A7-futures"><span class="nav-number">4.</span> <span class="nav-text">期货 Futures</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8A%A3"><span class="nav-number">4.1.</span> <span class="nav-text">优劣</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%9F%E8%B4%A7%E4%BB%B7%E6%A0%BC-%E8%BF%9C%E6%9C%9F%E4%BB%B7%E6%A0%BC-%E5%8D%B3%E6%9C%9F%E4%BB%B7%E6%A0%BC-%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">4.2.</span> <span class="nav-text">期货价格 &#x2F; 远期价格 &#x2F; 即期价格 的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%9C%9F%E8%B4%A7%E5%AF%B9%E5%86%B2%E5%AE%8C%E5%85%A8%E5%AF%B9%E5%86%B2%E5%92%8C%E6%9C%80%E5%B0%8F%E6%96%B9%E5%B7%AE%E5%AF%B9%E5%86%B2-minimum-variance-hedges"><span class="nav-number">4.3.</span> <span class="nav-text">用期货对冲：完全对冲和最小方差对冲 Minimum-Variance Hedges</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%8C%E5%85%A8%E5%AF%B9%E5%86%B2"><span class="nav-number">4.3.1.</span> <span class="nav-text">完全对冲</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E6%96%B9%E5%B7%AE%E5%AF%B9%E5%86%B2"><span class="nav-number">4.3.2.</span> <span class="nav-text">最小方差对冲</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90"><span class="nav-number">4.3.3.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%E5%AF%B9%E5%86%B2%E7%9B%88%E5%88%A9"><span class="nav-number">4.3.4.</span> <span class="nav-text">例子：对冲盈利</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%AF%B9%E5%86%B2%E7%AD%96%E7%95%A5-dynamic-hedging-strategy"><span class="nav-number">4.3.5.</span> <span class="nav-text">动态对冲策略 dynamic hedging strategy</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%87%E6%B3%A8"><span class="nav-number">4.4.</span> <span class="nav-text">备注</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#intro-%E6%9C%9F%E6%9D%83%E5%92%8C%E4%BA%8C%E5%8F%89%E6%A0%91%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.</span> <span class="nav-text">Intro: 期权和二叉树模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%9F%E6%9D%83%E5%AE%9A%E4%BB%B7%E7%9A%84%E7%BA%A6%E6%9D%9F%E8%BE%B9%E7%95%8C-%E6%97%A0%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.1.</span> <span class="nav-text">期权定价的约束边界 (无模型)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%9F%E6%9D%83%E5%B9%B3%E4%BB%B7%E6%AC%A7%E5%BC%8F-put-call-parity"><span class="nav-number">5.1.1.</span> <span class="nav-text">期权平价(欧式) put-call parity</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E9%98%B6%E6%AE%B5%E4%BA%8C%E5%8F%89%E6%A0%91%E6%A8%A1%E5%9E%8B-%E5%AE%9A%E4%BB%B7"><span class="nav-number">5.2.</span> <span class="nav-text">一阶段二叉树模型 （定价）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%E7%BB%84%E5%90%88%E5%AE%9A%E4%BB%B7"><span class="nav-number">5.2.1.</span> <span class="nav-text">复制组合定价</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E9%98%B6%E6%AE%B5%E4%BA%8C%E5%8F%89%E6%A0%91%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.3.</span> <span class="nav-text">多阶段二叉树模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#c_e-%E7%9A%84%E5%AE%9A%E4%BB%B7"><span class="nav-number">5.3.1.</span> <span class="nav-text">\(c_E\) 的定价</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#p_a-%E7%9A%84%E5%AE%9A%E4%BB%B7"><span class="nav-number">5.3.2.</span> <span class="nav-text">\(p_A\) 的定价</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%A0%E4%BD%95%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8%E6%A0%A1%E6%AD%A3%E5%90%8E%E7%9A%84%E4%BA%8C%E5%8F%89%E6%A0%91%E6%A8%A1%E5%9E%8B"><span class="nav-number">6.</span> <span class="nav-text">几何布朗运动校正后的二叉树模型</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
