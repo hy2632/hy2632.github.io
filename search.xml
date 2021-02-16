@@ -3772,7 +3772,7 @@ P&#39;(0) (1+r)^2 = 0\]</span></p>
 <p>具体解释了为什么风险中性概率 <span class="math inline">\(q\)</span> 与上升概率 <span class="math inline">\(p\)</span> 无关，而仅与 <span class="math inline">\(u,d,R\)</span> 有关。</p>
 <hr />
 <h2 id="讲义">讲义</h2>
-<div class="pdfobject-container" data-target="./1for_swap_fut-options.pdf" data-height="1000px"></div>
+<div class="pdfobject-container" data-target="./1for_swap_fut_options.pdf" data-height="1000px"></div>
 ]]></content>
       <categories>
         <category>Finance</category>
@@ -8703,6 +8703,59 @@ sum
       </categories>
       <tags>
         <tag>Managerial Negotiation</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>IEOR E4706: Martingale Pricing Theory (Discrete Time&amp;Space)</title>
+    <url>/2021/02/15/IEOR-E4706-Martingale-Pricing-Theory-Discrete-Time-Space/</url>
+    <content><![CDATA[<h2 id="回顾：非齐次线性方程组的解与矩阵的列秩"><a href="#回顾：非齐次线性方程组的解与矩阵的列秩" class="headerlink" title="回顾：非齐次线性方程组的解与矩阵的列秩"></a>回顾：非齐次线性方程组的解与矩阵的列秩</h2><p>假设 $A: (m\times n), x:(n), b:(m)$，$Ax = b$</p>
+<p>若方程组有解，则 $b$ 是 $A$ 的列向量的线性组合。</p>
+<p>如果 $A$ 的列秩大于等于 $m$，$A$ 的列向量能够张成 $\mathbb{R}^m$，则对于任意 $b$， $Ax=b$ 有解。</p>
+<p>典型的 $m\times m$ 满秩矩阵 $A$ 可逆， $Ax=b$ 有唯一解 $A^{-1}b$。</p>
+<h2 id="单阶段的鞅定价理论"><a href="#单阶段的鞅定价理论" class="headerlink" title="单阶段的鞅定价理论"></a>单阶段的鞅定价理论</h2><h3 id="符号表示和定义"><a href="#符号表示和定义" class="headerlink" title="符号表示和定义"></a>符号表示和定义</h3><p>$t=1$ 时刻的不同状态: $\omega_1, …, \omega_m$。</p>
+<p>$S_0^{(i)}$: $0$ 时刻 $i$ 证券的价值。</p>
+<p>$S_1^{(i)}(\omega_j)$: $1$ 时刻第 $j$ 状态第 $i$ 证券的价值。</p>
+<p>$P = (p_1, …, p_m)$: 每个状态的<strong>真实</strong>概率分布</p>
+<h4 id="套利"><a href="#套利" class="headerlink" title="套利"></a>套利</h4><ul>
+<li>Type A arbitrage: $t=0$ 即刻获利， $t=1$ 没有成本。</li>
+<li>Type B arbitrage: $t=0$ 非正成本， $t=1$ 有正概率获利，零概率损失。</li>
+</ul>
+<h4 id="线性定价-Linear-pricing"><a href="#线性定价-Linear-pricing" class="headerlink" title="线性定价 Linear pricing"></a>线性定价 Linear pricing</h4><p>Type A 无套利要求，远期获利如果是两个证券的获利的组合，则当前定价也应是两个证券相同系数的线性组合。</p>
+<h4 id="Elementary-Securities-Attainability-amp-State-Prices"><a href="#Elementary-Securities-Attainability-amp-State-Prices" class="headerlink" title="Elementary Securities, Attainability &amp; State Prices"></a>Elementary Securities, Attainability &amp; State Prices</h4><p><strong>基本证券</strong>：</p>
+<p>对应 m 个状态，只有一种状态下收益为 1，其余为 0。$\mathbb{R}^m$ 的一组基。</p>
+<p><strong>可获得性</strong>：</p>
+<p>$$\begin{bmatrix} X(w_1) \…\X(w_m)\end{bmatrix} = </p>
+<p>\begin{bmatrix} S_1^{(0)}(w_1) &amp;… &amp;S_1^{(N)}(w_1)  \ &amp; …\ S_1^{(0)}(w_m) &amp;… &amp;S_1^{(N)}(w_m) \end{bmatrix}_{m\times(N+1)}</p>
+<p>\begin{bmatrix} \theta_0 \…\ \theta_N\end{bmatrix}<br>$$</p>
+<p>注：是 A 型套利 - 线性定价的延申。 $X = S_1\theta$， $\theta$ 称为复制组合。$X$ 是该组合 1 时刻的价值。</p>
+<p>例: 对于给定的 $S1$，能求出 $\theta$， $X$ 就 attainable。与资产的0时刻成本无关。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">S1 = np.array(</span><br><span class="line">    [</span><br><span class="line">        [<span class="number">1.03</span>, <span class="number">1.03</span>, <span class="number">1.03</span>, <span class="number">1.03</span>],</span><br><span class="line">        [<span class="number">3</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">5</span>],</span><br><span class="line">        [<span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">2</span>],</span><br><span class="line">    ]</span><br><span class="line">).T</span><br><span class="line"></span><br><span class="line">X = np.array([<span class="number">7.47</span>, <span class="number">6.97</span>, <span class="number">9.97</span>, <span class="number">10.47</span>])</span><br><span class="line"></span><br><span class="line">np.linalg.lstsq(S1, X)</span><br></pre></td></tr></table></figure>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">(<span class="built_in">array</span>([<span class="number">-1.</span> ,  <span class="number">1.5</span>,  <span class="number">2.</span> ]),</span><br><span class="line"> <span class="built_in">array</span>([<span class="number">1.22198944e-30</span>]),</span><br><span class="line"> <span class="number">3</span>,</span><br><span class="line"> <span class="built_in">array</span>([<span class="number">8.67020663</span>, <span class="number">2.82663493</span>, <span class="number">0.28504733</span>]))</span><br></pre></td></tr></table></figure>
+
+<p><strong>A型套利</strong>: 指 $\theta$ 满足<br>$S_0\theta &lt; 0$， $S_1\theta = 0$</p>
+<p><strong>B型套利</strong>:<br>$S_0\theta \leq 0$，  $S_1\theta \geq 0$(且不恒等于0)</p>
+<p><strong>状态价格</strong>:</p>
+<p>such $\pi :(m,)$ that:</p>
+<p>$$P = \pi^TX$$</p>
+<p>注：$\pi$ 使得任意可获得的证券 $X$ 能够被公允定价并不存在套利机会。</p>
+<p>如果 k-th Elementary security is attainable,</p>
+<p>$$P = \pi_k$$</p>
+<p>其价格必为 $\pi_k$。 同时所有不同的 state price 向量 $\pi$ 的第 k 项必然相同。</p>
+<p><strong>状态价格的求解</strong>：</p>
+<p>在例子中，我们有3种security，4种状态。</p>
+<p>$S_1$ 矩阵的每一列是一种 security 在 m 种状态下的价值。$S_0$ 是 N 种 security 在 0 时刻的价格。</p>
+<p>对某种资产，状态价格加权不同的状态得到 0 时刻资产的价值。</p>
+<p>$$S_0[i] = S_1^T[i]\pi$$</p>
+<p>对3种资产就建立了关于状态价格向量 $\pi$ 的方程组：</p>
+<p>$$S_0 = S_1^T \pi$$</p>
+<p>$S_1^T$ 是一个 $3\times 4$ 矩阵。一般的例子里无冗余资产，即 $S_1^T$ 的行满秩。列不满秩因而非齐次方程组 $S_0 = S_1^T\pi$ 的解 $\pi$ 有无穷多解。取合适的通解系数 $\epsilon$ 得到正解。</p>
+<h4 id="以-计价标准资产-numeraire-security-折价"><a href="#以-计价标准资产-numeraire-security-折价" class="headerlink" title="以 计价标准资产 (numeraire security) 折价"></a>以 计价标准资产 (numeraire security) 折价</h4><p>计价标准资产只需满足任意时刻价格严格为正。</p>
+]]></content>
+      <categories>
+        <category>Finance</category>
+      </categories>
+      <tags>
+        <tag>Financial Engineering</tag>
       </tags>
   </entry>
 </search>
