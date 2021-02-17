@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"hy2632.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="回顾：非齐次线性方程组的解与矩阵的列秩假设 $A: (m\times n), x:(n), b:(m)$，$Ax &#x3D; b$ 若方程组有解，则 $b$ 是 $A$ 的列向量的线性组合。 如果 $A$ 的列秩大于等于 $m$，$A$ 的列向量能够张成 $\mathbb{R}^m$，则对于任意 $b$， $Ax&#x3D;b$ 有解。 典型的 $m\times m$ 满秩矩阵 $A$ 可逆， $Ax&#x3D;b$ 有唯一">
+  <meta name="description" content="回顾：非齐次线性方程组的解与矩阵的列秩 假设 \(A: (m\times n), x:(n), b:(m)\)，\(Ax &#x3D; b\) 若方程组有解，则 \(b\) 是 \(A\) 的列向量的线性组合。 如果 \(A\) 的列秩大于等于 \(m\)，\(A\) 的列向量能够张成 \(\mathbb{R}^m\)，则对于任意 \(b\)， \(Ax&#x3D;b\) 有解。 典型的 \(m\times m\)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="IEOR E4706: Martingale Pricing Theory (Discrete Time&amp;Space)">
 <meta property="og:url" content="https://hy2632.github.io/2021/02/15/IEOR-E4706-Martingale-Pricing-Theory-Discrete-Time-Space/index.html">
 <meta property="og:site_name" content="豁蒙楼">
-<meta property="og:description" content="回顾：非齐次线性方程组的解与矩阵的列秩假设 $A: (m\times n), x:(n), b:(m)$，$Ax &#x3D; b$ 若方程组有解，则 $b$ 是 $A$ 的列向量的线性组合。 如果 $A$ 的列秩大于等于 $m$，$A$ 的列向量能够张成 $\mathbb{R}^m$，则对于任意 $b$， $Ax&#x3D;b$ 有解。 典型的 $m\times m$ 满秩矩阵 $A$ 可逆， $Ax&#x3D;b$ 有唯一">
+<meta property="og:description" content="回顾：非齐次线性方程组的解与矩阵的列秩 假设 \(A: (m\times n), x:(n), b:(m)\)，\(Ax &#x3D; b\) 若方程组有解，则 \(b\) 是 \(A\) 的列向量的线性组合。 如果 \(A\) 的列秩大于等于 \(m\)，\(A\) 的列向量能够张成 \(\mathbb{R}^m\)，则对于任意 \(b\)， \(Ax&#x3D;b\) 有解。 典型的 \(m\times m\)">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-02-15T01:51:11.000Z">
-<meta property="article:modified_time" content="2021-02-16T04:47:13.767Z">
+<meta property="article:modified_time" content="2021-02-17T08:25:47.945Z">
 <meta property="article:author" content="姚华(Hua Yao)">
 <meta property="article:tag" content="Financial Engineering">
 <meta name="twitter:card" content="summary">
@@ -228,7 +228,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-15 23:47:13" itemprop="dateModified" datetime="2021-02-15T23:47:13-05:00">2021-02-15</time>
+                <time title="修改时间：2021-02-17 03:25:47" itemprop="dateModified" datetime="2021-02-17T03:25:47-05:00">2021-02-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -265,48 +265,141 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="回顾：非齐次线性方程组的解与矩阵的列秩"><a href="#回顾：非齐次线性方程组的解与矩阵的列秩" class="headerlink" title="回顾：非齐次线性方程组的解与矩阵的列秩"></a>回顾：非齐次线性方程组的解与矩阵的列秩</h2><p>假设 $A: (m\times n), x:(n), b:(m)$，$Ax = b$</p>
-<p>若方程组有解，则 $b$ 是 $A$ 的列向量的线性组合。</p>
-<p>如果 $A$ 的列秩大于等于 $m$，$A$ 的列向量能够张成 $\mathbb{R}^m$，则对于任意 $b$， $Ax=b$ 有解。</p>
-<p>典型的 $m\times m$ 满秩矩阵 $A$ 可逆， $Ax=b$ 有唯一解 $A^{-1}b$。</p>
-<h2 id="单阶段的鞅定价理论"><a href="#单阶段的鞅定价理论" class="headerlink" title="单阶段的鞅定价理论"></a>单阶段的鞅定价理论</h2><h3 id="符号表示和定义"><a href="#符号表示和定义" class="headerlink" title="符号表示和定义"></a>符号表示和定义</h3><p>$t=1$ 时刻的不同状态: $\omega_1, …, \omega_m$。</p>
-<p>$S_0^{(i)}$: $0$ 时刻 $i$ 证券的价值。</p>
-<p>$S_1^{(i)}(\omega_j)$: $1$ 时刻第 $j$ 状态第 $i$ 证券的价值。</p>
-<p>$P = (p_1, …, p_m)$: 每个状态的<strong>真实</strong>概率分布</p>
-<h4 id="套利"><a href="#套利" class="headerlink" title="套利"></a>套利</h4><ul>
-<li>Type A arbitrage: $t=0$ 即刻获利， $t=1$ 没有成本。</li>
-<li>Type B arbitrage: $t=0$ 非正成本， $t=1$ 有正概率获利，零概率损失。</li>
+        <h2 id="回顾非齐次线性方程组的解与矩阵的列秩">回顾：非齐次线性方程组的解与矩阵的列秩</h2>
+<p>假设 <span class="math inline">\(A: (m\times n), x:(n), b:(m)\)</span>，<span class="math inline">\(Ax = b\)</span></p>
+<p>若方程组有解，则 <span class="math inline">\(b\)</span> 是 <span class="math inline">\(A\)</span> 的列向量的线性组合。</p>
+<p>如果 <span class="math inline">\(A\)</span> 的列秩大于等于 <span class="math inline">\(m\)</span>，<span class="math inline">\(A\)</span> 的列向量能够张成 <span class="math inline">\(\mathbb{R}^m\)</span>，则对于任意 <span class="math inline">\(b\)</span>， <span class="math inline">\(Ax=b\)</span> 有解。</p>
+<p>典型的 <span class="math inline">\(m\times m\)</span> 满秩矩阵 <span class="math inline">\(A\)</span> 可逆， <span class="math inline">\(Ax=b\)</span> 有唯一解 <span class="math inline">\(A^{-1}b\)</span>。</p>
+<p>非齐次线性方程组有解的充分必要条件是其系数矩阵和增广矩阵的秩相等，即包含 <span class="math inline">\(b\)</span> 后的列空间没有变大，可以被稀疏矩阵的列向量表示。</p>
+<hr />
+<h2 id="单阶段的鞅定价理论">单阶段的鞅定价理论</h2>
+<h3 id="符号表示和定义">符号表示和定义</h3>
+<p><span class="math inline">\(t=1\)</span> 时刻的不同状态: <span class="math inline">\(\omega_1, ..., \omega_m\)</span>。</p>
+<p><span class="math inline">\(S_0^{(i)}\)</span>: <span class="math inline">\(0\)</span> 时刻 <span class="math inline">\(i\)</span> 证券的价值。</p>
+<p><span class="math inline">\(S_1^{(i)}(\omega_j)\)</span>: <span class="math inline">\(1\)</span> 时刻第 <span class="math inline">\(j\)</span> 状态第 <span class="math inline">\(i\)</span> 证券的价值。</p>
+<p><span class="math inline">\(P = (p_1, ..., p_m)\)</span>: 每个状态的<strong>真实</strong>概率分布</p>
+<h4 id="套利">套利</h4>
+<ul>
+<li>Type A arbitrage: <span class="math inline">\(t=0\)</span> 即刻获利， <span class="math inline">\(t=1\)</span> 没有成本。</li>
+<li>Type B arbitrage: <span class="math inline">\(t=0\)</span> 非正成本， <span class="math inline">\(t=1\)</span> 有正概率获利，零概率损失。</li>
 </ul>
-<h4 id="线性定价-Linear-pricing"><a href="#线性定价-Linear-pricing" class="headerlink" title="线性定价 Linear pricing"></a>线性定价 Linear pricing</h4><p>Type A 无套利要求，远期获利如果是两个证券的获利的组合，则当前定价也应是两个证券相同系数的线性组合。</p>
-<h4 id="Elementary-Securities-Attainability-amp-State-Prices"><a href="#Elementary-Securities-Attainability-amp-State-Prices" class="headerlink" title="Elementary Securities, Attainability &amp; State Prices"></a>Elementary Securities, Attainability &amp; State Prices</h4><p><strong>基本证券</strong>：</p>
-<p>对应 m 个状态，只有一种状态下收益为 1，其余为 0。$\mathbb{R}^m$ 的一组基。</p>
+<h4 id="线性定价-linear-pricing">线性定价 Linear pricing</h4>
+<p>Type A 无套利要求，远期获利如果是两个证券的获利的组合，则当前定价也应是两个证券相同系数的线性组合。</p>
+<h4 id="elementary-securities-attainability-state-prices">Elementary Securities, Attainability &amp; State Prices</h4>
+<p><strong>基本证券</strong>：</p>
+<p>对应 m 个状态，只有一种状态下收益为 1，其余为 0。<span class="math inline">\(\mathbb{R}^m\)</span> 的一组基。</p>
 <p><strong>可获得性</strong>：</p>
-<p>$$\begin{bmatrix} X(w_1) \…\X(w_m)\end{bmatrix} = </p>
-<p>\begin{bmatrix} S_1^{(0)}(w_1) &amp;… &amp;S_1^{(N)}(w_1)  \ &amp; …\ S_1^{(0)}(w_m) &amp;… &amp;S_1^{(N)}(w_m) \end{bmatrix}_{m\times(N+1)}</p>
-<p>\begin{bmatrix} \theta_0 \…\ \theta_N\end{bmatrix}<br>$$</p>
-<p>注：是 A 型套利 - 线性定价的延申。 $X = S_1\theta$， $\theta$ 称为复制组合。$X$ 是该组合 1 时刻的价值。</p>
-<p>例: 对于给定的 $S1$，能求出 $\theta$， $X$ 就 attainable。与资产的0时刻成本无关。</p>
+$$
+<span class="math display">\[\begin{bmatrix} X(w_1) \\...\\X(w_m)\end{bmatrix}\]</span>
+<p>=</p>
+<span class="math display">\[\begin{bmatrix} S_1^{(0)}(w_1) &amp;... &amp;S_1^{(N)}(w_1)  \\ &amp; ...\\ S_1^{(0)}(w_m) &amp;... &amp;S_1^{(N)}(w_m) \end{bmatrix}\]</span>
+<p>_{m(N+1)}</p>
+<span class="math display">\[\begin{bmatrix} \theta_0 \\...\\ \theta_N\end{bmatrix}\]</span>
+<p>$$</p>
+<p>注：是 A 型套利 - 线性定价的延申。 <span class="math inline">\(X = S_1\theta\)</span>， <span class="math inline">\(\theta\)</span> 称为复制组合。<span class="math inline">\(X\)</span> 是该组合 1 时刻的价值。</p>
+<p>例: 对于给定的 <span class="math inline">\(S1\)</span>，能求出 <span class="math inline">\(\theta\)</span>， <span class="math inline">\(X\)</span> 就 attainable。与资产的0时刻成本无关。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">S1 = np.array(</span><br><span class="line">    [</span><br><span class="line">        [<span class="number">1.03</span>, <span class="number">1.03</span>, <span class="number">1.03</span>, <span class="number">1.03</span>],</span><br><span class="line">        [<span class="number">3</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">5</span>],</span><br><span class="line">        [<span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">2</span>],</span><br><span class="line">    ]</span><br><span class="line">).T</span><br><span class="line"></span><br><span class="line">X = np.array([<span class="number">7.47</span>, <span class="number">6.97</span>, <span class="number">9.97</span>, <span class="number">10.47</span>])</span><br><span class="line"></span><br><span class="line">np.linalg.lstsq(S1, X)</span><br></pre></td></tr></table></figure>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="built_in">array</span>([<span class="number">-1.</span> ,  <span class="number">1.5</span>,  <span class="number">2.</span> ]),</span><br><span class="line"> <span class="built_in">array</span>([<span class="number">1.22198944e-30</span>]),</span><br><span class="line"> <span class="number">3</span>,</span><br><span class="line"> <span class="built_in">array</span>([<span class="number">8.67020663</span>, <span class="number">2.82663493</span>, <span class="number">0.28504733</span>]))</span><br></pre></td></tr></table></figure>
-
-<p><strong>A型套利</strong>: 指 $\theta$ 满足<br>$S_0\theta &lt; 0$， $S_1\theta = 0$</p>
-<p><strong>B型套利</strong>:<br>$S_0\theta \leq 0$，  $S_1\theta \geq 0$(且不恒等于0)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(array([<span class="number">-1.</span> ,  <span class="number">1.5</span>,  <span class="number">2.</span> ]),</span><br><span class="line"> array([<span class="number">1.22198944e-30</span>]),</span><br><span class="line"> <span class="number">3</span>,</span><br><span class="line"> array([<span class="number">8.67020663</span>, <span class="number">2.82663493</span>, <span class="number">0.28504733</span>]))</span><br></pre></td></tr></table></figure>
+<p><strong>A型套利</strong>: 指 <span class="math inline">\(\theta\)</span> 满足 <span class="math inline">\(S_0\theta &lt; 0\)</span>， <span class="math inline">\(S_1\theta = 0\)</span></p>
+<p><strong>B型套利</strong>: <span class="math inline">\(S_0\theta \leq 0\)</span>， <span class="math inline">\(S_1\theta \geq 0\)</span>(且不恒等于0)</p>
 <p><strong>状态价格</strong>:</p>
-<p>such $\pi :(m,)$ that:</p>
-<p>$$P = \pi^TX$$</p>
-<p>注：$\pi$ 使得任意可获得的证券 $X$ 能够被公允定价并不存在套利机会。</p>
+<p>such <span class="math inline">\(\pi :(m,)\)</span> that:</p>
+<p><span class="math display">\[P = \pi^TX\]</span></p>
+<p>注：<span class="math inline">\(\pi\)</span> 使得任意可获得的证券 <span class="math inline">\(X\)</span> 能够被公允定价并不存在套利机会。</p>
 <p>如果 k-th Elementary security is attainable,</p>
-<p>$$P = \pi_k$$</p>
-<p>其价格必为 $\pi_k$。 同时所有不同的 state price 向量 $\pi$ 的第 k 项必然相同。</p>
+<p><span class="math display">\[P = \pi_k\]</span></p>
+<p>其价格必为 <span class="math inline">\(\pi_k\)</span>。 同时所有不同的 state price 向量 <span class="math inline">\(\pi\)</span> 的第 k 项必然相同。</p>
 <p><strong>状态价格的求解</strong>：</p>
 <p>在例子中，我们有3种security，4种状态。</p>
-<p>$S_1$ 矩阵的每一列是一种 security 在 m 种状态下的价值。$S_0$ 是 N 种 security 在 0 时刻的价格。</p>
+<p><span class="math inline">\(S_1\)</span> 矩阵的每一列是一种 security 在 m 种状态下的价值。<span class="math inline">\(S_0\)</span> 是 N 种 security 在 0 时刻的价格。</p>
 <p>对某种资产，状态价格加权不同的状态得到 0 时刻资产的价值。</p>
-<p>$$S_0[i] = S_1^T[i]\pi$$</p>
-<p>对3种资产就建立了关于状态价格向量 $\pi$ 的方程组：</p>
-<p>$$S_0 = S_1^T \pi$$</p>
-<p>$S_1^T$ 是一个 $3\times 4$ 矩阵。一般的例子里无冗余资产，即 $S_1^T$ 的行满秩。列不满秩因而非齐次方程组 $S_0 = S_1^T\pi$ 的解 $\pi$ 有无穷多解。取合适的通解系数 $\epsilon$ 得到正解。</p>
-<h4 id="以-计价标准资产-numeraire-security-折价"><a href="#以-计价标准资产-numeraire-security-折价" class="headerlink" title="以 计价标准资产 (numeraire security) 折价"></a>以 计价标准资产 (numeraire security) 折价</h4><p>计价标准资产只需满足任意时刻价格严格为正。</p>
+<p><span class="math display">\[S_0[i] = S_1^T[i]\pi\]</span></p>
+<p>对3种资产就建立了关于状态价格向量 <span class="math inline">\(\pi\)</span> 的方程组：</p>
+<p><span class="math display">\[S_0 = S_1^T \pi\]</span></p>
+<p><span class="math inline">\(S_1^T\)</span> 是一个 <span class="math inline">\(3\times 4\)</span> 矩阵。一般的例子里无冗余资产，即 <span class="math inline">\(S_1^T\)</span> 的行满秩。列不满秩因而非齐次方程组 <span class="math inline">\(S_0 = S_1^T\pi\)</span> 的解 <span class="math inline">\(\pi\)</span> 有无穷多解。取合适的通解系数 <span class="math inline">\(\epsilon\)</span> 得到正解。</p>
+<h4 id="以-计价标准资产-numeraire-security-折价">以 计价标准资产 (numeraire security) 折价</h4>
+<p><strong>计价标准资产</strong>(numeraire security)只需满足任意时刻价格严格为正。</p>
+<p>Deflated:</p>
+<p><span class="math display">\[\bar{S}_t^{(i)}(w_j) := \frac{S_t^{(i)}(w_j)}{S_t^{(n)}(w_j)}\]</span></p>
+<p>计价资产本身折价后为1。</p>
+<p><strong>现金账户</strong>(cash account)</p>
+<p>1 -&gt; 1+r。</p>
+<p>习惯第0个资产是现金账户。</p>
+<h4 id="等价鞅测度-emm-equivalent-martingale-measure">等价鞅测度 EMM (Equivalent Martingale Measure)</h4>
+<p>等价鞅测度 / 风险中性测度 满足： * 所有状态的概率大于零 * 折价后的证券价格是鞅</p>
+<p><span class="math display">\[\bar{S}_0^{(i)} := E_0^Q \left[\bar{S}_1^{(i)} \right]\]</span></p>
+<p>注意EMM 和某个 numeraire 是对应的。更换 numeraire 时发生测度变换，称为 EMM 变换。</p>
+<h4 id="完备市场-complete-markets">完备市场 Complete markets</h4>
+<p>完备市场具有所有的基本证券 (Elementary securities) <span class="math inline">\(e = [e_1, ..., e_m]^T\)</span>。</p>
+<p>某种证券 <span class="math inline">\(x\)</span> 在 <span class="math inline">\(1\)</span> 时刻的价值向量 (<span class="math inline">\(m\)</span> 种状态)</p>
+<p><span class="math display">\[x = [x_1 ... x_m]^T\]</span></p>
+<p>可以表示为基本证券的线性组合</p>
+<p><span class="math display">\[x = \sum_{i=1}^{m}{x_ie_i}\]</span></p>
+<p>根据 状态价格(state price) 的定义，也可理解为 <span class="math inline">\(\pi_k\)</span> 是基本证券 <span class="math inline">\(e_k\)</span> 的零时刻定价，</p>
+<p><span class="math display">\[S_0 = \sum_{i=1}^{m}{x_i \pi_i}\]</span></p>
+<p>如果所有的基本证券都存在，任意的 <span class="math inline">\(X\)</span> (m 维) 都 attainable，则称市场完备。</p>
+<hr />
+<h3 id="单阶段模型中的定价">单阶段模型中的定价</h3>
+<blockquote>
+<p><strong>Proposition 1</strong>: 若某个等价鞅测度 Q 存在， 则无套利。</p>
+</blockquote>
+<p>分析：</p>
+<p><span class="math display">\[\bar{S}_0^{(i)} := E_0^Q \left[\bar{S}_1^{(i)} \right]\]</span></p>
+<p>结合 EMM 定义中 <span class="math inline">\(q_k&gt;0\)</span> 以及 <span class="math inline">\(A, B\)</span> 型套利的定义可以证明 0 时刻价格无法取到负号。 用到的一个性质是资产价格为正。</p>
+<p>如果放松 <span class="math inline">\(q_k&gt;0\)</span> 的约束，就有可能取到负号，从而创造套利机会。</p>
+<blockquote>
+<p><strong>Theorem 2</strong>: 假设有一个严格为正的价格过程 <span class="math inline">\(S_t^{(n)}\)</span> 可以作为计价资产，且有一系列严格为正的状态价格 <span class="math inline">\(\pi\)</span>，则存在一个唯一对应的风险中性测度 <span class="math inline">\(Q\)</span>。</p>
+</blockquote>
+<p>证明：</p>
+<p><span class="math display">\[\begin{aligned}
+S_0^{(j)} &amp;= \sum_{k=1}^{m}{\pi_kS_1^{(j)}(w_k)} \\
+&amp;= \left(\sum_{l=1}^{m}{\pi_lS_1^{(n)}(w_l)}\right) \sum_{k=1}^{m}{ \frac{\pi_k S_1^{(n)}(w_k) }{\sum_{l=1}^{m}{\pi_lS_1^{(n)}(w_l)}} \frac{S_1^{(j)}(w_k)}{S_1^{(n)}(w_k)} }  \\
+&amp;= S_0^{(n)} \sum_{k=1}^{m}{ \frac{\pi_k S_1^{(n)}(w_k) }{\sum_{l=1}^{m}{\pi_lS_1^{(n)}(w_l)}} \frac{S_1^{(j)}(w_k)}{S_1^{(n)}(w_k)} } 
+\end{aligned}\]</span></p>
+<p>定义</p>
+<p><span class="math display">\[q_k := \frac{\pi_k S_1^{(n)}(w_k) }{\sum_{l=1}^{m}{\pi_lS_1^{(n)}(w_l)}}\]</span></p>
+<p>可以看出 <span class="math inline">\(Q\)</span> 和 numeraire 的价格、state price 是对应的。</p>
+<p>则可以得出 按某计价资产 deflate 的资产价格过程是鞅，以Q为测度。</p>
+<p><span class="math display">\[\begin{aligned}
+\frac{S_0^{(j)}}{S_0^{(n)}} &amp;= \sum_{k=1}^{m}{q_k \frac{S_1^{(j)}(w_k)}{S_1^{(n)}(w_k)} } &amp;= E_0^Q \left[\frac{S_1^{(j)}}{S_1^{(n)}} \right]
+\end{aligned}\]</span></p>
+<blockquote>
+<p><strong>Remark 3</strong>: 真实概率 <span class="math inline">\(P\)</span> 和 <span class="math inline">\(Q\)</span> 的唯一联系是 “等效” —— 有一一映射关系。</p>
+</blockquote>
+<h4 id="无套利-正状态价格-pi-存在-存在等价鞅测度-emm">无套利 = 正状态价格 <span class="math inline">\(\pi\)</span> 存在 = 存在等价鞅测度 EMM</h4>
+<blockquote>
+<p><strong>Theorem 3 &amp; 4</strong>: <span class="math inline">\(Ax=p, p\geq 0\)</span> 只在 <span class="math inline">\(p=0\)</span> 时有解，则存在 <span class="math inline">\(y&gt;0\)</span> 使得 <span class="math inline">\(A^Ty=0\)</span>。证明使用对偶规划。</p>
+<p>解释了在无套利情况下存在 state price <span class="math inline">\(\pi &gt; 0\)</span>。</p>
+</blockquote>
+<blockquote>
+<p><strong>Theorem 5 (First Fundamental Theorem of Asset Pricing)</strong>: 无套利、存在 EMM 、存在 Q 都是等价的。</p>
+</blockquote>
+<blockquote>
+<p><strong>Example 5</strong>:</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">S1 = np.array([</span><br><span class="line">    [<span class="number">1.05</span>,<span class="number">2</span>,<span class="number">3</span>],</span><br><span class="line">    [<span class="number">1.05</span>,<span class="number">1</span>,<span class="number">2</span>]</span><br><span class="line">])</span><br><span class="line">S0 = np.array([<span class="number">1</span>, <span class="number">1.9571</span>, <span class="number">2.2048</span>])</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><span class="math inline">\(S_0 = S_1^T\pi\)</span> 系数矩阵 <span class="math inline">\(3\times2\)</span>，秩为2，增广矩阵秩为3。无解。</p>
+<p>因而没有一组正的 state price <span class="math inline">\(\pi\)</span>。有套利机会。</p>
+</blockquote>
+<blockquote>
+<p><strong>Exercise 4</strong>: 找到一个套利策略 <span class="math inline">\(\theta\)</span></p>
+<p>模仿 <strong>Theorem 4</strong> 的证明过程，写出 <span class="math inline">\((m+1)\times(N+1)\)</span> 的矩阵 <span class="math inline">\(A\)</span>， <span class="math display">\[A = \begin{bmatrix} S_1^{(0)}(w_1) &amp;... &amp;S_1^{(N)}(w_1)  \\ &amp; ...\\ S_1^{(0)}(w_m) &amp;... &amp;S_1^{(N)}(w_m) \\-S_0^{(0)} &amp;... &amp;-S_0^{(m)} \end{bmatrix} = \begin{bmatrix} 1.05 &amp;2 &amp;3  \\ 1.05 &amp;1 &amp;2 \\-1 &amp;-1.9571 &amp; -2.2048 \end{bmatrix}\]</span> 说明存在 <span class="math inline">\(x\)</span> 使得 <span class="math inline">\(Ax \geq 0\)</span> 且不恒等于0。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">A = np.array([</span><br><span class="line">    [<span class="number">1.05</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">    [<span class="number">1.05</span>, <span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">    [<span class="number">-1</span>, <span class="number">-1.9571</span>, <span class="number">-2.2048</span>]</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1000000</span>):</span><br><span class="line">    a = np.random.randn(<span class="number">3</span>)</span><br><span class="line">    <span class="keyword">if</span> (np.dot(A, a) &gt;= <span class="number">0</span>).sum() == <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">a, np.dot(A, a)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(array([ <span class="number">0.0886371</span> , <span class="number">-0.30878999</span>,  <span class="number">0.1865141</span> ]),</span><br><span class="line"> array([<span class="number">0.03503128</span>, <span class="number">0.15730717</span>, <span class="number">0.1044695</span> ]))</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>Theorem 6</strong>: 假设无套利，市场 <strong>完备</strong> 的充要条件是 <span class="math inline">\(S_1\)</span> 的秩为 <span class="math inline">\(m\)</span>。</p>
+<p>考虑到 <span class="math inline">\(S_1\)</span> 的行数为状态数 <span class="math inline">\(m\)</span>，则应当有 <span class="math inline">\(m\)</span> 种基本证券，<span class="math inline">\(n\geq m = r\)</span>。</p>
+<p><span class="math inline">\(n &lt; m\)</span> 的市场必然是不完备的。</p>
+</blockquote>
+<blockquote>
+<p><strong>Theorem 7 (Second Fundamental Theorem of Asset Pricing)</strong>: 假设存在一个计价资产 (严格为正的价格过程) 且无套利 (存在状态价格，EMM)，则市场完备的充要条件是有且仅有一个 EMM / <span class="math inline">\(\pi\)</span> / Q。</p>
+<p>证明：假设存在不可获得的 <span class="math inline">\(X\)</span>，使用对偶规划，得出存在另一个风险中性测度 <span class="math inline">\(\hat{Q} \neq Q\)</span>。</p>
+</blockquote>
+<hr />
+<h2 id="多阶段鞅定价理论">多阶段鞅定价理论</h2>
+<h3 id="符号表示和定义-1">符号表示和定义</h3>
 
     </div>
 
@@ -394,7 +487,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9E%E9%A1%BE%EF%BC%9A%E9%9D%9E%E9%BD%90%E6%AC%A1%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84%E7%9A%84%E8%A7%A3%E4%B8%8E%E7%9F%A9%E9%98%B5%E7%9A%84%E5%88%97%E7%A7%A9"><span class="nav-number">1.</span> <span class="nav-text">回顾：非齐次线性方程组的解与矩阵的列秩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E9%98%B6%E6%AE%B5%E7%9A%84%E9%9E%85%E5%AE%9A%E4%BB%B7%E7%90%86%E8%AE%BA"><span class="nav-number">2.</span> <span class="nav-text">单阶段的鞅定价理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%A6%E5%8F%B7%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text">符号表示和定义</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A5%97%E5%88%A9"><span class="nav-number">2.1.1.</span> <span class="nav-text">套利</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%AE%9A%E4%BB%B7-Linear-pricing"><span class="nav-number">2.1.2.</span> <span class="nav-text">线性定价 Linear pricing</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Elementary-Securities-Attainability-amp-State-Prices"><span class="nav-number">2.1.3.</span> <span class="nav-text">Elementary Securities, Attainability &amp; State Prices</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A5-%E8%AE%A1%E4%BB%B7%E6%A0%87%E5%87%86%E8%B5%84%E4%BA%A7-numeraire-security-%E6%8A%98%E4%BB%B7"><span class="nav-number">2.1.4.</span> <span class="nav-text">以 计价标准资产 (numeraire security) 折价</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9E%E9%A1%BE%E9%9D%9E%E9%BD%90%E6%AC%A1%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84%E7%9A%84%E8%A7%A3%E4%B8%8E%E7%9F%A9%E9%98%B5%E7%9A%84%E5%88%97%E7%A7%A9"><span class="nav-number">1.</span> <span class="nav-text">回顾：非齐次线性方程组的解与矩阵的列秩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E9%98%B6%E6%AE%B5%E7%9A%84%E9%9E%85%E5%AE%9A%E4%BB%B7%E7%90%86%E8%AE%BA"><span class="nav-number">2.</span> <span class="nav-text">单阶段的鞅定价理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%A6%E5%8F%B7%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text">符号表示和定义</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A5%97%E5%88%A9"><span class="nav-number">2.1.1.</span> <span class="nav-text">套利</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%AE%9A%E4%BB%B7-linear-pricing"><span class="nav-number">2.1.2.</span> <span class="nav-text">线性定价 Linear pricing</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#elementary-securities-attainability-state-prices"><span class="nav-number">2.1.3.</span> <span class="nav-text">Elementary Securities, Attainability &amp; State Prices</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A5-%E8%AE%A1%E4%BB%B7%E6%A0%87%E5%87%86%E8%B5%84%E4%BA%A7-numeraire-security-%E6%8A%98%E4%BB%B7"><span class="nav-number">2.1.4.</span> <span class="nav-text">以 计价标准资产 (numeraire security) 折价</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AD%89%E4%BB%B7%E9%9E%85%E6%B5%8B%E5%BA%A6-emm-equivalent-martingale-measure"><span class="nav-number">2.1.5.</span> <span class="nav-text">等价鞅测度 EMM (Equivalent Martingale Measure)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%8C%E5%A4%87%E5%B8%82%E5%9C%BA-complete-markets"><span class="nav-number">2.1.6.</span> <span class="nav-text">完备市场 Complete markets</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E9%98%B6%E6%AE%B5%E6%A8%A1%E5%9E%8B%E4%B8%AD%E7%9A%84%E5%AE%9A%E4%BB%B7"><span class="nav-number">2.2.</span> <span class="nav-text">单阶段模型中的定价</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%A0%E5%A5%97%E5%88%A9-%E6%AD%A3%E7%8A%B6%E6%80%81%E4%BB%B7%E6%A0%BC-pi-%E5%AD%98%E5%9C%A8-%E5%AD%98%E5%9C%A8%E7%AD%89%E4%BB%B7%E9%9E%85%E6%B5%8B%E5%BA%A6-emm"><span class="nav-number">2.2.1.</span> <span class="nav-text">无套利 &#x3D; 正状态价格 \(\pi\) 存在 &#x3D; 存在等价鞅测度 EMM</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E9%98%B6%E6%AE%B5%E9%9E%85%E5%AE%9A%E4%BB%B7%E7%90%86%E8%AE%BA"><span class="nav-number">3.</span> <span class="nav-text">多阶段鞅定价理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%A6%E5%8F%B7%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%AE%9A%E4%B9%89-1"><span class="nav-number">3.1.</span> <span class="nav-text">符号表示和定义</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
