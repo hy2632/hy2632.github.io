@@ -20,22 +20,22 @@
     var CONFIG = {"hostname":"hy2632.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="跨式期权(Straddle)简述 Systematic Trading P41 提及，做空 跨式期权(Straddle) 是一种负偏的交易策略。 Barings 的 Nick Leeson 在1995年 short straddle 损失 $1B。 How Did Nick Leeson Contribute To The Fall of Barings Bank? 使用场景：预测股价有大幅波动，">
+  <meta name="description" content="CAPM: the Capital Asset Pricing Model 资本资产定价模型 符号定义 市场组合： \(R_m, \sigma_{R_{m}}\) 某风险资产： risky asset: \(R, \sigma_R\) 由这两种资产构建的一个新的组合，下标 \(\alpha\)：">
 <meta property="og:type" content="article">
-<meta property="og:title" content="跨式Straddle">
-<meta property="og:url" content="https://hy2632.github.io/2021/01/01/%E8%B7%A8%E5%BC%8FStraddle/index.html">
+<meta property="og:title" content="IEOR E4706: Mean-Variance Optimization and the CAPM">
+<meta property="og:url" content="https://hy2632.github.io/2021/02/27/IEOR-E4706-Mean-Variance-Optimization-and-the-CAPM/index.html">
 <meta property="og:site_name" content="豁蒙楼">
-<meta property="og:description" content="跨式期权(Straddle)简述 Systematic Trading P41 提及，做空 跨式期权(Straddle) 是一种负偏的交易策略。 Barings 的 Nick Leeson 在1995年 short straddle 损失 $1B。 How Did Nick Leeson Contribute To The Fall of Barings Bank? 使用场景：预测股价有大幅波动，">
+<meta property="og:description" content="CAPM: the Capital Asset Pricing Model 资本资产定价模型 符号定义 市场组合： \(R_m, \sigma_{R_{m}}\) 某风险资产： risky asset: \(R, \sigma_R\) 由这两种资产构建的一个新的组合，下标 \(\alpha\)：">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/en/5/57/Longstraddle.png">
-<meta property="article:published_time" content="2020-12-31T21:21:55.000Z">
-<meta property="article:modified_time" content="2020-12-31T22:47:04.899Z">
+<meta property="og:image" content="https://hy2632.github.io/2021/02/27/IEOR-E4706-Mean-Variance-Optimization-and-the-CAPM/CAPM.jpg">
+<meta property="article:published_time" content="2021-02-26T22:09:30.000Z">
+<meta property="article:modified_time" content="2021-03-03T09:03:54.088Z">
 <meta property="article:author" content="姚华(Hua Yao)">
 <meta property="article:tag" content="Financial Engineering">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://upload.wikimedia.org/wikipedia/en/5/57/Longstraddle.png">
+<meta name="twitter:image" content="https://hy2632.github.io/2021/02/27/IEOR-E4706-Mean-Variance-Optimization-and-the-CAPM/CAPM.jpg">
 
-<link rel="canonical" href="https://hy2632.github.io/2021/01/01/%E8%B7%A8%E5%BC%8FStraddle/">
+<link rel="canonical" href="https://hy2632.github.io/2021/02/27/IEOR-E4706-Mean-Variance-Optimization-and-the-CAPM/">
 
 
 <script id="page-configurations">
@@ -48,7 +48,7 @@
   };
 </script>
 
-  <title>跨式Straddle | 豁蒙楼</title>
+  <title>IEOR E4706: Mean-Variance Optimization and the CAPM | 豁蒙楼</title>
   
 
 
@@ -200,7 +200,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2021/01/01/%E8%B7%A8%E5%BC%8FStraddle/">
+    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2021/02/27/IEOR-E4706-Mean-Variance-Optimization-and-the-CAPM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
@@ -213,7 +213,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          跨式Straddle
+          IEOR E4706: Mean-Variance Optimization and the CAPM
         </h1>
 
         <div class="post-meta">
@@ -222,10 +222,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-12-31 16:21:55 / 修改时间：17:47:04" itemprop="dateCreated datePublished" datetime="2020-12-31T16:21:55-05:00">2020-12-31</time>
+              <time title="创建时间：2021-02-26 17:09:30" itemprop="dateCreated datePublished" datetime="2021-02-26T17:09:30-05:00">2021-02-26</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-03 04:03:54" itemprop="dateModified" datetime="2021-03-03T04:03:54-05:00">2021-03-03</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -245,8 +251,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/2021/01/01/%E8%B7%A8%E5%BC%8FStraddle/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/01/01/跨式Straddle/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2021/02/27/IEOR-E4706-Mean-Variance-Optimization-and-the-CAPM/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/02/27/IEOR-E4706-Mean-Variance-Optimization-and-the-CAPM/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -261,17 +267,45 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="跨式期权straddle简述">跨式期权(Straddle)简述</h2>
-<p>Systematic Trading P41 提及，做空 <strong>跨式期权(Straddle)</strong> 是一种负偏的交易策略。</p>
-<p>Barings 的 Nick Leeson 在1995年 short straddle 损失 $1B。 <a target="_blank" rel="noopener" href="https://www.investopedia.com/ask/answers/08/nick-leeson-barings-bank.asp">How Did Nick Leeson Contribute To The Fall of Barings Bank?</a></p>
-<p>使用场景：预测股价有大幅波动，但不知道方向。当价格波动大时获利。但也要考虑到在出现可能的价格波动时期权价格也会上升。</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/en/5/57/Longstraddle.png" /></p>
-<p>以上的"V"字形跨式期权称作 底部跨式期权(bottom straddle) 或 买入跨式 (straddle purchase)。 做空这种期权叫做 顶部跨式期权(top straddle) / 卖出跨式 (straddle write)，呈倒V形，显然是负偏的交易策略 (损失有长尾)。</p>
-<h2 id="参考">参考</h2>
-<ul>
-<li><p><a target="_blank" rel="noopener" href="https://xueqiu.com/1216599649/43051495">什么是跨式期权(Straddle)策略</a></p></li>
-<li><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Straddle">Straddle - Wiki</a></p></li>
-</ul>
+        <h2 id="capm-the-capital-asset-pricing-model-资本资产定价模型">CAPM: the Capital Asset Pricing Model 资本资产定价模型</h2>
+<h3 id="符号定义">符号定义</h3>
+<p>市场组合： <span class="math inline">\(R_m, \sigma_{R_{m}}\)</span></p>
+<p>某风险资产： risky asset: <span class="math inline">\(R, \sigma_R\)</span></p>
+<p>由这两种资产构建的一个新的组合，下标 <span class="math inline">\(\alpha\)</span>：</p>
+<p><span class="math display">\[R_\alpha = \alpha \cdot R + (1-\alpha) \cdot R_m\]</span></p>
+<p><span class="math display">\[E[R_\alpha] = \alpha \cdot \bar{R} + (1-\alpha) \cdot \bar{R}_m\]</span></p>
+<p><span class="math display">\[\sigma^2_{R_{\alpha}} = \alpha^2 \sigma_R^2 + (1-\alpha)^2 \sigma_{R_m}^2 + 2\alpha(1-\alpha)\sigma_{R, R_m}\]</span></p>
+<h3 id="推导">推导</h3>
+<p>首先需要强调，CAPM 假设全体投资者都了解市场组合的存在并持有，</p>
+<p>定性的给出 <span class="math inline">\((\sigma_{R_\alpha}, E[R_\alpha])\)</span> 的曲线：</p>
+<p><img src="CAPM.jpg" height=300 align="middle"></p>
+<p>随着 <span class="math inline">\(\alpha\)</span> 变化，形成图中的虚线。</p>
+<p>该曲线不能超过有效前沿曲线，因为这里选取的风险资产本身是有效前沿内部的一个点，市场组合是有效前沿上的点，两者的组合自然在有效前沿内部。</p>
+<p>在推导有效前沿形状时，曾考虑一个最简单的两资产模型： - 如果这两个资产完全正相关，构成的组合在两点连成的线段上； - 完全负相关，则有效前沿形成一个 V 字形，最终在 y 轴上形成一个零风险但高于无风险利率的回报率； - 否则弯成一个二次曲线。</p>
+<p>当 <span class="math inline">\(\alpha = 0\)</span> 时该曲线应与 CML 切于市场组合点。根据该性质，推导该新组合和市场组合的关系。</p>
+<p><span class="math display">\[\frac{\partial E[R_\alpha]}{\partial \sigma_{R_\alpha}} \bigg |_{\alpha = 0} = 
+\left (\frac{dE[R_\alpha]}{d\alpha} \bigg / \frac{d\sigma_{R_\alpha}}{d\alpha} \right) \bigg|_{\alpha = 0}\]</span></p>
+<p>分别求解分子分母，</p>
+<p><span class="math display">\[\frac{dE[R_\alpha]}{d\alpha} = \bar{R} - \bar{R}_m\]</span></p>
+<p><span class="math display">\[\frac{d\sigma_{R_\alpha}}{d\alpha} = \frac{d\sigma^2_{R_\alpha}}{d\alpha} \bigg/ 2\sigma_{R_\alpha} \]</span></p>
+<p><span class="math display">\[\because \frac{d\sigma^2_{R_\alpha}}{d\alpha}  = 2 \sigma_R^2 \alpha + \sigma_{R_m}^2(2\alpha-2) + 2\sigma_{R, R_m}\]</span></p>
+<p><span class="math display">\[\therefore \frac{d\sigma_{R_\alpha}}{d\alpha} = 
+\frac{2 \sigma_R^2 \alpha + \sigma_{R_m}^2(2\alpha-2) + 2\sigma_{R, R_m}} {2\sigma_{R_\alpha}}\]</span></p>
+<p>当 <span class="math inline">\(\alpha = 0\)</span>，新的组合就是原来的市场组合，<span class="math inline">\(R_\alpha \equiv R_m\)</span></p>
+<p><span class="math display">\[\begin{aligned}
+\therefore \frac{d\sigma_{R_\alpha}}{d\alpha} \bigg|_{\alpha = 0} &amp;= 
+\frac{2 \sigma_R^2 \alpha + \sigma_{R_m}^2(2\alpha-2) + 2\sigma_{R, R_m}} {2\sigma_{R_\alpha}} \bigg|_{\alpha = 0} \\
+&amp;= \frac{-\sigma_{R_m}^2 + \sigma_{R, R_m}} {\sigma_{R_m}} 
+\end{aligned}\]</span></p>
+<p>综上，</p>
+<p><span class="math display">\[\frac{\partial E[R_\alpha]}{\partial \sigma_{R_\alpha}} \bigg |_{\alpha = 0} = \frac{(\bar{R} - \bar{R}_m)\sigma_{R_m}}{-\sigma_{R_m}^2 + \sigma_{R, R_m}}\]</span></p>
+<p>同时，资本市场线 CML 的斜率已知，</p>
+<p><span class="math display">\[\frac{\bar{R}_m - r_f}{\sigma_{R_m}}\]</span></p>
+<p>新组合曲线在市场组合这一点的斜率和 CML 相等，</p>
+<p><span class="math display">\[\therefore \frac{(\bar{R} - \bar{R}_m)\sigma_{R_m}}{-\sigma_{R_m}^2 + \sigma_{R, R_m}} = \frac{\bar{R}_m - r_f}{\sigma_{R_m}}\]</span></p>
+<p><span class="math display">\[\bar{R} - \bar{R}_m = \frac{-\sigma_{R_m}^2 + \sigma_{R, R_m}}{\sigma_{R_m}^2}(\bar{R}_m - r_f)\]</span></p>
+<p><span class="math display">\[\bar{R} - r_f = \frac{\sigma_{R, R_m}}{\sigma_{R_m}^2}(\bar{R}_m - r_f) = \beta (\bar{R}_m - r_f) \]</span></p>
+<p>其中 <span class="math inline">\(\beta = \frac{\sigma_{R, R_m}}{\sigma_{R_m}^2}\)</span>。</p>
 
     </div>
 
@@ -290,13 +324,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/12/26/Systematic-Trading-Early-Profit-Loss-Taker/" rel="prev" title="Systematic Trading: Early Profit/Loss Taker?">
-      <i class="fa fa-chevron-left"></i> Systematic Trading: Early Profit/Loss Taker?
+    <a href="/2021/02/27/IEOR-E4706-Term-Structure-Lattice-Models/" rel="prev" title="IEOR E4706: Term Structure Lattice Models">
+      <i class="fa fa-chevron-left"></i> IEOR E4706: Term Structure Lattice Models
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/02/02/Modern-Portfolio-Theory-Mean-variance-analysis-Efficient-Frontier/" rel="next" title="Modern Portfolio Theory / Mean-variance analysis / Efficient Frontier">
-      Modern Portfolio Theory / Mean-variance analysis / Efficient Frontier <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -362,7 +393,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%A8%E5%BC%8F%E6%9C%9F%E6%9D%83straddle%E7%AE%80%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">跨式期权(Straddle)简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">2.</span> <span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#capm-the-capital-asset-pricing-model-%E8%B5%84%E6%9C%AC%E8%B5%84%E4%BA%A7%E5%AE%9A%E4%BB%B7%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">CAPM: the Capital Asset Pricing Model 资本资产定价模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%A6%E5%8F%B7%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">符号定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A8%E5%AF%BC"><span class="nav-number">1.2.</span> <span class="nav-text">推导</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -584,9 +615,9 @@ document.querySelectorAll('.pdfobject-container').forEach(element => {
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "https://hy2632.github.io/2021/01/01/%E8%B7%A8%E5%BC%8FStraddle/";
-    this.page.identifier = "2021/01/01/跨式Straddle/";
-    this.page.title = "跨式Straddle";
+    this.page.url = "https://hy2632.github.io/2021/02/27/IEOR-E4706-Mean-Variance-Optimization-and-the-CAPM/";
+    this.page.identifier = "2021/02/27/IEOR-E4706-Mean-Variance-Optimization-and-the-CAPM/";
+    this.page.title = "IEOR E4706: Mean-Variance Optimization and the CAPM";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
     if (window.DISQUS) {

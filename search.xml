@@ -5034,7 +5034,7 @@ Model Accuracy = 0.9619</code></pre>
 <li>YUXIN ZHANG (yz3718@columbia.edu)</li>
 </ul>
 <h3 id="正文">正文:</h3>
-<div class="pdfobject-container" data-target="./BAS_FINAL_YAO.pdf" data-height="1000px"></div>
+<div class="pdfobject-container" data-target="./BAS_FINAL.pdf" data-height="1000px"></div>
 ]]></content>
       <categories>
         <category>报告</category>
@@ -9092,6 +9092,68 @@ sum
       </categories>
       <tags>
         <tag>Managerial Negotiation</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>IEOR E4706: Mean-Variance Optimization and the CAPM</title>
+    <url>/2021/02/27/IEOR-E4706-Mean-Variance-Optimization-and-the-CAPM/</url>
+    <content><![CDATA[<h2 id="capm-the-capital-asset-pricing-model-资本资产定价模型">CAPM: the Capital Asset Pricing Model 资本资产定价模型</h2>
+<h3 id="符号定义">符号定义</h3>
+<p>市场组合： <span class="math inline">\(R_m, \sigma_{R_{m}}\)</span></p>
+<p>某风险资产： risky asset: <span class="math inline">\(R, \sigma_R\)</span></p>
+<p>由这两种资产构建的一个新的组合，下标 <span class="math inline">\(\alpha\)</span>：</p>
+<p><span class="math display">\[R_\alpha = \alpha \cdot R + (1-\alpha) \cdot R_m\]</span></p>
+<p><span class="math display">\[E[R_\alpha] = \alpha \cdot \bar{R} + (1-\alpha) \cdot \bar{R}_m\]</span></p>
+<p><span class="math display">\[\sigma^2_{R_{\alpha}} = \alpha^2 \sigma_R^2 + (1-\alpha)^2 \sigma_{R_m}^2 + 2\alpha(1-\alpha)\sigma_{R, R_m}\]</span></p>
+<h3 id="推导">推导</h3>
+<p>首先需要强调，CAPM 假设全体投资者都了解市场组合的存在并持有，</p>
+<p>定性的给出 <span class="math inline">\((\sigma_{R_\alpha}, E[R_\alpha])\)</span> 的曲线：</p>
+<p><img src="CAPM.jpg" height=300 align="middle"></p>
+<p>随着 <span class="math inline">\(\alpha\)</span> 变化，形成图中的虚线。</p>
+<p>该曲线不能超过有效前沿曲线，因为这里选取的风险资产本身是有效前沿内部的一个点，市场组合是有效前沿上的点，两者的组合自然在有效前沿内部。</p>
+<p>在推导有效前沿形状时，曾考虑一个最简单的两资产模型： - 如果这两个资产完全正相关，构成的组合在两点连成的线段上； - 完全负相关，则有效前沿形成一个 V 字形，最终在 y 轴上形成一个零风险但高于无风险利率的回报率； - 否则弯成一个二次曲线。</p>
+<p>当 <span class="math inline">\(\alpha = 0\)</span> 时该曲线应与 CML 切于市场组合点。根据该性质，推导该新组合和市场组合的关系。</p>
+<p><span class="math display">\[\frac{\partial E[R_\alpha]}{\partial \sigma_{R_\alpha}} \bigg |_{\alpha = 0} = 
+\left (\frac{dE[R_\alpha]}{d\alpha} \bigg / \frac{d\sigma_{R_\alpha}}{d\alpha} \right) \bigg|_{\alpha = 0}\]</span></p>
+<p>分别求解分子分母，</p>
+<p><span class="math display">\[\frac{dE[R_\alpha]}{d\alpha} = \bar{R} - \bar{R}_m\]</span></p>
+<p><span class="math display">\[\frac{d\sigma_{R_\alpha}}{d\alpha} = \frac{d\sigma^2_{R_\alpha}}{d\alpha} \bigg/ 2\sigma_{R_\alpha} \]</span></p>
+<p><span class="math display">\[\because \frac{d\sigma^2_{R_\alpha}}{d\alpha}  = 2 \sigma_R^2 \alpha + \sigma_{R_m}^2(2\alpha-2) + 2\sigma_{R, R_m}\]</span></p>
+<p><span class="math display">\[\therefore \frac{d\sigma_{R_\alpha}}{d\alpha} = 
+\frac{2 \sigma_R^2 \alpha + \sigma_{R_m}^2(2\alpha-2) + 2\sigma_{R, R_m}} {2\sigma_{R_\alpha}}\]</span></p>
+<p>当 <span class="math inline">\(\alpha = 0\)</span>，新的组合就是原来的市场组合，<span class="math inline">\(R_\alpha \equiv R_m\)</span></p>
+<p><span class="math display">\[\begin{aligned}
+\therefore \frac{d\sigma_{R_\alpha}}{d\alpha} \bigg|_{\alpha = 0} &amp;= 
+\frac{2 \sigma_R^2 \alpha + \sigma_{R_m}^2(2\alpha-2) + 2\sigma_{R, R_m}} {2\sigma_{R_\alpha}} \bigg|_{\alpha = 0} \\
+&amp;= \frac{-\sigma_{R_m}^2 + \sigma_{R, R_m}} {\sigma_{R_m}} 
+\end{aligned}\]</span></p>
+<p>综上，</p>
+<p><span class="math display">\[\frac{\partial E[R_\alpha]}{\partial \sigma_{R_\alpha}} \bigg |_{\alpha = 0} = \frac{(\bar{R} - \bar{R}_m)\sigma_{R_m}}{-\sigma_{R_m}^2 + \sigma_{R, R_m}}\]</span></p>
+<p>同时，资本市场线 CML 的斜率已知，</p>
+<p><span class="math display">\[\frac{\bar{R}_m - r_f}{\sigma_{R_m}}\]</span></p>
+<p>新组合曲线在市场组合这一点的斜率和 CML 相等，</p>
+<p><span class="math display">\[\therefore \frac{(\bar{R} - \bar{R}_m)\sigma_{R_m}}{-\sigma_{R_m}^2 + \sigma_{R, R_m}} = \frac{\bar{R}_m - r_f}{\sigma_{R_m}}\]</span></p>
+<p><span class="math display">\[\bar{R} - \bar{R}_m = \frac{-\sigma_{R_m}^2 + \sigma_{R, R_m}}{\sigma_{R_m}^2}(\bar{R}_m - r_f)\]</span></p>
+<p><span class="math display">\[\bar{R} - r_f = \frac{\sigma_{R, R_m}}{\sigma_{R_m}^2}(\bar{R}_m - r_f) = \beta (\bar{R}_m - r_f) \]</span></p>
+<p>其中 <span class="math inline">\(\beta = \frac{\sigma_{R, R_m}}{\sigma_{R_m}^2}\)</span>。</p>
+]]></content>
+      <categories>
+        <category>Finance</category>
+      </categories>
+      <tags>
+        <tag>Financial Engineering</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>IEOR E4706: Term Structure Lattice Models</title>
+    <url>/2021/02/27/IEOR-E4706-Term-Structure-Lattice-Models/</url>
+    <content><![CDATA[<p>TBC.</p>
+]]></content>
+      <categories>
+        <category>Finance</category>
+      </categories>
+      <tags>
+        <tag>Financial Engineering</tag>
       </tags>
   </entry>
 </search>
