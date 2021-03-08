@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hy2632.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="链接  在去年12月，曾经整理过过布朗运动和伊藤引理。 概述金融期货和期权的一篇文章   Fun fact: 高斯积分 布朗运动 \(W_t \sim N(0,t)\)。在随机微积分部分涉及到高斯分布。由于高斯分布的密度函数包含 \(e^{-x^2}\) 的形式，其偶数阶矩和一系列变式的计算都涉及到该积分">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IEOR E4706: Stochastic Calculus">
+<meta property="og:url" content="https://hy2632.github.io/2021/03/07/IEOR-E4706-Stochastic-Calculus/index.html">
+<meta property="og:site_name" content="豁蒙楼">
+<meta property="og:description" content="链接  在去年12月，曾经整理过过布朗运动和伊藤引理。 概述金融期货和期权的一篇文章   Fun fact: 高斯积分 布朗运动 \(W_t \sim N(0,t)\)。在随机微积分部分涉及到高斯分布。由于高斯分布的密度函数包含 \(e^{-x^2}\) 的形式，其偶数阶矩和一系列变式的计算都涉及到该积分">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-07T01:07:40.000Z">
+<meta property="article:modified_time" content="2021-03-08T15:10:05.605Z">
+<meta property="article:author" content="姚华(Hua Yao)">
+<meta property="article:tag" content="Financial Engineering">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://hy2632.github.io/2021/03/07/IEOR-E4706-Stochastic-Calculus/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>IEOR E4706: Stochastic Calculus | 豁蒙楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">豁蒙楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/hy2632" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2021/03/07/IEOR-E4706-Stochastic-Calculus/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
+      <meta itemprop="name" content="姚华(Hua Yao)">
+      <meta itemprop="description" content="hy2632@columbia.edu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="豁蒙楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          IEOR E4706: Stochastic Calculus
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-06 20:07:40" itemprop="dateCreated datePublished" datetime="2021-03-06T20:07:40-05:00">2021-03-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-08 10:10:05" itemprop="dateModified" datetime="2021-03-08T10:10:05-05:00">2021-03-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Finance/" itemprop="url" rel="index"><span itemprop="name">Finance</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2021/03/07/IEOR-E4706-Stochastic-Calculus/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/03/07/IEOR-E4706-Stochastic-Calculus/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="链接">链接</h2>
+<ul>
+<li><p>在去年12月，曾经整理过过<a href="https://hy2632.github.io/2020/12/07/%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8%E4%B8%8E%E4%BC%8A%E8%97%A4%E5%BC%95%E7%90%86/">布朗运动和伊藤引理</a>。</p></li>
+<li><p><a target="_blank" rel="noopener" href="http://stock.10jqka.com.cn/20180530/c604762462.shtml">概述金融期货和期权的一篇文章</a></p></li>
+</ul>
+<hr />
+<h2 id="fun-fact-高斯积分">Fun fact: 高斯积分</h2>
+<p>布朗运动 <span class="math inline">\(W_t \sim N(0,t)\)</span>。在随机微积分部分涉及到高斯分布。由于高斯分布的密度函数包含 <span class="math inline">\(e^{-x^2}\)</span> 的形式，其偶数阶矩和一系列变式的计算都涉及到该积分</p>
+<p><span class="math display">\[\int_{-\infty}^{\infty}{e^{-x^2}dx}\]</span></p>
+<p>该值求解用到了 耦合 (coupling) 和极坐标变换的技巧。注：<span class="math inline">\(dxdy = rdrd\theta\)</span>，r是雅可比行列式的值，关于<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/399586541/answer/1346421063">如何证明坐标变换中的雅可比行列式？ - 暨厥的回答 - 知乎</a>。</p>
+<p><span class="math display">\[\begin{aligned} \int_{-\infty}^{\infty}{e^{-x^2}dx} \int_{-\infty}^{\infty}{e^{-y^2}dy} &amp;= \int_{-\infty}^{\infty}\int_{-\infty}^{\infty}{e^{-x^2-y^2}dxdy} \\
+&amp;= \int_{0}^{2\pi}{d\theta}\int_{-\infty}^{\infty}{e^{-r^2}rdr} \\
+&amp;= \pi \int_{-\infty}^{\infty}{e^{-r^2}dr^2} \\
+&amp;= \pi
+\end{aligned}\]</span></p>
+<p><span class="math display">\[\int_{-\infty}^{\infty}{e^{-x^2}dx} = \sqrt{\pi}\]</span></p>
+<hr />
+<h2 id="martingales-bm-quadratic-variation">Martingales, BM, quadratic variation</h2>
+<p>描述随机过程: the triple <span class="math inline">\((\Omega, \mathcal{F},P)\)</span> - sample paths (outcomes space) - <strong>Filtration</strong> (set of known information by time t) - the true probability measure</p>
+<p>some jargons:</p>
+<ul>
+<li><span class="math inline">\(X_t\)</span> is <span class="math inline">\(\mathcal{F}_t\)</span>-adapted: Known by t</li>
+<li>the filtration <span class="math inline">\(\{\mathcal{F}_t\}_{t\geq 0}\)</span> is generated by the stochastic process</li>
+</ul>
+<h3 id="bm-定义">BM 定义</h3>
+<blockquote>
+<p><strong>Definition 1: standard BM</strong>: - <span class="math inline">\(W_0=0, W_t\in N(0,t)\)</span><br />
+- continuous sample paths - independent stationary increments</p>
+</blockquote>
+<blockquote>
+<p><strong>Definition 2: n-dimensional BM</strong> - 扩展到n维向量，其中每一个分量是BM且iid;</p>
+</blockquote>
+<blockquote>
+<p><strong>Definition 3: 随机过程 <span class="math inline">\(X_t\)</span> 是关于 <span class="math inline">\(\mathcal{F}_t, P\)</span> 的鞅</strong> - <span class="math inline">\(E^P[|X_t|] &lt; \infty\)</span> for all <span class="math inline">\(t\geq 0\)</span> - <span class="math inline">\(E^P[X_{t+s}|\mathcal{F}_t] = X_t\)</span> for all <span class="math inline">\(t,s \geq 0\)</span></p>
+</blockquote>
+<p>常见的一些布朗运动鞅：</p>
+<p>标准布朗运动 <span class="math inline">\(W_t\)</span> 是鞅。<span class="math inline">\(W_t \sim N(0,t)\)</span> 为方便记为变量 <span class="math inline">\(X\)</span>，</p>
+<p><span class="math display">\[E[|W_t|] = E[|X|] = 2\int_0^\infty{xf(x)dx} = 2\int_0^\infty{x\frac1{\sqrt{2\pi t}}e^{-\frac{x^2}{2t}}dx} = 2\sqrt{\frac{t}{2\pi}}\]</span></p>
+<p>是收敛的。而条件期望不变显然成立。</p>
+<p>此外 <span class="math inline">\(W_T^2 - t\)</span> 和 <span class="math inline">\(\exp(\theta W_t - \theta^2t/2)\)</span> 也是鞅。后者被称为指数鞅，其恒为正的性质使其被经常使用。</p>
+<h3 id="二次变分">二次变分</h3>
+<p>A partition of time interval;</p>
+<p><span class="math display">\[0 = t_0 &lt;t_1 &lt;...&lt; t_n= T\]</span></p>
+<p>The quadratic variation of a BM <span class="math inline">\(X_t\)</span> is defined as</p>
+<p><span class="math display">\[Q_n(T) \coloneqq \lim_{n \to \infty}\sum_{i=1}^n[\Delta X_{t_i}]^2\]</span></p>
+<p>when <span class="math inline">\(n \to \infty\)</span> or say <span class="math inline">\(\Delta t = \max_i{(t_i - t_{i-1})} \to 0\)</span>.</p>
+<blockquote>
+<p><strong>Theorem 1</strong>: 布朗运动在区间 <span class="math inline">\([0,T]\)</span> 上的二次变分为 <span class="math inline">\(T\)</span>。</p>
+<p>证明：考虑 <span class="math inline">\(n\to \infty\)</span> 个区间划分上的独立同分布的变量 <span class="math inline">\(\Delta X\)</span>, 每个变量都服从分布 <span class="math inline">\(N(0, \frac{T}{n})\)</span>, 根据大数定律转化为期望 <span class="math display">\[\lim_{n\to\infty}{Q_n(T)} = \lim_{n\to\infty}{n E[(\Delta X)^2]} = \lim_{n\to\infty}{n \left(E^2[\Delta X] + Var(\Delta X) \right)} = \lim_{n\to\infty}{n \cdot \frac Tn} = T\]</span></p>
+</blockquote>
+<blockquote>
+<p><strong>全变分(total variarion) 和二次变分的关系</strong></p>
+<p>全变分定义： <span class="math display">\[\lim_{\Delta t \to 0}\sum_{k=1}^n{|X_{t_k} - X_{t_{k-1}}|}\]</span> 不等关系： <span class="math display">\[\sum_{i=1}^n[\Delta X_{t_i}]^2 \leq \left(\sum_{i=1}^n|\Delta X_{t_i}|\right) \max_{k\in[1,n]}{|\Delta X_{t_k}|}\]</span> 从而若全变分有限，则二次变分必为0：通常的连续函数是这种情况。布朗运动二次变分不为0，则全变分必为无穷。</p>
+</blockquote>
+<blockquote>
+<p><strong>Theorem 2 (Levy's Theorem)</strong> 连续鞅是布朗运动的充要条件是任意 <span class="math inline">\([0,t]\)</span> 上二次变分为 <span class="math inline">\(t\)</span>。</p>
+<p>证明?</p>
+</blockquote>
+<hr />
+<h2 id="stochastic-integrals-随机积分">Stochastic Integrals 随机积分</h2>
+<p>注：<span class="math inline">\(X_t\)</span> 写作 <span class="math inline">\(X_t(w)\)</span> 表明其随机性质。</p>
+<blockquote>
+<p><strong>Definition 5 (停时)</strong>: A stopping time of the filtration <span class="math inline">\(\mathcal{F}_t\)</span> is a random time <span class="math inline">\(\tau\)</span> such that the event <span class="math inline">\(\{\tau\leq t\}\in \mathcal F_t\)</span>, for all <span class="math inline">\(t &gt; 0\)</span>.</p>
+</blockquote>
+<p>一个区间上的停时是在区间末尾已知的随机变量。</p>
+<blockquote>
+<p><strong>Definition 6 (elementary process)</strong>: 称一个过程 <span class="math inline">\(h_t(w)\)</span> 是基本的(elementary) 如果它分段为常数(当然，划分足够细的极限情况就是连续的布朗运动)，从而存在一系列停时 <span class="math inline">\(0=t_0 &lt; t_1 &lt;...&lt; t_n=T\)</span> 和一系列 <span class="math inline">\(\mathcal{F}_{t_i}\)</span>-measurable 的函数 <span class="math inline">\(e_i(w)\)</span>，使得 <span class="math display">\[h_t(w) = \sum_i{e_i(w)I_{[t_i, t_{i+1}]}(t)}\]</span> 第二项是示性函数 Indicator Function。该函数虽然是求和形式，但实际值指向特定的区间上的常数值，因而也可以看作 <span class="math display">\[e_{i(t)}(w)\]</span> 其中 <span class="math inline">\(i(t)\)</span> 函数以 <span class="math inline">\(t\)</span> 为输入，给出其对应的唯一区间的序数 <span class="math inline">\(i\)</span> 使得 <span class="math inline">\(t_i \leq t &lt; t_{i+1}\)</span>。</p>
+</blockquote>
+<blockquote>
+<p><strong>Definition 7</strong>: 基本函数 <span class="math inline">\(h_t(w)\)</span> 对布朗运动 <span class="math inline">\(W_t\)</span> 的随机积分定义： <span class="math display">\[\int_0^T{h_t(w) \ dW_t(w)} \coloneqq \sum_{i=0}^{n-1}{e_i(w) (W_{t_{i+1}}(w) - W_{t_i}(w)) }\]</span> <span class="math inline">\(\int \to \sum\)</span> 将连续的积分离散化到时间区间上。每个区间上基本函数的值是常数 <span class="math inline">\(e_i(w)\)</span>。 需要注意当区间划分足够小时，区间的常数值是对应到左端点的。</p>
+</blockquote>
+<p>以上是基本函数的随机积分。对于更普遍的函数，可以用无穷多个基本函数渐进。</p>
+<p><span class="math display">\[\int_0^T X_t(w) \ dW_t(w) \coloneqq \lim_{n\to \infty} \int_0^T X_t^{(n)}(w) \ dW_t(w)\]</span></p>
+<p>注：intuitively 这 <span class="math inline">\(n\)</span> 个基本函数的区间划分必然不同，否则还是常数函数。</p>
+<h3 id="example-w_t-对自身作积分-int_0t-w_t-dw_t">Example: <span class="math inline">\(W_t\)</span> 对自身作积分 <span class="math inline">\(\int_0^T W_t \ dW_t\)</span></h3>
+<p>给出一个区间 <span class="math inline">\([0,T]\)</span> 上的划分，<span class="math inline">\(n\to \infty\)</span>：</p>
+<p><span class="math display">\[0 = t_0 &lt; t_1 &lt;... &lt; t_n = T\]</span></p>
+<p><span class="math display">\[W_t = \sum_{i=0}^{n-1}{W_{t_{i}} I_{[t_i, t_{i+1})}}(t)\]</span></p>
+<p>将连续的布朗运动按 Definition 7 离散化</p>
+<p><span class="math display">\[\begin{aligned} \int_0^TW_t \ dW_t &amp;= \sum_{i=0}^{n+1}{ (W_{t_{i+1}} - W_{t_{i}})W_{t_i} }   \\
+&amp;= \frac12 \sum_{i=0}^{n-1}{\left( W_{t_{i+1}}^2 - W_{t_{i}}^2 - (W_{t_{i+1}} - W_{t_{i}})^2     \right) } \\
+&amp;= \frac12 W_T^2 - \frac12W_0^2 -\frac12 \sum_{i=0}^{n-1}{(W_{t_{i+1}} - W_{t_{i}})^2 } \\
+&amp;= \frac12 W_T^2 -\frac12 T
+\end{aligned}\]</span></p>
+<p>这种随机积分很少实际使用，一般用伊藤引理。</p>
+<blockquote>
+<p><strong>Definition 8 (勒贝格空间, L^p space)</strong>: 指 p 次可积函数 <span class="math inline">\(X_t(w)\)</span> 组成的空间。如 L2 <span class="math display">\[E \left[ \int_0^T X_t(w)^2 dt \right] &lt; \infty\]</span></p>
+</blockquote>
+<h3 id="itôs-isometry-伊藤等距同构">Itô's Isometry 伊藤等距同构</h3>
+<blockquote>
+<p><strong>Theorem 3 (Itô's Isometry)</strong> <span class="math display">\[E\left[ \left( \int_0^T{X_t(w) \ dW_t(w)} \right)^2 \right] = E\left[ \int_0^T{ X_t(w)^2 \ dt}  \right]\]</span> 非常漂亮的结论，随机积分到定积分。</p>
+<p>证明仍然用到区间划分和随机积分，由于期望表达式的存在，<span class="math inline">\(E[W_{t_{i+1}} - W_{t_i}] = 0, E[(W_{t_{i+1}} - W_{t_i})^2] = t_{i+1} - t_i\)</span>。</p>
+</blockquote>
+<h3 id="随机积分的鞅性质">随机积分的鞅性质</h3>
+<blockquote>
+<p><strong>Theorem 4 (Martingale property of Stochastic Integrals)</strong>: <span class="math display">\[Y_t \coloneqq \int_0^t X_s(w) \ dW_s\]</span> is a martingale when <span class="math inline">\(X_t(w) \in L^2[0,T]\)</span></p>
+<p>当<span class="math inline">\(X_t(w)\)</span> 是基本函数时，给出证明: - <span class="math inline">\(E[Y_{t+s}|\mathcal F_{t}] = E[Y_t]\)</span> - 因为是基本函数所以可以写成 <span class="math inline">\(\sum_{i=0}^{n-1}{e_i(w) (W_{t_{i+1}}(w) - W_{t_i}(w)) }\)</span>。考虑 <span class="math inline">\([0,t]\)</span> 和 <span class="math inline">\([0, t+s]\)</span> 上的同密度的划分，两个期望作差得到 <span class="math inline">\([t,t+s]\)</span> 上的期望应当为0：因为基本函数是分段常数，每个小区间上的布朗运动项的期望为0，<span class="math inline">\(e_i(w)\)</span>对这些布朗运动简单加权，得证。</p>
+<ul>
+<li><span class="math inline">\(E[|Y_t|] &lt; \infty\)</span>
+<ul>
+<li>根据 <span class="math inline">\(X_t(w) \in L^2[0,T]\)</span>, <span class="math inline">\(E \left[ \int_0^t X_s(w)^2 ds \right] &lt; \infty\)</span></li>
+<li>根据伊藤同构，<span class="math inline">\(E \left[ \int_0^t X_s(w)^2 ds \right] = E \left[ \left( \int_0^t X_s(w) \ dW_s(w) \right)^2 \right] = E[Y_t^2] &lt; \infty\)</span></li>
+<li><span class="math inline">\(E[|Y_t|] \cdot \min_t{|Y_t|} &lt; E[Y_t^2]\)</span>。由于 <span class="math inline">\(Y_t\)</span> 有可能取到 0，不能直接根据该式得出 <span class="math inline">\(E[|Y_t|] &lt; \infty\)</span>；然而可以作如下考虑：<span class="math inline">\(Y_t=0\)</span> 的情况对期望值没有影响，可以在两个期望式中先剔除掉这些情形使 <span class="math inline">\(|Y_t|\neq 0\)</span>，则得到 <span class="math inline">\(E[|Y_t|] &lt; \infty\)</span>，证毕。</li>
+</ul></li>
+</ul>
+</blockquote>
+<h3 id="stochastic-differential-equations-sde-随机微分方程">Stochastic Differential Equations (SDE, 随机微分方程)</h3>
+<blockquote>
+<p><strong>Definition 9 (伊藤过程)</strong>:</p>
+<p>标准布朗运动微分式: <span class="math display">\[dX_t = a_td_t + b_tdW_t\]</span> 随机微分方程 SDE 的形式: <span class="math display">\[dX_t = a(X_t,t)d_t + b(X_t, t)dW_t\]</span> 解 SDE 的工具使伊藤引理 Itô's Lemma。</p>
+</blockquote>
+<hr />
+<h2 id="itôs-lemma">Itô's Lemma</h2>
+<h3 id="theorem-5-itôs-lemma-in-1d-bm">Theorem 5: Itô's Lemma in 1d BM</h3>
+<p>对于二阶可微函数 <span class="math inline">\(f\)</span> 和 标准布朗运动 <span class="math inline">\(W_t\)</span></p>
+<p><span class="math display">\[f(W_t) = f(0) + \frac12 \int_0^t f&#39;&#39;(W_s)ds + \int_0^t f&#39;(W_s)dW_s\]</span></p>
+<p>或者写为微分式 (为方便将布朗运动记为 <span class="math inline">\(B\)</span> 并省略下标 <span class="math inline">\(t\)</span>)</p>
+<p><span class="math display">\[df = \frac{df}{dB} dB + \frac12 \frac{d^2f}{dB^2}dt\]</span></p>
+<h3 id="theorem-6-itôs-lemma-in-1d-itô-process">Theorem 6: Itô's Lemma in 1d Itô process</h3>
+<p><strong>一维伊藤过程 <span class="math inline">\(X_t\)</span> 的 SDE:</strong></p>
+<p><span class="math display">\[dX_t = \mu_t d_t + \sigma_t dW_t\]</span></p>
+<p>这里系数含参。</p>
+<p><strong>关于一维伊藤过程的函数的SDE求解</strong>:</p>
+<p>假设 <span class="math inline">\(Z_t \coloneqq f(X_t, t)\)</span> 是 <span class="math inline">\(C^{1,2}\)</span> 函数 (即1、2阶可微)，则</p>
+<p><span class="math display">\[\begin{aligned} dZ_t &amp;= \frac{\partial f}{\partial t}(X_t, t)d_t + \frac{\partial f}{\partial x}(X_t, t)dX_t + \frac12\frac{\partial^2 f}{\partial x^2}(X_t, t)(dX_t)^2\\
+&amp;= \left( \frac{\partial f}{\partial t}(X_t, t) + \frac{\partial f}{\partial x}(X_t, t)\mu_t +  \frac12\frac{\partial^2 f}{\partial x^2}(X_t, t)\sigma_t^2 \right)dt + \frac{\partial f}{\partial x}(X_t, t)\sigma_tdW_t
+\end{aligned}\]</span></p>
+<p>偏导函数后面的参数和原函数相同。<span class="math inline">\(x\)</span> 是 <span class="math inline">\(X_t\)</span> 的简记。</p>
+<p>用简单符号表示</p>
+<p><span class="math display">\[\begin{aligned}
+df &amp;= \frac{\partial f}{\partial X}(adt+bdB) + \frac{\partial f}{\partial t}dt + \frac12 \frac{\partial^2f}{\partial X^2}(b^2dt) \\
+&amp;= \bigg(\frac{\partial f}{\partial X}a + \frac{\partial f}{\partial t} + \frac12 \frac{\partial^2f}{\partial X^2}b^2 \bigg)dt + \frac{\partial f}{\partial X}bdB
+\end{aligned}\]</span></p>
+<h3 id="the-box-calculus">The Box Calculus</h3>
+<p><span class="math inline">\((dW_t)^2 = dt\)</span>，为何？ Theorem 1 指出布朗运动的二次变分必为 <span class="math inline">\(T\)</span>，将二次变分写为微分形式即可。</p>
+<h3 id="例子">例子</h3>
+<h4 id="example-3">Example 3</h4>
+<p>解以下 SDE。</p>
+<p><span class="math display">\[dS_t = \mu_tS_tdt + \sigma_tS_t dW_t\]</span></p>
+<p>解：</p>
+<p>令 <span class="math inline">\(f = \ln S_t\)</span>, why? 看起来两边同除以 <span class="math inline">\(S_t\)</span> 构造出了一个标准一维布朗运动。</p>
+<p><span class="math display">\[\begin{aligned} df &amp;= \frac1S_t dS_t -\frac12\frac1{S_t^2}(dS_t)^2 \\
+&amp;=\mu_tdt + \sigma_tdW_t - \frac1{2S_t^2}\sigma_t^2S_t^2d_t \\
+&amp;= (\mu_t - \frac12 \sigma_t^2)dt + \sigma_tdW_t
+\end{aligned}\]</span></p>
+<p><span class="math display">\[\ln{S_t} -\ln{S_0} = \int_0^t{(\mu_s - \frac12 \sigma_s^2)ds} + \int_0^t \sigma_s dW_s\]</span></p>
+<p><span class="math display">\[S_t = S_0\exp{ \left( \int_0^t{(\mu_s - \frac12 \sigma_s^2)ds} + \int_0^t \sigma_s dW_s     \right)}\]</span></p>
+<p>当 <span class="math inline">\(\mu_t, \sigma_t\)</span> 是常数，</p>
+<p><span class="math display">\[S_t = S_0\exp{ \left( (\mu - \frac12 \sigma^2)t + \sigma W_t    \right)}\]</span></p>
+<p>可以看出</p>
+<p><span class="math display">\[\ln{S_t} \sim N((\mu-\sigma^2 / 2)t, \sigma^2t)\]</span></p>
+<p>是一个带漂移扩散的伊藤过程。</p>
+<h4 id="example-4-ornstein-uhlenbeck-process">Example 4 Ornstein-Uhlenbeck process</h4>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%A5%A5%E6%81%A9%E6%96%AF%E5%9D%A6-%E4%B9%8C%E4%BC%A6%E8%B4%9D%E5%85%8B%E8%BF%87%E7%A8%8B">OU过程描述一个经历摩擦的布朗粒子（damped random walk）</a></p>
+<p>假设 <span class="math inline">\(S_t\)</span> 是价格过程， <span class="math inline">\(X_t = \ln{S_t}\)</span>, 即收益率过程, 解以下SDE</p>
+<p><span class="math display">\[dX_t = [-\gamma(X_t-\mu t) + \mu]dt + \sigma dW_t\]</span></p>
+<p>如何选取一个合适的 <span class="math inline">\(f\)</span>?</p>
+<p>代入 <span class="math inline">\(f(X_t, t)\)</span> 并观察如何化简。</p>
+<p><span class="math display">\[\begin{aligned} 
+df &amp;= \frac{\partial f}{\partial x}dx + \frac{\partial f}{\partial t}dt + \frac{\partial^2f}{\partial x^2}(dx)^2  \\
+&amp;= \frac{\partial f}{\partial x}\sigma dW_t + \left( \frac{\partial f}{\partial x}[-\gamma(x-\mu t)+\mu] + \frac{\partial f}{\partial t} +\frac{\partial^2f}{\partial x^2}\sigma^2  \right)dt
+\end{aligned}\]</span></p>
+<p>SDE 完成求解的标志是有段不再含有 <span class="math inline">\(x\)</span>。考虑</p>
+<p><span class="math display">\[\frac{\partial f}{\partial x} \cdot(-\gamma x) +  \frac{\partial f}{\partial t} = 0 \]</span> <span class="math display">\[\frac{\partial^2f}{\partial x^2}= 0\]</span></p>
+<p>构造这样的一个 <span class="math inline">\(f\)</span></p>
+<p><span class="math display">\[f(X_t, t) = X_t \exp{(\gamma t)}\]</span></p>
+<p>继续求解， <span class="math display">\[\begin{aligned} 
+df &amp;= \exp{(\gamma t)}\sigma dW_t + \left(\exp{(\gamma t)}\mu(\gamma t + 1)  \right)dt \\
+&amp;= \exp{(\gamma t)} \left[\sigma dW_t + (\mu\gamma t+ \mu ) dt  \right]
+\end{aligned}\]</span></p>
+<p>则</p>
+<p><span class="math display">\[f_t - f_0 = \mu \int_0^t{e^{\gamma s}(\gamma s + 1)ds} + \sigma \int_0^t{e^{\gamma s} dW_s}\]</span></p>
+<p>化简定积分</p>
+<p><span class="math display">\[\int_0^t{e^{\gamma s}(\gamma s + 1)ds} = \frac1\gamma \int_0^{\gamma t}{e^x(x+1)dx}=\frac1\gamma (xe^x)\big|_0^{\gamma t} = te^{\gamma t}\]</span></p>
+<p>用 <span class="math inline">\(X_t\)</span> 表示:</p>
+<p><span class="math display">\[X_t = X_0e^{-\gamma t} + \mu t + \sigma e^{-\gamma t} \int_0^t{e^{\gamma s} dW_s}\]</span></p>
+<p>（解完了。）</p>
+<p>分析这个收益率过程 <span class="math inline">\(X_t\)</span>，</p>
+<p><span class="math display">\[E[X_t] =  X_0e^{-\gamma t} + \mu t\]</span></p>
+<p><span class="math display">\[\begin{aligned} 
+D[X_t] &amp;= D\left[ \sigma e^{-\gamma t} \int_0^t{e^{\gamma s} dW_s}  \right] \\
+&amp;= (\sigma e^{-\gamma t} )^2 D\left[ \int_0^t{e^{\gamma s} dW_s}  \right] \\
+&amp;= (\sigma e^{-\gamma t} )^2 E\left[\left(\int_0^t{e^{\gamma s} dW_s} \right)^2 \right] \\
+&amp;= (\sigma e^{-\gamma t} )^2 E\left[ \int_0^t{(e^{\gamma s})^2 ds}  \right] \text{\qquad By Ito&#39;s Isometry.} \\
+&amp;= \frac{\sigma^2}{2\gamma}(1-e^{-2\gamma t})
+\end{aligned}\]</span></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Financial-Engineering/" rel="tag"># Financial Engineering</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/02/27/IEOR-E4706-Mean-Variance-Optimization-and-the-CAPM/" rel="prev" title="IEOR E4706: Mean-Variance Optimization and the CAPM">
+      <i class="fa fa-chevron-left"></i> IEOR E4706: Mean-Variance Optimization and the CAPM
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5"><span class="nav-number">1.</span> <span class="nav-text">链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fun-fact-%E9%AB%98%E6%96%AF%E7%A7%AF%E5%88%86"><span class="nav-number">2.</span> <span class="nav-text">Fun fact: 高斯积分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#martingales-bm-quadratic-variation"><span class="nav-number">3.</span> <span class="nav-text">Martingales, BM, quadratic variation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bm-%E5%AE%9A%E4%B9%89"><span class="nav-number">3.1.</span> <span class="nav-text">BM 定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E6%AC%A1%E5%8F%98%E5%88%86"><span class="nav-number">3.2.</span> <span class="nav-text">二次变分</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stochastic-integrals-%E9%9A%8F%E6%9C%BA%E7%A7%AF%E5%88%86"><span class="nav-number">4.</span> <span class="nav-text">Stochastic Integrals 随机积分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#example-w_t-%E5%AF%B9%E8%87%AA%E8%BA%AB%E4%BD%9C%E7%A7%AF%E5%88%86-int_0t-w_t-dw_t"><span class="nav-number">4.1.</span> <span class="nav-text">Example: \(W_t\) 对自身作积分 \(\int_0^T W_t \ dW_t\)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#it%C3%B4s-isometry-%E4%BC%8A%E8%97%A4%E7%AD%89%E8%B7%9D%E5%90%8C%E6%9E%84"><span class="nav-number">4.2.</span> <span class="nav-text">Itô&#39;s Isometry 伊藤等距同构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%8F%E6%9C%BA%E7%A7%AF%E5%88%86%E7%9A%84%E9%9E%85%E6%80%A7%E8%B4%A8"><span class="nav-number">4.3.</span> <span class="nav-text">随机积分的鞅性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#stochastic-differential-equations-sde-%E9%9A%8F%E6%9C%BA%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B"><span class="nav-number">4.4.</span> <span class="nav-text">Stochastic Differential Equations (SDE, 随机微分方程)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#it%C3%B4s-lemma"><span class="nav-number">5.</span> <span class="nav-text">Itô&#39;s Lemma</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#theorem-5-it%C3%B4s-lemma-in-1d-bm"><span class="nav-number">5.1.</span> <span class="nav-text">Theorem 5: Itô&#39;s Lemma in 1d BM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#theorem-6-it%C3%B4s-lemma-in-1d-it%C3%B4-process"><span class="nav-number">5.2.</span> <span class="nav-text">Theorem 6: Itô&#39;s Lemma in 1d Itô process</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#the-box-calculus"><span class="nav-number">5.3.</span> <span class="nav-text">The Box Calculus</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90"><span class="nav-number">5.4.</span> <span class="nav-text">例子</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#example-3"><span class="nav-number">5.4.1.</span> <span class="nav-text">Example 3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#example-4-ornstein-uhlenbeck-process"><span class="nav-number">5.4.2.</span> <span class="nav-text">Example 4 Ornstein-Uhlenbeck process</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="姚华(Hua Yao)"
+      src="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
+  <p class="site-author-name" itemprop="name">姚华(Hua Yao)</p>
+  <div class="site-description" itemprop="description">hy2632@columbia.edu</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hy2632" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hy2632" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hy2632@columbia.edu" title="E-Mail → mailto:hy2632@columbia.edu" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.instagram.com/nocturnima1/" title="Instagram → https:&#x2F;&#x2F;www.instagram.com&#x2F;nocturnima1&#x2F;" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">姚华(Hua Yao)</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://huo-meng-lou.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://hy2632.github.io/2021/03/07/IEOR-E4706-Stochastic-Calculus/";
+    this.page.identifier = "2021/03/07/IEOR-E4706-Stochastic-Calculus/";
+    this.page.title = "IEOR E4706: Stochastic Calculus";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://huo-meng-lou.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
