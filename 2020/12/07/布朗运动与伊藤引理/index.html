@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://hy2632.github.io/2020/12/07/%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8%E4%B8%8E%E4%BC%8A%E8%97%A4%E5%BC%95%E7%90%86/equation.jpg">
 <meta property="article:published_time" content="2020-12-06T23:20:01.000Z">
-<meta property="article:modified_time" content="2021-03-07T01:34:11.990Z">
+<meta property="article:modified_time" content="2021-03-11T07:07:17.895Z">
 <meta property="article:author" content="姚华(Hua Yao)">
 <meta property="article:tag" content="Financial Engineering">
 <meta name="twitter:card" content="summary">
@@ -230,7 +230,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-06 20:34:11" itemprop="dateModified" datetime="2021-03-06T20:34:11-05:00">2021-03-06</time>
+                <time title="修改时间：2021-03-11 02:07:17" itemprop="dateModified" datetime="2021-03-11T02:07:17-05:00">2021-03-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -425,11 +425,16 @@ C &amp;= e^{-rT}E[\max {(S(T)-K, 0)}] \\
 <p><span class="math display">\[N(d_1) = \frac{\partial C}{\partial S_0}\]</span></p>
 <p>所以 <span class="math inline">\(N(d_1)\)</span> 衡量 call 和 stock 价格的敏感性。</p>
 <h2 id="类风险敞口">5类风险敞口</h2>
-<p><span class="math display">\[Vega = \frac{\partial C}{\partial S} = N(d_1)\]</span></p>
-<p><span class="math display">\[\gamma = \frac{\partial^2 C}{\partial S^2}\]</span></p>
-<p><span class="math display">\[\Delta = \frac{\Delta C}{\Delta S}\]</span></p>
-<p><span class="math display">\[\rho = \frac{\partial^2 C}{\partial r^2}\]</span></p>
-<p><span class="math display">\[\theta = \frac{\partial^2 C}{\partial T^2}\]</span></p>
+<!-- $$Vega = \frac{\partial C}{\partial S} = N(d_1)$$
+
+$$\gamma = \frac{\partial^2 C}{\partial S^2}$$
+
+$$\Delta = \frac{\Delta C}{\Delta S}$$
+
+$$\rho = \frac{\partial^2 C}{\partial r^2}$$
+
+$$\theta = \frac{\partial^2 C}{\partial T^2}$$ -->
+<p>(2021.3.11) 希腊值 Greeks.</p>
 <h2 id="其他期权定价">其他期权定价</h2>
 <p>欧式看跌 european put 直接使用期权平价公式 put-call parity.</p>
 <h2 id="understanding-nd1-and-nd2-risk-adjusted-probabilities-in-the-black-scholes-model">Understanding N(d1) and N(d2): Risk-Adjusted Probabilities in the Black-Scholes Model</h2>
@@ -540,7 +545,7 @@ C &amp;= e^{-rT}E[\max {(S(T)-K, 0)}] \\
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-count">68</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

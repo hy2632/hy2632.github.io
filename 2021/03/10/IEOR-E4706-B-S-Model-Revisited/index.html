@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hy2632.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Black Scholes Model PDE 首先假设 股价 \(S_t\) 是一个几何布朗运动 \[dS_t &#x3D; \mu S_tdt + \sigma S_t dW_t\] 考虑欧式期权 \(C(S_t, t)\) 是关于股价的函数。根据伊藤引理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IEOR E4706: B-S Model Revisited">
+<meta property="og:url" content="https://hy2632.github.io/2021/03/10/IEOR-E4706-B-S-Model-Revisited/index.html">
+<meta property="og:site_name" content="豁蒙楼">
+<meta property="og:description" content="Black Scholes Model PDE 首先假设 股价 \(S_t\) 是一个几何布朗运动 \[dS_t &#x3D; \mu S_tdt + \sigma S_t dW_t\] 考虑欧式期权 \(C(S_t, t)\) 是关于股价的函数。根据伊藤引理">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://artursepp.com/wp-content/uploads/2017/08/deltahedge.png">
+<meta property="article:published_time" content="2021-03-10T01:49:13.000Z">
+<meta property="article:modified_time" content="2021-03-11T16:15:34.221Z">
+<meta property="article:author" content="姚华(Hua Yao)">
+<meta property="article:tag" content="Financial Engineering">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://artursepp.com/wp-content/uploads/2017/08/deltahedge.png">
+
+<link rel="canonical" href="https://hy2632.github.io/2021/03/10/IEOR-E4706-B-S-Model-Revisited/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>IEOR E4706: B-S Model Revisited | 豁蒙楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">豁蒙楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/hy2632" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2021/03/10/IEOR-E4706-B-S-Model-Revisited/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
+      <meta itemprop="name" content="姚华(Hua Yao)">
+      <meta itemprop="description" content="hy2632@columbia.edu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="豁蒙楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          IEOR E4706: B-S Model Revisited
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-09 20:49:13" itemprop="dateCreated datePublished" datetime="2021-03-09T20:49:13-05:00">2021-03-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-11 11:15:34" itemprop="dateModified" datetime="2021-03-11T11:15:34-05:00">2021-03-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Finance/" itemprop="url" rel="index"><span itemprop="name">Finance</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2021/03/10/IEOR-E4706-B-S-Model-Revisited/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/03/10/IEOR-E4706-B-S-Model-Revisited/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="black-scholes-model">Black Scholes Model</h2>
+<h3 id="pde">PDE</h3>
+<p>首先假设 股价 <span class="math inline">\(S_t\)</span> 是一个几何布朗运动</p>
+<p><span class="math display">\[dS_t = \mu S_tdt + \sigma S_t dW_t\]</span></p>
+<p>考虑欧式期权 <span class="math inline">\(C(S_t, t)\)</span> 是关于股价的函数。根据伊藤引理</p>
+<p><span class="math display">\[\begin{aligned}  dC &amp;= \frac{\partial C}{\partial t} dt + \frac{\partial C}{\partial S} dS + \frac12 \frac{\partial^2 C}{\partial S^2}(dS)^2 \\
+&amp;= dt\left( \frac{\partial C}{\partial t} + \frac{\partial C}{\partial S}\mu S + \frac12 \frac{\partial^2 C}{\partial S^2}\sigma^2S^2 \right) + \frac{\partial C}{\partial S}\sigma S_t dW_t
+\end{aligned}\]</span></p>
+<p>考虑一个离散化的区间 <span class="math inline">\(\Delta t\)</span>:</p>
+<p><span class="math display">\[\Delta C = \Delta t\left( \frac{\partial C}{\partial t} + \frac{\partial C}{\partial S}\mu S + \frac12 \frac{\partial^2 C}{\partial S^2}\sigma^2S^2 \right) + \frac{\partial C}{\partial S}\sigma S_t \Delta W_t\]</span></p>
+<p>考虑构建一个组合 <span class="math inline">\(P = -C + \frac{\partial C}{\partial S}S\)</span>，这样布朗运动项就被对冲掉；根据<strong>鞅定价理论</strong>，组合 <span class="math inline">\(P\)</span> 在这段时间的变化量 (非常重要！！！)</p>
+<p><span class="math display">\[\Delta P = rP\Delta t\]</span></p>
+<p>又根据</p>
+<p><span class="math display">\[\Delta P = -\Delta C + \frac{\partial C}{\partial S}\Delta S = -\Delta t\left(\frac{\partial C}{\partial t} + \frac12 \frac{\partial^2 C}{\partial S^2}\sigma^2S^2  \right)\]</span></p>
+<p>得</p>
+<p><span class="math display">\[rP = -rC + rS \frac{\partial C}{\partial S} = -\frac{\partial C}{\partial t} - \frac12 \frac{\partial^2 C}{\partial S^2}\sigma^2S^2 \]</span></p>
+<p><span class="math display">\[rC = rS \frac{\partial C}{\partial S} + \frac{\partial C}{\partial t} + \frac12 \frac{\partial^2 C}{\partial S^2}\sigma^2S^2\]</span></p>
+<p>这就是 BS 的 PDE。</p>
+<p>求解微分方程还需要边界条件。</p>
+<p><span class="math display">\[C_T = \max{(S_T-K, 0)}\]</span></p>
+<p><span class="math display">\[C_0 = 0\]</span></p>
+<h3 id="根据连续时间鞅论给出解">根据连续时间鞅论给出解</h3>
+<p><a href="(https://hy2632.github.io/2021/03/07/IEOR-E4706-Stochastic-Calculus/)">几何布朗运动GBM: <span class="math inline">\(dS_t = \mu S_tdt + \sigma S_t dW_t\)</span> 的解</a> 在上一章已经给出了</p>
+<p><span class="math display">\[S_T = S_0 \exp{\left( \left(\mu-\frac{\sigma^2}{2}\right)t + \sigma W_t \right)}\]</span></p>
+<p>股价 <span class="math inline">\(S_T\)</span> 是几何布朗运动，服从分布 <span class="math display">\[S_T \sim \ln \mathcal{N}(\ln{S_0} + (\mu-\sigma^2/2)T, \sigma^2T)\]</span></p>
+<p>期望由漂移项决定，方差由扩散项也就是布朗运动项决定。</p>
+<p>求解 <span class="math inline">\(C\)</span> 即给欧式期权定价还需要对解的结构作一定假设。根据离散时间鞅论/风险中性定价理论，确定</p>
+<p><span class="math display">\[C_t = e^{r(t-T)}E[\max{(S_T-K, 0)}] \]</span></p>
+<p>已知结构和微分方程，就只需继续化简；当然，上式已经可以直接用来蒙特卡洛定价。</p>
+<p><span class="math display">\[\begin{aligned}
+E[\max{(S_T-K, 0)}] &amp;= E[S_T-K|S_T&gt;K] \\
+&amp;= E[S_T|S_T&gt;K] - KP(S_T&gt;K)
+\end{aligned}\]</span></p>
+<p>分别求解两部分</p>
+<ol type="1">
+<li><span class="math inline">\(P(S_T &gt;K) = ?\)</span></li>
+</ol>
+<p><span class="math display">\[\begin{aligned}
+P(S_T &gt;K) &amp;= P(\ln{S_T} &gt; \ln K) \\ 
+&amp;= P(\frac{\ln{S_T} - \ln{S_0} - (\mu - \sigma^2 /2)T}{\sigma \sqrt T} &gt;\frac{\ln{K} - \ln{S_0} - (\mu - \sigma^2 /2)T}{\sigma \sqrt T} ) \\
+&amp;= N \left( \frac{\ln{(S_0/K)} + (\mu - \sigma^2 /2)T}{\sigma \sqrt T}  \right) \\
+&amp;= N(d_2)
+\end{aligned}\]</span></p>
+<ol start="2" type="1">
+<li><span class="math inline">\(E[S_T|S_T&gt;K] = ?\)</span></li>
+</ol>
+<p>假设一个 <span class="math inline">\(X\sim \ln \mathcal{N}(\mu, \sigma^2)\)</span>，</p>
+<p><span class="math display">\[\begin{aligned}
+E[X|X&gt;K] &amp;= \int_K^\infty \frac{x}{\sigma x \sqrt{2\pi}} \exp{\left( -\frac{(\ln x - \mu)^2}{2\sigma^2}  \right)}dx \qquad \text{Let } \frac{\ln x - \mu}{\sigma} = v \geq \frac{\ln K - \mu}{\sigma} = D, x = e^{\mu+\sigma v}, \frac{dv}{dx} = \frac1x \\
+&amp;= \frac 1{\sqrt{2\pi}} \int_D^\infty e^{-r^2/2} e^{\mu+\sigma v} dv\\
+&amp;= \frac 1{\sqrt{2\pi}} e^{\mu + \sigma^2/2} \int_D^\infty e^{-\frac12 (v-\sigma)^2}dv\\
+&amp;=  e^{\mu + \sigma^2/2} \int_{D-\sigma}^\infty \frac 1{\sqrt{2\pi}}e^{-\frac12 u^2}du \\
+&amp;= e^{\mu + \sigma^2/2} N(\sigma-D)
+\end{aligned}\]</span></p>
+<p>由于</p>
+<p><span class="math display">\[S_T \sim \ln \mathcal{N}(\ln{S_0} + (\mu-\sigma^2/2)T, \sigma^2T)\]</span></p>
+<p>将<span class="math inline">\(\mu\)</span> 替换为 <span class="math inline">\(\ln{S_0}+\left(\mu-\frac{\sigma^2}{2}\right)T\)</span>， <span class="math inline">\(\sigma\)</span> 替换为 <span class="math inline">\(\sigma \sqrt T\)</span></p>
+<p><span class="math display">\[D = \frac{\ln K - \mu}{\sigma} \to =\frac{\ln K - \ln S_0 - \left(\mu-\frac{\sigma^2}{2}\right)T}{\sigma \sqrt T} = -d_2\]</span></p>
+<p>则</p>
+<p><span class="math display">\[E[X|X&gt;K] =  S_0 e^{\mu T} N(\sigma\sqrt T-D) = S_0 e^{\mu T}N(d_1) \]</span></p>
+<p>其中， <span class="math inline">\(d_1 = \sigma \sqrt T + d2\)</span>。</p>
+<p>综上，</p>
+<p><span class="math display">\[\begin{aligned}
+C_t &amp;= e^{r(t-T)}E[\max{(S_T-K, 0)}] \\
+&amp;= e^{r(t-T)} \big(E[S_T|S_T&gt;K] - KP(S_T&gt;K) \big) \\
+&amp;= e^{r(t-T)} \big(S_0 e^{\mu T}N(d_1) - KN(d_2) \big) \qquad \text{By  } r=\mu \\
+&amp;= S_tN(d_1) - Ke^{r(t-T)}N(d_2)
+\end{aligned}\]</span></p>
+<p>其中</p>
+<p><span class="math display">\[d_2 =\frac{\ln{(S_0/K)} + (r - \sigma^2 /2)T}{\sigma \sqrt T} \qquad \text{replaced } \mu \to r\]</span></p>
+<p><span class="math display">\[d_1 = \sigma \sqrt T + d_2\]</span></p>
+<h3 id="有付息时的定价">有付息时的定价</h3>
+<p>首先明确， <span class="math inline">\(r\)</span> 是现金的也就是所有资产的真实回报率；<span class="math inline">\(\mu\)</span> 反映的是该股票价格 GBM 的漂移系数。对于该有分红股票，其连续复利收益率应当使用 <span class="math inline">\(\mu = r-q\)</span>。</p>
+<p><span class="math display">\[d_2 =\frac{\ln{(S_0/K)} + (r-q - \sigma^2 /2)T}{\sigma \sqrt T}\]</span></p>
+<p><span class="math display">\[d_1 = \sigma \sqrt T + d_2\]</span></p>
+$$
+<span class="math display">\[\begin{aligned}
+C_t &amp;= e^{r(t-T)} \big(S_0 e^{(r-q) T}N(d_1) - KN(d_2) \big) \qquad \text{By  } r-q=\mu  \\
+&amp;= S_0e^{rt-qT} N(d_1) - e^{r(t-T)}KN(d_2) \\
+&amp;= S_t e^{rt-qT - (r-q)t} N(d_1) - e^{r(t-T)}KN(d_2) \\
+&amp;= S_t e^{q(t-T)} N(d_1) - e^{r(t-T)}KN(d_2) 
+
+\end{aligned}\]</span>
+<p>$$</p>
+<h2 id="d_1-和-d_2-的另一种表达"><span class="math inline">\(d_1\)</span> 和 <span class="math inline">\(d_2\)</span> 的另一种表达</h2>
+<p>根据几何布朗运动 GBM 的定义</p>
+<p><span class="math display">\[S_T \sim \ln \mathcal{N}(\ln{S_0} + (\mu-\sigma^2/2)T, \sigma^2T)\]</span></p>
+<p>则也可以从 <span class="math inline">\(t\)</span> 时刻开始，写为</p>
+<p><span class="math display">\[S_T \sim \ln \mathcal{N}(\ln{S_t} + (\mu-\sigma^2/2)(T-t), \sigma^2(T-t)))\]</span></p>
+<p>对应的 <span class="math inline">\(d_2\)</span> 可以写为</p>
+<p><span class="math display">\[d_2 = \frac{\ln{(S_t/K)} + (\mu - \sigma^2 /2)(T-t)}{\sigma \sqrt {(T-t)}} \]</span></p>
+<p><span class="math display">\[d_1 = \sigma \sqrt{(T-t)} + d_2\]</span></p>
+<p>这种表达方式和以 <span class="math inline">\(0\)</span> 时刻为起点的表达式是等价的。</p>
+<hr />
+<h2 id="希腊值-the-greeks">希腊值 The Greeks</h2>
+<h3 id="期权平价公式">期权平价公式</h3>
+<p><span class="math display">\[e^{-rT}K + C_0 = e^{-qT}S + P_0 = \max{(S_T, K)}\]</span></p>
+<p>Vega and Gamma of call/put are equal.</p>
+<h3 id="definition-of-the-greeks">Definition of the Greeks</h3>
+<p>...</p>
+<h3 id="delta-gamma-vega-hedging">Delta-Gamma-Vega Hedging</h3>
+<p>YTM 固定时，不考虑 <span class="math inline">\(\Theta\)</span></p>
+<p><span class="math display">\[C = C(S, \sigma)\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+dC &amp;= \frac{\partial C}{\partial S}dS + \frac12 \frac{\partial^2 C}{\partial S^2}(dS)^2 + \frac{\partial C}{\partial \sigma} d\sigma \\
+&amp;= \Delta dS + \frac12 \Gamma (dS)^2 + V d\sigma
+\end{aligned}\]</span></p>
+<h3 id="举例">举例</h3>
+<table>
+<thead>
+<tr class="header">
+<th>S</th>
+<th>980</th>
+<th>1000</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(C(K=1000)\)</span></td>
+<td>12</td>
+<td>?</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\sigma\)</span></td>
+<td>15%</td>
+<td>14%</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(T\)</span></td>
+<td></td>
+<td>14</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\Delta\)</span></td>
+<td>40</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\Theta\)</span></td>
+<td>0.2</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(Vega\)</span></td>
+<td>0.1</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\Gamma\)</span></td>
+<td>0.5</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>假设标的资产价格从 980 增加到 1000， <span class="math inline">\(\Delta S = 20\)</span></p>
+<p>首先，对于 <span class="math inline">\(\Delta\)</span>，其增加</p>
+<p><span class="math display">\[\Delta S \cdot \Gamma  = 20 \times 0.5 = 10\]</span></p>
+<p>所以 <span class="math inline">\(S=1000\)</span> 对应的 <span class="math inline">\(\Delta = 50\)</span>。</p>
+<p>然后计算期权价格由于资产价格变动引起的期权价格变动。</p>
+<p><span class="math display">\[\Delta C = \bar\Delta \cdot \Delta S = 45\% \times 20 = 9\]</span></p>
+<blockquote>
+<p>使用 Delta-Gamma-Vega approximation 时，Delta 和 Gamma 引起的变动为 <span class="math display">\[20\times 40\% + \frac12 \times 20^2 \times 0.5\% = 9 \]</span></p>
+</blockquote>
+<p>计算 <span class="math inline">\(\Theta\)</span> 和 YTM 变动引起的期权价值衰减</p>
+<p><span class="math display">\[- 0.2 \times 14 = -2.8\]</span></p>
+<p>计算隐含波动率变化引起的期权价格变动。这里 <span class="math inline">\(Vega\)</span> 值默认波动率去掉百分号表示。</p>
+<p><span class="math display">\[-1 \times 0.1 = -0.1\]</span></p>
+<p>几部分相加，总的期权价格变动为</p>
+<p><span class="math display">\[9 - 2.8 -0.1 = 6.1\]</span></p>
+<p>新的期权价格是 <span class="math inline">\(18.1\)</span>。</p>
+<hr />
+<h2 id="delta-对冲">Delta 对冲</h2>
+<p>推导BS微分方程时，通过Delta对冲消除了布朗运动项，构造了一个组合 <span class="math display">\[ P = \frac{\partial C}{\partial S} S - C\]</span></p>
+<p>这个组合根据鞅定价理论</p>
+<p><span class="math display">\[\frac{dP}{P} = rdt\]</span></p>
+<p>实际情况下无法连续地 Delta 对冲。 股价是连续变化的，而复制的时间点是离散的，因而产生复制误差 (replication error)。</p>
+<p>根据先前推导BS公式时的方法，换一下记号，记Delta-对冲后的，不含布朗运动的组合 <span class="math inline">\(Q\)</span> 为</p>
+<p><span class="math display">\[Q = C - \delta S\]</span></p>
+<p>将这个组合离散化，<span class="math inline">\(Q\)</span> 根据连续复利的理论，利率为 <span class="math inline">\(r\)</span>; 持有的标的资产 <span class="math inline">\(\delta S\)</span> 在持有期 <span class="math inline">\(\Delta t\)</span> 的变化量考虑价格变动 + 派息。</p>
+<p><span class="math display">\[rQ\Delta t = \Delta Q = \Delta C - \delta_{t_i} [(S_{t_{i+1}} - S_{t_i}) + qS_{t_i}\Delta t]\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+\Delta C &amp;= rQ\Delta t + \delta_{t_i} [(S_{t_{i+1}} - S_{t_i}) + qS_{t_i}\Delta t] \\
+&amp;= r\Delta t(C - \delta S) + \delta_{t_i} [(S_{t_{i+1}} - S_{t_i}) + qS_{t_i}\Delta t]
+\end{aligned}\]</span></p>
+<p>因而在离散时间复制期权 <span class="math inline">\(C\)</span> 的 self-financing 的策略 <span class="math inline">\(P\)</span> (注意，这里的 <span class="math inline">\(P\)</span> 是 <span class="math inline">\(C\)</span> 的复制，与上文表示不同) 可以表示为:</p>
+<p><span class="math display">\[P_0 := C_0\]</span></p>
+<p><span class="math display">\[P_{t_{i+1}} = P_{t_i} + (P_{t_i} - \delta S_{t_i})r\Delta t + \delta_{t_i} [(S_{t_{i+1}} - S_{t_i}) + qS_{t_i}\Delta t]\]</span></p>
+<p>股价 <span class="math inline">\(S_t\)</span> 服从 GBM (记 <span class="math inline">\(Z \sim N(0,1)\)</span>):</p>
+<p><span class="math display">\[S_{T} = S_t e^{(\mu - \frac{\sigma^2}2)(T-t) + \sigma\sqrt{T-t} Z}\]</span></p>
+<p>我们感兴趣的是，在 <span class="math inline">\(T\)</span> 时刻，这个间断地对冲的复制组合和实际的期权之间的gap是多少。</p>
+<p><span class="math display">\[P\&amp; L = P_T - (S_T - K)^+\]</span></p>
+<h3 id="间断性地-delta-对冲的盈亏分析">间断性地 Delta-对冲的盈亏分析</h3>
+<p>需要注意这里有几类波动性。</p>
+<p>间断地进行对冲，<span class="math inline">\(T\)</span> 时刻标的资产在上一次对冲时的 <span class="math inline">\(\sigma\)</span> 叫realized volatility，因为是以这个 <span class="math inline">\(\sigma\)</span> 定价并卖出的；</p>
+<p>期权隐含波动率 option implied volatility <span class="math inline">\(\sigma_{imp}\)</span>。</p>
+<ul>
+<li>当 <span class="math inline">\(\sigma &lt; \sigma_{imp}\)</span> 时，期权的实际价值在上一次对冲后增加，卖出是赚的。</li>
+<li>反之则亏。</li>
+</ul>
+<p>给出结论：连续 Delta 对冲的 P&amp;L 满足</p>
+<p><span class="math display">\[ P\&amp; L = \int_0^T \frac{S_t^2}{2} \frac{\partial^2 V_t}{\partial S^2} (\sigma_{imp}^2 - \sigma_t^2)dt \]</span></p>
+<p><span class="math inline">\(V_t\)</span> 是 t 时刻期权的价值， <span class="math inline">\(\sigma_t\)</span> 是 realized volatility。</p>
+<p><span class="math inline">\(\frac{S_t^2}{2} \frac{\partial^2 V_t}{\partial S^2}\)</span> 被称为 <strong>dollar gamma</strong>，满足二次微分形式，本质上就是 <span class="math inline">\(\Gamma\)</span> 引起的期权价值变动。</p>
+<p><img src="https://artursepp.com/wp-content/uploads/2017/08/deltahedge.png" /></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Financial-Engineering/" rel="tag"># Financial Engineering</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/07/IEOR-E4706-Stochastic-Calculus/" rel="prev" title="IEOR E4706: Stochastic Calculus">
+      <i class="fa fa-chevron-left"></i> IEOR E4706: Stochastic Calculus
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#black-scholes-model"><span class="nav-number">1.</span> <span class="nav-text">Black Scholes Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pde"><span class="nav-number">1.1.</span> <span class="nav-text">PDE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B9%E6%8D%AE%E8%BF%9E%E7%BB%AD%E6%97%B6%E9%97%B4%E9%9E%85%E8%AE%BA%E7%BB%99%E5%87%BA%E8%A7%A3"><span class="nav-number">1.2.</span> <span class="nav-text">根据连续时间鞅论给出解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E4%BB%98%E6%81%AF%E6%97%B6%E7%9A%84%E5%AE%9A%E4%BB%B7"><span class="nav-number">1.3.</span> <span class="nav-text">有付息时的定价</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#d_1-%E5%92%8C-d_2-%E7%9A%84%E5%8F%A6%E4%B8%80%E7%A7%8D%E8%A1%A8%E8%BE%BE"><span class="nav-number">2.</span> <span class="nav-text">\(d_1\) 和 \(d_2\) 的另一种表达</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%8C%E8%85%8A%E5%80%BC-the-greeks"><span class="nav-number">3.</span> <span class="nav-text">希腊值 The Greeks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%9F%E6%9D%83%E5%B9%B3%E4%BB%B7%E5%85%AC%E5%BC%8F"><span class="nav-number">3.1.</span> <span class="nav-text">期权平价公式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#definition-of-the-greeks"><span class="nav-number">3.2.</span> <span class="nav-text">Definition of the Greeks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#delta-gamma-vega-hedging"><span class="nav-number">3.3.</span> <span class="nav-text">Delta-Gamma-Vega Hedging</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BE%E4%BE%8B"><span class="nav-number">3.4.</span> <span class="nav-text">举例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#delta-%E5%AF%B9%E5%86%B2"><span class="nav-number">4.</span> <span class="nav-text">Delta 对冲</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%B4%E6%96%AD%E6%80%A7%E5%9C%B0-delta-%E5%AF%B9%E5%86%B2%E7%9A%84%E7%9B%88%E4%BA%8F%E5%88%86%E6%9E%90"><span class="nav-number">4.1.</span> <span class="nav-text">间断性地 Delta-对冲的盈亏分析</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="姚华(Hua Yao)"
+      src="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
+  <p class="site-author-name" itemprop="name">姚华(Hua Yao)</p>
+  <div class="site-description" itemprop="description">hy2632@columbia.edu</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hy2632" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hy2632" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hy2632@columbia.edu" title="E-Mail → mailto:hy2632@columbia.edu" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.instagram.com/nocturnima1/" title="Instagram → https:&#x2F;&#x2F;www.instagram.com&#x2F;nocturnima1&#x2F;" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">姚华(Hua Yao)</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://huo-meng-lou.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://hy2632.github.io/2021/03/10/IEOR-E4706-B-S-Model-Revisited/";
+    this.page.identifier = "2021/03/10/IEOR-E4706-B-S-Model-Revisited/";
+    this.page.title = "IEOR E4706: B-S Model Revisited";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://huo-meng-lou.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

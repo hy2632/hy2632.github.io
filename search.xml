@@ -3671,7 +3671,13 @@ P&#39;(0) (1+r)^2 = 0\]</span></p>
 <p>期货是对冲标的资产<strong>线性</strong>风险的工具，因为到期日价格 <span class="math inline">\(S_T\)</span> 线性地影响期货的价值。</p>
 <h4 id="完全对冲">完全对冲</h4>
 <p>销售大宗商品 - 防止价格下跌，提前锁定价格 - 卖出 (sell short) 期货。</p>
-<p>完全对冲常常不存在: * 整数手数 * 标的资产存在差别 * 到期日不完全符合 * 期货价格 <span class="math inline">\(P_T\)</span> 和标的资产价格不线性。</p>
+<p>完全对冲常常不存在:</p>
+<ul>
+<li>整数手数</li>
+<li>标的资产存在差别</li>
+<li>到期日不完全符合</li>
+<li>期货价格 <span class="math inline">\(P_T\)</span> 和标的资产价格不线性。</li>
+</ul>
 <h4 id="最小方差对冲">最小方差对冲</h4>
 <p>创建一个投资组合，考虑 terminal day 需要对冲的现金流为 <span class="math inline">\(Z_T\)</span> ，买入 <span class="math inline">\(h\)</span> 手的期货进行对冲，<span class="math inline">\(t\)</span> 时刻的期货价格记为 <span class="math inline">\(F_t\)</span></p>
 <p><span class="math display">\[ Y_T  = Z_T + h(F_T - F_0)\]</span></p>
@@ -3715,7 +3721,16 @@ P&#39;(0) (1+r)^2 = 0\]</span></p>
 <blockquote>
 <p>Wiki: 一份由买入欧式看涨期权和卖出欧式看跌期权组合成的投资组合，其价格等于一份与它们有相同标的资产、行使价与到期日的远期合约的价格。这是因为在到期日，如果资产价格高于行使价，则会执行欧式看涨期权，反之则执行欧式看跌期权。在任一种情况下，都等于用行使价买入一单位标的资产。因此这个投资组合等价于在到期日用行使价买入一单位标的资产的远期合约。在无套利原则下，两者在初始的价格应当等同，此即买卖权平价关系。</p>
 </blockquote>
-<p>分析： - <span class="math inline">\(C-P\)</span> 在到期日必然执行其一： - 若 <span class="math inline">\(S_T &gt; K\)</span>，则主动执行 call， <span class="math inline">\(S_T - K\)</span>，盈利 - 若 <span class="math inline">\(S_T &lt; K\)</span>，则 put 被执行，<span class="math inline">\(S_T - K\)</span>，损失 - 无论哪一种都等同于成交价为 <span class="math inline">\(K\)</span> 的远期合约 - 价值等同于 <span class="math inline">\(S_t - Kd(t,T)\)</span></p>
+<p>分析：</p>
+<ul>
+<li><span class="math inline">\(C-P\)</span> 在到期日必然执行其一：
+<ul>
+<li>若 <span class="math inline">\(S_T &gt; K\)</span>，则主动执行 call， <span class="math inline">\(S_T - K\)</span>，盈利</li>
+<li>若 <span class="math inline">\(S_T &lt; K\)</span>，则 put 被执行，<span class="math inline">\(S_T - K\)</span>，损失</li>
+</ul></li>
+<li>无论哪一种都等同于成交价为 <span class="math inline">\(K\)</span> 的远期合约</li>
+<li>价值等同于 <span class="math inline">\(S_t - Kd(t,T)\)</span></li>
+</ul>
 <p>对于该证券派息的情况，</p>
 <p><span class="math display">\[p_E(t;K,T) + S_t - D = c_E(t;K,T) + Kd(t,T)\]</span></p>
 <p><span class="math inline">\(D\)</span> 是所有股利的现值。</p>
@@ -6547,11 +6562,16 @@ C &amp;= e^{-rT}E[\max {(S(T)-K, 0)}] \\
 <p><span class="math display">\[N(d_1) = \frac{\partial C}{\partial S_0}\]</span></p>
 <p>所以 <span class="math inline">\(N(d_1)\)</span> 衡量 call 和 stock 价格的敏感性。</p>
 <h2 id="类风险敞口">5类风险敞口</h2>
-<p><span class="math display">\[Vega = \frac{\partial C}{\partial S} = N(d_1)\]</span></p>
-<p><span class="math display">\[\gamma = \frac{\partial^2 C}{\partial S^2}\]</span></p>
-<p><span class="math display">\[\Delta = \frac{\Delta C}{\Delta S}\]</span></p>
-<p><span class="math display">\[\rho = \frac{\partial^2 C}{\partial r^2}\]</span></p>
-<p><span class="math display">\[\theta = \frac{\partial^2 C}{\partial T^2}\]</span></p>
+<!-- $$Vega = \frac{\partial C}{\partial S} = N(d_1)$$
+
+$$\gamma = \frac{\partial^2 C}{\partial S^2}$$
+
+$$\Delta = \frac{\Delta C}{\Delta S}$$
+
+$$\rho = \frac{\partial^2 C}{\partial r^2}$$
+
+$$\theta = \frac{\partial^2 C}{\partial T^2}$$ -->
+<p>(2021.3.11) 希腊值 Greeks.</p>
 <h2 id="其他期权定价">其他期权定价</h2>
 <p>欧式看跌 european put 直接使用期权平价公式 put-call parity.</p>
 <h2 id="understanding-nd1-and-nd2-risk-adjusted-probabilities-in-the-black-scholes-model">Understanding N(d1) and N(d2): Risk-Adjusted Probabilities in the Black-Scholes Model</h2>
@@ -9327,7 +9347,7 @@ df &amp;= \exp{(\gamma t)}\sigma dW_t + \left(\exp{(\gamma t)}\mu(\gamma t + 1) 
 <p>则</p>
 <p><span class="math display">\[f_t - f_0 = \mu \int_0^t{e^{\gamma s}(\gamma s + 1)ds} + \sigma \int_0^t{e^{\gamma s} dW_s}\]</span></p>
 <p>化简定积分</p>
-<p><span class="math display">\[\int_0^t{e^{\gamma s}(\gamma s + 1)ds} = \frac1\gamma \int_0^{\gamma t}{e^x(x+1)dx}=\frac1\gamma (xe^x)\bigg |_0^{\gamma t} = te^{\gamma t}\]</span></p>
+<p><span class="math display">\[\int_0^t{e^{\gamma s}(\gamma s + 1)ds} = \frac1\gamma \int_0^{\gamma t}{e^x(x+1)dx}=\frac1\gamma (xe^x) |_0^{\gamma t} = te^{\gamma t}\]</span></p>
 <p>用 <span class="math inline">\(X_t\)</span> 表示:</p>
 <p><span class="math display">\[X_t = X_0e^{-\gamma t} + \mu t + \sigma e^{-\gamma t} \int_0^t{e^{\gamma s} dW_s}\]</span></p>
 <p>（解完了。）</p>
@@ -9337,9 +9357,224 @@ df &amp;= \exp{(\gamma t)}\sigma dW_t + \left(\exp{(\gamma t)}\mu(\gamma t + 1) 
 D[X_t] &amp;= D\left[ \sigma e^{-\gamma t} \int_0^t{e^{\gamma s} dW_s}  \right] \\
 &amp;= (\sigma e^{-\gamma t} )^2 D\left[ \int_0^t{e^{\gamma s} dW_s}  \right] \\
 &amp;= (\sigma e^{-\gamma t} )^2 E\left[\left(\int_0^t{e^{\gamma s} dW_s} \right)^2 \right] \\
-&amp;= (\sigma e^{-\gamma t} )^2 E\left[ \int_0^t{(e^{\gamma s})^2 ds}  \right] \text{\qquad By Ito&#39;s Isometry.} \\
+&amp;= (\sigma e^{-\gamma t} )^2 E\left[ \int_0^t{(e^{\gamma s})^2 ds}  \right] \qquad \text{ By Ito&#39;s Isometry.} \\
 &amp;= \frac{\sigma^2}{2\gamma}(1-e^{-2\gamma t})
 \end{aligned}\]</span></p>
+]]></content>
+      <categories>
+        <category>Finance</category>
+      </categories>
+      <tags>
+        <tag>Financial Engineering</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>IEOR E4706: B-S Model Revisited</title>
+    <url>/2021/03/10/IEOR-E4706-B-S-Model-Revisited/</url>
+    <content><![CDATA[<h2 id="black-scholes-model">Black Scholes Model</h2>
+<h3 id="pde">PDE</h3>
+<p>首先假设 股价 <span class="math inline">\(S_t\)</span> 是一个几何布朗运动</p>
+<p><span class="math display">\[dS_t = \mu S_tdt + \sigma S_t dW_t\]</span></p>
+<p>考虑欧式期权 <span class="math inline">\(C(S_t, t)\)</span> 是关于股价的函数。根据伊藤引理</p>
+<p><span class="math display">\[\begin{aligned}  dC &amp;= \frac{\partial C}{\partial t} dt + \frac{\partial C}{\partial S} dS + \frac12 \frac{\partial^2 C}{\partial S^2}(dS)^2 \\
+&amp;= dt\left( \frac{\partial C}{\partial t} + \frac{\partial C}{\partial S}\mu S + \frac12 \frac{\partial^2 C}{\partial S^2}\sigma^2S^2 \right) + \frac{\partial C}{\partial S}\sigma S_t dW_t
+\end{aligned}\]</span></p>
+<p>考虑一个离散化的区间 <span class="math inline">\(\Delta t\)</span>:</p>
+<p><span class="math display">\[\Delta C = \Delta t\left( \frac{\partial C}{\partial t} + \frac{\partial C}{\partial S}\mu S + \frac12 \frac{\partial^2 C}{\partial S^2}\sigma^2S^2 \right) + \frac{\partial C}{\partial S}\sigma S_t \Delta W_t\]</span></p>
+<p>考虑构建一个组合 <span class="math inline">\(P = -C + \frac{\partial C}{\partial S}S\)</span>，这样布朗运动项就被对冲掉；根据<strong>鞅定价理论</strong>，组合 <span class="math inline">\(P\)</span> 在这段时间的变化量 (非常重要！！！)</p>
+<p><span class="math display">\[\Delta P = rP\Delta t\]</span></p>
+<p>又根据</p>
+<p><span class="math display">\[\Delta P = -\Delta C + \frac{\partial C}{\partial S}\Delta S = -\Delta t\left(\frac{\partial C}{\partial t} + \frac12 \frac{\partial^2 C}{\partial S^2}\sigma^2S^2  \right)\]</span></p>
+<p>得</p>
+<p><span class="math display">\[rP = -rC + rS \frac{\partial C}{\partial S} = -\frac{\partial C}{\partial t} - \frac12 \frac{\partial^2 C}{\partial S^2}\sigma^2S^2 \]</span></p>
+<p><span class="math display">\[rC = rS \frac{\partial C}{\partial S} + \frac{\partial C}{\partial t} + \frac12 \frac{\partial^2 C}{\partial S^2}\sigma^2S^2\]</span></p>
+<p>这就是 BS 的 PDE。</p>
+<p>求解微分方程还需要边界条件。</p>
+<p><span class="math display">\[C_T = \max{(S_T-K, 0)}\]</span></p>
+<p><span class="math display">\[C_0 = 0\]</span></p>
+<h3 id="根据连续时间鞅论给出解">根据连续时间鞅论给出解</h3>
+<p><a href="(https://hy2632.github.io/2021/03/07/IEOR-E4706-Stochastic-Calculus/)">几何布朗运动GBM: <span class="math inline">\(dS_t = \mu S_tdt + \sigma S_t dW_t\)</span> 的解</a> 在上一章已经给出了</p>
+<p><span class="math display">\[S_T = S_0 \exp{\left( \left(\mu-\frac{\sigma^2}{2}\right)t + \sigma W_t \right)}\]</span></p>
+<p>股价 <span class="math inline">\(S_T\)</span> 是几何布朗运动，服从分布 <span class="math display">\[S_T \sim \ln \mathcal{N}(\ln{S_0} + (\mu-\sigma^2/2)T, \sigma^2T)\]</span></p>
+<p>期望由漂移项决定，方差由扩散项也就是布朗运动项决定。</p>
+<p>求解 <span class="math inline">\(C\)</span> 即给欧式期权定价还需要对解的结构作一定假设。根据离散时间鞅论/风险中性定价理论，确定</p>
+<p><span class="math display">\[C_t = e^{r(t-T)}E[\max{(S_T-K, 0)}] \]</span></p>
+<p>已知结构和微分方程，就只需继续化简；当然，上式已经可以直接用来蒙特卡洛定价。</p>
+<p><span class="math display">\[\begin{aligned}
+E[\max{(S_T-K, 0)}] &amp;= E[S_T-K|S_T&gt;K] \\
+&amp;= E[S_T|S_T&gt;K] - KP(S_T&gt;K)
+\end{aligned}\]</span></p>
+<p>分别求解两部分</p>
+<ol type="1">
+<li><span class="math inline">\(P(S_T &gt;K) = ?\)</span></li>
+</ol>
+<p><span class="math display">\[\begin{aligned}
+P(S_T &gt;K) &amp;= P(\ln{S_T} &gt; \ln K) \\ 
+&amp;= P(\frac{\ln{S_T} - \ln{S_0} - (\mu - \sigma^2 /2)T}{\sigma \sqrt T} &gt;\frac{\ln{K} - \ln{S_0} - (\mu - \sigma^2 /2)T}{\sigma \sqrt T} ) \\
+&amp;= N \left( \frac{\ln{(S_0/K)} + (\mu - \sigma^2 /2)T}{\sigma \sqrt T}  \right) \\
+&amp;= N(d_2)
+\end{aligned}\]</span></p>
+<ol start="2" type="1">
+<li><span class="math inline">\(E[S_T|S_T&gt;K] = ?\)</span></li>
+</ol>
+<p>假设一个 <span class="math inline">\(X\sim \ln \mathcal{N}(\mu, \sigma^2)\)</span>，</p>
+<p><span class="math display">\[\begin{aligned}
+E[X|X&gt;K] &amp;= \int_K^\infty \frac{x}{\sigma x \sqrt{2\pi}} \exp{\left( -\frac{(\ln x - \mu)^2}{2\sigma^2}  \right)}dx \qquad \text{Let } \frac{\ln x - \mu}{\sigma} = v \geq \frac{\ln K - \mu}{\sigma} = D, x = e^{\mu+\sigma v}, \frac{dv}{dx} = \frac1x \\
+&amp;= \frac 1{\sqrt{2\pi}} \int_D^\infty e^{-r^2/2} e^{\mu+\sigma v} dv\\
+&amp;= \frac 1{\sqrt{2\pi}} e^{\mu + \sigma^2/2} \int_D^\infty e^{-\frac12 (v-\sigma)^2}dv\\
+&amp;=  e^{\mu + \sigma^2/2} \int_{D-\sigma}^\infty \frac 1{\sqrt{2\pi}}e^{-\frac12 u^2}du \\
+&amp;= e^{\mu + \sigma^2/2} N(\sigma-D)
+\end{aligned}\]</span></p>
+<p>由于</p>
+<p><span class="math display">\[S_T \sim \ln \mathcal{N}(\ln{S_0} + (\mu-\sigma^2/2)T, \sigma^2T)\]</span></p>
+<p>将<span class="math inline">\(\mu\)</span> 替换为 <span class="math inline">\(\ln{S_0}+\left(\mu-\frac{\sigma^2}{2}\right)T\)</span>， <span class="math inline">\(\sigma\)</span> 替换为 <span class="math inline">\(\sigma \sqrt T\)</span></p>
+<p><span class="math display">\[D = \frac{\ln K - \mu}{\sigma} \to =\frac{\ln K - \ln S_0 - \left(\mu-\frac{\sigma^2}{2}\right)T}{\sigma \sqrt T} = -d_2\]</span></p>
+<p>则</p>
+<p><span class="math display">\[E[X|X&gt;K] =  S_0 e^{\mu T} N(\sigma\sqrt T-D) = S_0 e^{\mu T}N(d_1) \]</span></p>
+<p>其中， <span class="math inline">\(d_1 = \sigma \sqrt T + d2\)</span>。</p>
+<p>综上，</p>
+<p><span class="math display">\[\begin{aligned}
+C_t &amp;= e^{r(t-T)}E[\max{(S_T-K, 0)}] \\
+&amp;= e^{r(t-T)} \big(E[S_T|S_T&gt;K] - KP(S_T&gt;K) \big) \\
+&amp;= e^{r(t-T)} \big(S_0 e^{\mu T}N(d_1) - KN(d_2) \big) \qquad \text{By  } r=\mu \\
+&amp;= S_tN(d_1) - Ke^{r(t-T)}N(d_2)
+\end{aligned}\]</span></p>
+<p>其中</p>
+<p><span class="math display">\[d_2 =\frac{\ln{(S_0/K)} + (r - \sigma^2 /2)T}{\sigma \sqrt T} \qquad \text{replaced } \mu \to r\]</span></p>
+<p><span class="math display">\[d_1 = \sigma \sqrt T + d_2\]</span></p>
+<h3 id="有付息时的定价">有付息时的定价</h3>
+<p>首先明确， <span class="math inline">\(r\)</span> 是现金的也就是所有资产的真实回报率；<span class="math inline">\(\mu\)</span> 反映的是该股票价格 GBM 的漂移系数。对于该有分红股票，其连续复利收益率应当使用 <span class="math inline">\(\mu = r-q\)</span>。</p>
+<p><span class="math display">\[d_2 =\frac{\ln{(S_0/K)} + (r-q - \sigma^2 /2)T}{\sigma \sqrt T}\]</span></p>
+<p><span class="math display">\[d_1 = \sigma \sqrt T + d_2\]</span></p>
+$$
+<span class="math display">\[\begin{aligned}
+C_t &amp;= e^{r(t-T)} \big(S_0 e^{(r-q) T}N(d_1) - KN(d_2) \big) \qquad \text{By  } r-q=\mu  \\
+&amp;= S_0e^{rt-qT} N(d_1) - e^{r(t-T)}KN(d_2) \\
+&amp;= S_t e^{rt-qT - (r-q)t} N(d_1) - e^{r(t-T)}KN(d_2) \\
+&amp;= S_t e^{q(t-T)} N(d_1) - e^{r(t-T)}KN(d_2) 
+
+\end{aligned}\]</span>
+<p>$$</p>
+<h2 id="d_1-和-d_2-的另一种表达"><span class="math inline">\(d_1\)</span> 和 <span class="math inline">\(d_2\)</span> 的另一种表达</h2>
+<p>根据几何布朗运动 GBM 的定义</p>
+<p><span class="math display">\[S_T \sim \ln \mathcal{N}(\ln{S_0} + (\mu-\sigma^2/2)T, \sigma^2T)\]</span></p>
+<p>则也可以从 <span class="math inline">\(t\)</span> 时刻开始，写为</p>
+<p><span class="math display">\[S_T \sim \ln \mathcal{N}(\ln{S_t} + (\mu-\sigma^2/2)(T-t), \sigma^2(T-t)))\]</span></p>
+<p>对应的 <span class="math inline">\(d_2\)</span> 可以写为</p>
+<p><span class="math display">\[d_2 = \frac{\ln{(S_t/K)} + (\mu - \sigma^2 /2)(T-t)}{\sigma \sqrt {(T-t)}} \]</span></p>
+<p><span class="math display">\[d_1 = \sigma \sqrt{(T-t)} + d_2\]</span></p>
+<p>这种表达方式和以 <span class="math inline">\(0\)</span> 时刻为起点的表达式是等价的。</p>
+<hr />
+<h2 id="希腊值-the-greeks">希腊值 The Greeks</h2>
+<h3 id="期权平价公式">期权平价公式</h3>
+<p><span class="math display">\[e^{-rT}K + C_0 = e^{-qT}S + P_0 = \max{(S_T, K)}\]</span></p>
+<p>Vega and Gamma of call/put are equal.</p>
+<h3 id="definition-of-the-greeks">Definition of the Greeks</h3>
+<p>...</p>
+<h3 id="delta-gamma-vega-hedging">Delta-Gamma-Vega Hedging</h3>
+<p>YTM 固定时，不考虑 <span class="math inline">\(\Theta\)</span></p>
+<p><span class="math display">\[C = C(S, \sigma)\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+dC &amp;= \frac{\partial C}{\partial S}dS + \frac12 \frac{\partial^2 C}{\partial S^2}(dS)^2 + \frac{\partial C}{\partial \sigma} d\sigma \\
+&amp;= \Delta dS + \frac12 \Gamma (dS)^2 + V d\sigma
+\end{aligned}\]</span></p>
+<h3 id="举例">举例</h3>
+<table>
+<thead>
+<tr class="header">
+<th>S</th>
+<th>980</th>
+<th>1000</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(C(K=1000)\)</span></td>
+<td>12</td>
+<td>?</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\sigma\)</span></td>
+<td>15%</td>
+<td>14%</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(T\)</span></td>
+<td></td>
+<td>14</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\Delta\)</span></td>
+<td>40</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\Theta\)</span></td>
+<td>0.2</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(Vega\)</span></td>
+<td>0.1</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\Gamma\)</span></td>
+<td>0.5</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>假设标的资产价格从 980 增加到 1000， <span class="math inline">\(\Delta S = 20\)</span></p>
+<p>首先，对于 <span class="math inline">\(\Delta\)</span>，其增加</p>
+<p><span class="math display">\[\Delta S \cdot \Gamma  = 20 \times 0.5 = 10\]</span></p>
+<p>所以 <span class="math inline">\(S=1000\)</span> 对应的 <span class="math inline">\(\Delta = 50\)</span>。</p>
+<p>然后计算期权价格由于资产价格变动引起的期权价格变动。</p>
+<p><span class="math display">\[\Delta C = \bar\Delta \cdot \Delta S = 45\% \times 20 = 9\]</span></p>
+<blockquote>
+<p>使用 Delta-Gamma-Vega approximation 时，Delta 和 Gamma 引起的变动为 <span class="math display">\[20\times 40\% + \frac12 \times 20^2 \times 0.5\% = 9 \]</span></p>
+</blockquote>
+<p>计算 <span class="math inline">\(\Theta\)</span> 和 YTM 变动引起的期权价值衰减</p>
+<p><span class="math display">\[- 0.2 \times 14 = -2.8\]</span></p>
+<p>计算隐含波动率变化引起的期权价格变动。这里 <span class="math inline">\(Vega\)</span> 值默认波动率去掉百分号表示。</p>
+<p><span class="math display">\[-1 \times 0.1 = -0.1\]</span></p>
+<p>几部分相加，总的期权价格变动为</p>
+<p><span class="math display">\[9 - 2.8 -0.1 = 6.1\]</span></p>
+<p>新的期权价格是 <span class="math inline">\(18.1\)</span>。</p>
+<hr />
+<h2 id="delta-对冲">Delta 对冲</h2>
+<p>推导BS微分方程时，通过Delta对冲消除了布朗运动项，构造了一个组合 <span class="math display">\[ P = \frac{\partial C}{\partial S} S - C\]</span></p>
+<p>这个组合根据鞅定价理论</p>
+<p><span class="math display">\[\frac{dP}{P} = rdt\]</span></p>
+<p>实际情况下无法连续地 Delta 对冲。 股价是连续变化的，而复制的时间点是离散的，因而产生复制误差 (replication error)。</p>
+<p>根据先前推导BS公式时的方法，换一下记号，记Delta-对冲后的，不含布朗运动的组合 <span class="math inline">\(Q\)</span> 为</p>
+<p><span class="math display">\[Q = C - \delta S\]</span></p>
+<p>将这个组合离散化，<span class="math inline">\(Q\)</span> 根据连续复利的理论，利率为 <span class="math inline">\(r\)</span>; 持有的标的资产 <span class="math inline">\(\delta S\)</span> 在持有期 <span class="math inline">\(\Delta t\)</span> 的变化量考虑价格变动 + 派息。</p>
+<p><span class="math display">\[rQ\Delta t = \Delta Q = \Delta C - \delta_{t_i} [(S_{t_{i+1}} - S_{t_i}) + qS_{t_i}\Delta t]\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+\Delta C &amp;= rQ\Delta t + \delta_{t_i} [(S_{t_{i+1}} - S_{t_i}) + qS_{t_i}\Delta t] \\
+&amp;= r\Delta t(C - \delta S) + \delta_{t_i} [(S_{t_{i+1}} - S_{t_i}) + qS_{t_i}\Delta t]
+\end{aligned}\]</span></p>
+<p>因而在离散时间复制期权 <span class="math inline">\(C\)</span> 的 self-financing 的策略 <span class="math inline">\(P\)</span> (注意，这里的 <span class="math inline">\(P\)</span> 是 <span class="math inline">\(C\)</span> 的复制，与上文表示不同) 可以表示为:</p>
+<p><span class="math display">\[P_0 := C_0\]</span></p>
+<p><span class="math display">\[P_{t_{i+1}} = P_{t_i} + (P_{t_i} - \delta S_{t_i})r\Delta t + \delta_{t_i} [(S_{t_{i+1}} - S_{t_i}) + qS_{t_i}\Delta t]\]</span></p>
+<p>股价 <span class="math inline">\(S_t\)</span> 服从 GBM (记 <span class="math inline">\(Z \sim N(0,1)\)</span>):</p>
+<p><span class="math display">\[S_{T} = S_t e^{(\mu - \frac{\sigma^2}2)(T-t) + \sigma\sqrt{T-t} Z}\]</span></p>
+<p>我们感兴趣的是，在 <span class="math inline">\(T\)</span> 时刻，这个间断地对冲的复制组合和实际的期权之间的gap是多少。</p>
+<p><span class="math display">\[P\&amp; L = P_T - (S_T - K)^+\]</span></p>
+<h3 id="间断性地-delta-对冲的盈亏分析">间断性地 Delta-对冲的盈亏分析</h3>
+<p>需要注意这里有几类波动性。</p>
+<p>间断地进行对冲，<span class="math inline">\(T\)</span> 时刻标的资产在上一次对冲时的 <span class="math inline">\(\sigma\)</span> 叫realized volatility，因为是以这个 <span class="math inline">\(\sigma\)</span> 定价并卖出的；</p>
+<p>期权隐含波动率 option implied volatility <span class="math inline">\(\sigma_{imp}\)</span>。</p>
+<ul>
+<li>当 <span class="math inline">\(\sigma &lt; \sigma_{imp}\)</span> 时，期权的实际价值在上一次对冲后增加，卖出是赚的。</li>
+<li>反之则亏。</li>
+</ul>
+<p>给出结论：连续 Delta 对冲的 P&amp;L 满足</p>
+<p><span class="math display">\[ P\&amp; L = \int_0^T \frac{S_t^2}{2} \frac{\partial^2 V_t}{\partial S^2} (\sigma_{imp}^2 - \sigma_t^2)dt \]</span></p>
+<p><span class="math inline">\(V_t\)</span> 是 t 时刻期权的价值， <span class="math inline">\(\sigma_t\)</span> 是 realized volatility。</p>
+<p><span class="math inline">\(\frac{S_t^2}{2} \frac{\partial^2 V_t}{\partial S^2}\)</span> 被称为 <strong>dollar gamma</strong>，满足二次微分形式，本质上就是 <span class="math inline">\(\Gamma\)</span> 引起的期权价值变动。</p>
+<p><img src="https://artursepp.com/wp-content/uploads/2017/08/deltahedge.png" /></p>
 ]]></content>
       <categories>
         <category>Finance</category>
