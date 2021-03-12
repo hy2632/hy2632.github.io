@@ -3548,6 +3548,9 @@ P(S_T &gt;K) &amp;= P(\ln{S_T} &gt; \ln K) \\
 <li><span class="math inline">\(E[S_T|S_T&gt;K] = ?\)</span></li>
 </ol>
 <p>假设一个 <span class="math inline">\(X\sim \ln \mathcal{N}(\mu, \sigma^2)\)</span>，</p>
+<blockquote>
+<p>推导对数正态分布的密度函数，方法是cdf求导；记<span class="math inline">\(Z = \ln X \sim N(\mu, \sigma^2)\)</span>， <span class="math display">\[F_X(x) = F_Z(\ln x)\]</span> <span class="math display">\[f_X(x) = F_X&#39;(x) = \frac{\partial F_z}{\partial x}(\ln x) = F_Z&#39;(\ln x)\cdot \frac1x = f_Z(\ln x)\cdot \frac1x\]</span> 于是得到对数正态分布的pdf <span class="math display">\[f(x) = \frac1{\sqrt{2\pi}\sigma x} e^{-\frac{(\ln{x} - \mu)^2}{2\sigma^2}}\]</span></p>
+</blockquote>
 <p><span class="math display">\[\begin{aligned}
 E[X|X&gt;K] &amp;= \int_K^\infty \frac{x}{\sigma x \sqrt{2\pi}} \exp{\left( -\frac{(\ln x - \mu)^2}{2\sigma^2}  \right)}dx \qquad \text{Let } \frac{\ln x - \mu}{\sigma} = v \geq \frac{\ln K - \mu}{\sigma} = D, x = e^{\mu+\sigma v}, \frac{dv}{dx} = \frac1x \\
 &amp;= \frac 1{\sqrt{2\pi}} \int_D^\infty e^{-r^2/2} e^{\mu+\sigma v} dv\\
@@ -3705,6 +3708,9 @@ dC &amp;= \frac{\partial C}{\partial S}dS + \frac12 \frac{\partial^2 C}{\partial
 <p><span class="math inline">\(V_t\)</span> 是 t 时刻期权的价值， <span class="math inline">\(\sigma_t\)</span> 是 realized volatility。</p>
 <p><span class="math inline">\(\frac{S_t^2}{2} \frac{\partial^2 V_t}{\partial S^2}\)</span> 被称为 <strong>dollar gamma</strong>，满足二次微分形式，本质上就是 <span class="math inline">\(\Gamma\)</span> 引起的期权价值变动。</p>
 <p><img src="https://artursepp.com/wp-content/uploads/2017/08/deltahedge.png" /></p>
+<hr />
+<h2 id="讲义">讲义</h2>
+<div class="pdfobject-container" data-target="./6BlackScholes.pdf" data-height="1000px"></div>
 ]]></content>
       <categories>
         <category>Finance</category>
@@ -9581,6 +9587,108 @@ sum
       </categories>
       <tags>
         <tag>Managerial Negotiation</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>IEOR E4706: Assignment 7</title>
+    <url>/2021/03/13/IEOR-E4706-Assignment-7/</url>
+    <content><![CDATA[<h2 id="链接">链接</h2>
+<p>http://www.columbia.edu/~mh2078/FoundationsFE/Assign7.pdf</p>
+<h2 id="the-deflated-gains-process-is-a-q-martingale">(The Deflated Gains Process is a Q-martingale)</h2>
+<blockquote>
+<p>已知 <span class="math display">\[dS_t = (r-q)S_tdt + \sigma S_tdW_t^Q\]</span> 求证 <span class="math display">\[S_0 = E_0^Q \left[ \int_0^T e^{-rt}qS_tdt + e^{-rT}S_T \right]\]</span></p>
+</blockquote>
+<p>观察形式，就是含息债券的定价公式而已，用 <span class="math inline">\(r\)</span> 贴现。</p>
+<p>Proof：</p>
+<p>可以交换期望和积分顺序。</p>
+<p><span class="math display">\[\frac{d(e^{-rt}S_t)} {dt} = -re^{-rt}S_t + e^{-rt} \frac{dS_t}{dt}\]</span></p>
+<p>套上期望式时，布朗运动项消去，用换元的技巧</p>
+<p><span class="math display">\[E[dS_t] = E[(r-q)S_tdt]\]</span></p>
+<p><span class="math display">\[E\left[\frac{d(e^{-rt}S_t)} {dt} \right] =E \left[ -re^{-rt}S_t + e^{-rt} \frac{dS_t}{dt} \right]  = E\left[ -qe^{-rt}S_tdt \right]\]</span></p>
+<p><span class="math display">\[\therefore E\left[\int_0^T e^{-rt}qS_tdt\right] = E\left[ \int_0^T \frac{e^{-rt}qS_tdt}{-qe^{-rt}S_tdt} d(e^{-rt}S_t)\right] = E\left[ \int_0^T - d(e^{-rt}S_t)\right] = E\left[ S_0  - e^{-rT}S_T\right] = S_0- E\left[e^{-rT}S_T\right]\]</span></p>
+<p>代入结论的表达式得证。</p>
+<h2 id="deriving-black-scholes-when-the-underlying-pays-a-dividend-yield">(Deriving Black-Scholes When the Underlying Pays a Dividend Yield)</h2>
+<p>有付息的定价在 <a href="https://hy2632.github.io/2021/03/10/IEOR-E4706-B-S-Model-Revisited/">B-S-Model-Revisited</a> 中给出了推导，是将股价的GBM的参数 <span class="math inline">\(\mu\)</span> 从 <span class="math inline">\(r\)</span> 调整到 <span class="math inline">\(r-q\)</span>。这样做显然是因为股票持有期的收益 = 分红 + 股价上涨，那么股价上涨的漂移系数肯定要扣除 <span class="math inline">\(q\)</span>。</p>
+<p><span class="math display">\[\begin{aligned}
+C_t &amp;= e^{r(t-T)}E[\max{(S_T-K, 0)}] \\
+&amp;= e^{r(t-T)} \big(E[S_T|S_T&gt;K] - KP(S_T&gt;K) \big) \\
+&amp;= e^{r(t-T)} \big(S_0 e^{\mu T}N(d_1) - KN(d_2) \big) \qquad \text{By  } \mu=r - q \\
+&amp;= S_0e^{rt-qT} N(d_1) - e^{r(t-T)}KN(d_2) \\
+&amp;= S_t e^{rt-qT - (r-q)t} N(d_1) - e^{r(t-T)}KN(d_2) \\
+&amp;= S_t e^{q(t-T)} N(d_1) - e^{r(t-T)}KN(d_2) 
+\end{aligned}\]</span></p>
+<p><span class="math inline">\(d_1, d_2\)</span> 也将 <span class="math inline">\(\mu = r-q\)</span></p>
+<p><span class="math display">\[d_2 =\frac{\ln{(S_0/K)} + (r-q - \sigma^2 /2)T}{\sigma \sqrt T}\]</span></p>
+<p><span class="math display">\[d_1 = \sigma \sqrt T + d_2\]</span></p>
+<h2 id="futures-contracts-and-black-scholes">(Futures Contracts and Black-Scholes)</h2>
+<blockquote>
+<ol type="a">
+<li>用鞅定价理论推导期货 <span class="math inline">\(F_t^{(T)}\)</span> 的价格，标的物为 <span class="math inline">\(T\)</span> 时的股票。假设 B-S 成立、股票分红率 <span class="math inline">\(q\)</span>。</li>
+</ol>
+</blockquote>
+<p>类似 european call 的推导，仍然假设标的资产 <span class="math inline">\(S\)</span> 满足 <span class="math inline">\(dS = \mu Sdt + \sigma S dW_t\)</span></p>
+<p>根据鞅定价理论</p>
+<p><span class="math display">\[F_t = e^{r(t-T)} E[S_T]\]</span></p>
+<p><span class="math inline">\(S_T\)</span> 已知</p>
+<p><span class="math display">\[S_T = S_0 e^{(r-q-\frac{\sigma^2}{2})T + \sigma \sqrt T Z}\]</span></p>
+<p>考虑 <span class="math inline">\(E[e^{X}]\)</span>，<span class="math inline">\(X\sim N(0, \sigma^2)\)</span></p>
+<p><span class="math display">\[\begin{aligned}
+E[e^{X}] &amp;= \frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{\infty} e^{ x}  e^{-\frac{x^2}{2\sigma^2}}dx \\
+&amp;= \frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{\infty}  e^{x-\frac{x^2}{2\sigma^2}}dx \qquad \text{Note that } x-\frac{x^2}{2\sigma^2} = \frac1{2\sigma^2}\left(2\sigma^2 x - x^2\right)= \frac1{2\sigma^2}\left(-(\sigma^2-x)^2 +\sigma^4  \right) = \frac{\sigma^2}{2} - \frac12 \left(\sigma - \frac x \sigma\right)^2\\
+&amp;= \frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{\infty}  e^{\frac{\sigma^2}{2} - \frac12 \left(\sigma - \frac x \sigma\right)^2}dx \\
+&amp;= \frac{1}{\sqrt{2\pi}\sigma} e^{\frac{\sigma^2}{2}} \int_{-\infty}^{\infty}  e^{ - \frac12 \left(\sigma - \frac x \sigma\right)^2}dx \\
+&amp;= \frac{1}{\sqrt{2\pi}\sigma} e^{\frac{\sigma^2}{2}} \int_{-\infty}^{\infty}  e^{ - \frac12 u^2}\sigma du \qquad \text{Substitute } u= \frac x\sigma - \sigma \\
+&amp;= \frac{1}{\sqrt{2\pi}} e^{\frac{\sigma^2}{2}} \int_{-\infty}^{\infty}  e^{ - \frac12 u^2} du \\
+&amp;= \frac{1}{\sqrt{\pi}} e^{\frac{\sigma^2}{2}} \int_{-\infty}^{\infty}  e^{ - v^2} dv \qquad \text{Substitute } v = \frac{u}{\sqrt{2}} \\
+&amp;= e^{\frac{\sigma^2}{2}} \qquad \text {Gaussian Integral equals } \sqrt\pi
+\end{aligned}\]</span></p>
+<p>所以</p>
+<p><span class="math display">\[\begin{aligned} E[S_T] &amp;= S_0 e^{(r-q-\frac{\sigma^2}{2})T}  E[e^{\sigma \sqrt T Z}] \\
+&amp;= S_0e^{(r-q-\frac{\sigma^2}{2})T} e^{\frac{\sigma^2 T}{2}} \\
+&amp;= S_0e^{(r-q)T} \\
+&amp;= S_te^{(r-q)(T-t)} \qquad \text{Change the starting time to }t
+\end{aligned}\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+F_t &amp;= e^{r(t-T)} E[S_T] \\
+&amp;= e^{r(t-T)} (S_te^{(r-q)(T-t)})\\
+&amp;=S_t e^{q(t-T)}
+\end{aligned}\]</span></p>
+<p>或者用 <span class="math inline">\(S_0\)</span> 表示</p>
+<p><span class="math display">\[F_t = e^{r(t-T)}S_0e^{(r-q)T} = S_0e^{rt-qT}\]</span></p>
+<p>和带 dividend 的股票的 european call 对比</p>
+<p><span class="math display">\[\begin{aligned}
+C_t &amp;= S_t e^{q(t-T)} N(d_1) - Ke^{r(t-T)}N(d_2) 
+\end{aligned}\]</span></p>
+<blockquote>
+<ol start="2" type="a">
+<li>以该期货为标的的期权 (option on the futures) 定价。假设期货在 <span class="math inline">\(T\)</span> 到期而期权在 <span class="math inline">\(\tau &lt; T\)</span> 到期。</li>
+</ol>
+</blockquote>
+<p>如果假设股价服从几何布朗运动，则 <span class="math inline">\(S_t = S_0e^{(r-q - \sigma^2/2)t+\sigma\sqrt tZ}\)</span>，根据上文导出的期货定价，期货价格过程是</p>
+<p><span class="math display">\[F_t = S_0e^{(r- \sigma^2/2)t -qT +\sigma\sqrt tZ} = S_0e^{-qT} e^{(r- \sigma^2/2)t+\sigma\sqrt tZ}\]</span></p>
+<p>注意到</p>
+<p><span class="math display">\[F_0 = S_0e^{-qT}\]</span></p>
+<p><span class="math display">\[F_t = F_0e^{(r- \sigma^2/2)t+\sigma\sqrt tZ}\]</span></p>
+<p>和几何布朗运动的定义一致。所以 <span class="math inline">\(F\)</span> 就等价于一个不付息的 Stock，漂移系数就是 <span class="math inline">\(r\)</span>。</p>
+<p>既然如此，可以直接套用 BS 给出的期权定价公式 (不含息) 了。注意，期权</p>
+<p><span class="math display">\[C_t = F_tN(d_1) - e^{-r(\tau - t)K}N(d_2)\]</span></p>
+<p>其中</p>
+<p><span class="math display">\[d_1 = \frac{\ln{(F_t/K)}+(r+\sigma^2/2)(\tau-t)}{\sigma\sqrt{\tau-t}}\]</span></p>
+<p><span class="math display">\[d_2 = d_1 - \sigma\sqrt{\tau -t}\]</span></p>
+<blockquote>
+<ol start="3" type="a">
+<li>确定该期权价格满足问题2的 BS PDE。</li>
+</ol>
+</blockquote>
+<p>该期权的定价其实和 no dividend 时的 BS 推导结果一致，因为仅仅看它的 underlying <span class="math inline">\(F_t\)</span> 是 no dividend 的。</p>
+<h2 id="delta-hedging">(Delta-Hedging)</h2>
+<p>tbd.</p>
+]]></content>
+      <categories>
+        <category>Finance</category>
+      </categories>
+      <tags>
+        <tag>Financial Engineering</tag>
       </tags>
   </entry>
 </search>
