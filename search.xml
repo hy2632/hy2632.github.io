@@ -5351,7 +5351,407 @@ Title_Other
   <entry>
     <title>IEOR E4706: Term Structure Lattice Models</title>
     <url>/2021/02/27/IEOR-E4706-Term-Structure-Lattice-Models/</url>
-    <content><![CDATA[<p>TBC.</p>
+    <content><![CDATA[<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>short rate 的二叉树模型，假设 q-martingale 的概率是 0.5/0.5。</p>
+<p>利率二叉树和yield curve是对应的。如果使用BDT或Ho-Lee这样的二叉树，需要对参数进行校准。</p>
+<p>从无息债券定价的 backward evaluation 开始，回溯法是通用的方法；在此基础上以债券为标的的衍生品的定价…</p>
+<p>如果衍生品不能提前行权，也可先计算行权日状态价格再直接定价。</p>
+<h2 id="二叉树模型"><a href="#二叉树模型" class="headerlink" title="二叉树模型"></a>二叉树模型</h2><p>从短期利率的二叉树模型开始。</p>
+<h3 id="构造一个无套利的二叉树"><a href="#构造一个无套利的二叉树" class="headerlink" title="构造一个无套利的二叉树"></a>构造一个无套利的二叉树</h3><p>$r_{i,j}$ : 时间 i 状态 j 下的短期利率。</p>
+<p>鞅定价：</p>
+<p>$$S_i(j) = \frac1{1+r_{i,j}} [q_uS_{i+1}(j+1) + q_d S_{i+1}(j)] + \text{dividend}$$</p>
+<p>$q$ 是与鞅对应的测度。</p>
+<h3 id="从二叉树到利率期限结构"><a href="#从二叉树到利率期限结构" class="headerlink" title="从二叉树到利率期限结构"></a>从二叉树到利率期限结构</h3><blockquote>
+<p>例1：short rate 的二叉树 r 给出；为无息债券定价：T=4, F=100, q=0。</p>
+<p>backward evaluation 得出 bond lattice，发现其 t=0 时刻价格为 77.22。从而计算出四年利率 $s_4$。如果有短期利率，就可以推导出利率期限结构。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Params</span></span><br><span class="line">T=<span class="number">4</span></span><br><span class="line">F=<span class="number">100</span></span><br><span class="line">q=<span class="number">0</span></span><br><span class="line"></span><br><span class="line">shortRateLattice = np.ones((T+<span class="number">1</span>, T+<span class="number">1</span>)) * np.nan</span><br><span class="line">shortRateLattice[<span class="number">0</span>,<span class="number">0</span>] = <span class="number">0.06</span></span><br><span class="line">u=<span class="number">1.25</span></span><br><span class="line">d=<span class="number">0.9</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(<span class="number">1</span>, T+<span class="number">1</span>):</span><br><span class="line">    shortRateLattice[t, <span class="number">0</span>] = shortRateLattice[t<span class="number">-1</span>, <span class="number">0</span>] * d</span><br><span class="line">    shortRateLattice[t, <span class="number">1</span>:t+<span class="number">1</span>] = shortRateLattice[t<span class="number">-1</span>, :t] * u</span><br><span class="line">shortRateLattice.round(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">array</span>([[<span class="number">0.06</span> ,   nan,   nan,   nan,   nan],</span><br><span class="line">       [<span class="number">0.054</span>, <span class="number">0.075</span>,   nan,   nan,   nan],</span><br><span class="line">       [<span class="number">0.049</span>, <span class="number">0.068</span>, <span class="number">0.094</span>,   nan,   nan],</span><br><span class="line">       [<span class="number">0.044</span>, <span class="number">0.061</span>, <span class="number">0.084</span>, <span class="number">0.117</span>,   nan],</span><br><span class="line">       [<span class="number">0.039</span>, <span class="number">0.055</span>, <span class="number">0.076</span>, <span class="number">0.105</span>, <span class="number">0.146</span>]])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Q-martingale&#x27;s probability</span></span><br><span class="line">qu = <span class="number">0.5</span></span><br><span class="line">qd = <span class="number">0.5</span></span><br><span class="line"></span><br><span class="line">bondLattice = np.ones_like(shortRateLattice) * np.nan</span><br><span class="line"></span><br><span class="line">bondLattice[<span class="number">-1</span>] = F</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(T<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    bondLattice[t, :t+<span class="number">1</span>] = (bondLattice[t+<span class="number">1</span>, :t+<span class="number">1</span>] * qd + bondLattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>] * qu) / (<span class="number">1</span>+shortRateLattice[t, :t+<span class="number">1</span>]) +q*F</span><br><span class="line">bondLattice.round(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">array</span>([[ <span class="number">77.22</span>,    nan,    nan,    nan,    nan],</span><br><span class="line">       [ <span class="number">84.43</span>,  <span class="number">79.27</span>,    nan,    nan,    nan],</span><br><span class="line">       [ <span class="number">90.64</span>,  <span class="number">87.35</span>,  <span class="number">83.08</span>,    nan,    nan],</span><br><span class="line">       [ <span class="number">95.81</span>,  <span class="number">94.27</span>,  <span class="number">92.22</span>,  <span class="number">89.51</span>,    nan],</span><br><span class="line">       [<span class="number">100.</span>  , <span class="number">100.</span>  , <span class="number">100.</span>  , <span class="number">100.</span>  , <span class="number">100.</span>  ]])</span><br></pre></td></tr></table></figure>
+
+<h3 id="利率衍生品定价"><a href="#利率衍生品定价" class="headerlink" title="利率衍生品定价"></a>利率衍生品定价</h3><h4 id="债券的期权"><a href="#债券的期权" class="headerlink" title="债券的期权"></a>债券的期权</h4><blockquote>
+<p>例2：4年到期无息债券 的 <strong>european call</strong> (2年到期, K=84)</p>
+<p>首先推导出 bond lattice，然后 t=2 期权价值 $C = \max{(S-K, 0)}$。由于是欧式期权，仅能在 t=2 行权，所以根据 option lattice 的 t=2 回溯即可。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># European Call option on the bond</span></span><br><span class="line">tau = <span class="number">2</span></span><br><span class="line">K = <span class="number">84</span></span><br><span class="line"></span><br><span class="line">eurocallLattice = np.zeros((tau+<span class="number">1</span>, tau+<span class="number">1</span>)) * np.nan</span><br><span class="line">eurocallLattice[<span class="number">-1</span>] = np.clip(bondLattice[tau, :eurocallLattice[<span class="number">-1</span>].shape[<span class="number">0</span>]] - K, <span class="number">0</span>, <span class="literal">None</span>)</span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(tau<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    eurocallLattice[t,:t+<span class="number">1</span>] = (eurocallLattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>] * qu + eurocallLattice[t+<span class="number">1</span>, :t+<span class="number">1</span>] * qd) / (<span class="number">1</span> + shortRateLattice[t, :t+<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">eurocallLattice.round(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">array</span>([[<span class="number">2.97</span>,  nan,  nan],</span><br><span class="line">       [<span class="number">4.74</span>, <span class="number">1.56</span>,  nan],</span><br><span class="line">       [<span class="number">6.64</span>, <span class="number">3.35</span>, <span class="number">0.</span>  ]])</span><br></pre></td></tr></table></figure>
+
+
+<blockquote>
+<p>例3: 还是上例的条件，换成<strong>美式看跌</strong></p>
+<p>美式看跌可以提前行权，所以在回溯之前的每个节点时，需要比较 bond lattice 对应节点的行权收益 (exercise value) 和折算的收益 (continuation value)。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># American Put on the bond</span></span><br><span class="line">K_ = <span class="number">88</span></span><br><span class="line">ameputLattice = np.zeros_like(eurocallLattice) * np.nan</span><br><span class="line">ameputLattice[<span class="number">-1</span>] = np.clip(K_-bondLattice[tau, :tau+<span class="number">1</span>], <span class="number">0</span>, <span class="literal">None</span>)</span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(tau<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    continuation_value = (ameputLattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>] * qu + ameputLattice[t+<span class="number">1</span>, :t+<span class="number">1</span>] * qd) / (<span class="number">1</span> + shortRateLattice[t, :t+<span class="number">1</span>])</span><br><span class="line">    exercise_value = np.clip(K_-bondLattice[t, :t+<span class="number">1</span>], <span class="number">0</span>, <span class="literal">None</span>)</span><br><span class="line">    ameputLattice[t, :t+<span class="number">1</span>] = np.max(np.vstack([continuation_value, exercise_value]), axis=<span class="number">0</span>)</span><br><span class="line">ameputLattice.round(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">array</span>([[<span class="number">10.78</span>,   nan,   nan],</span><br><span class="line">       [ <span class="number">3.57</span>,  <span class="number">8.73</span>,   nan],</span><br><span class="line">       [ <span class="number">0.</span>  ,  <span class="number">0.65</span>,  <span class="number">4.92</span>]])</span><br></pre></td></tr></table></figure>
+
+<h4 id="债券的期货"><a href="#债券的期货" class="headerlink" title="债券的期货"></a>债券的期货</h4><p>假设完备市场 (任何证券都能够被唯一地定价；不完备时，如果某证券能够被复制，则也能被定价)，根据鞅定价理论</p>
+<p>$$ 0= E_{n-1}^Q \left[ \frac{F_n - F_{n-1}}{B_n}  \right]$$</p>
+<p>$$F_{n-1} = E_{n-1}^Q \left[ F_n \right]$$</p>
+<p>又，在到期日</p>
+<p>$$F_n = S_n$$</p>
+<p>重期望公式 iterated expectation</p>
+<p>$$F_0 = E_0^Q [S_n]$$</p>
+<p>如果债券含息，上式依然成立，但需要把 $S_n$ 去息。二叉树回溯时做处理。</p>
+<h4 id="债券的远期"><a href="#债券的远期" class="headerlink" title="债券的远期"></a>债券的远期</h4><p>远期和期货最大的区别是逐日盯市和保证金。</p>
+<p>$$ 0 = E_0^Q \left[ \frac{S_n - G_0}{B_n}  \right]$$</p>
+<p>$$G_0 = \frac{E_0^Q\left[\frac{S_n}{B_n}\right]}{E_0^Q\left[\frac{1}{B_n}\right]}$$</p>
+<p>在上一章 <a href="https://hy2632.github.io/2021/02/15/IEOR-E4706-Martingale-Pricing-Theory-Discrete-Time-Space/">鞅定价</a> 提及远期和期货的价格关系，标的和利率正相关时，期货价格更高。</p>
+<p>债券不付息时，</p>
+<p>$$G_0 = \frac{S_0}{E_0^Q\left[\frac{1}{B_n}\right]} = \frac{E_0^Q\left[S_0\right]}{d(0,n)}$$</p>
+<h4 id="期货和远期的例子"><a href="#期货和远期的例子" class="headerlink" title="期货和远期的例子"></a>期货和远期的例子</h4><blockquote>
+<p>例4 含息债券的远期合约定价。<br>参数：债券6年到期，远期合约 4-6，息率 q=10%，计算该远期合约的价格。短期利率二叉树与之前相同。</p>
+<p>这个合约的underlying asset可以看作0-4年不付息，4-6年付息。首先从第六年对含息债券进行回溯，然后按照无息债券继续回溯到 t=0。然后套用远期的定价公式，由于前四年不付息，可以直接套用上式无息债券的远期定价。discounting factor 可以用之前例子中无息债券回溯的结果 $d_4 = 100/77.22$，也可以通过二项分布的pmf计算期望。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># params</span></span><br><span class="line">t=<span class="number">4</span></span><br><span class="line">tau=<span class="number">2</span></span><br><span class="line">T=t+tau</span><br><span class="line">q=<span class="number">0.1</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">shortRateLattice = np.ones((T+<span class="number">1</span>, T+<span class="number">1</span>)) * np.nan</span><br><span class="line">shortRateLattice[<span class="number">0</span>,<span class="number">0</span>] = <span class="number">0.06</span></span><br><span class="line">u=<span class="number">1.25</span></span><br><span class="line">d=<span class="number">0.9</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(<span class="number">1</span>, T+<span class="number">1</span>):</span><br><span class="line">    shortRateLattice[t, <span class="number">0</span>] = shortRateLattice[t<span class="number">-1</span>, <span class="number">0</span>] * d</span><br><span class="line">    shortRateLattice[t, <span class="number">1</span>:t+<span class="number">1</span>] = shortRateLattice[t<span class="number">-1</span>, :t] * u</span><br><span class="line">shortRateLattice.round(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>array([[0.06 ,   nan,   nan,   nan,   nan,   nan,   nan],
+       [0.054, 0.075,   nan,   nan,   nan,   nan,   nan],
+       [0.049, 0.068, 0.094,   nan,   nan,   nan,   nan],
+       [0.044, 0.061, 0.084, 0.117,   nan,   nan,   nan],
+       [0.039, 0.055, 0.076, 0.105, 0.146,   nan,   nan],
+       [0.035, 0.049, 0.068, 0.095, 0.132, 0.183,   nan],
+       [0.032, 0.044, 0.062, 0.085, 0.119, 0.165, 0.229]])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">bondLattice = np.ones_like(shortRateLattice)*np.nan</span><br><span class="line">bondLattice[<span class="number">-1</span>] = <span class="number">110</span></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> (<span class="number">5</span>,):</span><br><span class="line">    bondLattice[t, :t+<span class="number">1</span>] = (bondLattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>] * <span class="number">0.5</span> + bondLattice[t+<span class="number">1</span>, :t+<span class="number">1</span>]*<span class="number">0.5</span>)/ (<span class="number">1</span>+ shortRateLattice[t, :t+<span class="number">1</span>]) + q*<span class="number">100</span></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(<span class="number">4</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    bondLattice[t, :t+<span class="number">1</span>] = (bondLattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>] * <span class="number">0.5</span> + bondLattice[t+<span class="number">1</span>, :t+<span class="number">1</span>]*<span class="number">0.5</span>)/ (<span class="number">1</span>+ shortRateLattice[t, :t+<span class="number">1</span>])</span><br><span class="line">bondLattice.round(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>array([[ 79.83,    nan,    nan,    nan,    nan,    nan,    nan],
+       [ 89.24,  79.99,    nan,    nan,    nan,    nan,    nan],
+       [ 97.67,  90.45,  81.53,    nan,    nan,    nan,    nan],
+       [104.99,  99.85,  93.27,  85.08,    nan,    nan,    nan],
+       [111.16, 108.  , 103.83,  98.44,  91.66,    nan,    nan],
+       [116.24, 114.84, 112.96, 110.46, 107.19, 102.98,    nan],
+       [110.  , 110.  , 110.  , 110.  , 110.  , 110.  , 110.  ]])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> scipy.stats <span class="keyword">as</span> spst</span><br><span class="line">spst.binom.pmf(range(<span class="number">5</span>),<span class="number">4</span>, p=<span class="number">0.5</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>array([0.0625, 0.25  , 0.375 , 0.25  , 0.0625])</code></pre>
+<p>$$G_0 = \frac{E_0^Q\left[\frac{S_4}{B_4}\right]}{E_0^Q\left[\frac{1}{B_4}\right]} = S_0/d_4, d_4 = 77.22/100$$</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Numeraire</span></span><br><span class="line">numeraireLattice = np.ones((<span class="number">5</span>,<span class="number">5</span>))*np.nan</span><br><span class="line">numeraireLattice[<span class="number">0</span>,<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">5</span>):</span><br><span class="line">    numeraireLattice[t, <span class="number">0</span>] = numeraireLattice[t<span class="number">-1</span>, <span class="number">0</span>] * (shortRateLattice[t, <span class="number">0</span>]+<span class="number">1</span>)</span><br><span class="line">    numeraireLattice[t, <span class="number">1</span>:t+<span class="number">1</span>] =numeraireLattice[t<span class="number">-1</span>, :t] * (shortRateLattice[t<span class="number">-1</span>, <span class="number">0</span>:t] + <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">numeraireLattice</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>array([[1.        ,        nan,        nan,        nan,        nan],
+       [1.054     , 1.06      ,        nan,        nan,        nan],
+       [1.1052244 , 1.110916  , 1.1395    ,        nan,        nan],
+       [1.15356692, 1.15893831, 1.18590283, 1.24632813,        nan],
+       [1.19897823, 1.20402393, 1.22934381, 1.28596338, 1.3923822 ]])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">p = spst.binom.pmf(range(<span class="number">5</span>),<span class="number">4</span>, p=<span class="number">0.5</span>)</span><br><span class="line">(p*bondLattice[<span class="number">4</span>, :<span class="number">5</span>]/numeraireLattice[<span class="number">4</span>, :<span class="number">5</span>]).mean() / (p/numeraireLattice[<span class="number">4</span>, :<span class="number">5</span>]).mean()</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>103.39897946734145</code></pre>
+<blockquote>
+<p>例5 对含息债券的期货合约定价</p>
+<p>期货需要关注中间节点，每一个阶段都无套利。因而可以作出期货的二叉树。</p>
+<p>期货价格回溯的公式<br>$$F_{n-1} = E_{n-1}^Q[F_n]$$<br>不需要除以计价资产。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">futuresLattice = np.ones((<span class="number">5</span>, <span class="number">5</span>))*np.nan</span><br><span class="line">futuresLattice[<span class="number">-1</span>] = bondLattice[<span class="number">4</span>, :<span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(<span class="number">3</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    futuresLattice[t, :t+<span class="number">1</span>] = (futuresLattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>] * <span class="number">0.5</span> + futuresLattice[t+<span class="number">1</span>, :t+<span class="number">1</span>] * <span class="number">0.5</span>) </span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">futuresLattice</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>array([[103.22201887,          nan,          nan,          nan,
+                 nan],
+       [105.63552539, 100.80851235,          nan,          nan,
+                 nan],
+       [107.74653381, 103.52451698,  98.09250772,          nan,
+                 nan],
+       [109.5799363 , 105.91313132, 101.13590263,  95.0491128 ,
+                 nan],
+       [111.16255143, 107.99732117, 103.82894147,  98.44286379,
+         91.65536181]])</code></pre>
+<h4 id="利率上限-Caplet-的定价"><a href="#利率上限-Caplet-的定价" class="headerlink" title="利率上限 Caplet 的定价"></a>利率上限 Caplet 的定价</h4><p>caplet 简而言之是以利率为标的资产的 european call。</p>
+<p>settled in arrears: if maturity is $\tau$ and the strike is $c$ then the payoff at time $\tau$ is $(r_{\tau -1} - c)^+$.</p>
+<blockquote>
+<p>例6: 为一个 Caplet 定价，基于之前的短期利率树。参数 t=6, c=0.02。</p>
+<p>由于 caplet 是european call，不涉及到中间结点的比较，直接根据标的资产的lattice进行计算。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">t = <span class="number">6</span></span><br><span class="line">c = <span class="number">0.02</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">shortRateLattice.round(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>array([[0.06 ,   nan,   nan,   nan,   nan,   nan,   nan],
+       [0.054, 0.075,   nan,   nan,   nan,   nan,   nan],
+       [0.049, 0.068, 0.094,   nan,   nan,   nan,   nan],
+       [0.044, 0.061, 0.084, 0.117,   nan,   nan,   nan],
+       [0.039, 0.055, 0.076, 0.105, 0.146,   nan,   nan],
+       [0.035, 0.049, 0.068, 0.095, 0.132, 0.183,   nan],
+       [0.032, 0.044, 0.062, 0.085, 0.119, 0.165, 0.229]])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">capletLattice = np.ones((<span class="number">6</span>,<span class="number">6</span>)) * np.nan</span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(<span class="number">5</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    capletLattice[t, :t+<span class="number">1</span>] = (np.clip(shortRateLattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>]-c, <span class="number">0</span>, <span class="literal">None</span>) * <span class="number">0.5</span> +  np.clip(shortRateLattice[t+<span class="number">1</span>, :t+<span class="number">1</span>]-c, <span class="number">0</span>, <span class="literal">None</span>) * <span class="number">0.5</span>) / (<span class="number">1</span>+shortRateLattice[t, :t+<span class="number">1</span>])</span><br><span class="line">capletLattice.round(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>array([[0.042,   nan,   nan,   nan,   nan,   nan],
+       [0.036, 0.056,   nan,   nan,   nan,   nan],
+       [0.031, 0.049, 0.074,   nan,   nan,   nan],
+       [0.026, 0.043, 0.065, 0.095,   nan,   nan],
+       [0.021, 0.037, 0.057, 0.084, 0.12 ,   nan],
+       [0.017, 0.031, 0.05 , 0.075, 0.108, 0.149]])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">capletLattice = np.ones((<span class="number">6</span>,<span class="number">6</span>)) * np.nan</span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(<span class="number">5</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    capletLattice[t, :t+<span class="number">1</span>] = (np.clip(shortRateLattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>]-c, <span class="number">0</span>, <span class="literal">None</span>) * <span class="number">0.5</span> /(<span class="number">1</span>+shortRateLattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>]) +  np.clip(shortRateLattice[t+<span class="number">1</span>, :t+<span class="number">1</span>]-c, <span class="number">0</span>, <span class="literal">None</span>) * <span class="number">0.5</span> / (<span class="number">1</span>+shortRateLattice[t+<span class="number">1</span>, :t+<span class="number">1</span>]) ) / (<span class="number">1</span>+shortRateLattice[t, :t+<span class="number">1</span>])</span><br><span class="line">capletLattice.round(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>array([[0.039,   nan,   nan,   nan,   nan,   nan],
+       [0.034, 0.052,   nan,   nan,   nan,   nan],
+       [0.029, 0.046, 0.067,   nan,   nan,   nan],
+       [0.025, 0.04 , 0.06 , 0.084,   nan,   nan],
+       [0.021, 0.035, 0.053, 0.076, 0.103,   nan],
+       [0.017, 0.03 , 0.047, 0.068, 0.094, 0.124]])</code></pre>
+<hr>
+<h2 id="The-Forward-Equations"><a href="#The-Forward-Equations" class="headerlink" title="The Forward Equations"></a>The Forward Equations</h2><p>定义基本证券 elementary security 或称 Arrow-Debreu / AD-security</p>
+<p>$$P_e(i,j)$$</p>
+<p>为在时间 i 和状态 j 支付 $1 的证券在 0 时刻的价格。又称为状态价格。</p>
+<p>前向递推，上一阶段的基本证券到下一个阶段会复利，因而下一阶段的基本证券需要折减。状态价格满足这些 <strong>forward equations</strong>:</p>
+<p>$$P_e(k+1, s) = \frac{P_e(k, s-1)}{2(1 + r_{k,s-1})} + \frac{P_e(k, s)}{2(1 + r_{k,s})}, 0&lt;s&lt;k+1$$</p>
+<p>$$P_e(k+1, 0) = \frac{P_e(k, 0)}{2(1 + r_{k,0})}$$</p>
+<p>$$P_e(k+1, k+1) = \frac{P_e(k, k)}{2(1 + r_{k,k})}$$</p>
+<p>计算状态价格并根据状态价格推导期限结构的复杂度是 $O(T^2)$，而回溯无息债券价格的复杂度是 $O(T^3)$。需要注意，状态价格定价法只适用于行权日确定的证券。</p>
+<h3 id="二叉树中的对冲，例7"><a href="#二叉树中的对冲，例7" class="headerlink" title="二叉树中的对冲，例7"></a>二叉树中的对冲，例7</h3><p>Given a short rate lattice</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">short_rate = np.array([</span><br><span class="line">    [<span class="number">6</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">    [<span class="number">5.4</span>, <span class="number">7.8</span>, <span class="number">0</span>],</span><br><span class="line">    [<span class="number">4.86</span>, <span class="number">7.02</span>, <span class="number">10.14</span>]</span><br><span class="line">]) / <span class="number">100</span></span><br></pre></td></tr></table></figure>
+
+<p>(a) Compute the elementary prices </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">state_prices</span>(<span class="params">r: np.array</span>):</span></span><br><span class="line">    T = r.shape[<span class="number">0</span>] - <span class="number">1</span></span><br><span class="line">    Pe = np.zeros((T+<span class="number">1</span>, T+<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">    Pe[<span class="number">0</span>,<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(T):</span><br><span class="line">        <span class="keyword">for</span> s <span class="keyword">in</span> range(<span class="number">1</span>, k+<span class="number">1</span>):</span><br><span class="line">            Pe[k+<span class="number">1</span>, s] = Pe[k, s<span class="number">-1</span>]/(<span class="number">2</span>*(<span class="number">1</span>+r[k, s<span class="number">-1</span>])) + Pe[k,s] / (<span class="number">2</span>*(<span class="number">1</span>+r[k,s]))</span><br><span class="line">        Pe[k+<span class="number">1</span>, <span class="number">0</span>] = Pe[k, <span class="number">0</span>] / (<span class="number">2</span>*(<span class="number">1</span>+r[k,<span class="number">0</span>]))</span><br><span class="line">        Pe[k+<span class="number">1</span>, k+<span class="number">1</span>] = Pe[k,k] / (<span class="number">2</span>*(<span class="number">1</span>+r[k,k]))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Pe</span><br><span class="line"></span><br><span class="line">state_prices(short_rate)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">array</span>([[<span class="number">1.</span>        , <span class="number">0.</span>        , <span class="number">0.</span>        ],</span><br><span class="line">       [<span class="number">0.47169811</span>, <span class="number">0.47169811</span>, <span class="number">0.</span>        ],</span><br><span class="line">       [<span class="number">0.22376571</span>, <span class="number">0.44254962</span>, <span class="number">0.21878391</span>]])</span><br></pre></td></tr></table></figure>
+
+<p>(b) Given a different short rate lattice &amp; elementary prices. Find the prices of a zero-coupon bond with face value $100 that matures at t=3</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">r = np.array([</span><br><span class="line">    [<span class="number">6</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">    [<span class="number">5.4</span>, <span class="number">7.2</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">    [<span class="number">4.86</span>, <span class="number">6.48</span>, <span class="number">8.64</span>, <span class="number">0</span>],</span><br><span class="line">    [<span class="number">4.37</span>, <span class="number">5.83</span>, <span class="number">7.78</span>, <span class="number">10.37</span>],</span><br><span class="line">]) /<span class="number">100</span></span><br><span class="line"></span><br><span class="line">Pe = np.array([</span><br><span class="line">    [<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">    [<span class="number">0.4717</span>, <span class="number">0.4717</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">    [<span class="number">0.2238</span>, <span class="number">0.4438</span>, <span class="number">0.22</span>, <span class="number">0</span>],</span><br><span class="line">    [<span class="number">0.1067</span>, <span class="number">0.3151</span>, <span class="number">0.3096</span>, <span class="number">0.1013</span>],</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.sum(Pe[<span class="number">3</span>])*<span class="number">100</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>83.27</code></pre>
+<p> (c) Compute the price of a Euro-call on the zero coupon bond of (b) with K=$93 and expiration t=2</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Payoff in different states at t=2</span></span><br><span class="line"><span class="comment"># backward from t=3 to t=2</span></span><br><span class="line">payoff = (<span class="number">100</span> / (<span class="number">1</span>+r[<span class="number">2</span>]) [:<span class="number">3</span>] - <span class="number">93</span>).clip(min=<span class="number">0</span>)</span><br><span class="line">payoff</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>array([2.3652489 , 0.91435011, 0.        ])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.dot(payoff, Pe[<span class="number">2</span>,:<span class="number">3</span>])</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>0.935131284573487</code></pre>
+<p>(d) Immunize the obligation of value today $100 and (1,1) value of $95 using date 1 elementary securities.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">(<span class="number">117</span>+<span class="number">95</span>)*<span class="number">0.4717</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>100.0004</code></pre>
+<p>PS: 根据鞅定价理论，该组合在 t=1 时的价值折现到 t=0 也是 100。</p>
+<p>$$100 = \frac12 \frac{95}{1.06} + \frac12 \frac{x}{1.06}$$</p>
+<p>或者按照状态价格，</p>
+<p>$$0.4717 x + 0.4717 \times 95 = 100$$</p>
+<p>状态价格本身就包含了折现，用于确定现在的价格。</p>
+<p>(e) Compute the value of the forward swap that begins at t=1 and ends at t=3. Notional principal $1. Fixed rate of the swap is 5%. Payments at t=i (i=1,2,3) are based on the fixed rate minus the floating rate that prevailed at t=i-1.</p>
+<p>第 i 个时间点上，持有 swap 的 PNL 实际上可以折算到第 i-1 个时间点上。t = 2,3 的swap 实际上看 t=1,2 的各个节点。swap可以看成是一系列单阶段。</p>
+<p>$$(r_{i,j} - 0.05) \times P_e(i,j) / (1+r_{i, j})$$</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">r_ = np.where(r==<span class="number">0</span>, np.nan, r)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Pe_ = np.where(Pe==<span class="number">0</span>, np.nan, Pe)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">swap_lattice = (Pe[:<span class="number">3</span>] * (r_[:<span class="number">3</span>] - <span class="number">0.05</span>) / (<span class="number">1</span>+r_[:<span class="number">3</span>]))</span><br><span class="line">swap_lattice</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>array([[ 0.00943396,         nan,         nan,         nan],
+       [ 0.00179013,  0.00968041,         nan,         nan],
+       [-0.0002988 ,  0.00616852,  0.00737113,         nan]])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.nansum(swap_lattice[<span class="number">1</span>:])</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>0.024711398807682642</code></pre>
+<hr>
+<h2 id="Some-specific-models"><a href="#Some-specific-models" class="headerlink" title="Some specific models"></a>Some specific models</h2><p>需要对 lattice 进行调整，使得期限结构（无息债券价格）或利率波动性等与市场匹配。使用两种模型可以实现。</p>
+<h3 id="The-Ho-Lee-Model"><a href="#The-Ho-Lee-Model" class="headerlink" title="The Ho-Lee Model"></a>The Ho-Lee Model</h3><p>short rate 满足</p>
+<p>$$r_{i,j} = a_i + b_i j$$</p>
+<p>漂移项+波动率放大系数。$N(i,j)$ 处的标准差是 $b_i/2$。 （？）</p>
+<p>连续时间</p>
+<p>$$dr_t = \mu_tdt + \sigma_tdW_t$$</p>
+<p>优点在于 tractability。 缺点在于并非均值回归。</p>
+<h3 id="The-Black-Derman-Toy-BDT-model"><a href="#The-Black-Derman-Toy-BDT-model" class="headerlink" title="The Black-Derman-Toy(BDT) model"></a>The Black-Derman-Toy(BDT) model</h3><p>$$r_{i,j} = a_i e^{b_i j}$$</p>
+<p>$$\ln{r_{i,j}} = \log{a_i} + b_i j$$</p>
+<p>连续时间 记 $Y_t := \ln{r_t}$</p>
+<p>$$dY_t = \left( a_t + \frac1{\sigma t}\frac{\partial \sigma}{\partial t} Y_t \right)dt + \sigma_t dW_t$$</p>
+<h3 id="校正期限结构"><a href="#校正期限结构" class="headerlink" title="校正期限结构"></a>校正期限结构</h3><p>假设市场的利率期限结构 spot rate</p>
+<p>$$(s_1, …, s_n)$$</p>
+<p><strong>则 $t$ 时刻的 $1 按照 $s_t$ 折现，应该等于该时刻的状态价格相加。</strong></p>
+<p>为简化，假设 $b$ 取相同值。</p>
+<p>$$\begin{aligned}<br>\frac{1}{(1+s_i)^i} &amp;= \sum_{j=0}^i{P_e(i,j)}\<br>&amp;= \frac{P_e(i-1, 0)}{2(1+r_{i-1, 0)}} + \frac{P_e(i-1, i-1)}{2(1 + r_{i-1,i-1})} + \sum_{j=1}^{i-1}{\left(\frac{P_e(i-1, j)}{2(1+r_{i-1, j})} + \frac{P_e(i-1, j-1)}{2(1+r_{i-1, j-1})} \right) } \<br>&amp;= \frac{P_e(i-1, 0)}{2(1+a_{i-1})} + \frac{P_e(i-1, i-1)}{2(1+a_{i-1}e^{b(i-1)})} + \sum_{j=1}^{i-1}{\left(\frac{P_e(i-1, j)}{2(1+a_{i-1} e^{b j})} + \frac{P_e(i-1, j-1)}{2(1+a_{i-1} e^{b (j-1)})} \right) } \<br>\end{aligned}$$</p>
+<p>根据已有的利率期限结构，前向更新二叉树，求解 $a_i$。</p>
+<h4 id="例8-使用BDT模型为-payer-swaption-定价。"><a href="#例8-使用BDT模型为-payer-swaption-定价。" class="headerlink" title="例8 使用BDT模型为 payer swaption 定价。"></a>例8 使用BDT模型为 payer swaption 定价。</h4><p>题设： 2-8，给出利率期限结构，payer pay fixed and receive floating。 fixed rate = 11.65%。</p>
+<p>题解：和前例的 (e) 类似。首先 BDT 校正确定 short rate lattice，然后基于此定价。每一次交换折算到上一个时间点上；swap的价值向前折算累计；到 t=2 时，注意该 swaption 由于其期权性质，价格非负。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy.optimize <span class="keyword">import</span> minimize</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">BDT_solver</span>(<span class="params">arr_s: np.array, b: float</span>):</span></span><br><span class="line">    T = len(arr_s)</span><br><span class="line">    Pe = np.ones((T + <span class="number">1</span>, T + <span class="number">1</span>)) * np.nan</span><br><span class="line">    Pe[<span class="number">0</span>, <span class="number">0</span>] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    arr_a = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, T + <span class="number">1</span>):</span><br><span class="line">        left_side = <span class="number">1</span> / (<span class="number">1</span> + arr_s[i - <span class="number">1</span>])**i</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">target</span>(<span class="params">a_im1</span>):</span></span><br><span class="line">            right_side = Pe[i<span class="number">-1</span>, <span class="number">0</span>] / <span class="number">2</span>/(<span class="number">1</span>+a_im1) + \</span><br><span class="line">                    np.sum( [(Pe[i<span class="number">-1</span>, j] /<span class="number">2</span> /(<span class="number">1</span>+a_im1*np.exp(b*j)) + Pe[i<span class="number">-1</span>, j<span class="number">-1</span>] / <span class="number">2</span> / (<span class="number">1</span>+a_im1*np.exp(b*(j<span class="number">-1</span>)))) <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, i)] ) + \</span><br><span class="line">                    Pe[i<span class="number">-1</span>, i<span class="number">-1</span>] / <span class="number">2</span> / (<span class="number">1</span> + a_im1*np.exp(b*(i<span class="number">-1</span>)))</span><br><span class="line">            <span class="keyword">return</span> (left_side - right_side)**<span class="number">2</span></span><br><span class="line"></span><br><span class="line">        res = minimize(target, <span class="number">0</span>)</span><br><span class="line">        a_im1 = res.x</span><br><span class="line">        <span class="comment"># print(f&quot;a&#123;i-1&#125;: &#123;a_im1&#125;&quot;)</span></span><br><span class="line">        arr_a.append(a_im1)</span><br><span class="line">        Pe[i, <span class="number">0</span>] = Pe[i - <span class="number">1</span>, <span class="number">0</span>] / <span class="number">2</span> / (<span class="number">1</span> + a_im1)</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, i):</span><br><span class="line">            Pe[i, j] = Pe[i - <span class="number">1</span>, j] / <span class="number">2</span> / (<span class="number">1</span> + a_im1 * np.exp(b * j)) + Pe[</span><br><span class="line">                i - <span class="number">1</span>, j - <span class="number">1</span>] / <span class="number">2</span> / (<span class="number">1</span> + a_im1 * np.exp(b * (j - <span class="number">1</span>)))</span><br><span class="line">        Pe[i, i] = Pe[i - <span class="number">1</span>, i - <span class="number">1</span>] / <span class="number">2</span> / (<span class="number">1</span> + a_im1 * np.exp(b * (i - <span class="number">1</span>)))</span><br><span class="line">    <span class="keyword">return</span> Pe, np.array(arr_a).flatten()</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">arr_s = np.array([<span class="number">7.3</span>, <span class="number">7.62</span>, <span class="number">8.1</span>, <span class="number">8.45</span>, <span class="number">9.2</span>, <span class="number">9.64</span>, <span class="number">10.12</span>, <span class="number">10.45</span>, <span class="number">10.75</span>, <span class="number">11.22</span>]) / <span class="number">100</span></span><br><span class="line">b = <span class="number">0.005</span></span><br><span class="line"></span><br><span class="line">Pe, a = BDT_solver(arr_s,b)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Pe.round(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>array([[1.   ,   nan,   nan,   nan,   nan,   nan,   nan,   nan,   nan,
+          nan,   nan],
+       [0.466, 0.466,   nan,   nan,   nan,   nan,   nan,   nan,   nan,
+          nan,   nan],
+       [0.216, 0.432, 0.216,   nan,   nan,   nan,   nan,   nan,   nan,
+          nan,   nan],
+       [0.099, 0.297, 0.297, 0.099,   nan,   nan,   nan,   nan,   nan,
+          nan,   nan],
+       [0.045, 0.181, 0.271, 0.181, 0.045,   nan,   nan,   nan,   nan,
+          nan,   nan],
+       [0.02 , 0.101, 0.201, 0.201, 0.1  , 0.02 ,   nan,   nan,   nan,
+          nan,   nan],
+       [0.009, 0.054, 0.135, 0.18 , 0.135, 0.054, 0.009,   nan,   nan,
+          nan,   nan],
+       [0.004, 0.028, 0.084, 0.139, 0.139, 0.083, 0.028, 0.004,   nan,
+          nan,   nan],
+       [0.002, 0.014, 0.05 , 0.099, 0.123, 0.099, 0.049, 0.014, 0.002,
+          nan,   nan],
+       [0.001, 0.007, 0.028, 0.066, 0.098, 0.098, 0.065, 0.028, 0.007,
+        0.001,   nan],
+       [0.   , 0.003, 0.015, 0.041, 0.071, 0.085, 0.071, 0.04 , 0.015,
+        0.003, 0.   ]])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a.round(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>array([0.073, 0.079, 0.09 , 0.094, 0.121, 0.117, 0.129, 0.126, 0.129,
+       0.152])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># use ai &amp; b to derive r_ij</span></span><br><span class="line">short_rate_lattice = np.tril(np.outer(a, np.exp(np.arange(T)*b))).round(<span class="number">4</span>)</span><br><span class="line"><span class="comment"># Change 0 to np.nan</span></span><br><span class="line">short_rate_lattice = np.where(short_rate_lattice==<span class="number">0</span>, np.nan, short_rate_lattice)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">short_rate_lattice</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>array([[0.073 ,    nan,    nan,    nan,    nan,    nan,    nan,    nan,
+           nan,    nan],
+       [0.0792, 0.0796,    nan,    nan,    nan,    nan,    nan,    nan,
+           nan,    nan],
+       [0.0902, 0.0907, 0.0911,    nan,    nan,    nan,    nan,    nan,
+           nan,    nan],
+       [0.0944, 0.0948, 0.0953, 0.0958,    nan,    nan,    nan,    nan,
+           nan,    nan],
+       [0.1213, 0.1219, 0.1225, 0.1231, 0.1238,    nan,    nan,    nan,
+           nan,    nan],
+       [0.1172, 0.1178, 0.1184, 0.119 , 0.1195, 0.1201,    nan,    nan,
+           nan,    nan],
+       [0.1285, 0.1292, 0.1298, 0.1305, 0.1311, 0.1318, 0.1324,    nan,
+           nan,    nan],
+       [0.1257, 0.1263, 0.1269, 0.1276, 0.1282, 0.1288, 0.1295, 0.1301,
+           nan,    nan],
+       [0.1292, 0.1298, 0.1305, 0.1311, 0.1318, 0.1325, 0.1331, 0.1338,
+        0.1345,    nan],
+       [0.1519, 0.1527, 0.1535, 0.1542, 0.155 , 0.1558, 0.1566, 0.1573,
+        0.1581, 0.1589]])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">(short_rate_lattice[<span class="number">9</span>] - <span class="number">0.1165</span>) / (<span class="number">1</span>+short_rate_lattice[<span class="number">9</span>])</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>array([0.03073183, 0.03140453, 0.03207629, 0.03266332, 0.03333333,
+       0.03400242, 0.03467059, 0.03525447, 0.0359209 , 0.03658642])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">swaption_lattice = np.ones_like(short_rate_lattice) * np.nan</span><br><span class="line">swaption_lattice[<span class="number">9</span>] = (short_rate_lattice[<span class="number">9</span>] - <span class="number">0.1165</span>) / (<span class="number">1</span>+short_rate_lattice[<span class="number">9</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(<span class="number">8</span>, <span class="number">1</span>, <span class="number">-1</span>):</span><br><span class="line">    swaption_lattice[t, :t+<span class="number">1</span>] = (short_rate_lattice[t, :t+<span class="number">1</span>] - <span class="number">0.1165</span>) / (<span class="number">1</span>+short_rate_lattice[t, :t+<span class="number">1</span>]) + (<span class="number">0.5</span> * swaption_lattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>] + <span class="number">0.5</span> * swaption_lattice[t+<span class="number">1</span>, :t+<span class="number">1</span>]  ) / (<span class="number">1</span>+ short_rate_lattice[t, :t+<span class="number">1</span>])</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">swaption_lattice.round(<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>array([[    nan,     nan,     nan,     nan,     nan,     nan,     nan,
+            nan,     nan,     nan],
+       [    nan,     nan,     nan,     nan,     nan,     nan,     nan,
+            nan,     nan,     nan],
+       [-0.0018,  0.0011,  0.004 ,     nan,     nan,     nan,     nan,
+            nan,     nan,     nan],
+       [ 0.0231,  0.0257,  0.0284,  0.0311,     nan,     nan,     nan,
+            nan,     nan,     nan],
+       [ 0.0461,  0.0486,  0.0511,  0.0535,  0.056 ,     nan,     nan,
+            nan,     nan,     nan],
+       [ 0.0458,  0.048 ,  0.0502,  0.0524,  0.0546,  0.0568,     nan,
+            nan,     nan,     nan],
+       [ 0.0495,  0.0514,  0.0533,  0.0553,  0.0571,  0.059 ,  0.0609,
+            nan,     nan,     nan],
+       [ 0.0431,  0.0446,  0.0461,  0.0477,  0.0492,  0.0507,  0.0523,
+         0.0538,     nan,     nan],
+       [ 0.0388,  0.0399,  0.041 ,  0.0421,  0.0433,  0.0444,  0.0455,
+         0.0466,  0.0478,     nan],
+       [ 0.0307,  0.0314,  0.0321,  0.0327,  0.0333,  0.034 ,  0.0347,
+         0.0353,  0.0359,  0.0366]])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># the swaption (option) is exercised only if S2&gt;0. </span></span><br><span class="line">swaption_lattice[<span class="number">2</span>] = np.clip(swaption_lattice[<span class="number">2</span>], <span class="number">0</span>, <span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    swaption_lattice[t, :t+<span class="number">1</span>] =  (<span class="number">0.5</span> * swaption_lattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>] + <span class="number">0.5</span> * swaption_lattice[t+<span class="number">1</span>, :t+<span class="number">1</span>]  ) / (<span class="number">1</span>+ short_rate_lattice[t, :t+<span class="number">1</span>])</span><br><span class="line">swaption_lattice.round(<span class="number">4</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>array([[0.0013,    nan,    nan,    nan,    nan,    nan,    nan,    nan,
+           nan,    nan],
+       [0.0005, 0.0024,    nan,    nan,    nan,    nan,    nan,    nan,
+           nan,    nan],
+       [0.    , 0.0011, 0.004 ,    nan,    nan,    nan,    nan,    nan,
+           nan,    nan],
+       [0.0231, 0.0257, 0.0284, 0.0311,    nan,    nan,    nan,    nan,
+           nan,    nan],
+       [0.0461, 0.0486, 0.0511, 0.0535, 0.056 ,    nan,    nan,    nan,
+           nan,    nan],
+       [0.0458, 0.048 , 0.0502, 0.0524, 0.0546, 0.0568,    nan,    nan,
+           nan,    nan],
+       [0.0495, 0.0514, 0.0533, 0.0553, 0.0571, 0.059 , 0.0609,    nan,
+           nan,    nan],
+       [0.0431, 0.0446, 0.0461, 0.0477, 0.0492, 0.0507, 0.0523, 0.0538,
+           nan,    nan],
+       [0.0388, 0.0399, 0.041 , 0.0421, 0.0433, 0.0444, 0.0455, 0.0466,
+        0.0478,    nan],
+       [0.0307, 0.0314, 0.0321, 0.0327, 0.0333, 0.034 , 0.0347, 0.0353,
+        0.0359, 0.0366]])</code></pre>
 ]]></content>
       <categories>
         <category>Finance</category>
@@ -9592,97 +9992,79 @@ sum
   <entry>
     <title>IEOR E4706: Assignment 7</title>
     <url>/2021/03/13/IEOR-E4706-Assignment-7/</url>
-    <content><![CDATA[<h2 id="链接">链接</h2>
-<p>http://www.columbia.edu/~mh2078/FoundationsFE/Assign7.pdf</p>
-<h2 id="the-deflated-gains-process-is-a-q-martingale">(The Deflated Gains Process is a Q-martingale)</h2>
-<blockquote>
-<p>已知 <span class="math display">\[dS_t = (r-q)S_tdt + \sigma S_tdW_t^Q\]</span> 求证 <span class="math display">\[S_0 = E_0^Q \left[ \int_0^T e^{-rt}qS_tdt + e^{-rT}S_T \right]\]</span></p>
+    <content><![CDATA[<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><p><a href="http://www.columbia.edu/~mh2078/FoundationsFE/Assign7.pdf">http://www.columbia.edu/~mh2078/FoundationsFE/Assign7.pdf</a></p>
+<h2 id="The-Deflated-Gains-Process-is-a-Q-martingale"><a href="#The-Deflated-Gains-Process-is-a-Q-martingale" class="headerlink" title="(The Deflated Gains Process is a Q-martingale)"></a>(The Deflated Gains Process is a Q-martingale)</h2><blockquote>
+<p>已知<br>$$dS_t = (r-q)S_tdt + \sigma S_tdW_t^Q$$<br>求证<br>$$S_0 = E_0^Q \left[ \int_0^T e^{-rt}qS_tdt + e^{-rT}S_T \right]$$</p>
 </blockquote>
-<p>观察形式，就是含息债券的定价公式而已，用 <span class="math inline">\(r\)</span> 贴现。</p>
+<p>观察形式，就是含息债券的定价公式而已，用 $r$ 贴现。</p>
 <p>Proof：</p>
 <p>可以交换期望和积分顺序。</p>
-<p><span class="math display">\[\frac{d(e^{-rt}S_t)} {dt} = -re^{-rt}S_t + e^{-rt} \frac{dS_t}{dt}\]</span></p>
+<p>$$\frac{d(e^{-rt}S_t)} {dt} = -re^{-rt}S_t + e^{-rt} \frac{dS_t}{dt}$$</p>
 <p>套上期望式时，布朗运动项消去，用换元的技巧</p>
-<p><span class="math display">\[E[dS_t] = E[(r-q)S_tdt]\]</span></p>
-<p><span class="math display">\[E\left[\frac{d(e^{-rt}S_t)} {dt} \right] =E \left[ -re^{-rt}S_t + e^{-rt} \frac{dS_t}{dt} \right]  = E\left[ -qe^{-rt}S_tdt \right]\]</span></p>
-<p><span class="math display">\[\therefore E\left[\int_0^T e^{-rt}qS_tdt\right] = E\left[ \int_0^T \frac{e^{-rt}qS_tdt}{-qe^{-rt}S_tdt} d(e^{-rt}S_t)\right] = E\left[ \int_0^T - d(e^{-rt}S_t)\right] = E\left[ S_0  - e^{-rT}S_T\right] = S_0- E\left[e^{-rT}S_T\right]\]</span></p>
+<p>$$E[dS_t] = E[(r-q)S_tdt]$$</p>
+<p>$$E\left[\frac{d(e^{-rt}S_t)} {dt} \right] =E \left[ -re^{-rt}S_t + e^{-rt} \frac{dS_t}{dt} \right]  = E\left[ -qe^{-rt}S_tdt \right]$$</p>
+<p>$$\therefore E\left[\int_0^T e^{-rt}qS_tdt\right] = E\left[ \int_0^T \frac{e^{-rt}qS_tdt}{-qe^{-rt}S_tdt} d(e^{-rt}S_t)\right] = E\left[ \int_0^T - d(e^{-rt}S_t)\right] = E\left[ S_0  - e^{-rT}S_T\right] = S_0- E\left[e^{-rT}S_T\right]$$</p>
 <p>代入结论的表达式得证。</p>
-<h2 id="deriving-black-scholes-when-the-underlying-pays-a-dividend-yield">(Deriving Black-Scholes When the Underlying Pays a Dividend Yield)</h2>
-<p>有付息的定价在 <a href="https://hy2632.github.io/2021/03/10/IEOR-E4706-B-S-Model-Revisited/">B-S-Model-Revisited</a> 中给出了推导，是将股价的GBM的参数 <span class="math inline">\(\mu\)</span> 从 <span class="math inline">\(r\)</span> 调整到 <span class="math inline">\(r-q\)</span>。这样做显然是因为股票持有期的收益 = 分红 + 股价上涨，那么股价上涨的漂移系数肯定要扣除 <span class="math inline">\(q\)</span>。</p>
-<p><span class="math display">\[\begin{aligned}
-C_t &amp;= e^{r(t-T)}E[\max{(S_T-K, 0)}] \\
-&amp;= e^{r(t-T)} \big(E[S_T|S_T&gt;K] - KP(S_T&gt;K) \big) \\
-&amp;= e^{r(t-T)} \big(S_0 e^{\mu T}N(d_1) - KN(d_2) \big) \qquad \text{By  } \mu=r - q \\
-&amp;= S_0e^{rt-qT} N(d_1) - e^{r(t-T)}KN(d_2) \\
-&amp;= S_t e^{rt-qT - (r-q)t} N(d_1) - e^{r(t-T)}KN(d_2) \\
-&amp;= S_t e^{q(t-T)} N(d_1) - e^{r(t-T)}KN(d_2) 
-\end{aligned}\]</span></p>
-<p><span class="math inline">\(d_1, d_2\)</span> 也将 <span class="math inline">\(\mu = r-q\)</span></p>
-<p><span class="math display">\[d_2 =\frac{\ln{(S_0/K)} + (r-q - \sigma^2 /2)T}{\sigma \sqrt T}\]</span></p>
-<p><span class="math display">\[d_1 = \sigma \sqrt T + d_2\]</span></p>
-<h2 id="futures-contracts-and-black-scholes">(Futures Contracts and Black-Scholes)</h2>
-<blockquote>
-<ol type="a">
-<li>用鞅定价理论推导期货 <span class="math inline">\(F_t^{(T)}\)</span> 的价格，标的物为 <span class="math inline">\(T\)</span> 时的股票。假设 B-S 成立、股票分红率 <span class="math inline">\(q\)</span>。</li>
-</ol>
+<h2 id="Deriving-Black-Scholes-When-the-Underlying-Pays-a-Dividend-Yield"><a href="#Deriving-Black-Scholes-When-the-Underlying-Pays-a-Dividend-Yield" class="headerlink" title="(Deriving Black-Scholes When the Underlying Pays a Dividend Yield)"></a>(Deriving Black-Scholes When the Underlying Pays a Dividend Yield)</h2><p>有付息的定价在 <a href="https://hy2632.github.io/2021/03/10/IEOR-E4706-B-S-Model-Revisited/">B-S-Model-Revisited</a> 中给出了推导，是将股价的GBM的参数 $\mu$ 从 $r$ 调整到 $r-q$。这样做显然是因为股票持有期的收益 = 分红 + 股价上涨，那么股价上涨的漂移系数肯定要扣除 $q$。</p>
+<p>$$\begin{aligned}<br>C_t &amp;= e^{r(t-T)}E[\max{(S_T-K, 0)}] \<br>&amp;= e^{r(t-T)} \big(E[S_T|S_T&gt;K] - KP(S_T&gt;K) \big) \<br>&amp;= e^{r(t-T)} \big(S_0 e^{\mu T}N(d_1) - KN(d_2) \big) \qquad \text{By  } \mu=r - q \<br>&amp;= S_0e^{rt-qT} N(d_1) - e^{r(t-T)}KN(d_2) \<br>&amp;= S_t e^{rt-qT - (r-q)t} N(d_1) - e^{r(t-T)}KN(d_2) \<br>&amp;= S_t e^{q(t-T)} N(d_1) - e^{r(t-T)}KN(d_2)<br>\end{aligned}$$</p>
+<p>$d_1, d_2$ 也将 $\mu = r-q$</p>
+<p>$$d_2 =\frac{\ln{(S_0/K)} + (r-q - \sigma^2 /2)T}{\sigma \sqrt T}$$</p>
+<p>$$d_1 = \sigma \sqrt T + d_2$$</p>
+<h2 id="Futures-Contracts-and-Black-Scholes"><a href="#Futures-Contracts-and-Black-Scholes" class="headerlink" title="(Futures Contracts and Black-Scholes)"></a>(Futures Contracts and Black-Scholes)</h2><blockquote>
+<p>(a) 用鞅定价理论推导期货 $F_t^{(T)}$ 的价格，标的物为 $T$ 时的股票。假设 B-S 成立、股票分红率 $q$。</p>
 </blockquote>
-<p>类似 european call 的推导，仍然假设标的资产 <span class="math inline">\(S\)</span> 满足 <span class="math inline">\(dS = \mu Sdt + \sigma S dW_t\)</span></p>
+<p>类似 european call 的推导，仍然假设标的资产 $S$ 满足 $dS = \mu Sdt + \sigma S dW_t$</p>
 <p>根据鞅定价理论</p>
-<p><span class="math display">\[F_t = e^{r(t-T)} E[S_T]\]</span></p>
-<p><span class="math inline">\(S_T\)</span> 已知</p>
-<p><span class="math display">\[S_T = S_0 e^{(r-q-\frac{\sigma^2}{2})T + \sigma \sqrt T Z}\]</span></p>
-<p>考虑 <span class="math inline">\(E[e^{X}]\)</span>，<span class="math inline">\(X\sim N(0, \sigma^2)\)</span></p>
-<p><span class="math display">\[\begin{aligned}
-E[e^{X}] &amp;= \frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{\infty} e^{ x}  e^{-\frac{x^2}{2\sigma^2}}dx \\
-&amp;= \frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{\infty}  e^{x-\frac{x^2}{2\sigma^2}}dx \qquad \text{Note that } x-\frac{x^2}{2\sigma^2} = \frac1{2\sigma^2}\left(2\sigma^2 x - x^2\right)= \frac1{2\sigma^2}\left(-(\sigma^2-x)^2 +\sigma^4  \right) = \frac{\sigma^2}{2} - \frac12 \left(\sigma - \frac x \sigma\right)^2\\
-&amp;= \frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{\infty}  e^{\frac{\sigma^2}{2} - \frac12 \left(\sigma - \frac x \sigma\right)^2}dx \\
-&amp;= \frac{1}{\sqrt{2\pi}\sigma} e^{\frac{\sigma^2}{2}} \int_{-\infty}^{\infty}  e^{ - \frac12 \left(\sigma - \frac x \sigma\right)^2}dx \\
-&amp;= \frac{1}{\sqrt{2\pi}\sigma} e^{\frac{\sigma^2}{2}} \int_{-\infty}^{\infty}  e^{ - \frac12 u^2}\sigma du \qquad \text{Substitute } u= \frac x\sigma - \sigma \\
-&amp;= \frac{1}{\sqrt{2\pi}} e^{\frac{\sigma^2}{2}} \int_{-\infty}^{\infty}  e^{ - \frac12 u^2} du \\
-&amp;= \frac{1}{\sqrt{\pi}} e^{\frac{\sigma^2}{2}} \int_{-\infty}^{\infty}  e^{ - v^2} dv \qquad \text{Substitute } v = \frac{u}{\sqrt{2}} \\
-&amp;= e^{\frac{\sigma^2}{2}} \qquad \text {Gaussian Integral equals } \sqrt\pi
-\end{aligned}\]</span></p>
-<p>所以</p>
-<p><span class="math display">\[\begin{aligned} E[S_T] &amp;= S_0 e^{(r-q-\frac{\sigma^2}{2})T}  E[e^{\sigma \sqrt T Z}] \\
-&amp;= S_0e^{(r-q-\frac{\sigma^2}{2})T} e^{\frac{\sigma^2 T}{2}} \\
-&amp;= S_0e^{(r-q)T} \\
-&amp;= S_te^{(r-q)(T-t)} \qquad \text{Change the starting time to }t
-\end{aligned}\]</span></p>
-<p><span class="math display">\[\begin{aligned}
-F_t &amp;= e^{r(t-T)} E[S_T] \\
-&amp;= e^{r(t-T)} (S_te^{(r-q)(T-t)})\\
-&amp;=S_t e^{q(t-T)}
-\end{aligned}\]</span></p>
-<p>或者用 <span class="math inline">\(S_0\)</span> 表示</p>
-<p><span class="math display">\[F_t = e^{r(t-T)}S_0e^{(r-q)T} = S_0e^{rt-qT}\]</span></p>
+<p>$$F_t = e^{r(t-T)} E[S_T]$$</p>
+<p>$S_T$ 已知</p>
+<p>$$S_T = S_0 e^{(r-q-\frac{\sigma^2}{2})T + \sigma \sqrt T Z}$$</p>
+<p>考虑 $E[e^{X}]$，$X\sim N(0, \sigma^2)$</p>
+<p>$$\begin{aligned}<br>E[e^{X}] &amp;= \frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{\infty} e^{ x}  e^{-\frac{x^2}{2\sigma^2}}dx \<br>&amp;= \frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{\infty}  e^{x-\frac{x^2}{2\sigma^2}}dx \qquad \text{Note that } x-\frac{x^2}{2\sigma^2} = \frac1{2\sigma^2}\left(2\sigma^2 x - x^2\right)= \frac1{2\sigma^2}\left(-(\sigma^2-x)^2 +\sigma^4  \right) = \frac{\sigma^2}{2} - \frac12 \left(\sigma - \frac x \sigma\right)^2\<br>&amp;= \frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{\infty}  e^{\frac{\sigma^2}{2} - \frac12 \left(\sigma - \frac x \sigma\right)^2}dx \<br>&amp;= \frac{1}{\sqrt{2\pi}\sigma} e^{\frac{\sigma^2}{2}} \int_{-\infty}^{\infty}  e^{ - \frac12 \left(\sigma - \frac x \sigma\right)^2}dx \<br>&amp;= \frac{1}{\sqrt{2\pi}\sigma} e^{\frac{\sigma^2}{2}} \int_{-\infty}^{\infty}  e^{ - \frac12 u^2}\sigma du \qquad \text{Substitute } u= \frac x\sigma - \sigma \<br>&amp;= \frac{1}{\sqrt{2\pi}} e^{\frac{\sigma^2}{2}} \int_{-\infty}^{\infty}  e^{ - \frac12 u^2} du \<br>&amp;= \frac{1}{\sqrt{\pi}} e^{\frac{\sigma^2}{2}} \int_{-\infty}^{\infty}  e^{ - v^2} dv \qquad \text{Substitute } v = \frac{u}{\sqrt{2}} \<br>&amp;= e^{\frac{\sigma^2}{2}} \qquad \text {Gaussian Integral equals } \sqrt\pi<br>\end{aligned}$$</p>
+<blockquote>
+<p>P.S. 其实有对数正态分布的期望公式可以直接使用。</p>
+</blockquote>
+<p>所以 </p>
+<p>$$\begin{aligned} E[S_T] &amp;= S_0 e^{(r-q-\frac{\sigma^2}{2})T}  E[e^{\sigma \sqrt T Z}] \<br>&amp;= S_0e^{(r-q-\frac{\sigma^2}{2})T} e^{\frac{\sigma^2 T}{2}} \<br>&amp;= S_0e^{(r-q)T} \<br>&amp;= S_te^{(r-q)(T-t)} \qquad \text{Change the starting time to }t<br>\end{aligned}$$</p>
+<p>$$\begin{aligned}<br>F_t &amp;= e^{r(t-T)} E[S_T] \<br>&amp;= e^{r(t-T)} (S_te^{(r-q)(T-t)})\<br>&amp;=S_t e^{q(t-T)}<br>\end{aligned}$$</p>
+<p>或者用 $S_0$ 表示</p>
+<p>$$F_t = e^{r(t-T)}S_0e^{(r-q)T} = S_0e^{rt-qT}$$</p>
 <p>和带 dividend 的股票的 european call 对比</p>
-<p><span class="math display">\[\begin{aligned}
-C_t &amp;= S_t e^{q(t-T)} N(d_1) - Ke^{r(t-T)}N(d_2) 
-\end{aligned}\]</span></p>
+<p>$$\begin{aligned}<br>C_t &amp;= S_t e^{q(t-T)} N(d_1) - Ke^{r(t-T)}N(d_2)<br>\end{aligned}$$</p>
 <blockquote>
-<ol start="2" type="a">
-<li>以该期货为标的的期权 (option on the futures) 定价。假设期货在 <span class="math inline">\(T\)</span> 到期而期权在 <span class="math inline">\(\tau &lt; T\)</span> 到期。</li>
-</ol>
+<p>(b) 以该期货为标的的期权 (option on the futures) 定价。假设期货在 $T$ 到期而期权在 $\tau &lt; T$ 到期。</p>
 </blockquote>
-<p>如果假设股价服从几何布朗运动，则 <span class="math inline">\(S_t = S_0e^{(r-q - \sigma^2/2)t+\sigma\sqrt tZ}\)</span>，根据上文导出的期货定价，期货价格过程是</p>
-<p><span class="math display">\[F_t = S_0e^{(r- \sigma^2/2)t -qT +\sigma\sqrt tZ} = S_0e^{-qT} e^{(r- \sigma^2/2)t+\sigma\sqrt tZ}\]</span></p>
-<p>注意到</p>
-<p><span class="math display">\[F_0 = S_0e^{-qT}\]</span></p>
-<p><span class="math display">\[F_t = F_0e^{(r- \sigma^2/2)t+\sigma\sqrt tZ}\]</span></p>
-<p>和几何布朗运动的定义一致。所以 <span class="math inline">\(F\)</span> 就等价于一个不付息的 Stock，漂移系数就是 <span class="math inline">\(r\)</span>。</p>
+<p>如果假设股价服从几何布朗运动，则 $S_t = S_0e^{(r-q - \sigma^2/2)t+\sigma\sqrt tZ}$，根据上文导出的期货定价，期货价格过程是</p>
+<p>$$F_t = S_0e^{(r- \sigma^2/2)t -qT +\sigma\sqrt tZ} = S_0e^{-qT} e^{(r- \sigma^2/2)t+\sigma\sqrt tZ}$$</p>
+<p>注意到 </p>
+<p>$$F_0 = S_0e^{-qT}$$</p>
+<p>$$F_t = F_0e^{(r- \sigma^2/2)t+\sigma\sqrt tZ}$$</p>
+<p>和几何布朗运动的定义一致。所以 $F$ 就等价于一个不付息的 Stock，漂移系数就是 $r$。</p>
 <p>既然如此，可以直接套用 BS 给出的期权定价公式 (不含息) 了。注意，期权</p>
-<p><span class="math display">\[C_t = F_tN(d_1) - e^{-r(\tau - t)K}N(d_2)\]</span></p>
+<p>$$C_t = F_tN(d_1) - e^{-r(\tau - t)K}N(d_2)$$</p>
 <p>其中</p>
-<p><span class="math display">\[d_1 = \frac{\ln{(F_t/K)}+(r+\sigma^2/2)(\tau-t)}{\sigma\sqrt{\tau-t}}\]</span></p>
-<p><span class="math display">\[d_2 = d_1 - \sigma\sqrt{\tau -t}\]</span></p>
+<p>$$d_1 = \frac{\ln{(F_t/K)}+(r+\sigma^2/2)(\tau-t)}{\sigma\sqrt{\tau-t}}$$</p>
+<p>$$d_2 = d_1 - \sigma\sqrt{\tau -t}$$</p>
 <blockquote>
-<ol start="3" type="a">
-<li>确定该期权价格满足问题2的 BS PDE。</li>
-</ol>
+<p>(c) 确定该期权价格满足问题2的 BS PDE。</p>
 </blockquote>
-<p>该期权的定价其实和 no dividend 时的 BS 推导结果一致，因为仅仅看它的 underlying <span class="math inline">\(F_t\)</span> 是 no dividend 的。</p>
-<h2 id="delta-hedging">(Delta-Hedging)</h2>
-<p>tbd.</p>
+<p>该期权的定价其实和 no dividend 时的 BS 推导结果一致，因为仅仅看它的 underlying $F_t$ 是 no dividend 的。</p>
+<h2 id="Delta-Hedging"><a href="#Delta-Hedging" class="headerlink" title="(Delta-Hedging)"></a>(Delta-Hedging)</h2>]]></content>
+      <categories>
+        <category>Finance</category>
+      </categories>
+      <tags>
+        <tag>Financial Engineering</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>IEOR E4706: Credit Modeling &amp; Credit Derivatives</title>
+    <url>/2021/03/19/IEOR-E4706-Credit-Modeling-Credit-Derivatives/</url>
+    <content><![CDATA[<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>衡量公司的违约风险：Merton 的 call option 模型，对 call(equity) 和 debt 定价</p>
+<p>二叉树方法；credit spread;</p>
+<p>Black-Cox: 提前违约，对二叉树进行调整。</p>
+<p>KMV 方法：distance to default DDt</p>
+<p>信用评级，马尔可夫过程和转移矩阵</p>
+<p>CDS定价：…</p>
 ]]></content>
       <categories>
         <category>Finance</category>
