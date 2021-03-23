@@ -4142,46 +4142,43 @@ P&#39;(0) (1+r)^2 = 0\]</span></p>
   <entry>
     <title>IEOR E4706: Mean-Variance Optimization and the CAPM</title>
     <url>/2021/02/27/IEOR-E4706-Mean-Variance-Optimization-and-the-CAPM/</url>
-    <content><![CDATA[<h2 id="capm-the-capital-asset-pricing-model-资本资产定价模型">CAPM: the Capital Asset Pricing Model 资本资产定价模型</h2>
-<h3 id="符号定义">符号定义</h3>
-<p>市场组合： <span class="math inline">\(R_m, \sigma_{R_{m}}\)</span></p>
-<p>某风险资产： risky asset: <span class="math inline">\(R, \sigma_R\)</span></p>
-<p>由这两种资产构建的一个新的组合，下标 <span class="math inline">\(\alpha\)</span>：</p>
-<p><span class="math display">\[R_\alpha = \alpha \cdot R + (1-\alpha) \cdot R_m\]</span></p>
-<p><span class="math display">\[E[R_\alpha] = \alpha \cdot \bar{R} + (1-\alpha) \cdot \bar{R}_m\]</span></p>
-<p><span class="math display">\[\sigma^2_{R_{\alpha}} = \alpha^2 \sigma_R^2 + (1-\alpha)^2 \sigma_{R_m}^2 + 2\alpha(1-\alpha)\sigma_{R, R_m}\]</span></p>
-<h3 id="推导">推导</h3>
-<p>首先需要强调，CAPM 假设全体投资者都了解市场组合的存在并持有，</p>
-<p>定性的给出 <span class="math inline">\((\sigma_{R_\alpha}, E[R_\alpha])\)</span> 的曲线：</p>
-<p><img src="CAPM.jpg" height=300 align="middle"></p>
-<p>随着 <span class="math inline">\(\alpha\)</span> 变化，形成图中的虚线。</p>
+    <content><![CDATA[<h2 id="CAPM-the-Capital-Asset-Pricing-Model-资本资产定价模型"><a href="#CAPM-the-Capital-Asset-Pricing-Model-资本资产定价模型" class="headerlink" title="CAPM: the Capital Asset Pricing Model 资本资产定价模型"></a>CAPM: the Capital Asset Pricing Model 资本资产定价模型</h2><h3 id="符号定义"><a href="#符号定义" class="headerlink" title="符号定义"></a>符号定义</h3><p>市场组合： $R_m, \sigma_{R_{m}}$</p>
+<p>某风险资产： risky asset: $R, \sigma_R$</p>
+<p>由这两种资产构建的一个新的组合，下标 $\alpha$：</p>
+<p>$$R_\alpha = \alpha \cdot R + (1-\alpha) \cdot R_m$$</p>
+<p>$$E[R_\alpha] = \alpha \cdot \bar{R} + (1-\alpha) \cdot \bar{R}_m$$</p>
+<p>$$\sigma^2_{R_{\alpha}} = \alpha^2 \sigma_R^2 + (1-\alpha)^2 \sigma_{R_m}^2 + 2\alpha(1-\alpha)\sigma_{R, R_m}$$</p>
+<h3 id="推导"><a href="#推导" class="headerlink" title="推导"></a>推导</h3><p>首先需要强调，CAPM 假设全体投资者都了解市场组合的存在并持有，</p>
+<p>定性的给出 $(\sigma_{R_\alpha}, E[R_\alpha])$ 的曲线：</p>
+<img src="CAPM.jpg" height=300 align="middle">
+
+<p>随着 $\alpha$ 变化，形成图中的虚线。</p>
 <p>该曲线不能超过有效前沿曲线，因为这里选取的风险资产本身是有效前沿内部的一个点，市场组合是有效前沿上的点，两者的组合自然在有效前沿内部。</p>
-<p>在推导有效前沿形状时，曾考虑一个最简单的两资产模型： - 如果这两个资产完全正相关，构成的组合在两点连成的线段上； - 完全负相关，则有效前沿形成一个 V 字形，最终在 y 轴上形成一个零风险但高于无风险利率的回报率； - 否则弯成一个二次曲线。</p>
-<p>当 <span class="math inline">\(\alpha = 0\)</span> 时该曲线应与 CML 切于市场组合点。根据该性质，推导该新组合和市场组合的关系。</p>
-<p><span class="math display">\[\frac{\partial E[R_\alpha]}{\partial \sigma_{R_\alpha}} \bigg |_{\alpha = 0} = 
-\left (\frac{dE[R_\alpha]}{d\alpha} \bigg / \frac{d\sigma_{R_\alpha}}{d\alpha} \right) \bigg|_{\alpha = 0}\]</span></p>
+<p>在推导有效前沿形状时，曾考虑一个最简单的两资产模型：</p>
+<ul>
+<li>如果这两个资产完全正相关，构成的组合在两点连成的线段上；</li>
+<li>完全负相关，则有效前沿形成一个 V 字形，最终在 y 轴上形成一个零风险但高于无风险利率的回报率；</li>
+<li>否则弯成一个二次曲线。</li>
+</ul>
+<p>当 $\alpha = 0$ 时该曲线应与 CML 切于市场组合点。根据该性质，推导该新组合和市场组合的关系。</p>
+<p>$$\frac{\partial E[R_\alpha]}{\partial \sigma_{R_\alpha}} \bigg |_{\alpha = 0} =<br>\left (\frac{dE[R_\alpha]}{d\alpha} \bigg / \frac{d\sigma_{R_\alpha}}{d\alpha} \right) \bigg|_{\alpha = 0}$$</p>
 <p>分别求解分子分母，</p>
-<p><span class="math display">\[\frac{dE[R_\alpha]}{d\alpha} = \bar{R} - \bar{R}_m\]</span></p>
-<p><span class="math display">\[\frac{d\sigma_{R_\alpha}}{d\alpha} = \frac{d\sigma^2_{R_\alpha}}{d\alpha} \bigg/ 2\sigma_{R_\alpha} \]</span></p>
-<p><span class="math display">\[\because \frac{d\sigma^2_{R_\alpha}}{d\alpha}  = 2 \sigma_R^2 \alpha + \sigma_{R_m}^2(2\alpha-2) + 2\sigma_{R, R_m}\]</span></p>
-<p><span class="math display">\[\therefore \frac{d\sigma_{R_\alpha}}{d\alpha} = 
-\frac{2 \sigma_R^2 \alpha + \sigma_{R_m}^2(2\alpha-2) + 2\sigma_{R, R_m}} {2\sigma_{R_\alpha}}\]</span></p>
-<p>当 <span class="math inline">\(\alpha = 0\)</span>，新的组合就是原来的市场组合，<span class="math inline">\(R_\alpha \equiv R_m\)</span></p>
-<p><span class="math display">\[\begin{aligned}
-\therefore \frac{d\sigma_{R_\alpha}}{d\alpha} \bigg|_{\alpha = 0} &amp;= 
-\frac{2 \sigma_R^2 \alpha + \sigma_{R_m}^2(2\alpha-2) + 2\sigma_{R, R_m}} {2\sigma_{R_\alpha}} \bigg|_{\alpha = 0} \\
-&amp;= \frac{-\sigma_{R_m}^2 + \sigma_{R, R_m}} {\sigma_{R_m}} 
-\end{aligned}\]</span></p>
+<p>$$\frac{dE[R_\alpha]}{d\alpha} = \bar{R} - \bar{R}_m$$</p>
+<p>$$\frac{d\sigma_{R_\alpha}}{d\alpha} = \frac{d\sigma^2_{R_\alpha}}{d\alpha} \bigg/ 2\sigma_{R_\alpha} $$</p>
+<p>$$\because \frac{d\sigma^2_{R_\alpha}}{d\alpha}  = 2 \sigma_R^2 \alpha + \sigma_{R_m}^2(2\alpha-2) + 2\sigma_{R, R_m}$$</p>
+<p>$$\therefore \frac{d\sigma_{R_\alpha}}{d\alpha} =<br>\frac{2 \sigma_R^2 \alpha + \sigma_{R_m}^2(2\alpha-2) + 2\sigma_{R, R_m}} {2\sigma_{R_\alpha}}$$</p>
+<p>当 $\alpha = 0$，新的组合就是原来的市场组合，$R_\alpha \equiv R_m$</p>
+<p>$$\begin{aligned}<br>\therefore \frac{d\sigma_{R_\alpha}}{d\alpha} \bigg|<em>{\alpha = 0} &amp;=<br>\frac{2 \sigma_R^2 \alpha + \sigma_{R_m}^2(2\alpha-2) + 2\sigma_{R, R_m}} {2\sigma_{R_\alpha}} \bigg|_{\alpha = 0} \<br>&amp;= \frac{-\sigma</em>{R_m}^2 + \sigma_{R, R_m}} {\sigma_{R_m}}<br>\end{aligned}$$</p>
 <p>综上，</p>
-<p><span class="math display">\[\frac{\partial E[R_\alpha]}{\partial \sigma_{R_\alpha}} \bigg |_{\alpha = 0} = \frac{(\bar{R} - \bar{R}_m)\sigma_{R_m}}{-\sigma_{R_m}^2 + \sigma_{R, R_m}}\]</span></p>
+<p>$$\frac{\partial E[R_\alpha]}{\partial \sigma_{R_\alpha}} \bigg |_{\alpha = 0} = \frac{(\bar{R} - \bar{R}<em>m)\sigma</em>{R_m}}{-\sigma_{R_m}^2 + \sigma_{R, R_m}}$$</p>
 <p>同时，资本市场线 CML 的斜率已知，</p>
-<p><span class="math display">\[\frac{\bar{R}_m - r_f}{\sigma_{R_m}}\]</span></p>
+<p>$$\frac{\bar{R}_m - r_f}{\sigma_{R_m}}$$</p>
 <p>新组合曲线在市场组合这一点的斜率和 CML 相等，</p>
-<p><span class="math display">\[\therefore \frac{(\bar{R} - \bar{R}_m)\sigma_{R_m}}{-\sigma_{R_m}^2 + \sigma_{R, R_m}} = \frac{\bar{R}_m - r_f}{\sigma_{R_m}}\]</span></p>
-<p><span class="math display">\[\bar{R} - \bar{R}_m = \frac{-\sigma_{R_m}^2 + \sigma_{R, R_m}}{\sigma_{R_m}^2}(\bar{R}_m - r_f)\]</span></p>
-<p><span class="math display">\[\bar{R} - r_f = \frac{\sigma_{R, R_m}}{\sigma_{R_m}^2}(\bar{R}_m - r_f) = \beta (\bar{R}_m - r_f) \]</span></p>
-<p>其中 <span class="math inline">\(\beta = \frac{\sigma_{R, R_m}}{\sigma_{R_m}^2}\)</span>。</p>
-]]></content>
+<p>$$\therefore \frac{(\bar{R} - \bar{R}<em>m)\sigma</em>{R_m}}{-\sigma_{R_m}^2 + \sigma_{R, R_m}} = \frac{\bar{R}_m - r_f}{\sigma_{R_m}}$$</p>
+<p>$$\bar{R} - \bar{R}<em>m = \frac{-\sigma</em>{R_m}^2 + \sigma_{R, R_m}}{\sigma_{R_m}^2}(\bar{R}_m - r_f)$$</p>
+<p>$$\bar{R} - r_f = \frac{\sigma_{R, R_m}}{\sigma_{R_m}^2}(\bar{R}_m - r_f) = \beta (\bar{R}_m - r_f) $$</p>
+<p>其中 $\beta = \frac{\sigma_{R, R_m}}{\sigma_{R_m}^2}$。</p>
+<h2 id="讲义"><a href="#讲义" class="headerlink" title="讲义"></a>讲义</h2><div class="pdfobject-container" data-target="./4MeanVarianceCAPM.pdf" data-height="1000px"></div> ]]></content>
       <categories>
         <category>Finance</category>
       </categories>
@@ -4192,193 +4189,172 @@ P&#39;(0) (1+r)^2 = 0\]</span></p>
   <entry>
     <title>IEOR E4706: Stochastic Calculus</title>
     <url>/2021/03/07/IEOR-E4706-Stochastic-Calculus/</url>
-    <content><![CDATA[<h2 id="链接">链接</h2>
-<ul>
-<li><p>在去年12月，曾经整理过过<a href="https://hy2632.github.io/2020/12/07/%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8%E4%B8%8E%E4%BC%8A%E8%97%A4%E5%BC%95%E7%90%86/">布朗运动和伊藤引理</a>。</p></li>
-<li><p><a href="http://stock.10jqka.com.cn/20180530/c604762462.shtml">概述金融期货和期权的一篇文章</a></p></li>
+    <content><![CDATA[<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><ul>
+<li><p>在去年12月，曾经整理过过<a href="https://hy2632.github.io/2020/12/07/%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8%E4%B8%8E%E4%BC%8A%E8%97%A4%E5%BC%95%E7%90%86/">布朗运动和伊藤引理</a>。</p>
+</li>
+<li><p><a href="http://stock.10jqka.com.cn/20180530/c604762462.shtml">概述金融期货和期权的一篇文章</a></p>
+</li>
 </ul>
-<hr />
-<h2 id="fun-fact-高斯积分">Fun fact: 高斯积分</h2>
-<p>布朗运动 <span class="math inline">\(W_t \sim N(0,t)\)</span>。在随机微积分部分涉及到高斯分布。由于高斯分布的密度函数包含 <span class="math inline">\(e^{-x^2}\)</span> 的形式，其偶数阶矩和一系列变式的计算都涉及到该积分</p>
-<p><span class="math display">\[\int_{-\infty}^{\infty}{e^{-x^2}dx}\]</span></p>
-<p>该值求解用到了 耦合 (coupling) 和极坐标变换的技巧。注：<span class="math inline">\(dxdy = rdrd\theta\)</span>，r是雅可比行列式的值，关于<a href="https://www.zhihu.com/question/399586541/answer/1346421063">如何证明坐标变换中的雅可比行列式？ - 暨厥的回答 - 知乎</a>。</p>
-<p><span class="math display">\[\begin{aligned} \int_{-\infty}^{\infty}{e^{-x^2}dx} \int_{-\infty}^{\infty}{e^{-y^2}dy} &amp;= \int_{-\infty}^{\infty}\int_{-\infty}^{\infty}{e^{-x^2-y^2}dxdy} \\
-&amp;= \int_{0}^{2\pi}{d\theta}\int_{-\infty}^{\infty}{e^{-r^2}rdr} \\
-&amp;= \pi \int_{-\infty}^{\infty}{e^{-r^2}dr^2} \\
-&amp;= \pi
-\end{aligned}\]</span></p>
-<p><span class="math display">\[\int_{-\infty}^{\infty}{e^{-x^2}dx} = \sqrt{\pi}\]</span></p>
-<hr />
-<h2 id="martingales-bm-quadratic-variation">Martingales, BM, quadratic variation</h2>
-<p>描述随机过程: the triple <span class="math inline">\((\Omega, \mathcal{F},P)\)</span> - sample paths (outcomes space) - <strong>Filtration</strong> (set of known information by time t) - the true probability measure</p>
+<hr>
+<h2 id="Fun-fact-高斯积分"><a href="#Fun-fact-高斯积分" class="headerlink" title="Fun fact: 高斯积分"></a>Fun fact: 高斯积分</h2><p>布朗运动 $W_t \sim N(0,t)$。在随机微积分部分涉及到高斯分布。由于高斯分布的密度函数包含 $e^{-x^2}$ 的形式，其偶数阶矩和一系列变式的计算都涉及到该积分</p>
+<p>$$\int_{-\infty}^{\infty}{e^{-x^2}dx}$$</p>
+<p>该值求解用到了 耦合 (coupling) 和极坐标变换的技巧。注：$dxdy = rdrd\theta$，r是雅可比行列式的值，关于<a href="https://www.zhihu.com/question/399586541/answer/1346421063">如何证明坐标变换中的雅可比行列式？ - 暨厥的回答 - 知乎</a>。</p>
+<p>$$\begin{aligned} \int_{-\infty}^{\infty}{e^{-x^2}dx} \int_{-\infty}^{\infty}{e^{-y^2}dy} &amp;= \int_{-\infty}^{\infty}\int_{-\infty}^{\infty}{e^{-x^2-y^2}dxdy} \<br>&amp;= \int_{0}^{2\pi}{d\theta}\int_{-\infty}^{\infty}{e^{-r^2}rdr} \<br>&amp;= \pi \int_{-\infty}^{\infty}{e^{-r^2}dr^2} \<br>&amp;= \pi<br>\end{aligned}$$</p>
+<p>$$\int_{-\infty}^{\infty}{e^{-x^2}dx} = \sqrt{\pi}$$</p>
+<hr>
+<h2 id="Martingales-BM-quadratic-variation"><a href="#Martingales-BM-quadratic-variation" class="headerlink" title="Martingales, BM, quadratic variation"></a>Martingales, BM, quadratic variation</h2><p>描述随机过程: the triple $(\Omega, \mathcal{F},P)$</p>
+<ul>
+<li>sample paths (outcomes space)</li>
+<li><strong>Filtration</strong> (set of known information by time t)</li>
+<li>the true probability measure</li>
+</ul>
 <p>some jargons:</p>
 <ul>
-<li><span class="math inline">\(X_t\)</span> is <span class="math inline">\(\mathcal{F}_t\)</span>-adapted: Known by t</li>
-<li>the filtration <span class="math inline">\(\{\mathcal{F}_t\}_{t\geq 0}\)</span> is generated by the stochastic process</li>
+<li>$X_t$ is $\mathcal{F}_t$-adapted: Known by t</li>
+<li>the filtration ${\mathcal{F}<em>t}</em>{t\geq 0}$ is generated by the stochastic process</li>
 </ul>
-<h3 id="bm-定义">BM 定义</h3>
-<blockquote>
-<p><strong>Definition 1: standard BM</strong>: - <span class="math inline">\(W_0=0, W_t\in N(0,t)\)</span><br />
-- continuous sample paths - independent stationary increments</p>
+<h3 id="BM-定义"><a href="#BM-定义" class="headerlink" title="BM 定义"></a>BM 定义</h3><blockquote>
+<p><strong>Definition 1: standard BM</strong>:</p>
+<ul>
+<li>$W_0=0, W_t\in N(0,t)$  </li>
+<li>continuous sample paths </li>
+<li>independent stationary increments</li>
+</ul>
 </blockquote>
 <blockquote>
-<p><strong>Definition 2: n-dimensional BM</strong> - 扩展到n维向量，其中每一个分量是BM且iid;</p>
+<p><strong>Definition 2: n-dimensional BM</strong> </p>
+<ul>
+<li>扩展到n维向量，其中每一个分量是BM且iid;</li>
+</ul>
 </blockquote>
 <blockquote>
-<p><strong>Definition 3: 随机过程 <span class="math inline">\(X_t\)</span> 是关于 <span class="math inline">\(\mathcal{F}_t, P\)</span> 的鞅</strong> - <span class="math inline">\(E^P[|X_t|] &lt; \infty\)</span> for all <span class="math inline">\(t\geq 0\)</span> - <span class="math inline">\(E^P[X_{t+s}|\mathcal{F}_t] = X_t\)</span> for all <span class="math inline">\(t,s \geq 0\)</span></p>
+<p><strong>Definition 3: 随机过程 $X_t$ 是关于 $\mathcal{F}_t, P$ 的鞅</strong></p>
+<ul>
+<li>$E^P[|X_t|] &lt; \infty$ for all $t\geq 0$</li>
+<li>$E^P[X_{t+s}|\mathcal{F}_t] = X_t$ for all $t,s \geq 0$</li>
+</ul>
 </blockquote>
 <p>常见的一些布朗运动鞅：</p>
-<p>标准布朗运动 <span class="math inline">\(W_t\)</span> 是鞅。<span class="math inline">\(W_t \sim N(0,t)\)</span> 为方便记为变量 <span class="math inline">\(X\)</span>，</p>
-<p><span class="math display">\[E[|W_t|] = E[|X|] = 2\int_0^\infty{xf(x)dx} = 2\int_0^\infty{x\frac1{\sqrt{2\pi t}}e^{-\frac{x^2}{2t}}dx} = 2\sqrt{\frac{t}{2\pi}}\]</span></p>
+<p>标准布朗运动 $W_t$ 是鞅。$W_t \sim N(0,t)$ 为方便记为变量 $X$，</p>
+<p>$$E[|W_t|] = E[|X|] = 2\int_0^\infty{xf(x)dx} = 2\int_0^\infty{x\frac1{\sqrt{2\pi t}}e^{-\frac{x^2}{2t}}dx} = 2\sqrt{\frac{t}{2\pi}}$$</p>
 <p>是收敛的。而条件期望不变显然成立。</p>
-<p>此外 <span class="math inline">\(W_T^2 - t\)</span> 和 <span class="math inline">\(\exp(\theta W_t - \theta^2t/2)\)</span> 也是鞅。后者被称为指数鞅，其恒为正的性质使其被经常使用。</p>
-<h3 id="二次变分">二次变分</h3>
-<p>A partition of time interval;</p>
-<p><span class="math display">\[0 = t_0 &lt;t_1 &lt;...&lt; t_n= T\]</span></p>
-<p>The quadratic variation of a BM <span class="math inline">\(X_t\)</span> is defined as</p>
-<p><span class="math display">\[Q_n(T) := \lim_{n \to \infty}\sum_{i=1}^n[\Delta X_{t_i}]^2\]</span></p>
-<p>when <span class="math inline">\(n \to \infty\)</span> or say <span class="math inline">\(\Delta t = \max_i{(t_i - t_{i-1})} \to 0\)</span>.</p>
+<p>此外 $W_T^2 - t$ 和 $\exp(\theta W_t - \theta^2t/2)$ 也是鞅。后者被称为指数鞅，其恒为正的性质使其被经常使用。</p>
+<h3 id="二次变分"><a href="#二次变分" class="headerlink" title="二次变分"></a>二次变分</h3><p>A partition of time interval;</p>
+<p>$$0 = t_0 &lt;t_1 &lt;…&lt; t_n= T$$</p>
+<p>The quadratic variation of a BM $X_t$ is defined as</p>
+<p>$$Q_n(T) := \lim_{n \to \infty}\sum_{i=1}^n[\Delta X_{t_i}]^2$$</p>
+<p>when $n \to \infty$ or say $\Delta t = \max_i{(t_i - t_{i-1})} \to 0$.</p>
 <blockquote>
-<p><strong>Theorem 1</strong>: 布朗运动在区间 <span class="math inline">\([0,T]\)</span> 上的二次变分为 <span class="math inline">\(T\)</span>。</p>
-<p>证明：考虑 <span class="math inline">\(n\to \infty\)</span> 个区间划分上的独立同分布的变量 <span class="math inline">\(\Delta X\)</span>, 每个变量都服从分布 <span class="math inline">\(N(0, \frac{T}{n})\)</span>, 根据大数定律转化为期望 <span class="math display">\[\lim_{n\to\infty}{Q_n(T)} = \lim_{n\to\infty}{n E[(\Delta X)^2]} = \lim_{n\to\infty}{n \left(E^2[\Delta X] + Var(\Delta X) \right)} = \lim_{n\to\infty}{n \cdot \frac Tn} = T\]</span></p>
+<p><strong>Theorem 1</strong>: 布朗运动在区间 $[0,T]$ 上的二次变分为 $T$。</p>
+<p>证明：考虑 $n\to \infty$ 个区间划分上的独立同分布的变量 $\Delta X$, 每个变量都服从分布 $N(0, \frac{T}{n})$, 根据大数定律转化为期望<br>$$\lim_{n\to\infty}{Q_n(T)} = \lim_{n\to\infty}{n E[(\Delta X)^2]} = \lim_{n\to\infty}{n \left(E^2[\Delta X] + Var(\Delta X) \right)} = \lim_{n\to\infty}{n \cdot \frac Tn} = T$$</p>
 </blockquote>
 <blockquote>
 <p><strong>全变分(total variarion) 和二次变分的关系</strong></p>
-<p>全变分定义： <span class="math display">\[\lim_{\Delta t \to 0}\sum_{k=1}^n{|X_{t_k} - X_{t_{k-1}}|}\]</span> 不等关系： <span class="math display">\[\sum_{i=1}^n[\Delta X_{t_i}]^2 \leq \left(\sum_{i=1}^n|\Delta X_{t_i}|\right) \max_{k\in[1,n]}{|\Delta X_{t_k}|}\]</span> 从而若全变分有限，则二次变分必为0：通常的连续函数是这种情况。布朗运动二次变分不为0，则全变分必为无穷。</p>
+<p>全变分定义：<br>$$\lim_{\Delta t \to 0}\sum_{k=1}^n{|X_{t_k} - X_{t_{k-1}}|}$$<br>不等关系：<br>$$\sum_{i=1}^n[\Delta X_{t_i}]^2 \leq \left(\sum_{i=1}^n|\Delta X_{t_i}|\right) \max_{k\in[1,n]}{|\Delta X_{t_k}|}$$<br>从而若全变分有限，则二次变分必为0：通常的连续函数是这种情况。布朗运动二次变分不为0，则全变分必为无穷。</p>
 </blockquote>
 <blockquote>
-<p><strong>Theorem 2 (Levy's Theorem)</strong> 连续鞅是布朗运动的充要条件是任意 <span class="math inline">\([0,t]\)</span> 上二次变分为 <span class="math inline">\(t\)</span>。</p>
+<p><strong>Theorem 2 (Levy’s Theorem)</strong> 连续鞅是布朗运动的充要条件是任意 $[0,t]$ 上二次变分为 $t$。</p>
 <p>证明?</p>
 </blockquote>
-<hr />
-<h2 id="stochastic-integrals-随机积分">Stochastic Integrals 随机积分</h2>
-<p>注：<span class="math inline">\(X_t\)</span> 写作 <span class="math inline">\(X_t(w)\)</span> 表明其随机性质。</p>
+<hr>
+<h2 id="Stochastic-Integrals-随机积分"><a href="#Stochastic-Integrals-随机积分" class="headerlink" title="Stochastic Integrals 随机积分"></a>Stochastic Integrals 随机积分</h2><p>注：$X_t$ 写作 $X_t(w)$ 表明其随机性质。</p>
 <blockquote>
-<p><strong>Definition 5 (停时)</strong>: A stopping time of the filtration <span class="math inline">\(\mathcal{F}_t\)</span> is a random time <span class="math inline">\(\tau\)</span> such that the event <span class="math inline">\(\{\tau\leq t\}\in \mathcal F_t\)</span>, for all <span class="math inline">\(t &gt; 0\)</span>.</p>
+<p><strong>Definition 5 (停时)</strong>: A stopping time of the filtration $\mathcal{F}_t$ is a random time $\tau$ such that the event ${\tau\leq t}\in \mathcal F_t$, for all $t &gt; 0$.</p>
 </blockquote>
 <p>一个区间上的停时是在区间末尾已知的随机变量。</p>
 <blockquote>
-<p><strong>Definition 6 (elementary process)</strong>: 称一个过程 <span class="math inline">\(h_t(w)\)</span> 是基本的(elementary) 如果它分段为常数(当然，划分足够细的极限情况就是连续的布朗运动)，从而存在一系列停时 <span class="math inline">\(0=t_0 &lt; t_1 &lt;...&lt; t_n=T\)</span> 和一系列 <span class="math inline">\(\mathcal{F}_{t_i}\)</span>-measurable 的函数 <span class="math inline">\(e_i(w)\)</span>，使得 <span class="math display">\[h_t(w) = \sum_i{e_i(w)I_{[t_i, t_{i+1}]}(t)}\]</span> 第二项是示性函数 Indicator Function。该函数虽然是求和形式，但实际值指向特定的区间上的常数值，因而也可以看作 <span class="math display">\[e_{i(t)}(w)\]</span> 其中 <span class="math inline">\(i(t)\)</span> 函数以 <span class="math inline">\(t\)</span> 为输入，给出其对应的唯一区间的序数 <span class="math inline">\(i\)</span> 使得 <span class="math inline">\(t_i \leq t &lt; t_{i+1}\)</span>。</p>
+<p><strong>Definition 6 (elementary process)</strong>: 称一个过程 $h_t(w)$ 是基本的(elementary) 如果它分段为常数(当然，划分足够细的极限情况就是连续的布朗运动)，从而存在一系列停时 $0=t_0 &lt; t_1 &lt;…&lt; t_n=T$ 和一系列 $\mathcal{F}<em>{t_i}$-measurable 的函数 $e_i(w)$，使得<br>$$h_t(w) = \sum_i{e_i(w)I_{[t_i, t_{i+1}]}(t)}$$<br>第二项是示性函数 Indicator Function。该函数虽然是求和形式，但实际值指向特定的区间上的常数值，因而也可以看作<br>$$e</em>{i(t)}(w)$$<br>其中 $i(t)$ 函数以 $t$ 为输入，给出其对应的唯一区间的序数 $i$ 使得 $t_i \leq t &lt; t_{i+1}$。</p>
 </blockquote>
 <blockquote>
-<p><strong>Definition 7</strong>: 基本函数 <span class="math inline">\(h_t(w)\)</span> 对布朗运动 <span class="math inline">\(W_t\)</span> 的随机积分定义： <span class="math display">\[\int_0^T{h_t(w) \ dW_t(w)} := \sum_{i=0}^{n-1}{e_i(w) (W_{t_{i+1}}(w) - W_{t_i}(w)) }\]</span> <span class="math inline">\(\int \to \sum\)</span> 将连续的积分离散化到时间区间上。每个区间上基本函数的值是常数 <span class="math inline">\(e_i(w)\)</span>。 需要注意当区间划分足够小时，区间的常数值是对应到左端点的。</p>
+<p><strong>Definition 7</strong>: 基本函数 $h_t(w)$ 对布朗运动 $W_t$ 的随机积分定义：<br>$$\int_0^T{h_t(w) \ dW_t(w)} := \sum_{i=0}^{n-1}{e_i(w) (W_{t_{i+1}}(w) - W_{t_i}(w)) }$$<br>$\int \to \sum$ 将连续的积分离散化到时间区间上。每个区间上基本函数的值是常数 $e_i(w)$。<br>需要注意当区间划分足够小时，区间的常数值是对应到左端点的。</p>
 </blockquote>
 <p>以上是基本函数的随机积分。对于更普遍的函数，可以用无穷多个基本函数渐进。</p>
-<p><span class="math display">\[\int_0^T X_t(w) \ dW_t(w) := \lim_{n\to \infty} \int_0^T X_t^{(n)}(w) \ dW_t(w)\]</span></p>
-<p>注：intuitively 这 <span class="math inline">\(n\)</span> 个基本函数的区间划分必然不同，否则还是常数函数。</p>
-<h3 id="example-w_t-对自身作积分-int_0t-w_t-dw_t">Example: <span class="math inline">\(W_t\)</span> 对自身作积分 <span class="math inline">\(\int_0^T W_t \ dW_t\)</span></h3>
-<p>给出一个区间 <span class="math inline">\([0,T]\)</span> 上的划分，<span class="math inline">\(n\to \infty\)</span>：</p>
-<p><span class="math display">\[0 = t_0 &lt; t_1 &lt;... &lt; t_n = T\]</span></p>
-<p><span class="math display">\[W_t = \sum_{i=0}^{n-1}{W_{t_{i}} I_{[t_i, t_{i+1})}}(t)\]</span></p>
+<p>$$\int_0^T X_t(w) \ dW_t(w) := \lim_{n\to \infty} \int_0^T X_t^{(n)}(w) \ dW_t(w)$$</p>
+<p>注：intuitively 这 $n$ 个基本函数的区间划分必然不同，否则还是常数函数。</p>
+<h3 id="Example-W-t-对自身作积分-int-0-T-W-t-dW-t"><a href="#Example-W-t-对自身作积分-int-0-T-W-t-dW-t" class="headerlink" title="Example: $W_t$ 对自身作积分 $\int_0^T W_t \ dW_t$"></a>Example: $W_t$ 对自身作积分 $\int_0^T W_t \ dW_t$</h3><p>给出一个区间 $[0,T]$ 上的划分，$n\to \infty$：</p>
+<p>$$0 = t_0 &lt; t_1 &lt;… &lt; t_n = T$$</p>
+<p>$$W_t = \sum_{i=0}^{n-1}{W_{t_{i}} I_{[t_i, t_{i+1})}}(t)$$</p>
 <p>将连续的布朗运动按 Definition 7 离散化</p>
-<p><span class="math display">\[\begin{aligned} \int_0^TW_t \ dW_t &amp;= \sum_{i=0}^{n+1}{ (W_{t_{i+1}} - W_{t_{i}})W_{t_i} }   \\
-&amp;= \frac12 \sum_{i=0}^{n-1}{\left( W_{t_{i+1}}^2 - W_{t_{i}}^2 - (W_{t_{i+1}} - W_{t_{i}})^2     \right) } \\
-&amp;= \frac12 W_T^2 - \frac12W_0^2 -\frac12 \sum_{i=0}^{n-1}{(W_{t_{i+1}} - W_{t_{i}})^2 } \\
-&amp;= \frac12 W_T^2 -\frac12 T
-\end{aligned}\]</span></p>
+<p>$$\begin{aligned} \int_0^TW_t \ dW_t &amp;= \sum_{i=0}^{n+1}{ (W_{t_{i+1}} - W_{t_{i}})W_{t_i} }   \<br>&amp;= \frac12 \sum_{i=0}^{n-1}{\left( W_{t_{i+1}}^2 - W_{t_{i}}^2 - (W_{t_{i+1}} - W_{t_{i}})^2     \right) } \<br>&amp;= \frac12 W_T^2 - \frac12W_0^2 -\frac12 \sum_{i=0}^{n-1}{(W_{t_{i+1}} - W_{t_{i}})^2 } \<br>&amp;= \frac12 W_T^2 -\frac12 T<br>\end{aligned}$$</p>
 <p>这种随机积分很少实际使用，一般用伊藤引理。</p>
 <blockquote>
-<p><strong>Definition 8 (勒贝格空间, L^p space)</strong>: 指 p 次可积函数 <span class="math inline">\(X_t(w)\)</span> 组成的空间。如 L2 <span class="math display">\[E \left[ \int_0^T X_t(w)^2 dt \right] &lt; \infty\]</span></p>
+<p><strong>Definition 8 (勒贝格空间, L^p space)</strong>: 指 p 次可积函数 $X_t(w)$ 组成的空间。如 L2<br>$$E \left[ \int_0^T X_t(w)^2 dt \right] &lt; \infty$$</p>
 </blockquote>
-<h3 id="itôs-isometry-伊藤等距同构">Itô's Isometry 伊藤等距同构</h3>
-<blockquote>
-<p><strong>Theorem 3 (Itô's Isometry)</strong> <span class="math display">\[E\left[ \left( \int_0^T{X_t(w) \ dW_t(w)} \right)^2 \right] = E\left[ \int_0^T{ X_t(w)^2 \ dt}  \right]\]</span> 非常漂亮的结论，随机积分到定积分。</p>
-<p>证明仍然用到区间划分和随机积分，由于期望表达式的存在，<span class="math inline">\(E[W_{t_{i+1}} - W_{t_i}] = 0, E[(W_{t_{i+1}} - W_{t_i})^2] = t_{i+1} - t_i\)</span>。</p>
+<h3 id="Ito’s-Isometry-伊藤等距同构"><a href="#Ito’s-Isometry-伊藤等距同构" class="headerlink" title="Itô’s Isometry 伊藤等距同构"></a>Itô’s Isometry 伊藤等距同构</h3><blockquote>
+<p><strong>Theorem 3 (Itô’s Isometry)</strong><br>$$E\left[ \left( \int_0^T{X_t(w) \ dW_t(w)} \right)^2 \right] = E\left[ \int_0^T{ X_t(w)^2 \ dt}  \right]$$<br>非常漂亮的结论，随机积分到定积分。</p>
+<p>证明仍然用到区间划分和随机积分，由于期望表达式的存在，$E[W_{t_{i+1}} - W_{t_i}] = 0, E[(W_{t_{i+1}} - W_{t_i})^2] = t_{i+1} - t_i$。 </p>
 </blockquote>
-<h3 id="随机积分的鞅性质">随机积分的鞅性质</h3>
-<blockquote>
-<p><strong>Theorem 4 (Martingale property of Stochastic Integrals)</strong>: <span class="math display">\[Y_t := \int_0^t X_s(w) \ dW_s\]</span> is a martingale when <span class="math inline">\(X_t(w) \in L^2[0,T]\)</span></p>
-<p>当<span class="math inline">\(X_t(w)\)</span> 是基本函数时，给出证明: - <span class="math inline">\(E[Y_{t+s}|\mathcal F_{t}] = E[Y_t]\)</span> - 因为是基本函数所以可以写成 <span class="math inline">\(\sum_{i=0}^{n-1}{e_i(w) (W_{t_{i+1}}(w) - W_{t_i}(w)) }\)</span>。考虑 <span class="math inline">\([0,t]\)</span> 和 <span class="math inline">\([0, t+s]\)</span> 上的同密度的划分，两个期望作差得到 <span class="math inline">\([t,t+s]\)</span> 上的期望应当为0：因为基本函数是分段常数，每个小区间上的布朗运动项的期望为0，<span class="math inline">\(e_i(w)\)</span>对这些布朗运动简单加权，得证。</p>
+<h3 id="随机积分的鞅性质"><a href="#随机积分的鞅性质" class="headerlink" title="随机积分的鞅性质"></a>随机积分的鞅性质</h3><blockquote>
+<p><strong>Theorem 4 (Martingale property of Stochastic Integrals)</strong>:<br>$$Y_t := \int_0^t X_s(w) \ dW_s$$<br>is a martingale when $X_t(w) \in L^2[0,T]$ </p>
+<p>当$X_t(w)$ 是基本函数时，给出证明:</p>
 <ul>
-<li><span class="math inline">\(E[|Y_t|] &lt; \infty\)</span>
+<li><p>$E[Y_{t+s}|\mathcal F_{t}] = E[Y_t]$</p>
 <ul>
-<li>根据 <span class="math inline">\(X_t(w) \in L^2[0,T]\)</span>, <span class="math inline">\(E \left[ \int_0^t X_s(w)^2 ds \right] &lt; \infty\)</span></li>
-<li>根据伊藤同构，<span class="math inline">\(E \left[ \int_0^t X_s(w)^2 ds \right] = E \left[ \left( \int_0^t X_s(w) \ dW_s(w) \right)^2 \right] = E[Y_t^2] &lt; \infty\)</span></li>
-<li><span class="math inline">\(E[|Y_t|] \cdot \min_t{|Y_t|} &lt; E[Y_t^2]\)</span>。由于 <span class="math inline">\(Y_t\)</span> 有可能取到 0，不能直接根据该式得出 <span class="math inline">\(E[|Y_t|] &lt; \infty\)</span>；然而可以作如下考虑：<span class="math inline">\(Y_t=0\)</span> 的情况对期望值没有影响，可以在两个期望式中先剔除掉这些情形使 <span class="math inline">\(|Y_t|\neq 0\)</span>，则得到 <span class="math inline">\(E[|Y_t|] &lt; \infty\)</span>，证毕。</li>
-</ul></li>
+<li>因为是基本函数所以可以写成 $\sum_{i=0}^{n-1}{e_i(w) (W_{t_{i+1}}(w) - W_{t_i}(w)) }$。考虑 $[0,t]$ 和 $[0, t+s]$ 上的同密度的划分，两个期望作差得到 $[t,t+s]$ 上的期望应当为0：因为基本函数是分段常数，每个小区间上的布朗运动项的期望为0，$e_i(w)$对这些布朗运动简单加权，得证。</li>
+</ul>
+</li>
+<li><p>$E[|Y_t|] &lt; \infty$</p>
+<ul>
+<li>根据 $X_t(w) \in L^2[0,T]$, $E \left[ \int_0^t X_s(w)^2 ds \right] &lt; \infty$</li>
+<li>根据伊藤同构，$E \left[ \int_0^t X_s(w)^2 ds \right] = E \left[ \left( \int_0^t X_s(w) \ dW_s(w) \right)^2 \right] = E[Y_t^2] &lt; \infty$</li>
+<li>$E[|Y_t|] \cdot \min_t{|Y_t|} &lt; E[Y_t^2]$。由于 $Y_t$ 有可能取到 0，不能直接根据该式得出 $E[|Y_t|] &lt; \infty$；然而可以作如下考虑：$Y_t=0$ 的情况对期望值没有影响，可以在两个期望式中先剔除掉这些情形使 $|Y_t|\neq 0$，则得到 $E[|Y_t|] &lt; \infty$，证毕。</li>
+</ul>
+</li>
 </ul>
 </blockquote>
-<h3 id="stochastic-differential-equations-sde-随机微分方程">Stochastic Differential Equations (SDE, 随机微分方程)</h3>
-<blockquote>
-<p><strong>Definition 9 (伊藤过程)</strong>:</p>
-<p>标准布朗运动微分式: <span class="math display">\[dX_t = a_td_t + b_tdW_t\]</span> 随机微分方程 SDE 的形式: <span class="math display">\[dX_t = a(X_t,t)d_t + b(X_t, t)dW_t\]</span> 解 SDE 的工具使伊藤引理 Itô's Lemma。</p>
+<h3 id="Stochastic-Differential-Equations-SDE-随机微分方程"><a href="#Stochastic-Differential-Equations-SDE-随机微分方程" class="headerlink" title="Stochastic Differential Equations (SDE, 随机微分方程)"></a>Stochastic Differential Equations (SDE, 随机微分方程)</h3><blockquote>
+<p><strong>Definition 9 (伊藤过程)</strong>: </p>
+<p>标准布朗运动微分式:<br>$$dX_t = a_td_t + b_tdW_t$$<br>随机微分方程 SDE 的形式:<br>$$dX_t = a(X_t,t)d_t + b(X_t, t)dW_t$$<br>解 SDE 的工具使伊藤引理 Itô’s Lemma。</p>
 </blockquote>
-<hr />
-<h2 id="itôs-lemma">Itô's Lemma</h2>
-<h3 id="theorem-5-itôs-lemma-in-1d-bm">Theorem 5: Itô's Lemma in 1d BM</h3>
-<p>对于二阶可微函数 <span class="math inline">\(f\)</span> 和 标准布朗运动 <span class="math inline">\(W_t\)</span></p>
-<p><span class="math display">\[f(W_t) = f(0) + \frac12 \int_0^t f&#39;&#39;(W_s)ds + \int_0^t f&#39;(W_s)dW_s\]</span></p>
-<p>或者写为微分式 (为方便将布朗运动记为 <span class="math inline">\(B\)</span> 并省略下标 <span class="math inline">\(t\)</span>)</p>
-<p><span class="math display">\[df = \frac{df}{dB} dB + \frac12 \frac{d^2f}{dB^2}dt\]</span></p>
-<h3 id="theorem-6-itôs-lemma-in-1d-itô-process">Theorem 6: Itô's Lemma in 1d Itô process</h3>
-<p><strong>一维伊藤过程 <span class="math inline">\(X_t\)</span> 的 SDE:</strong></p>
-<p><span class="math display">\[dX_t = \mu_t d_t + \sigma_t dW_t\]</span></p>
+<hr>
+<h2 id="Ito’s-Lemma"><a href="#Ito’s-Lemma" class="headerlink" title="Itô’s Lemma"></a>Itô’s Lemma</h2><h3 id="Theorem-5-Ito’s-Lemma-in-1d-BM"><a href="#Theorem-5-Ito’s-Lemma-in-1d-BM" class="headerlink" title="Theorem 5: Itô’s Lemma in 1d BM"></a>Theorem 5: Itô’s Lemma in 1d BM</h3><p>对于二阶可微函数 $f$ 和 标准布朗运动 $W_t$</p>
+<p>$$f(W_t) = f(0) + \frac12 \int_0^t f’’(W_s)ds + \int_0^t f’(W_s)dW_s$$</p>
+<p>或者写为微分式 (为方便将布朗运动记为 $B$ 并省略下标 $t$)</p>
+<p>$$df = \frac{df}{dB} dB + \frac12 \frac{d^2f}{dB^2}dt$$</p>
+<h3 id="Theorem-6-Ito’s-Lemma-in-1d-Ito-process"><a href="#Theorem-6-Ito’s-Lemma-in-1d-Ito-process" class="headerlink" title="Theorem 6: Itô’s Lemma in 1d Itô process"></a>Theorem 6: Itô’s Lemma in 1d Itô process</h3><p><strong>一维伊藤过程 $X_t$ 的 SDE:</strong></p>
+<p>$$dX_t = \mu_t d_t + \sigma_t dW_t$$</p>
 <p>这里系数含参。</p>
 <p><strong>关于一维伊藤过程的函数的SDE求解</strong>:</p>
-<p>假设 <span class="math inline">\(Z_t := f(X_t, t)\)</span> 是 <span class="math inline">\(C^{1,2}\)</span> 函数 (即1、2阶可微)，则</p>
-<p><span class="math display">\[\begin{aligned} dZ_t &amp;= \frac{\partial f}{\partial t}(X_t, t)d_t + \frac{\partial f}{\partial x}(X_t, t)dX_t + \frac12\frac{\partial^2 f}{\partial x^2}(X_t, t)(dX_t)^2\\
-&amp;= \left( \frac{\partial f}{\partial t}(X_t, t) + \frac{\partial f}{\partial x}(X_t, t)\mu_t +  \frac12\frac{\partial^2 f}{\partial x^2}(X_t, t)\sigma_t^2 \right)dt + \frac{\partial f}{\partial x}(X_t, t)\sigma_tdW_t
-\end{aligned}\]</span></p>
-<p>偏导函数后面的参数和原函数相同。<span class="math inline">\(x\)</span> 是 <span class="math inline">\(X_t\)</span> 的简记。</p>
+<p>假设 $Z_t := f(X_t, t)$ 是 $C^{1,2}$ 函数 (即1、2阶可微)，则</p>
+<p>$$\begin{aligned} dZ_t &amp;= \frac{\partial f}{\partial t}(X_t, t)d_t + \frac{\partial f}{\partial x}(X_t, t)dX_t + \frac12\frac{\partial^2 f}{\partial x^2}(X_t, t)(dX_t)^2\<br>&amp;= \left( \frac{\partial f}{\partial t}(X_t, t) + \frac{\partial f}{\partial x}(X_t, t)\mu_t +  \frac12\frac{\partial^2 f}{\partial x^2}(X_t, t)\sigma_t^2 \right)dt + \frac{\partial f}{\partial x}(X_t, t)\sigma_tdW_t<br>\end{aligned}$$</p>
+<p>偏导函数后面的参数和原函数相同。$x$ 是 $X_t$ 的简记。</p>
 <p>用简单符号表示</p>
-<p><span class="math display">\[\begin{aligned}
-df &amp;= \frac{\partial f}{\partial X}(adt+bdB) + \frac{\partial f}{\partial t}dt + \frac12 \frac{\partial^2f}{\partial X^2}(b^2dt) \\
-&amp;= \bigg(\frac{\partial f}{\partial X}a + \frac{\partial f}{\partial t} + \frac12 \frac{\partial^2f}{\partial X^2}b^2 \bigg)dt + \frac{\partial f}{\partial X}bdB
-\end{aligned}\]</span></p>
-<h3 id="the-box-calculus">The Box Calculus</h3>
-<p><span class="math inline">\((dW_t)^2 = dt\)</span>，为何？ Theorem 1 指出布朗运动的二次变分必为 <span class="math inline">\(T\)</span>，将二次变分写为微分形式即可。</p>
-<h3 id="例子">例子</h3>
-<h4 id="example-3">Example 3</h4>
-<p>解以下 SDE。</p>
-<p><span class="math display">\[dS_t = \mu_tS_tdt + \sigma_tS_t dW_t\]</span></p>
+<p>$$\begin{aligned}<br>df &amp;= \frac{\partial f}{\partial X}(adt+bdB) + \frac{\partial f}{\partial t}dt + \frac12 \frac{\partial^2f}{\partial X^2}(b^2dt) \<br>&amp;= \bigg(\frac{\partial f}{\partial X}a + \frac{\partial f}{\partial t} + \frac12 \frac{\partial^2f}{\partial X^2}b^2 \bigg)dt + \frac{\partial f}{\partial X}bdB<br>\end{aligned}$$</p>
+<h3 id="The-Box-Calculus"><a href="#The-Box-Calculus" class="headerlink" title="The Box Calculus"></a>The Box Calculus</h3><p>$(dW_t)^2 = dt$，为何？<br>Theorem 1 指出布朗运动的二次变分必为 $T$，将二次变分写为微分形式即可。</p>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><h4 id="Example-3"><a href="#Example-3" class="headerlink" title="Example 3"></a>Example 3</h4><p>解以下 SDE。</p>
+<p>$$dS_t = \mu_tS_tdt + \sigma_tS_t dW_t$$</p>
 <p>解：</p>
-<p>令 <span class="math inline">\(f = \ln S_t\)</span>, why? 看起来两边同除以 <span class="math inline">\(S_t\)</span> 构造出了一个标准一维布朗运动。</p>
-<p><span class="math display">\[\begin{aligned} df &amp;= \frac1S_t dS_t -\frac12\frac1{S_t^2}(dS_t)^2 \\
-&amp;=\mu_tdt + \sigma_tdW_t - \frac1{2S_t^2}\sigma_t^2S_t^2d_t \\
-&amp;= (\mu_t - \frac12 \sigma_t^2)dt + \sigma_tdW_t
-\end{aligned}\]</span></p>
-<p><span class="math display">\[\ln{S_t} -\ln{S_0} = \int_0^t{(\mu_s - \frac12 \sigma_s^2)ds} + \int_0^t \sigma_s dW_s\]</span></p>
-<p><span class="math display">\[S_t = S_0\exp{ \left( \int_0^t{(\mu_s - \frac12 \sigma_s^2)ds} + \int_0^t \sigma_s dW_s     \right)}\]</span></p>
-<p>当 <span class="math inline">\(\mu_t, \sigma_t\)</span> 是常数，</p>
-<p><span class="math display">\[S_t = S_0\exp{ \left( (\mu - \frac12 \sigma^2)t + \sigma W_t    \right)}\]</span></p>
+<p>令 $f = \ln S_t$, why? 看起来两边同除以 $S_t$ 构造出了一个标准一维布朗运动。</p>
+<p>$$\begin{aligned} df &amp;= \frac1S_t dS_t -\frac12\frac1{S_t^2}(dS_t)^2 \<br>&amp;=\mu_tdt + \sigma_tdW_t - \frac1{2S_t^2}\sigma_t^2S_t^2d_t \<br>&amp;= (\mu_t - \frac12 \sigma_t^2)dt + \sigma_tdW_t<br>\end{aligned}$$</p>
+<p>$$\ln{S_t} -\ln{S_0} = \int_0^t{(\mu_s - \frac12 \sigma_s^2)ds} + \int_0^t \sigma_s dW_s$$</p>
+<p>$$S_t = S_0\exp{ \left( \int_0^t{(\mu_s - \frac12 \sigma_s^2)ds} + \int_0^t \sigma_s dW_s     \right)}$$</p>
+<p>当 $\mu_t, \sigma_t$ 是常数，</p>
+<p>$$S_t = S_0\exp{ \left( (\mu - \frac12 \sigma^2)t + \sigma W_t    \right)}$$</p>
 <p>可以看出</p>
-<p><span class="math display">\[\ln{S_t} \sim N((\mu-\sigma^2 / 2)t, \sigma^2t)\]</span></p>
+<p>$$\ln{S_t} \sim N((\mu-\sigma^2 / 2)t, \sigma^2t)$$</p>
 <p>是一个带漂移扩散的伊藤过程。</p>
-<h4 id="example-4-ornstein-uhlenbeck-process">Example 4 Ornstein-Uhlenbeck process</h4>
-<p><a href="https://zh.wikipedia.org/wiki/%E5%A5%A5%E6%81%A9%E6%96%AF%E5%9D%A6-%E4%B9%8C%E4%BC%A6%E8%B4%9D%E5%85%8B%E8%BF%87%E7%A8%8B">OU过程描述一个经历摩擦的布朗粒子（damped random walk）</a></p>
-<p>假设 <span class="math inline">\(S_t\)</span> 是价格过程， <span class="math inline">\(X_t = \ln{S_t}\)</span>, 即收益率过程, 解以下SDE</p>
-<p><span class="math display">\[dX_t = [-\gamma(X_t-\mu t) + \mu]dt + \sigma dW_t\]</span></p>
-<p>如何选取一个合适的 <span class="math inline">\(f\)</span>?</p>
-<p>代入 <span class="math inline">\(f(X_t, t)\)</span> 并观察如何化简。</p>
-<p><span class="math display">\[\begin{aligned} 
-df &amp;= \frac{\partial f}{\partial x}dx + \frac{\partial f}{\partial t}dt + \frac{\partial^2f}{\partial x^2}(dx)^2  \\
-&amp;= \frac{\partial f}{\partial x}\sigma dW_t + \left( \frac{\partial f}{\partial x}[-\gamma(x-\mu t)+\mu] + \frac{\partial f}{\partial t} +\frac{\partial^2f}{\partial x^2}\sigma^2  \right)dt
-\end{aligned}\]</span></p>
-<p>SDE 完成求解的标志是有段不再含有 <span class="math inline">\(x\)</span>。考虑</p>
-<p><span class="math display">\[\frac{\partial f}{\partial x} \cdot(-\gamma x) +  \frac{\partial f}{\partial t} = 0 \]</span> <span class="math display">\[\frac{\partial^2f}{\partial x^2}= 0\]</span></p>
-<p>构造这样的一个 <span class="math inline">\(f\)</span></p>
-<p><span class="math display">\[f(X_t, t) = X_t \exp{(\gamma t)}\]</span></p>
-<p>继续求解， <span class="math display">\[\begin{aligned} 
-df &amp;= \exp{(\gamma t)}\sigma dW_t + \left(\exp{(\gamma t)}\mu(\gamma t + 1)  \right)dt \\
-&amp;= \exp{(\gamma t)} \left[\sigma dW_t + (\mu\gamma t+ \mu ) dt  \right]
-\end{aligned}\]</span></p>
+<h4 id="Example-4-Ornstein-Uhlenbeck-process"><a href="#Example-4-Ornstein-Uhlenbeck-process" class="headerlink" title="Example 4 Ornstein-Uhlenbeck process"></a>Example 4 Ornstein-Uhlenbeck process</h4><p><a href="https://zh.wikipedia.org/wiki/%E5%A5%A5%E6%81%A9%E6%96%AF%E5%9D%A6-%E4%B9%8C%E4%BC%A6%E8%B4%9D%E5%85%8B%E8%BF%87%E7%A8%8B">OU过程描述一个经历摩擦的布朗粒子（damped random walk）</a></p>
+<p>假设 $S_t$ 是价格过程， $X_t = \ln{S_t}$, 即收益率过程, 解以下SDE</p>
+<p>$$dX_t = [-\gamma(X_t-\mu t) + \mu]dt + \sigma dW_t$$</p>
+<p>如何选取一个合适的 $f$?</p>
+<p>代入 $f(X_t, t)$ 并观察如何化简。</p>
+<p>$$\begin{aligned}<br>df &amp;= \frac{\partial f}{\partial x}dx + \frac{\partial f}{\partial t}dt + \frac{\partial^2f}{\partial x^2}(dx)^2  \<br>&amp;= \frac{\partial f}{\partial x}\sigma dW_t + \left( \frac{\partial f}{\partial x}[-\gamma(x-\mu t)+\mu] + \frac{\partial f}{\partial t} +\frac{\partial^2f}{\partial x^2}\sigma^2  \right)dt<br>\end{aligned}$$</p>
+<p>SDE 完成求解的标志是有段不再含有 $x$。考虑</p>
+<p>$$\frac{\partial f}{\partial x} \cdot(-\gamma x) +  \frac{\partial f}{\partial t} = 0 $$<br>$$\frac{\partial^2f}{\partial x^2}= 0$$</p>
+<p>构造这样的一个 $f$</p>
+<p>$$f(X_t, t) = X_t \exp{(\gamma t)}$$</p>
+<p>继续求解，<br>$$\begin{aligned}<br>df &amp;= \exp{(\gamma t)}\sigma dW_t + \left(\exp{(\gamma t)}\mu(\gamma t + 1)  \right)dt \<br>&amp;= \exp{(\gamma t)} \left[\sigma dW_t + (\mu\gamma t+ \mu ) dt  \right]<br>\end{aligned}$$</p>
 <p>则</p>
-<p><span class="math display">\[f_t - f_0 = \mu \int_0^t{e^{\gamma s}(\gamma s + 1)ds} + \sigma \int_0^t{e^{\gamma s} dW_s}\]</span></p>
-<p>化简定积分</p>
-<p><span class="math display">\[\int_0^t{e^{\gamma s}(\gamma s + 1)ds} = \frac1\gamma \int_0^{\gamma t}{e^x(x+1)dx}=\frac1\gamma (xe^x) |_0^{\gamma t} = te^{\gamma t}\]</span></p>
-<p>用 <span class="math inline">\(X_t\)</span> 表示:</p>
-<p><span class="math display">\[X_t = X_0e^{-\gamma t} + \mu t + \sigma e^{-\gamma t} \int_0^t{e^{\gamma s} dW_s}\]</span></p>
+<p>$$f_t - f_0 = \mu \int_0^t{e^{\gamma s}(\gamma s + 1)ds} + \sigma \int_0^t{e^{\gamma s} dW_s}$$</p>
+<p>化简定积分 </p>
+<p>$$\int_0^t{e^{\gamma s}(\gamma s + 1)ds} = \frac1\gamma \int_0^{\gamma t}{e^x(x+1)dx}=\frac1\gamma (xe^x) |_0^{\gamma t} = te^{\gamma t}$$</p>
+<p>用 $X_t$ 表示:</p>
+<p>$$X_t = X_0e^{-\gamma t} + \mu t + \sigma e^{-\gamma t} \int_0^t{e^{\gamma s} dW_s}$$</p>
 <p>（解完了。）</p>
-<p>分析这个收益率过程 <span class="math inline">\(X_t\)</span>，</p>
-<p><span class="math display">\[E[X_t] =  X_0e^{-\gamma t} + \mu t\]</span></p>
-<p><span class="math display">\[\begin{aligned} 
-D[X_t] &amp;= D\left[ \sigma e^{-\gamma t} \int_0^t{e^{\gamma s} dW_s}  \right] \\
-&amp;= (\sigma e^{-\gamma t} )^2 D\left[ \int_0^t{e^{\gamma s} dW_s}  \right] \\
-&amp;= (\sigma e^{-\gamma t} )^2 E\left[\left(\int_0^t{e^{\gamma s} dW_s} \right)^2 \right] \\
-&amp;= (\sigma e^{-\gamma t} )^2 E\left[ \int_0^t{(e^{\gamma s})^2 ds}  \right] \qquad \text{ By Ito&#39;s Isometry.} \\
-&amp;= \frac{\sigma^2}{2\gamma}(1-e^{-2\gamma t})
-\end{aligned}\]</span></p>
-]]></content>
+<p>分析这个收益率过程 $X_t$，</p>
+<p>$$E[X_t] =  X_0e^{-\gamma t} + \mu t$$</p>
+<p>$$\begin{aligned}<br>D[X_t] &amp;= D\left[ \sigma e^{-\gamma t} \int_0^t{e^{\gamma s} dW_s}  \right] \<br>&amp;= (\sigma e^{-\gamma t} )^2 D\left[ \int_0^t{e^{\gamma s} dW_s}  \right] \<br>&amp;= (\sigma e^{-\gamma t} )^2 E\left[\left(\int_0^t{e^{\gamma s} dW_s} \right)^2 \right] \<br>&amp;= (\sigma e^{-\gamma t} )^2 E\left[ \int_0^t{(e^{\gamma s})^2 ds}  \right] \qquad \text{ By Ito’s Isometry.} \<br>&amp;= \frac{\sigma^2}{2\gamma}(1-e^{-2\gamma t})<br>\end{aligned}$$</p>
+<h2 id="讲义"><a href="#讲义" class="headerlink" title="讲义"></a>讲义</h2><div class="pdfobject-container" data-target="./5IntroStochCalc.pdf" data-height="1000px"></div> ]]></content>
       <categories>
         <category>Finance</category>
       </categories>
@@ -8107,64 +8083,70 @@ S_0^{(j)} &amp;= \sum_{k=1}^{m}{\pi_kS_1^{(j)}(w_k)} \\
   <entry>
     <title>IEOR E4706: Term Structure Lattice Models</title>
     <url>/2021/02/27/IEOR-E4706-Term-Structure-Lattice-Models/</url>
-    <content><![CDATA[<h2 id="summary">Summary</h2>
-<p>short rate 的二叉树模型，假设 q-martingale 的概率是 0.5/0.5。</p>
+    <content><![CDATA[<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>short rate 的二叉树模型，假设 q-martingale 的概率是 0.5/0.5。</p>
 <p>利率二叉树和yield curve是对应的。如果使用BDT或Ho-Lee这样的二叉树，需要对参数进行校准。</p>
-<p>从无息债券定价的 backward evaluation 开始，回溯法是通用的方法；在此基础上以债券为标的的衍生品的定价...</p>
+<p>从无息债券定价的 backward evaluation 开始，回溯法是通用的方法；在此基础上以债券为标的的衍生品的定价…</p>
 <p>如果衍生品不能提前行权，也可先计算行权日状态价格再直接定价。</p>
-<h2 id="二叉树模型">二叉树模型</h2>
-<p>从短期利率的二叉树模型开始。</p>
-<h3 id="构造一个无套利的二叉树">构造一个无套利的二叉树</h3>
-<p><span class="math inline">\(r_{i,j}\)</span> : 时间 i 状态 j 下的短期利率。</p>
+<h2 id="二叉树模型"><a href="#二叉树模型" class="headerlink" title="二叉树模型"></a>二叉树模型</h2><p>从短期利率的二叉树模型开始。</p>
+<h3 id="构造一个无套利的二叉树"><a href="#构造一个无套利的二叉树" class="headerlink" title="构造一个无套利的二叉树"></a>构造一个无套利的二叉树</h3><p>$r_{i,j}$ : 时间 i 状态 j 下的短期利率。</p>
 <p>鞅定价：</p>
-<p><span class="math display">\[S_i(j) = \frac1{1+r_{i,j}} [q_uS_{i+1}(j+1) + q_d S_{i+1}(j)] + \text{dividend}\]</span></p>
-<p><span class="math inline">\(q\)</span> 是与鞅对应的测度。</p>
-<h3 id="从二叉树到利率期限结构">从二叉树到利率期限结构</h3>
-<blockquote>
+<p>$$S_i(j) = \frac1{1+r_{i,j}} [q_uS_{i+1}(j+1) + q_d S_{i+1}(j)] + \text{dividend}$$</p>
+<p>$q$ 是与鞅对应的测度。</p>
+<h3 id="从二叉树到利率期限结构"><a href="#从二叉树到利率期限结构" class="headerlink" title="从二叉树到利率期限结构"></a>从二叉树到利率期限结构</h3><blockquote>
 <p>例1：short rate 的二叉树 r 给出；为无息债券定价：T=4, F=100, q=0。</p>
-<p>backward evaluation 得出 bond lattice，发现其 t=0 时刻价格为 77.22。从而计算出四年利率 <span class="math inline">\(s_4\)</span>。如果有短期利率，就可以推导出利率期限结构。</p>
+<p>backward evaluation 得出 bond lattice，发现其 t=0 时刻价格为 77.22。从而计算出四年利率 $s_4$。如果有短期利率，就可以推导出利率期限结构。</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Params</span></span><br><span class="line">T=<span class="number">4</span></span><br><span class="line">F=<span class="number">100</span></span><br><span class="line">q=<span class="number">0</span></span><br><span class="line"></span><br><span class="line">shortRateLattice = np.ones((T+<span class="number">1</span>, T+<span class="number">1</span>)) * np.nan</span><br><span class="line">shortRateLattice[<span class="number">0</span>,<span class="number">0</span>] = <span class="number">0.06</span></span><br><span class="line">u=<span class="number">1.25</span></span><br><span class="line">d=<span class="number">0.9</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(<span class="number">1</span>, T+<span class="number">1</span>):</span><br><span class="line">    shortRateLattice[t, <span class="number">0</span>] = shortRateLattice[t<span class="number">-1</span>, <span class="number">0</span>] * d</span><br><span class="line">    shortRateLattice[t, <span class="number">1</span>:t+<span class="number">1</span>] = shortRateLattice[t<span class="number">-1</span>, :t] * u</span><br><span class="line">shortRateLattice.round(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
 <figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">array</span>([[<span class="number">0.06</span> ,   nan,   nan,   nan,   nan],</span><br><span class="line">       [<span class="number">0.054</span>, <span class="number">0.075</span>,   nan,   nan,   nan],</span><br><span class="line">       [<span class="number">0.049</span>, <span class="number">0.068</span>, <span class="number">0.094</span>,   nan,   nan],</span><br><span class="line">       [<span class="number">0.044</span>, <span class="number">0.061</span>, <span class="number">0.084</span>, <span class="number">0.117</span>,   nan],</span><br><span class="line">       [<span class="number">0.039</span>, <span class="number">0.055</span>, <span class="number">0.076</span>, <span class="number">0.105</span>, <span class="number">0.146</span>]])</span><br></pre></td></tr></table></figure>
+
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Q-martingale&#x27;s probability</span></span><br><span class="line">qu = <span class="number">0.5</span></span><br><span class="line">qd = <span class="number">0.5</span></span><br><span class="line"></span><br><span class="line">bondLattice = np.ones_like(shortRateLattice) * np.nan</span><br><span class="line"></span><br><span class="line">bondLattice[<span class="number">-1</span>] = F</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(T<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    bondLattice[t, :t+<span class="number">1</span>] = (bondLattice[t+<span class="number">1</span>, :t+<span class="number">1</span>] * qd + bondLattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>] * qu) / (<span class="number">1</span>+shortRateLattice[t, :t+<span class="number">1</span>]) +q*F</span><br><span class="line">bondLattice.round(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
 <figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">array</span>([[ <span class="number">77.22</span>,    nan,    nan,    nan,    nan],</span><br><span class="line">       [ <span class="number">84.43</span>,  <span class="number">79.27</span>,    nan,    nan,    nan],</span><br><span class="line">       [ <span class="number">90.64</span>,  <span class="number">87.35</span>,  <span class="number">83.08</span>,    nan,    nan],</span><br><span class="line">       [ <span class="number">95.81</span>,  <span class="number">94.27</span>,  <span class="number">92.22</span>,  <span class="number">89.51</span>,    nan],</span><br><span class="line">       [<span class="number">100.</span>  , <span class="number">100.</span>  , <span class="number">100.</span>  , <span class="number">100.</span>  , <span class="number">100.</span>  ]])</span><br></pre></td></tr></table></figure>
-<h3 id="利率衍生品定价">利率衍生品定价</h3>
-<h4 id="债券的期权">债券的期权</h4>
-<blockquote>
+
+<h3 id="利率衍生品定价"><a href="#利率衍生品定价" class="headerlink" title="利率衍生品定价"></a>利率衍生品定价</h3><h4 id="债券的期权"><a href="#债券的期权" class="headerlink" title="债券的期权"></a>债券的期权</h4><blockquote>
 <p>例2：4年到期无息债券 的 <strong>european call</strong> (2年到期, K=84)</p>
-<p>首先推导出 bond lattice，然后 t=2 期权价值 <span class="math inline">\(C = \max{(S-K, 0)}\)</span>。由于是欧式期权，仅能在 t=2 行权，所以根据 option lattice 的 t=2 回溯即可。</p>
+<p>首先推导出 bond lattice，然后 t=2 期权价值 $C = \max{(S-K, 0)}$。由于是欧式期权，仅能在 t=2 行权，所以根据 option lattice 的 t=2 回溯即可。</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># European Call option on the bond</span></span><br><span class="line">tau = <span class="number">2</span></span><br><span class="line">K = <span class="number">84</span></span><br><span class="line"></span><br><span class="line">eurocallLattice = np.zeros((tau+<span class="number">1</span>, tau+<span class="number">1</span>)) * np.nan</span><br><span class="line">eurocallLattice[<span class="number">-1</span>] = np.clip(bondLattice[tau, :eurocallLattice[<span class="number">-1</span>].shape[<span class="number">0</span>]] - K, <span class="number">0</span>, <span class="literal">None</span>)</span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(tau<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    eurocallLattice[t,:t+<span class="number">1</span>] = (eurocallLattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>] * qu + eurocallLattice[t+<span class="number">1</span>, :t+<span class="number">1</span>] * qd) / (<span class="number">1</span> + shortRateLattice[t, :t+<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">eurocallLattice.round(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
 <figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">array</span>([[<span class="number">2.97</span>,  nan,  nan],</span><br><span class="line">       [<span class="number">4.74</span>, <span class="number">1.56</span>,  nan],</span><br><span class="line">       [<span class="number">6.64</span>, <span class="number">3.35</span>, <span class="number">0.</span>  ]])</span><br></pre></td></tr></table></figure>
+
+
 <blockquote>
 <p>例3: 还是上例的条件，换成<strong>美式看跌</strong></p>
 <p>美式看跌可以提前行权，所以在回溯之前的每个节点时，需要比较 bond lattice 对应节点的行权收益 (exercise value) 和折算的收益 (continuation value)。</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># American Put on the bond</span></span><br><span class="line">K_ = <span class="number">88</span></span><br><span class="line">ameputLattice = np.zeros_like(eurocallLattice) * np.nan</span><br><span class="line">ameputLattice[<span class="number">-1</span>] = np.clip(K_-bondLattice[tau, :tau+<span class="number">1</span>], <span class="number">0</span>, <span class="literal">None</span>)</span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(tau<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    continuation_value = (ameputLattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>] * qu + ameputLattice[t+<span class="number">1</span>, :t+<span class="number">1</span>] * qd) / (<span class="number">1</span> + shortRateLattice[t, :t+<span class="number">1</span>])</span><br><span class="line">    exercise_value = np.clip(K_-bondLattice[t, :t+<span class="number">1</span>], <span class="number">0</span>, <span class="literal">None</span>)</span><br><span class="line">    ameputLattice[t, :t+<span class="number">1</span>] = np.max(np.vstack([continuation_value, exercise_value]), axis=<span class="number">0</span>)</span><br><span class="line">ameputLattice.round(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
 <figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">array</span>([[<span class="number">10.78</span>,   nan,   nan],</span><br><span class="line">       [ <span class="number">3.57</span>,  <span class="number">8.73</span>,   nan],</span><br><span class="line">       [ <span class="number">0.</span>  ,  <span class="number">0.65</span>,  <span class="number">4.92</span>]])</span><br></pre></td></tr></table></figure>
-<h4 id="债券的期货">债券的期货</h4>
-<p>假设完备市场 (任何证券都能够被唯一地定价；不完备时，如果某证券能够被复制，则也能被定价)，根据鞅定价理论</p>
-<p><span class="math display">\[ 0= E_{n-1}^Q \left[ \frac{F_n - F_{n-1}}{B_n}  \right]\]</span></p>
-<p><span class="math display">\[F_{n-1} = E_{n-1}^Q \left[ F_n \right]\]</span></p>
+
+<h4 id="债券的期货"><a href="#债券的期货" class="headerlink" title="债券的期货"></a>债券的期货</h4><p>假设完备市场 (任何证券都能够被唯一地定价；不完备时，如果某证券能够被复制，则也能被定价)，根据鞅定价理论</p>
+<p>$$ 0= E_{n-1}^Q \left[ \frac{F_n - F_{n-1}}{B_n}  \right]$$</p>
+<p>$$F_{n-1} = E_{n-1}^Q \left[ F_n \right]$$</p>
 <p>又，在到期日</p>
-<p><span class="math display">\[F_n = S_n\]</span></p>
+<p>$$F_n = S_n$$</p>
 <p>重期望公式 iterated expectation</p>
-<p><span class="math display">\[F_0 = E_0^Q [S_n]\]</span></p>
-<p>如果债券含息，上式依然成立，但需要把 <span class="math inline">\(S_n\)</span> 去息。二叉树回溯时做处理。</p>
-<h4 id="债券的远期">债券的远期</h4>
-<p>远期和期货最大的区别是逐日盯市和保证金。</p>
-<p><span class="math display">\[ 0 = E_0^Q \left[ \frac{S_n - G_0}{B_n}  \right]\]</span></p>
-<p><span class="math display">\[G_0 = \frac{E_0^Q\left[\frac{S_n}{B_n}\right]}{E_0^Q\left[\frac{1}{B_n}\right]}\]</span></p>
+<p>$$F_0 = E_0^Q [S_n]$$</p>
+<p>如果债券含息，上式依然成立，但需要把 $S_n$ 去息。二叉树回溯时做处理。</p>
+<h4 id="债券的远期"><a href="#债券的远期" class="headerlink" title="债券的远期"></a>债券的远期</h4><p>远期和期货最大的区别是逐日盯市和保证金。</p>
+<p>$$ 0 = E_0^Q \left[ \frac{S_n - G_0}{B_n}  \right]$$</p>
+<p>$$G_0 = \frac{E_0^Q\left[\frac{S_n}{B_n}\right]}{E_0^Q\left[\frac{1}{B_n}\right]}$$</p>
 <p>在上一章 <a href="https://hy2632.github.io/2021/02/15/IEOR-E4706-Martingale-Pricing-Theory-Discrete-Time-Space/">鞅定价</a> 提及远期和期货的价格关系，标的和利率正相关时，期货价格更高。</p>
 <p>债券不付息时，</p>
-<p><span class="math display">\[G_0 = \frac{S_0}{E_0^Q\left[\frac{1}{B_n}\right]} = \frac{E_0^Q\left[S_0\right]}{d(0,n)}\]</span></p>
-<h4 id="期货和远期的例子">期货和远期的例子</h4>
-<blockquote>
-<p>例4 含息债券的远期合约定价。 参数：债券6年到期，远期合约 4-6，息率 q=10%，计算该远期合约的价格。短期利率二叉树与之前相同。</p>
-<p>这个合约的underlying asset可以看作0-4年不付息，4-6年付息。首先从第六年对含息债券进行回溯，然后按照无息债券继续回溯到 t=0。然后套用远期的定价公式，由于前四年不付息，可以直接套用上式无息债券的远期定价。discounting factor 可以用之前例子中无息债券回溯的结果 <span class="math inline">\(d_4 = 100/77.22\)</span>，也可以通过二项分布的pmf计算期望。</p>
+<p>$$G_0 = \frac{S_0}{E_0^Q\left[\frac{1}{B_n}\right]} = \frac{E_0^Q\left[S_0\right]}{d(0,n)}$$</p>
+<h4 id="期货和远期的例子"><a href="#期货和远期的例子" class="headerlink" title="期货和远期的例子"></a>期货和远期的例子</h4><blockquote>
+<p>例4 含息债券的远期合约定价。<br>参数：债券6年到期，远期合约 4-6，息率 q=10%，计算该远期合约的价格。短期利率二叉树与之前相同。</p>
+<p>这个合约的underlying asset可以看作0-4年不付息，4-6年付息。首先从第六年对含息债券进行回溯，然后按照无息债券继续回溯到 t=0。然后套用远期的定价公式，由于前四年不付息，可以直接套用上式无息债券的远期定价。discounting factor 可以用之前例子中无息债券回溯的结果 $d_4 = 100/77.22$，也可以通过二项分布的pmf计算期望。</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># params</span></span><br><span class="line">t=<span class="number">4</span></span><br><span class="line">tau=<span class="number">2</span></span><br><span class="line">T=t+tau</span><br><span class="line">q=<span class="number">0.1</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">shortRateLattice = np.ones((T+<span class="number">1</span>, T+<span class="number">1</span>)) * np.nan</span><br><span class="line">shortRateLattice[<span class="number">0</span>,<span class="number">0</span>] = <span class="number">0.06</span></span><br><span class="line">u=<span class="number">1.25</span></span><br><span class="line">d=<span class="number">0.9</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(<span class="number">1</span>, T+<span class="number">1</span>):</span><br><span class="line">    shortRateLattice[t, <span class="number">0</span>] = shortRateLattice[t<span class="number">-1</span>, <span class="number">0</span>] * d</span><br><span class="line">    shortRateLattice[t, <span class="number">1</span>:t+<span class="number">1</span>] = shortRateLattice[t<span class="number">-1</span>, :t] * u</span><br><span class="line">shortRateLattice.round(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
 <pre><code>array([[0.06 ,   nan,   nan,   nan,   nan,   nan,   nan],
        [0.054, 0.075,   nan,   nan,   nan,   nan,   nan],
        [0.049, 0.068, 0.094,   nan,   nan,   nan,   nan],
@@ -8173,6 +8155,10 @@ S_0^{(j)} &amp;= \sum_{k=1}^{m}{\pi_kS_1^{(j)}(w_k)} \\
        [0.035, 0.049, 0.068, 0.095, 0.132, 0.183,   nan],
        [0.032, 0.044, 0.062, 0.085, 0.119, 0.165, 0.229]])</code></pre>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">bondLattice = np.ones_like(shortRateLattice)*np.nan</span><br><span class="line">bondLattice[<span class="number">-1</span>] = <span class="number">110</span></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> (<span class="number">5</span>,):</span><br><span class="line">    bondLattice[t, :t+<span class="number">1</span>] = (bondLattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>] * <span class="number">0.5</span> + bondLattice[t+<span class="number">1</span>, :t+<span class="number">1</span>]*<span class="number">0.5</span>)/ (<span class="number">1</span>+ shortRateLattice[t, :t+<span class="number">1</span>]) + q*<span class="number">100</span></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(<span class="number">4</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    bondLattice[t, :t+<span class="number">1</span>] = (bondLattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>] * <span class="number">0.5</span> + bondLattice[t+<span class="number">1</span>, :t+<span class="number">1</span>]*<span class="number">0.5</span>)/ (<span class="number">1</span>+ shortRateLattice[t, :t+<span class="number">1</span>])</span><br><span class="line">bondLattice.round(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
 <pre><code>array([[ 79.83,    nan,    nan,    nan,    nan,    nan,    nan],
        [ 89.24,  79.99,    nan,    nan,    nan,    nan,    nan],
        [ 97.67,  90.45,  81.53,    nan,    nan,    nan,    nan],
@@ -8181,25 +8167,45 @@ S_0^{(j)} &amp;= \sum_{k=1}^{m}{\pi_kS_1^{(j)}(w_k)} \\
        [116.24, 114.84, 112.96, 110.46, 107.19, 102.98,    nan],
        [110.  , 110.  , 110.  , 110.  , 110.  , 110.  , 110.  ]])</code></pre>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> scipy.stats <span class="keyword">as</span> spst</span><br><span class="line">spst.binom.pmf(range(<span class="number">5</span>),<span class="number">4</span>, p=<span class="number">0.5</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
 <pre><code>array([0.0625, 0.25  , 0.375 , 0.25  , 0.0625])</code></pre>
-<p><span class="math display">\[G_0 = \frac{E_0^Q\left[\frac{S_4}{B_4}\right]}{E_0^Q\left[\frac{1}{B_4}\right]} = S_0/d_4, d_4 = 77.22/100\]</span></p>
+<p>$$G_0 = \frac{E_0^Q\left[\frac{S_4}{B_4}\right]}{E_0^Q\left[\frac{1}{B_4}\right]} = S_0/d_4, d_4 = 77.22/100$$</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Numeraire</span></span><br><span class="line">numeraireLattice = np.ones((<span class="number">5</span>,<span class="number">5</span>))*np.nan</span><br><span class="line">numeraireLattice[<span class="number">0</span>,<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">5</span>):</span><br><span class="line">    numeraireLattice[t, <span class="number">0</span>] = numeraireLattice[t<span class="number">-1</span>, <span class="number">0</span>] * (shortRateLattice[t, <span class="number">0</span>]+<span class="number">1</span>)</span><br><span class="line">    numeraireLattice[t, <span class="number">1</span>:t+<span class="number">1</span>] =numeraireLattice[t<span class="number">-1</span>, :t] * (shortRateLattice[t<span class="number">-1</span>, <span class="number">0</span>:t] + <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">numeraireLattice</span><br></pre></td></tr></table></figure>
+
+
+
+
 <pre><code>array([[1.        ,        nan,        nan,        nan,        nan],
        [1.054     , 1.06      ,        nan,        nan,        nan],
        [1.1052244 , 1.110916  , 1.1395    ,        nan,        nan],
        [1.15356692, 1.15893831, 1.18590283, 1.24632813,        nan],
        [1.19897823, 1.20402393, 1.22934381, 1.28596338, 1.3923822 ]])</code></pre>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">p = spst.binom.pmf(range(<span class="number">5</span>),<span class="number">4</span>, p=<span class="number">0.5</span>)</span><br><span class="line">(p*bondLattice[<span class="number">4</span>, :<span class="number">5</span>]/numeraireLattice[<span class="number">4</span>, :<span class="number">5</span>]).mean() / (p/numeraireLattice[<span class="number">4</span>, :<span class="number">5</span>]).mean()</span><br></pre></td></tr></table></figure>
+
+
+
+
 <pre><code>103.39897946734145</code></pre>
 <blockquote>
 <p>例5 对含息债券的期货合约定价</p>
 <p>期货需要关注中间节点，每一个阶段都无套利。因而可以作出期货的二叉树。</p>
-<p>期货价格回溯的公式 <span class="math display">\[F_{n-1} = E_{n-1}^Q[F_n]\]</span> 不需要除以计价资产。</p>
+<p>期货价格回溯的公式<br>$$F_{n-1} = E_{n-1}^Q[F_n]$$<br>不需要除以计价资产。</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">futuresLattice = np.ones((<span class="number">5</span>, <span class="number">5</span>))*np.nan</span><br><span class="line">futuresLattice[<span class="number">-1</span>] = bondLattice[<span class="number">4</span>, :<span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+
+
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(<span class="number">3</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    futuresLattice[t, :t+<span class="number">1</span>] = (futuresLattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>] * <span class="number">0.5</span> + futuresLattice[t+<span class="number">1</span>, :t+<span class="number">1</span>] * <span class="number">0.5</span>) </span><br></pre></td></tr></table></figure>
+
+
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">futuresLattice</span><br></pre></td></tr></table></figure>
+
+
 <pre><code>array([[103.22201887,          nan,          nan,          nan,
                  nan],
        [105.63552539, 100.80851235,          nan,          nan,
@@ -8210,15 +8216,20 @@ S_0^{(j)} &amp;= \sum_{k=1}^{m}{\pi_kS_1^{(j)}(w_k)} \\
                  nan],
        [111.16255143, 107.99732117, 103.82894147,  98.44286379,
          91.65536181]])</code></pre>
-<h4 id="利率上限-caplet-的定价">利率上限 Caplet 的定价</h4>
-<p>caplet 简而言之是以利率为标的资产的 european call。</p>
-<p>settled in arrears: if maturity is <span class="math inline">\(\tau\)</span> and the strike is <span class="math inline">\(c\)</span> then the payoff at time <span class="math inline">\(\tau\)</span> is <span class="math inline">\((r_{\tau -1} - c)^+\)</span>.</p>
+<h4 id="利率上限-Caplet-的定价"><a href="#利率上限-Caplet-的定价" class="headerlink" title="利率上限 Caplet 的定价"></a>利率上限 Caplet 的定价</h4><p>caplet 简而言之是以利率为标的资产的 european call。</p>
+<p>settled in arrears: if maturity is $\tau$ and the strike is $c$ then the payoff at time $\tau$ is $(r_{\tau -1} - c)^+$.</p>
 <blockquote>
 <p>例6: 为一个 Caplet 定价，基于之前的短期利率树。参数 t=6, c=0.02。</p>
 <p>由于 caplet 是european call，不涉及到中间结点的比较，直接根据标的资产的lattice进行计算。</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">t = <span class="number">6</span></span><br><span class="line">c = <span class="number">0.02</span></span><br></pre></td></tr></table></figure>
+
+
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">shortRateLattice.round(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
 <pre><code>array([[0.06 ,   nan,   nan,   nan,   nan,   nan,   nan],
        [0.054, 0.075,   nan,   nan,   nan,   nan,   nan],
        [0.049, 0.068, 0.094,   nan,   nan,   nan,   nan],
@@ -8227,6 +8238,10 @@ S_0^{(j)} &amp;= \sum_{k=1}^{m}{\pi_kS_1^{(j)}(w_k)} \\
        [0.035, 0.049, 0.068, 0.095, 0.132, 0.183,   nan],
        [0.032, 0.044, 0.062, 0.085, 0.119, 0.165, 0.229]])</code></pre>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">capletLattice = np.ones((<span class="number">6</span>,<span class="number">6</span>)) * np.nan</span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(<span class="number">5</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    capletLattice[t, :t+<span class="number">1</span>] = (np.clip(shortRateLattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>]-c, <span class="number">0</span>, <span class="literal">None</span>) * <span class="number">0.5</span> +  np.clip(shortRateLattice[t+<span class="number">1</span>, :t+<span class="number">1</span>]-c, <span class="number">0</span>, <span class="literal">None</span>) * <span class="number">0.5</span>) / (<span class="number">1</span>+shortRateLattice[t, :t+<span class="number">1</span>])</span><br><span class="line">capletLattice.round(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
 <pre><code>array([[0.042,   nan,   nan,   nan,   nan,   nan],
        [0.036, 0.056,   nan,   nan,   nan,   nan],
        [0.031, 0.049, 0.074,   nan,   nan,   nan],
@@ -8234,99 +8249,124 @@ S_0^{(j)} &amp;= \sum_{k=1}^{m}{\pi_kS_1^{(j)}(w_k)} \\
        [0.021, 0.037, 0.057, 0.084, 0.12 ,   nan],
        [0.017, 0.031, 0.05 , 0.075, 0.108, 0.149]])</code></pre>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">capletLattice = np.ones((<span class="number">6</span>,<span class="number">6</span>)) * np.nan</span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(<span class="number">5</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    capletLattice[t, :t+<span class="number">1</span>] = (np.clip(shortRateLattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>]-c, <span class="number">0</span>, <span class="literal">None</span>) * <span class="number">0.5</span> /(<span class="number">1</span>+shortRateLattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>]) +  np.clip(shortRateLattice[t+<span class="number">1</span>, :t+<span class="number">1</span>]-c, <span class="number">0</span>, <span class="literal">None</span>) * <span class="number">0.5</span> / (<span class="number">1</span>+shortRateLattice[t+<span class="number">1</span>, :t+<span class="number">1</span>]) ) / (<span class="number">1</span>+shortRateLattice[t, :t+<span class="number">1</span>])</span><br><span class="line">capletLattice.round(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
 <pre><code>array([[0.039,   nan,   nan,   nan,   nan,   nan],
        [0.034, 0.052,   nan,   nan,   nan,   nan],
        [0.029, 0.046, 0.067,   nan,   nan,   nan],
        [0.025, 0.04 , 0.06 , 0.084,   nan,   nan],
        [0.021, 0.035, 0.053, 0.076, 0.103,   nan],
        [0.017, 0.03 , 0.047, 0.068, 0.094, 0.124]])</code></pre>
-<hr />
-<h2 id="the-forward-equations">The Forward Equations</h2>
-<p>定义基本证券 elementary security 或称 Arrow-Debreu / AD-security</p>
-<p><span class="math display">\[P_e(i,j)\]</span></p>
+<hr>
+<h2 id="The-Forward-Equations"><a href="#The-Forward-Equations" class="headerlink" title="The Forward Equations"></a>The Forward Equations</h2><p>定义基本证券 elementary security 或称 Arrow-Debreu / AD-security</p>
+<p>$$P_e(i,j)$$</p>
 <p>为在时间 i 和状态 j 支付 $1 的证券在 0 时刻的价格。又称为状态价格。</p>
 <p>前向递推，上一阶段的基本证券到下一个阶段会复利，因而下一阶段的基本证券需要折减。状态价格满足这些 <strong>forward equations</strong>:</p>
-<p><span class="math display">\[P_e(k+1, s) = \frac{P_e(k, s-1)}{2(1 + r_{k,s-1})} + \frac{P_e(k, s)}{2(1 + r_{k,s})}, 0&lt;s&lt;k+1\]</span></p>
-<p><span class="math display">\[P_e(k+1, 0) = \frac{P_e(k, 0)}{2(1 + r_{k,0})}\]</span></p>
-<p><span class="math display">\[P_e(k+1, k+1) = \frac{P_e(k, k)}{2(1 + r_{k,k})}\]</span></p>
-<p>计算状态价格并根据状态价格推导期限结构的复杂度是 <span class="math inline">\(O(T^2)\)</span>，而回溯无息债券价格的复杂度是 <span class="math inline">\(O(T^3)\)</span>。需要注意，状态价格定价法只适用于行权日确定的证券。</p>
-<h3 id="二叉树中的对冲例7">二叉树中的对冲，例7</h3>
-<p>Given a short rate lattice</p>
+<p>$$P_e(k+1, s) = \frac{P_e(k, s-1)}{2(1 + r_{k,s-1})} + \frac{P_e(k, s)}{2(1 + r_{k,s})}, 0&lt;s&lt;k+1$$</p>
+<p>$$P_e(k+1, 0) = \frac{P_e(k, 0)}{2(1 + r_{k,0})}$$</p>
+<p>$$P_e(k+1, k+1) = \frac{P_e(k, k)}{2(1 + r_{k,k})}$$</p>
+<p>计算状态价格并根据状态价格推导期限结构的复杂度是 $O(T^2)$，而回溯无息债券价格的复杂度是 $O(T^3)$。需要注意，状态价格定价法只适用于行权日确定的证券。</p>
+<h3 id="二叉树中的对冲，例7"><a href="#二叉树中的对冲，例7" class="headerlink" title="二叉树中的对冲，例7"></a>二叉树中的对冲，例7</h3><p>Given a short rate lattice</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">short_rate = np.array([</span><br><span class="line">    [<span class="number">6</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">    [<span class="number">5.4</span>, <span class="number">7.8</span>, <span class="number">0</span>],</span><br><span class="line">    [<span class="number">4.86</span>, <span class="number">7.02</span>, <span class="number">10.14</span>]</span><br><span class="line">]) / <span class="number">100</span></span><br></pre></td></tr></table></figure>
-<ol type="a">
-<li>Compute the elementary prices</li>
-</ol>
+
+<p>(a) Compute the elementary prices </p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">state_prices</span>(<span class="params">r: np.array</span>):</span></span><br><span class="line">    T = r.shape[<span class="number">0</span>] - <span class="number">1</span></span><br><span class="line">    Pe = np.zeros((T+<span class="number">1</span>, T+<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">    Pe[<span class="number">0</span>,<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(T):</span><br><span class="line">        <span class="keyword">for</span> s <span class="keyword">in</span> range(<span class="number">1</span>, k+<span class="number">1</span>):</span><br><span class="line">            Pe[k+<span class="number">1</span>, s] = Pe[k, s<span class="number">-1</span>]/(<span class="number">2</span>*(<span class="number">1</span>+r[k, s<span class="number">-1</span>])) + Pe[k,s] / (<span class="number">2</span>*(<span class="number">1</span>+r[k,s]))</span><br><span class="line">        Pe[k+<span class="number">1</span>, <span class="number">0</span>] = Pe[k, <span class="number">0</span>] / (<span class="number">2</span>*(<span class="number">1</span>+r[k,<span class="number">0</span>]))</span><br><span class="line">        Pe[k+<span class="number">1</span>, k+<span class="number">1</span>] = Pe[k,k] / (<span class="number">2</span>*(<span class="number">1</span>+r[k,k]))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Pe</span><br><span class="line"></span><br><span class="line">state_prices(short_rate)</span><br></pre></td></tr></table></figure>
+
 <figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">array</span>([[<span class="number">1.</span>        , <span class="number">0.</span>        , <span class="number">0.</span>        ],</span><br><span class="line">       [<span class="number">0.47169811</span>, <span class="number">0.47169811</span>, <span class="number">0.</span>        ],</span><br><span class="line">       [<span class="number">0.22376571</span>, <span class="number">0.44254962</span>, <span class="number">0.21878391</span>]])</span><br></pre></td></tr></table></figure>
-<ol start="2" type="a">
-<li>Given a different short rate lattice &amp; elementary prices. Find the prices of a zero-coupon bond with face value $100 that matures at t=3</li>
-</ol>
+
+<p>(b) Given a different short rate lattice &amp; elementary prices. Find the prices of a zero-coupon bond with face value $100 that matures at t=3</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">r = np.array([</span><br><span class="line">    [<span class="number">6</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">    [<span class="number">5.4</span>, <span class="number">7.2</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">    [<span class="number">4.86</span>, <span class="number">6.48</span>, <span class="number">8.64</span>, <span class="number">0</span>],</span><br><span class="line">    [<span class="number">4.37</span>, <span class="number">5.83</span>, <span class="number">7.78</span>, <span class="number">10.37</span>],</span><br><span class="line">]) /<span class="number">100</span></span><br><span class="line"></span><br><span class="line">Pe = np.array([</span><br><span class="line">    [<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">    [<span class="number">0.4717</span>, <span class="number">0.4717</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">    [<span class="number">0.2238</span>, <span class="number">0.4438</span>, <span class="number">0.22</span>, <span class="number">0</span>],</span><br><span class="line">    [<span class="number">0.1067</span>, <span class="number">0.3151</span>, <span class="number">0.3096</span>, <span class="number">0.1013</span>],</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.sum(Pe[<span class="number">3</span>])*<span class="number">100</span></span><br></pre></td></tr></table></figure>
+
+
+
+
 <pre><code>83.27</code></pre>
-<ol start="3" type="a">
-<li>Compute the price of a Euro-call on the zero coupon bond of (b) with K=$93 and expiration t=2</li>
-</ol>
+<p> (c) Compute the price of a Euro-call on the zero coupon bond of (b) with K=$93 and expiration t=2</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Payoff in different states at t=2</span></span><br><span class="line"><span class="comment"># backward from t=3 to t=2</span></span><br><span class="line">payoff = (<span class="number">100</span> / (<span class="number">1</span>+r[<span class="number">2</span>]) [:<span class="number">3</span>] - <span class="number">93</span>).clip(min=<span class="number">0</span>)</span><br><span class="line">payoff</span><br></pre></td></tr></table></figure>
+
+
+
+
 <pre><code>array([2.3652489 , 0.91435011, 0.        ])</code></pre>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.dot(payoff, Pe[<span class="number">2</span>,:<span class="number">3</span>])</span><br></pre></td></tr></table></figure>
+
+
+
+
 <pre><code>0.935131284573487</code></pre>
-<ol start="4" type="a">
-<li>Immunize the obligation of value today $100 and (1,1) value of $95 using date 1 elementary securities.</li>
-</ol>
+<p>(d) Immunize the obligation of value today $100 and (1,1) value of $95 using date 1 elementary securities.</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">(<span class="number">117</span>+<span class="number">95</span>)*<span class="number">0.4717</span></span><br></pre></td></tr></table></figure>
+
+
+
+
 <pre><code>100.0004</code></pre>
 <p>PS: 根据鞅定价理论，该组合在 t=1 时的价值折现到 t=0 也是 100。</p>
-<p><span class="math display">\[100 = \frac12 \frac{95}{1.06} + \frac12 \frac{x}{1.06}\]</span></p>
+<p>$$100 = \frac12 \frac{95}{1.06} + \frac12 \frac{x}{1.06}$$</p>
 <p>或者按照状态价格，</p>
-<p><span class="math display">\[0.4717 x + 0.4717 \times 95 = 100\]</span></p>
+<p>$$0.4717 x + 0.4717 \times 95 = 100$$</p>
 <p>状态价格本身就包含了折现，用于确定现在的价格。</p>
-<ol start="5" type="a">
-<li>Compute the value of the forward swap that begins at t=1 and ends at t=3. Notional principal $1. Fixed rate of the swap is 5%. Payments at t=i (i=1,2,3) are based on the fixed rate minus the floating rate that prevailed at t=i-1.</li>
-</ol>
+<p>(e) Compute the value of the forward swap that begins at t=1 and ends at t=3. Notional principal $1. Fixed rate of the swap is 5%. Payments at t=i (i=1,2,3) are based on the fixed rate minus the floating rate that prevailed at t=i-1.</p>
 <p>第 i 个时间点上，持有 swap 的 PNL 实际上可以折算到第 i-1 个时间点上。t = 2,3 的swap 实际上看 t=1,2 的各个节点。swap可以看成是一系列单阶段。</p>
-<p><span class="math display">\[(r_{i,j} - 0.05) \times P_e(i,j) / (1+r_{i, j})\]</span></p>
+<p>$$(r_{i,j} - 0.05) \times P_e(i,j) / (1+r_{i, j})$$</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">r_ = np.where(r==<span class="number">0</span>, np.nan, r)</span><br></pre></td></tr></table></figure>
+
+
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Pe_ = np.where(Pe==<span class="number">0</span>, np.nan, Pe)</span><br></pre></td></tr></table></figure>
+
+
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">swap_lattice = (Pe[:<span class="number">3</span>] * (r_[:<span class="number">3</span>] - <span class="number">0.05</span>) / (<span class="number">1</span>+r_[:<span class="number">3</span>]))</span><br><span class="line">swap_lattice</span><br></pre></td></tr></table></figure>
+
+
+
+
 <pre><code>array([[ 0.00943396,         nan,         nan,         nan],
        [ 0.00179013,  0.00968041,         nan,         nan],
        [-0.0002988 ,  0.00616852,  0.00737113,         nan]])</code></pre>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.nansum(swap_lattice[<span class="number">1</span>:])</span><br></pre></td></tr></table></figure>
+
+
+
+
 <pre><code>0.024711398807682642</code></pre>
-<hr />
-<h2 id="some-specific-models">Some specific models</h2>
-<p>需要对 lattice 进行调整，使得期限结构（无息债券价格）或利率波动性等与市场匹配。使用两种模型可以实现。</p>
-<h3 id="the-ho-lee-model">The Ho-Lee Model</h3>
-<p>short rate 满足</p>
-<p><span class="math display">\[r_{i,j} = a_i + b_i j\]</span></p>
-<p>漂移项+波动率放大系数。<span class="math inline">\(N(i,j)\)</span> 处的标准差是 <span class="math inline">\(b_i/2\)</span>。 （？）</p>
+<hr>
+<h2 id="Some-specific-models"><a href="#Some-specific-models" class="headerlink" title="Some specific models"></a>Some specific models</h2><p>需要对 lattice 进行调整，使得期限结构（无息债券价格）或利率波动性等与市场匹配。使用两种模型可以实现。</p>
+<h3 id="The-Ho-Lee-Model"><a href="#The-Ho-Lee-Model" class="headerlink" title="The Ho-Lee Model"></a>The Ho-Lee Model</h3><p>short rate 满足</p>
+<p>$$r_{i,j} = a_i + b_i j$$</p>
+<p>漂移项+波动率放大系数。$N(i,j)$ 处的标准差是 $b_i/2$。 （？）</p>
 <p>连续时间</p>
-<p><span class="math display">\[dr_t = \mu_tdt + \sigma_tdW_t\]</span></p>
+<p>$$dr_t = \mu_tdt + \sigma_tdW_t$$</p>
 <p>优点在于 tractability。 缺点在于并非均值回归。</p>
-<h3 id="the-black-derman-toybdt-model">The Black-Derman-Toy(BDT) model</h3>
-<p><span class="math display">\[r_{i,j} = a_i e^{b_i j}\]</span></p>
-<p><span class="math display">\[\ln{r_{i,j}} = \log{a_i} + b_i j\]</span></p>
-<p>连续时间 记 <span class="math inline">\(Y_t := \ln{r_t}\)</span></p>
-<p><span class="math display">\[dY_t = \left( a_t + \frac1{\sigma t}\frac{\partial \sigma}{\partial t} Y_t \right)dt + \sigma_t dW_t\]</span></p>
-<h3 id="校正期限结构">校正期限结构</h3>
-<p>假设市场的利率期限结构 spot rate</p>
-<p><span class="math display">\[(s_1, ..., s_n)\]</span></p>
-<p><strong>则 <span class="math inline">\(t\)</span> 时刻的 $1 按照 <span class="math inline">\(s_t\)</span> 折现，应该等于该时刻的状态价格相加。</strong></p>
-<p>为简化，假设 <span class="math inline">\(b\)</span> 取相同值。</p>
-<p><span class="math display">\[\begin{aligned}
-\frac{1}{(1+s_i)^i} &amp;= \sum_{j=0}^i{P_e(i,j)}\\
-&amp;= \frac{P_e(i-1, 0)}{2(1+r_{i-1, 0)}} + \frac{P_e(i-1, i-1)}{2(1 + r_{i-1,i-1})} + \sum_{j=1}^{i-1}{\left(\frac{P_e(i-1, j)}{2(1+r_{i-1, j})} + \frac{P_e(i-1, j-1)}{2(1+r_{i-1, j-1})} \right) } \\
-&amp;= \frac{P_e(i-1, 0)}{2(1+a_{i-1})} + \frac{P_e(i-1, i-1)}{2(1+a_{i-1}e^{b(i-1)})} + \sum_{j=1}^{i-1}{\left(\frac{P_e(i-1, j)}{2(1+a_{i-1} e^{b j})} + \frac{P_e(i-1, j-1)}{2(1+a_{i-1} e^{b (j-1)})} \right) } \\
-\end{aligned}\]</span></p>
-<p>根据已有的利率期限结构，前向更新二叉树，求解 <span class="math inline">\(a_i\)</span>。</p>
-<h4 id="例8-使用bdt模型为-payer-swaption-定价">例8 使用BDT模型为 payer swaption 定价。</h4>
-<p>题设： 2-8，给出利率期限结构，payer pay fixed and receive floating。 fixed rate = 11.65%。</p>
-<p>题解：和前例的 (e) 类似。首先 BDT 校正确定 short rate lattice，然后基于此定价。每一次交换折算到上一个时间点上；swap的价值向前折算累计；到 t=2 时，注意该 swaption 由于其期权性质，价格非负。</p>
+<h3 id="The-Black-Derman-Toy-BDT-model"><a href="#The-Black-Derman-Toy-BDT-model" class="headerlink" title="The Black-Derman-Toy(BDT) model"></a>The Black-Derman-Toy(BDT) model</h3><p>$$r_{i,j} = a_i e^{b_i j}$$</p>
+<p>$$\ln{r_{i,j}} = \log{a_i} + b_i j$$</p>
+<p>连续时间 记 $Y_t := \ln{r_t}$</p>
+<p>$$dY_t = \left( a_t + \frac1{\sigma t}\frac{\partial \sigma}{\partial t} Y_t \right)dt + \sigma_t dW_t$$</p>
+<h3 id="校正期限结构"><a href="#校正期限结构" class="headerlink" title="校正期限结构"></a>校正期限结构</h3><p>假设市场的利率期限结构 spot rate</p>
+<p>$$(s_1, …, s_n)$$</p>
+<p><strong>则 $t$ 时刻的 $1 按照 $s_t$ 折现，应该等于该时刻的状态价格相加。</strong></p>
+<p>为简化，假设 $b$ 取相同值。</p>
+<p>$$\begin{aligned}<br>\frac{1}{(1+s_i)^i} &amp;= \sum_{j=0}^i{P_e(i,j)}\<br>&amp;= \frac{P_e(i-1, 0)}{2(1+r_{i-1, 0)}} + \frac{P_e(i-1, i-1)}{2(1 + r_{i-1,i-1})} + \sum_{j=1}^{i-1}{\left(\frac{P_e(i-1, j)}{2(1+r_{i-1, j})} + \frac{P_e(i-1, j-1)}{2(1+r_{i-1, j-1})} \right) } \<br>&amp;= \frac{P_e(i-1, 0)}{2(1+a_{i-1})} + \frac{P_e(i-1, i-1)}{2(1+a_{i-1}e^{b(i-1)})} + \sum_{j=1}^{i-1}{\left(\frac{P_e(i-1, j)}{2(1+a_{i-1} e^{b j})} + \frac{P_e(i-1, j-1)}{2(1+a_{i-1} e^{b (j-1)})} \right) } \<br>\end{aligned}$$</p>
+<p>根据已有的利率期限结构，前向更新二叉树，求解 $a_i$。</p>
+<h4 id="例8-使用BDT模型为-payer-swaption-定价。"><a href="#例8-使用BDT模型为-payer-swaption-定价。" class="headerlink" title="例8 使用BDT模型为 payer swaption 定价。"></a>例8 使用BDT模型为 payer swaption 定价。</h4><p>题设： 2-8，给出利率期限结构，payer pay fixed and receive floating。 fixed rate = 11.65%。</p>
+<p>题解：和前例的 (e) 类似。首先 BDT 校正确定 short rate lattice，然后基于此定价。每一次交换折算到上一个时间点上 (为何折算？因为可以确定地分配到父节点上)；swap的价值向前折算累计；到 t=2 时，注意该 swaption 由于其期权性质，价格非负。</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy.optimize <span class="keyword">import</span> minimize</span><br></pre></td></tr></table></figure>
+
+
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">BDT_solver</span>(<span class="params">arr_s: np.array, b: float</span>):</span></span><br><span class="line">    T = len(arr_s)</span><br><span class="line">    Pe = np.ones((T + <span class="number">1</span>, T + <span class="number">1</span>)) * np.nan</span><br><span class="line">    Pe[<span class="number">0</span>, <span class="number">0</span>] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    arr_a = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, T + <span class="number">1</span>):</span><br><span class="line">        left_side = <span class="number">1</span> / (<span class="number">1</span> + arr_s[i - <span class="number">1</span>])**i</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">target</span>(<span class="params">a_im1</span>):</span></span><br><span class="line">            right_side = Pe[i<span class="number">-1</span>, <span class="number">0</span>] / <span class="number">2</span>/(<span class="number">1</span>+a_im1) + \</span><br><span class="line">                    np.sum( [(Pe[i<span class="number">-1</span>, j] /<span class="number">2</span> /(<span class="number">1</span>+a_im1*np.exp(b*j)) + Pe[i<span class="number">-1</span>, j<span class="number">-1</span>] / <span class="number">2</span> / (<span class="number">1</span>+a_im1*np.exp(b*(j<span class="number">-1</span>)))) <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, i)] ) + \</span><br><span class="line">                    Pe[i<span class="number">-1</span>, i<span class="number">-1</span>] / <span class="number">2</span> / (<span class="number">1</span> + a_im1*np.exp(b*(i<span class="number">-1</span>)))</span><br><span class="line">            <span class="keyword">return</span> (left_side - right_side)**<span class="number">2</span></span><br><span class="line"></span><br><span class="line">        res = minimize(target, <span class="number">0</span>)</span><br><span class="line">        a_im1 = res.x</span><br><span class="line">        <span class="comment"># print(f&quot;a&#123;i-1&#125;: &#123;a_im1&#125;&quot;)</span></span><br><span class="line">        arr_a.append(a_im1)</span><br><span class="line">        Pe[i, <span class="number">0</span>] = Pe[i - <span class="number">1</span>, <span class="number">0</span>] / <span class="number">2</span> / (<span class="number">1</span> + a_im1)</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, i):</span><br><span class="line">            Pe[i, j] = Pe[i - <span class="number">1</span>, j] / <span class="number">2</span> / (<span class="number">1</span> + a_im1 * np.exp(b * j)) + Pe[</span><br><span class="line">                i - <span class="number">1</span>, j - <span class="number">1</span>] / <span class="number">2</span> / (<span class="number">1</span> + a_im1 * np.exp(b * (j - <span class="number">1</span>)))</span><br><span class="line">        Pe[i, i] = Pe[i - <span class="number">1</span>, i - <span class="number">1</span>] / <span class="number">2</span> / (<span class="number">1</span> + a_im1 * np.exp(b * (i - <span class="number">1</span>)))</span><br><span class="line">    <span class="keyword">return</span> Pe, np.array(arr_a).flatten()</span><br></pre></td></tr></table></figure>
+
+
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">arr_s = np.array([<span class="number">7.3</span>, <span class="number">7.62</span>, <span class="number">8.1</span>, <span class="number">8.45</span>, <span class="number">9.2</span>, <span class="number">9.64</span>, <span class="number">10.12</span>, <span class="number">10.45</span>, <span class="number">10.75</span>, <span class="number">11.22</span>]) / <span class="number">100</span></span><br><span class="line">b = <span class="number">0.005</span></span><br><span class="line"></span><br><span class="line">Pe, a = BDT_solver(arr_s,b)</span><br></pre></td></tr></table></figure>
+
+
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Pe.round(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
 <pre><code>array([[1.   ,   nan,   nan,   nan,   nan,   nan,   nan,   nan,   nan,
           nan,   nan],
        [0.466, 0.466,   nan,   nan,   nan,   nan,   nan,   nan,   nan,
@@ -8350,10 +8390,20 @@ S_0^{(j)} &amp;= \sum_{k=1}^{m}{\pi_kS_1^{(j)}(w_k)} \\
        [0.   , 0.003, 0.015, 0.041, 0.071, 0.085, 0.071, 0.04 , 0.015,
         0.003, 0.   ]])</code></pre>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a.round(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
 <pre><code>array([0.073, 0.079, 0.09 , 0.094, 0.121, 0.117, 0.129, 0.126, 0.129,
        0.152])</code></pre>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># use ai &amp; b to derive r_ij</span></span><br><span class="line">short_rate_lattice = np.tril(np.outer(a, np.exp(np.arange(T)*b))).round(<span class="number">4</span>)</span><br><span class="line"><span class="comment"># Change 0 to np.nan</span></span><br><span class="line">short_rate_lattice = np.where(short_rate_lattice==<span class="number">0</span>, np.nan, short_rate_lattice)</span><br></pre></td></tr></table></figure>
+
+
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">short_rate_lattice</span><br></pre></td></tr></table></figure>
+
+
+
+
 <pre><code>array([[0.073 ,    nan,    nan,    nan,    nan,    nan,    nan,    nan,
            nan,    nan],
        [0.0792, 0.0796,    nan,    nan,    nan,    nan,    nan,    nan,
@@ -8375,10 +8425,20 @@ S_0^{(j)} &amp;= \sum_{k=1}^{m}{\pi_kS_1^{(j)}(w_k)} \\
        [0.1519, 0.1527, 0.1535, 0.1542, 0.155 , 0.1558, 0.1566, 0.1573,
         0.1581, 0.1589]])</code></pre>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">(short_rate_lattice[<span class="number">9</span>] - <span class="number">0.1165</span>) / (<span class="number">1</span>+short_rate_lattice[<span class="number">9</span>])</span><br></pre></td></tr></table></figure>
+
+
+
+
 <pre><code>array([0.03073183, 0.03140453, 0.03207629, 0.03266332, 0.03333333,
        0.03400242, 0.03467059, 0.03525447, 0.0359209 , 0.03658642])</code></pre>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">swaption_lattice = np.ones_like(short_rate_lattice) * np.nan</span><br><span class="line">swaption_lattice[<span class="number">9</span>] = (short_rate_lattice[<span class="number">9</span>] - <span class="number">0.1165</span>) / (<span class="number">1</span>+short_rate_lattice[<span class="number">9</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(<span class="number">8</span>, <span class="number">1</span>, <span class="number">-1</span>):</span><br><span class="line">    swaption_lattice[t, :t+<span class="number">1</span>] = (short_rate_lattice[t, :t+<span class="number">1</span>] - <span class="number">0.1165</span>) / (<span class="number">1</span>+short_rate_lattice[t, :t+<span class="number">1</span>]) + (<span class="number">0.5</span> * swaption_lattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>] + <span class="number">0.5</span> * swaption_lattice[t+<span class="number">1</span>, :t+<span class="number">1</span>]  ) / (<span class="number">1</span>+ short_rate_lattice[t, :t+<span class="number">1</span>])</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">swaption_lattice.round(<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
 <pre><code>array([[    nan,     nan,     nan,     nan,     nan,     nan,     nan,
             nan,     nan,     nan],
        [    nan,     nan,     nan,     nan,     nan,     nan,     nan,
@@ -8400,6 +8460,10 @@ S_0^{(j)} &amp;= \sum_{k=1}^{m}{\pi_kS_1^{(j)}(w_k)} \\
        [ 0.0307,  0.0314,  0.0321,  0.0327,  0.0333,  0.034 ,  0.0347,
          0.0353,  0.0359,  0.0366]])</code></pre>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># the swaption (option) is exercised only if S2&gt;0. </span></span><br><span class="line">swaption_lattice[<span class="number">2</span>] = np.clip(swaption_lattice[<span class="number">2</span>], <span class="number">0</span>, <span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    swaption_lattice[t, :t+<span class="number">1</span>] =  (<span class="number">0.5</span> * swaption_lattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>] + <span class="number">0.5</span> * swaption_lattice[t+<span class="number">1</span>, :t+<span class="number">1</span>]  ) / (<span class="number">1</span>+ short_rate_lattice[t, :t+<span class="number">1</span>])</span><br><span class="line">swaption_lattice.round(<span class="number">4</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
 <pre><code>array([[0.0013,    nan,    nan,    nan,    nan,    nan,    nan,    nan,
            nan,    nan],
        [0.0005, 0.0024,    nan,    nan,    nan,    nan,    nan,    nan,
@@ -8420,7 +8484,7 @@ S_0^{(j)} &amp;= \sum_{k=1}^{m}{\pi_kS_1^{(j)}(w_k)} \\
         0.0478,    nan],
        [0.0307, 0.0314, 0.0321, 0.0327, 0.0333, 0.034 , 0.0347, 0.0353,
         0.0359, 0.0366]])</code></pre>
-]]></content>
+<h2 id="讲义"><a href="#讲义" class="headerlink" title="讲义"></a>讲义</h2><div class="pdfobject-container" data-target="./3lattice_models.pdf" data-height="1000px"></div> ]]></content>
       <categories>
         <category>Finance</category>
       </categories>
@@ -10021,6 +10085,154 @@ sum
       </categories>
       <tags>
         <tag>Managerial Negotiation</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>IEOR E4706: Real Options</title>
+    <url>/2021/03/23/IEOR-E4706-Real-Options/</url>
+    <content><![CDATA[<h2 id="summary">Summary</h2>
+<p>实物期权的期权性带来的价值。</p>
+<p>区分 non-financial uncertainty 和 financial uncertainty 并对应使用真实概率和风险中性概率。</p>
+<p>资产定价为何不应使用 deterministic discounting factor 而应使用 <a href="https://en.wikipedia.org/wiki/Stochastic_discount_factor">stochastic discounting factor</a>。定价<strong>核</strong> pricing kernel。Remind me of kernel methods and monte carlo...</p>
+<p><span class="math display">\[p = E[mx]\]</span></p>
+<p>一些二叉树，包括汇率的二叉树；状态价格的回顾。</p>
+<h2 id="example-1-luenbergers-simplico-gold-mine">Example 1: Luenberger's Simplico Gold Mine</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></table></figure>
+<h3 id="gold-price-lattice-given">Gold Price Lattice Given</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Gold Price Lattice</span></span><br><span class="line"></span><br><span class="line">T=<span class="number">10</span></span><br><span class="line">goldPriceLattice = np.ones((T+<span class="number">1</span>, T+<span class="number">1</span>)) * np.nan</span><br><span class="line">goldPriceLattice[<span class="number">0</span>,<span class="number">0</span>] = <span class="number">400</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range (<span class="number">1</span>, T+<span class="number">1</span>):</span><br><span class="line">    goldPriceLattice[t, <span class="number">0</span>] = goldPriceLattice[t<span class="number">-1</span>, <span class="number">0</span>] * <span class="number">0.9</span></span><br><span class="line">    goldPriceLattice[t, <span class="number">1</span>: t+<span class="number">1</span>] = goldPriceLattice[t<span class="number">-1</span>, :t] * <span class="number">1.2</span></span><br><span class="line">goldPriceLattice.round(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>array([[ 400. ,    nan,    nan,    nan,    nan,    nan,    nan,    nan,
+           nan,    nan,    nan],
+       [ 360. ,  480. ,    nan,    nan,    nan,    nan,    nan,    nan,
+           nan,    nan,    nan],
+       [ 324. ,  432. ,  576. ,    nan,    nan,    nan,    nan,    nan,
+           nan,    nan,    nan],
+       [ 291.6,  388.8,  518.4,  691.2,    nan,    nan,    nan,    nan,
+           nan,    nan,    nan],
+       [ 262.4,  349.9,  466.6,  622.1,  829.4,    nan,    nan,    nan,
+           nan,    nan,    nan],
+       [ 236.2,  314.9,  419.9,  559.9,  746.5,  995.3,    nan,    nan,
+           nan,    nan,    nan],
+       [ 212.6,  283.4,  377.9,  503.9,  671.8,  895.8, 1194.4,    nan,
+           nan,    nan,    nan],
+       [ 191.3,  255.1,  340.1,  453.5,  604.7,  806.2, 1075. , 1433.3,
+           nan,    nan,    nan],
+       [ 172.2,  229.6,  306.1,  408.1,  544.2,  725.6,  967.5, 1289.9,
+        1719.9,    nan,    nan],
+       [ 155. ,  206.6,  275.5,  367.3,  489.8,  653. ,  870.7, 1161. ,
+        1547.9, 2063.9,    nan],
+       [ 139.5,  186. ,  247.9,  330.6,  440.8,  587.7,  783.6, 1044.9,
+        1393.1, 1857.5, 2476.7]])</code></pre>
+<h3 id="real-option-lattice-baseline">Real Option Lattice (baseline)</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">C=<span class="number">200</span></span><br><span class="line">amount = <span class="number">10000</span></span><br><span class="line">r = <span class="number">0.1</span></span><br><span class="line">q = <span class="number">2</span>/<span class="number">3</span></span><br><span class="line"></span><br><span class="line">realOptionLattice = np.ones_like(goldPriceLattice)*np.nan</span><br><span class="line"></span><br><span class="line"><span class="comment"># t=10, the lease expires and is worthless</span></span><br><span class="line">realOptionLattice[<span class="number">-1</span>] = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(T<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    realOptionLattice[t, :t+<span class="number">1</span>] = np.clip(goldPriceLattice[t, :t+<span class="number">1</span>] - C, <span class="number">0</span>, <span class="literal">None</span>) * amount / (<span class="number">1</span>+r) + \</span><br><span class="line">        (realOptionLattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>] * q + realOptionLattice[t+<span class="number">1</span>, :t+<span class="number">1</span>] * (<span class="number">1</span>-q) ) / (<span class="number">1</span>+r)</span><br><span class="line"></span><br><span class="line">(realOptionLattice / <span class="number">1e6</span>).round(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>array([[24.1,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan],
+       [17.9, 27.8,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan],
+       [12.9, 20.7, 31.2,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan],
+       [ 8.8, 15. , 23.3, 34.2,  nan,  nan,  nan,  nan,  nan,  nan,  nan],
+       [ 5.6, 10.4, 16.7, 25.2, 36.5,  nan,  nan,  nan,  nan,  nan,  nan],
+       [ 3.2,  6.7, 11.5, 17.9, 26.4, 37.7,  nan,  nan,  nan,  nan,  nan],
+       [ 1.4,  4. ,  7.4, 12. , 18.1, 26.2, 37.1,  nan,  nan,  nan,  nan],
+       [ 0.4,  2. ,  4.3,  7.4, 11.5, 17. , 24.3, 34.1,  nan,  nan,  nan],
+       [ 0. ,  0.7,  2.1,  3.9,  6.4,  9.7, 14.1, 20. , 27.8,  nan,  nan],
+       [ 0. ,  0.1,  0.7,  1.5,  2.6,  4.1,  6.1,  8.7, 12.3, 16.9,  nan],
+       [ 0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ]])</code></pre>
+<h3 id="the-value-of-enhancement">The value of Enhancement</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># By purchasing the new equipment at the cost of $4m, yearly extraction becomes 12500 and extraction cost increases to $240</span></span><br><span class="line">C_=<span class="number">240</span></span><br><span class="line">amount_ = <span class="number">12500</span></span><br><span class="line"></span><br><span class="line">r = <span class="number">0.1</span></span><br><span class="line">q = <span class="number">2</span>/<span class="number">3</span></span><br><span class="line"></span><br><span class="line">realOptionLattice_ = np.ones_like(goldPriceLattice)*np.nan</span><br><span class="line"></span><br><span class="line"><span class="comment"># t=10, the lease expires and is worthless</span></span><br><span class="line">realOptionLattice_[<span class="number">-1</span>] = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(T<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    realOptionLattice_[t, :t+<span class="number">1</span>] = np.clip(goldPriceLattice[t, :t+<span class="number">1</span>] - C_, <span class="number">0</span>, <span class="literal">None</span>) * amount_ / (<span class="number">1</span>+r) + \</span><br><span class="line">        (realOptionLattice_[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>] * q + realOptionLattice_[t+<span class="number">1</span>, :t+<span class="number">1</span>] * (<span class="number">1</span>-q) ) / (<span class="number">1</span>+r)</span><br><span class="line"></span><br><span class="line">(realOptionLattice_ / <span class="number">1e6</span>).round(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 27 - 4 = 23 &lt; 24.1? But the enhancement is still of value because of optionality</span></span><br></pre></td></tr></table></figure>
+<pre><code>array([[27. ,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan],
+       [19.5, 31.8,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan],
+       [13.5, 23.3, 36.4,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan],
+       [ 8.6, 16.3, 26.6, 40.4,  nan,  nan,  nan,  nan,  nan,  nan,  nan],
+       [ 4.9, 10.8, 18.7, 29.3, 43.5,  nan,  nan,  nan,  nan,  nan,  nan],
+       [ 2.3,  6.5, 12.5, 20.4, 31. , 45.2,  nan,  nan,  nan,  nan,  nan],
+       [ 0.8,  3.4,  7.7, 13.4, 21. , 31.2, 44.8,  nan,  nan,  nan,  nan],
+       [ 0.1,  1.3,  4.1,  8. , 13.2, 20. , 29.2, 41.4,  nan,  nan,  nan],
+       [ 0. ,  0.2,  1.8,  4.1,  7.2, 11.3, 16.8, 24.1, 33.9,  nan,  nan],
+       [ 0. ,  0. ,  0.4,  1.4,  2.8,  4.7,  7.2, 10.5, 14.9, 20.7,  nan],
+       [ 0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ]])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">C=<span class="number">200</span></span><br><span class="line">amount = <span class="number">10000</span></span><br><span class="line"></span><br><span class="line">r = <span class="number">0.1</span></span><br><span class="line">q = <span class="number">2</span>/<span class="number">3</span></span><br><span class="line"></span><br><span class="line">realOptionLattice = np.ones_like(goldPriceLattice)*np.nan</span><br><span class="line"></span><br><span class="line"><span class="comment"># t=10, the lease expires and is worthless</span></span><br><span class="line">realOptionLattice[<span class="number">-1</span>] = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(T<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    val = np.clip(goldPriceLattice[t, :t+<span class="number">1</span>] - C, <span class="number">0</span>, <span class="literal">None</span>) * amount / (<span class="number">1</span>+r) + \</span><br><span class="line">        (realOptionLattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>] * q + realOptionLattice[t+<span class="number">1</span>, :t+<span class="number">1</span>] * (<span class="number">1</span>-q) ) / (<span class="number">1</span>+r)</span><br><span class="line">    val_enhanced = realOptionLattice_[t, :t+<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">    realOptionLattice[t, :t+<span class="number">1</span>] = np.maximum(val, val_enhanced<span class="number">-4e6</span>)</span><br><span class="line"></span><br><span class="line">(realOptionLattice / <span class="number">1e6</span>).round(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># The value of the enhancement is 24.6 - 24.1</span></span><br></pre></td></tr></table></figure>
+<pre><code>array([[24.6,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan],
+       [18. , 28.6,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan],
+       [12.9, 20.9, 32.6,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan],
+       [ 8.8, 15. , 23.5, 36.4,  nan,  nan,  nan,  nan,  nan,  nan,  nan],
+       [ 5.6, 10.4, 16.7, 25.6, 39.5,  nan,  nan,  nan,  nan,  nan,  nan],
+       [ 3.2,  6.7, 11.5, 17.9, 27. , 41.2,  nan,  nan,  nan,  nan,  nan],
+       [ 1.4,  4. ,  7.4, 12. , 18.1, 27.2, 40.8,  nan,  nan,  nan,  nan],
+       [ 0.4,  2. ,  4.3,  7.4, 11.5, 17. , 25.2, 37.4,  nan,  nan,  nan],
+       [ 0. ,  0.7,  2.1,  3.9,  6.4,  9.7, 14.1, 20.1, 29.9,  nan,  nan],
+       [ 0. ,  0.1,  0.7,  1.5,  2.6,  4.1,  6.1,  8.7, 12.3, 16.9,  nan],
+       [ 0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ]])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 100 marks where enhancement took place</span></span><br><span class="line">((realOptionLattice / <span class="number">1e6</span>).round(<span class="number">1</span>) == (realOptionLattice_ / <span class="number">1e6</span> <span class="number">-4</span>).round(<span class="number">1</span>))* <span class="number">100</span></span><br></pre></td></tr></table></figure>
+<pre><code>array([[  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0],
+       [  0,   0,   0, 100,   0,   0,   0,   0,   0,   0,   0],
+       [  0,   0,   0,   0, 100,   0,   0,   0,   0,   0,   0],
+       [  0,   0,   0,   0, 100, 100,   0,   0,   0,   0,   0],
+       [  0,   0,   0,   0,   0, 100, 100,   0,   0,   0,   0],
+       [  0,   0,   0,   0,   0,   0, 100, 100,   0,   0,   0],
+       [  0,   0,   0,   0,   0,   0,   0, 100, 100,   0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0]])</code></pre>
+<h3 id="exercise-1">Exercise 1</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">C_=<span class="number">240</span></span><br><span class="line">amount_ = <span class="number">14000</span></span><br><span class="line"></span><br><span class="line">r = <span class="number">0.1</span></span><br><span class="line">q = <span class="number">2</span>/<span class="number">3</span></span><br><span class="line"></span><br><span class="line">realOptionLattice_ = np.ones_like(goldPriceLattice)*np.nan</span><br><span class="line">realOptionLattice_[<span class="number">-1</span>] = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(T<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    realOptionLattice_[t, :t+<span class="number">1</span>] = np.clip(goldPriceLattice[t, :t+<span class="number">1</span>] - C_, <span class="number">0</span>, <span class="literal">None</span>) * amount_ / (<span class="number">1</span>+r) + \</span><br><span class="line">        (realOptionLattice_[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>] * q + realOptionLattice_[t+<span class="number">1</span>, :t+<span class="number">1</span>] * (<span class="number">1</span>-q) ) / (<span class="number">1</span>+r)</span><br><span class="line"></span><br><span class="line">(realOptionLattice_ / <span class="number">1e6</span>).round(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>array([[30.3,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan],
+       [21.9, 35.6,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan],
+       [15.1, 26.1, 40.7,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan],
+       [ 9.7, 18.3, 29.8, 45.2,  nan,  nan,  nan,  nan,  nan,  nan,  nan],
+       [ 5.5, 12.1, 21. , 32.9, 48.7,  nan,  nan,  nan,  nan,  nan,  nan],
+       [ 2.6,  7.3, 14. , 22.9, 34.8, 50.6,  nan,  nan,  nan,  nan,  nan],
+       [ 0.9,  3.8,  8.6, 15. , 23.6, 35. , 50.2,  nan,  nan,  nan,  nan],
+       [ 0.2,  1.5,  4.6,  9. , 14.7, 22.4, 32.7, 46.4,  nan,  nan,  nan],
+       [ 0. ,  0.3,  2. ,  4.6,  8. , 12.6, 18.8, 27. , 37.9,  nan,  nan],
+       [ 0. ,  0. ,  0.5,  1.6,  3.2,  5.3,  8. , 11.7, 16.6, 23.2,  nan],
+       [ 0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ]])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">C=<span class="number">200</span></span><br><span class="line">amount = <span class="number">10000</span></span><br><span class="line"></span><br><span class="line">r = <span class="number">0.1</span></span><br><span class="line">q = <span class="number">2</span>/<span class="number">3</span></span><br><span class="line"></span><br><span class="line">realOptionLattice = np.ones_like(goldPriceLattice)*np.nan</span><br><span class="line"></span><br><span class="line"><span class="comment"># t=10, the lease expires and is worthless</span></span><br><span class="line">realOptionLattice[<span class="number">-1</span>] = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(T<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    <span class="comment"># enhancement only available until the beginning of 5th year</span></span><br><span class="line">    val = np.clip(goldPriceLattice[t, :t+<span class="number">1</span>] - C, <span class="number">0</span>, <span class="literal">None</span>) * amount / (<span class="number">1</span>+r) + \</span><br><span class="line">            (realOptionLattice[t+<span class="number">1</span>, <span class="number">1</span>:t+<span class="number">2</span>] * q + realOptionLattice[t+<span class="number">1</span>, :t+<span class="number">1</span>] * (<span class="number">1</span>-q) ) / (<span class="number">1</span>+r)</span><br><span class="line">    <span class="keyword">if</span> t &gt; <span class="number">4</span>:</span><br><span class="line">        val_enhanced = realOptionLattice_[t, :t+<span class="number">1</span>]</span><br><span class="line">        realOptionLattice[t, :t+<span class="number">1</span>] = np.maximum(val, val_enhanced<span class="number">-4e6</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        realOptionLattice[t, :t+<span class="number">1</span>] = val</span><br><span class="line"></span><br><span class="line">(realOptionLattice / <span class="number">1e6</span>).round(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># the value of the enhancement now worth 25.9 - 24.1 = 1.8m</span></span><br></pre></td></tr></table></figure>
+<pre><code>array([[25.9,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan],
+       [18.8, 30.4,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan],
+       [13.1, 22.1, 34.9,  nan,  nan,  nan,  nan,  nan,  nan,  nan,  nan],
+       [ 8.8, 15.4, 25.3, 39.2,  nan,  nan,  nan,  nan,  nan,  nan,  nan],
+       [ 5.6, 10.4, 17.4, 28.2, 43.3,  nan,  nan,  nan,  nan,  nan,  nan],
+       [ 3.2,  6.7, 11.5, 18.9, 30.8, 46.6,  nan,  nan,  nan,  nan,  nan],
+       [ 1.4,  4. ,  7.4, 12. , 19.6, 31. , 46.2,  nan,  nan,  nan,  nan],
+       [ 0.4,  2. ,  4.3,  7.4, 11.5, 18.4, 28.7, 42.4,  nan,  nan,  nan],
+       [ 0. ,  0.7,  2.1,  3.9,  6.4,  9.7, 14.8, 23. , 33.9,  nan,  nan],
+       [ 0. ,  0.1,  0.7,  1.5,  2.6,  4.1,  6.1,  8.7, 12.6, 19.2,  nan],
+       [ 0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ,  0. ]])</code></pre>
+<h2 id="example-2">Example 2</h2>
+<h3 id="汇率的二叉树">汇率的二叉树</h3>
+<p>推导汇率二叉树的方法在于假设外币 euro 为我们所投资的一个付息的资产。</p>
+<p>numeraire security 是美元，投资的证券是欧元，其价值 <span class="math inline">\(X_i\)</span> 个美元，息率 <span class="math inline">\(r_f\)</span></p>
+<p><span class="math display">\[ X_i = E_i^Q \left[\frac{X_{i+1} + r_f X_i}{1+r_d} \right] \]</span></p>
+<p>或</p>
+<p><span class="math display">\[ X_i = E_i^Q \left[\frac{X_{i+1}}{1+r_d-r_f} \right] \]</span></p>
+<p><span class="math display">\[1 € = X_i \$ \]</span></p>
+<p><span class="math display">\[X_i = €/\$ \]</span></p>
+<p>注意 Notes 此处表述有误。</p>
+<p>含息债券价格二叉树的风险中性测度需要去息，</p>
+<p><span class="math display">\[ q = \frac{(1+r_d - r_f) -d}{u-d} \]</span></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Exchange Rate Lattice</span></span><br><span class="line"></span><br><span class="line">T = <span class="number">5</span></span><br><span class="line">exchangeRateLattice = np.ones((T+<span class="number">1</span>, T+<span class="number">1</span>)) * np.nan</span><br><span class="line"></span><br><span class="line">exchangeRateLattice[<span class="number">0</span>, <span class="number">0</span>] = <span class="number">1.2</span></span><br><span class="line">u=<span class="number">1.05</span></span><br><span class="line">d=<span class="number">1</span>/u</span><br><span class="line">rd = <span class="number">0.05</span> / <span class="number">12</span></span><br><span class="line">rf = <span class="number">0.1</span> / <span class="number">12</span></span><br><span class="line">qu =  (<span class="number">1</span> + rd - rf -d) / (u-d)</span><br><span class="line">qd = <span class="number">1</span>-qu</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(<span class="number">1</span>, T+<span class="number">1</span>):</span><br><span class="line">    exchangeRateLattice[t, <span class="number">0</span>] = exchangeRateLattice[t<span class="number">-1</span>, <span class="number">0</span>] * d</span><br><span class="line">    exchangeRateLattice[t, <span class="number">1</span>:t+<span class="number">1</span>] = exchangeRateLattice[t<span class="number">-1</span>, :t] * u</span><br><span class="line">exchangeRateLattice.round(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>array([[1.2 ,  nan,  nan,  nan,  nan,  nan],
+       [1.14, 1.26,  nan,  nan,  nan,  nan],
+       [1.09, 1.2 , 1.32,  nan,  nan,  nan],
+       [1.04, 1.14, 1.26, 1.39,  nan,  nan],
+       [0.99, 1.09, 1.2 , 1.32, 1.46,  nan],
+       [0.94, 1.04, 1.14, 1.26, 1.39, 1.53]])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># random payments in euro from t = 1 to 5, with expectation mu</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># derive state prices by forward equations</span></span><br><span class="line"></span><br><span class="line">shortRateLattice = np.ones((T+<span class="number">1</span>, T+<span class="number">1</span>))*np.nan</span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(T+<span class="number">1</span>):</span><br><span class="line">    shortRateLattice[t, :t+<span class="number">1</span>] = rd</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># from TermStructureLattice&#x27;s Note, but modified the risk neutral probability</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">state_prices</span>(<span class="params">r: np.array, qu, qd</span>):</span></span><br><span class="line">    T = r.shape[<span class="number">0</span>] - <span class="number">1</span></span><br><span class="line">    Pe = np.zeros((T+<span class="number">1</span>, T+<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">    Pe[<span class="number">0</span>,<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(T):</span><br><span class="line">        <span class="keyword">for</span> s <span class="keyword">in</span> range(<span class="number">1</span>, k+<span class="number">1</span>):</span><br><span class="line">            Pe[k+<span class="number">1</span>, s] = Pe[k, s<span class="number">-1</span>]/((<span class="number">1</span>+r[k, s<span class="number">-1</span>])) *qu + Pe[k,s] / ((<span class="number">1</span>+r[k,s])) *qd</span><br><span class="line">        Pe[k+<span class="number">1</span>, <span class="number">0</span>] = Pe[k, <span class="number">0</span>] / ((<span class="number">1</span>+r[k,<span class="number">0</span>])) * qd</span><br><span class="line">        Pe[k+<span class="number">1</span>, k+<span class="number">1</span>] = Pe[k,k] / ((<span class="number">1</span>+r[k,k])) * qu</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Pe</span><br><span class="line"></span><br><span class="line">statePriceLattice = state_prices(shortRateLattice, qu, qd)</span><br><span class="line">statePriceLattice.round(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre><code>array([[1.   , 0.   , 0.   , 0.   , 0.   , 0.   ],
+       [0.553, 0.443, 0.   , 0.   , 0.   , 0.   ],
+       [0.305, 0.49 , 0.196, 0.   , 0.   , 0.   ],
+       [0.169, 0.406, 0.326, 0.087, 0.   , 0.   ],
+       [0.093, 0.299, 0.36 , 0.193, 0.039, 0.   ],
+       [0.052, 0.207, 0.332, 0.266, 0.107, 0.017]])</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.nansum(statePriceLattice * exchangeRateLattice, axis=<span class="number">1</span>)[<span class="number">1</span>:]</span><br></pre></td></tr></table></figure>
+<pre><code>array([1.19004149, 1.18016563, 1.17037173, 1.1606591 , 1.15102707])</code></pre>
+<h2 id="讲义">讲义</h2>
+<div class="pdfobject-container" data-target="./8RealOptions.pdf" data-height="1000px"></div>
+]]></content>
+      <categories>
+        <category>Finance</category>
+      </categories>
+      <tags>
+        <tag>Financial Engineering</tag>
       </tags>
   </entry>
 </search>
