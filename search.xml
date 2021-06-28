@@ -3668,7 +3668,7 @@ E[X|X&gt;K] &amp;= \int_K^\infty \frac{x}{\sigma x \sqrt{2\pi}} \exp{\left( -\fr
 <p><span class="math display">\[D = \frac{\ln K - \mu}{\sigma} \to =\frac{\ln K - \ln S_0 - \left(\mu-\frac{\sigma^2}{2}\right)T}{\sigma \sqrt T} = -d_2\]</span></p>
 <p>则</p>
 <p><span class="math display">\[E[X|X&gt;K] =  S_0 e^{\mu T} N(\sigma\sqrt T-D) = S_0 e^{\mu T}N(d_1) \]</span></p>
-<p>其中， <span class="math inline">\(d_1 = \sigma \sqrt T + d2\)</span>。</p>
+<p>其中， <span class="math inline">\(d_1 = \sigma \sqrt T + d_2\)</span>。</p>
 <p>综上，</p>
 <p><span class="math display">\[\begin{aligned}
 C_t &amp;= e^{r(t-T)}E[\max{(S_T-K, 0)}] \\
@@ -10220,6 +10220,47 @@ sum
       </categories>
       <tags>
         <tag>Managerial Negotiation</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Exponential Martingale</title>
+    <url>/2021/06/29/Exponential-Martingale/</url>
+    <content><![CDATA[<h2 id="moment-generating-function-of-normal">Moment Generating Function of Normal</h2>
+<p>MGF,</p>
+<p><span class="math display">\[M_X(t) = \mathbb E[e^{tX}], t\in \mathbb R\]</span></p>
+<p>For <span class="math inline">\(X\sim N(\mu, \sigma^2)\)</span>,</p>
+<p><span class="math display">\[\begin{aligned} 
+M_X(t) &amp;= \int_{-\infty}^\infty{e^{tx} \frac{1}{\sqrt{2\pi} \sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}}dx \\
+&amp;= \int_{-\infty}^\infty{e^{t(a\sigma + \mu)} \frac{1}{\sqrt{2\pi} }e^{-\frac{a^2}{2}}}da \qquad \text{substitute x to a} \\
+&amp;= \int_{-\infty}^\infty{  \frac{1}{\sqrt{2\pi} } \exp{ \left( \frac{-(a-\sigma t)^2 +\sigma^2t^2+2\mu t}{2}  \right)} }da \\
+&amp;=  \exp { \left(\mu t + \frac{\sigma^2t^2}{2} \right)} \int_{-\infty}^\infty{  \frac{1}{\sqrt{2\pi} } \exp{ \left( \frac{-(a-\sigma t)^2}{2}  \right)} }da \qquad \text{by the fact that gaussian cdf = 1} \\
+&amp;= \exp { \left(\mu t + \frac{\sigma^2t^2}{2} \right)} 
+\end{aligned}\]</span></p>
+<p>when <span class="math inline">\(\mu = 0\)</span></p>
+<p><span class="math display">\[\mathbb E [e^X] = M_X(1) = e^{\mu + \sigma^2 /2} = e^{\sigma^2 /2}\]</span></p>
+<h2 id="exponential-martingale">Exponential Martingale</h2>
+<blockquote>
+<p><strong>Theorem:</strong> Let <span class="math inline">\(W(t), t\geq 0\)</span> be a Brownian motion with filtration <span class="math inline">\(\mathcal{F}_t, t\geq0\)</span>, and let <span class="math inline">\(\sigma\)</span> be a constant. The process <span class="math inline">\(Z(t), t\geq 0\)</span> of such form is a martingale. <span class="math display">\[Z(t) = \exp{\left\{ \sigma W(t) - \frac12 \sigma^2 t     \right\}}\]</span></p>
+</blockquote>
+<p>Proof:</p>
+<p><span class="math display">\[\begin{aligned} &amp;\mathbb E [Z(t)|\mathcal F (s)] \\
+&amp;= \mathbb E\left[\exp{\left\{ \sigma W(t) - \frac12 \sigma^2 t     \right\}} \bigg| \mathcal F(s) \right] \\
+&amp;= \mathbb E\left[\exp{\left\{ \sigma( W(t) - W(s)) + \sigma W(s)- \frac12 \sigma^2 t     \right\}} \bigg| \mathcal F(s) \right] \\
+&amp;= \mathbb E\left[\exp{\left\{ \sigma( W(t) - W(s))\right\}} \cdot \exp{\left\{ \sigma W(s) - \frac12 \sigma^2 t     \right\}} \bigg| \mathcal F(s) \right] \\
+&amp;= \exp{\left\{ \sigma W(s) - \frac12 \sigma^2 t     \right\}} \cdot \mathbb E\left[\exp{\left\{ \sigma( W(t) - W(s))\right\}}  \bigg| \mathcal F(s) \right] \\
+&amp;= \exp{\left\{ \sigma W(s) - \frac12 \sigma^2 t     \right\}} \cdot
+\mathbb E\left[\exp{\left\{ \sigma( W(t) - W(s))\right\}}  \right] \\ 
+&amp;=  \exp{\left\{ \sigma W(s) - \frac12 \sigma^2 t     \right\}} \cdot
+\exp{\left\{ \frac{\sigma^2(t-s)}{2} \right\}} \\ 
+&amp;=  \exp{\left\{ \sigma W(s) - \frac12 \sigma^2 s    \right\}} \\
+&amp;= Z(S)
+\end{aligned}\]</span></p>
+]]></content>
+      <categories>
+        <category>Finance</category>
+      </categories>
+      <tags>
+        <tag>Financial Engineering</tag>
       </tags>
   </entry>
 </search>

@@ -194,6 +194,105 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2021/06/29/Exponential-Martingale/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
+      <meta itemprop="name" content="姚华(Hua Yao)">
+      <meta itemprop="description" content="hy2632@columbia.edu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="豁蒙楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/29/Exponential-Martingale/" class="post-title-link" itemprop="url">Exponential Martingale</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-06-28 11:54:46 / 修改时间：06:49:35" itemprop="dateCreated datePublished" datetime="2021-06-28T11:54:46-05:00">2021-06-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Finance/" itemprop="url" rel="index"><span itemprop="name">Finance</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2021/06/29/Exponential-Martingale/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/06/29/Exponential-Martingale/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="moment-generating-function-of-normal">Moment Generating Function of Normal</h2>
+<p>MGF,</p>
+<p><span class="math display">\[M_X(t) = \mathbb E[e^{tX}], t\in \mathbb R\]</span></p>
+<p>For <span class="math inline">\(X\sim N(\mu, \sigma^2)\)</span>,</p>
+<p><span class="math display">\[\begin{aligned} 
+M_X(t) &amp;= \int_{-\infty}^\infty{e^{tx} \frac{1}{\sqrt{2\pi} \sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}}dx \\
+&amp;= \int_{-\infty}^\infty{e^{t(a\sigma + \mu)} \frac{1}{\sqrt{2\pi} }e^{-\frac{a^2}{2}}}da \qquad \text{substitute x to a} \\
+&amp;= \int_{-\infty}^\infty{  \frac{1}{\sqrt{2\pi} } \exp{ \left( \frac{-(a-\sigma t)^2 +\sigma^2t^2+2\mu t}{2}  \right)} }da \\
+&amp;=  \exp { \left(\mu t + \frac{\sigma^2t^2}{2} \right)} \int_{-\infty}^\infty{  \frac{1}{\sqrt{2\pi} } \exp{ \left( \frac{-(a-\sigma t)^2}{2}  \right)} }da \qquad \text{by the fact that gaussian cdf = 1} \\
+&amp;= \exp { \left(\mu t + \frac{\sigma^2t^2}{2} \right)} 
+\end{aligned}\]</span></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/29/Exponential-Martingale/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2021/03/31/%E7%BE%8E%E5%BC%8F%E6%9C%9F%E6%9D%83%E7%9A%84%E6%8F%90%E5%89%8D%E8%A1%8C%E6%9D%83%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -611,7 +710,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-12 11:04:05" itemprop="dateModified" datetime="2021-03-12T11:04:05-05:00">2021-03-12</time>
+                <time title="修改时间：2021-04-06 07:06:34" itemprop="dateModified" datetime="2021-04-06T07:06:34-05:00">2021-04-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1281,104 +1380,10 @@ m = \frac{\ln2}{r} = \frac{0.72}{r}\]</span></p></li>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hy2632.github.io/2021/02/02/Modern-Portfolio-Theory-Mean-variance-analysis-Efficient-Frontier/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/54726816?s=460&u=39a4b895b570f1c0a114d932d9eff85d49cbe399&v=4">
-      <meta itemprop="name" content="姚华(Hua Yao)">
-      <meta itemprop="description" content="hy2632@columbia.edu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="豁蒙楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/02/02/Modern-Portfolio-Theory-Mean-variance-analysis-Efficient-Frontier/" class="post-title-link" itemprop="url">Modern Portfolio Theory / Mean-variance analysis / Efficient Frontier</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-02-02 01:48:23" itemprop="dateCreated datePublished" datetime="2021-02-02T01:48:23-05:00">2021-02-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-16 00:26:47" itemprop="dateModified" datetime="2021-02-16T00:26:47-05:00">2021-02-16</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2021/02/02/Modern-Portfolio-Theory-Mean-variance-analysis-Efficient-Frontier/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/02/02/Modern-Portfolio-Theory-Mean-variance-analysis-Efficient-Frontier/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="code-repo">Code Repo</h1>
-<p>https://github.com/hy2632/Efficient-Frontier</p>
-<h2 id="references">References</h2>
-<ul>
-<li><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Modern_portfolio_theory">Wikipedia - Modern portfolio theory - Mathematical Model</a></p></li>
-<li><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/0RlN0UTh3slFgErd8XRGhQ">马科维茨投资模型</a></p></li>
-<li><p><a target="_blank" rel="noopener" href="http://www.columbia.edu/~mh2078/FoundationsFE.html#:~:text=It%20is%20a%20core%20course,and%20financial%20problems%20and%20products.">Foundations of Financial Engineering (Columbia University, Fall 2016)</a></p></li>
-</ul>
-<h2 id="brief">Brief</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/02/02/Modern-Portfolio-Theory-Mean-variance-analysis-Efficient-Frontier/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1446,7 +1451,7 @@ m = \frac{\ln2}{r} = \frac{0.72}{r}\]</span></p></li>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-count">73</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
